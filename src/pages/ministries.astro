@@ -7,15 +7,40 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     <header class="page__header">
       <h1>Ministries</h1>
       <p class="page__lede">Ways to connect by life stage and community.</p>
+      <figure class="media">
+        <div class="media__frame ratio-16x9">
+          <span class="media__label">Hero photo placeholder (ministry)</span>
+        </div>
+      </figure>
     </header>
 
     <section class="section">
-      <ul>
-        <li><a href={`${import.meta.env.BASE_URL}families/`}>Kids & Families</a></li>
-        <li><a href={`${import.meta.env.BASE_URL}ministries/adults/`}>Adults</a></li>
-        <li><a href={`${import.meta.env.BASE_URL}ministries/care/`}>Care & Support</a></li>
-        <li><a href={`${import.meta.env.BASE_URL}ministries/outreach/`}>Outreach</a></li>
-      </ul>
+      <div class="card-grid">
+        <a href={`${import.meta.env.BASE_URL}families/`} class="card">
+          <h3>Kids & Families</h3>
+          <div class="media__frame ratio-16x9">
+            <span class="media__label">Photo placeholder</span>
+          </div>
+        </a>
+        <a href={`${import.meta.env.BASE_URL}ministries/adults/`} class="card">
+          <h3>Adults</h3>
+          <div class="media__frame ratio-16x9">
+            <span class="media__label">Photo placeholder</span>
+          </div>
+        </a>
+        <a href={`${import.meta.env.BASE_URL}ministries/care/`} class="card">
+          <h3>Care & Support</h3>
+          <div class="media__frame ratio-16x9">
+            <span class="media__label">Photo placeholder</span>
+          </div>
+        </a>
+        <a href={`${import.meta.env.BASE_URL}ministries/outreach/`} class="card">
+          <h3>Outreach</h3>
+          <div class="media__frame ratio-16x9">
+            <span class="media__label">Photo placeholder</span>
+          </div>
+        </a>
+      </div>
     </section>
   </article>
 </BaseLayout>

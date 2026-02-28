@@ -7,15 +7,40 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     <header class="page__header">
       <h1>Next Steps</h1>
       <p class="page__lede">Simple ways to move from “I visited” to “I belong.”</p>
+      <figure class="media">
+        <div class="media__frame ratio-16x9">
+          <span class="media__label">Hero photo placeholder (next steps)</span>
+        </div>
+      </figure>
     </header>
 
     <section class="section">
-      <ul>
-        <li><a href="https://plcc.churchcenter.com/groups">Join a Group</a></li>
-        <li><a href="https://plcc.churchcenter.com/registrations">Get Involved / Signups</a></li>
-        <li><a href={`${import.meta.env.BASE_URL}serve/`}>Serve</a></li>
-        <li><a href={`${import.meta.env.BASE_URL}contact/`}>Talk to someone</a></li>
-      </ul>
+      <div class="card-grid">
+        <a href="https://plcc.churchcenter.com/groups" class="card">
+          <h3>Join a Group</h3>
+          <div class="media__frame ratio-16x9">
+            <span class="media__label">Photo placeholder</span>
+          </div>
+        </a>
+        <a href="https://plcc.churchcenter.com/registrations" class="card">
+          <h3>Get Involved / Signups</h3>
+          <div class="media__frame ratio-16x9">
+            <span class="media__label">Photo placeholder</span>
+          </div>
+        </a>
+        <a href={`${import.meta.env.BASE_URL}serve/`} class="card">
+          <h3>Serve</h3>
+          <div class="media__frame ratio-16x9">
+            <span class="media__label">Photo placeholder</span>
+          </div>
+        </a>
+        <a href={`${import.meta.env.BASE_URL}contact/`} class="card">
+          <h3>Talk to someone</h3>
+          <div class="media__frame ratio-16x9">
+            <span class="media__label">Photo placeholder</span>
+          </div>
+        </a>
+      </div>
     </section>
   </article>
 </BaseLayout>
