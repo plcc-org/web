@@ -2,9 +2,9 @@
   /* Colors: Earth & Moss */
   --color-moss: rgb(106, 149, 41);
   --color-forest: rgb(26, 46, 12);
-  --color-stone: rgb(248, 247, 242);
+  --color-stone: rgb(242, 238, 230);
   --color-clay: rgb(166, 123, 91);
-  --color-mist: rgba(26, 46, 12, 0.05);
+  --color-mist: rgba(26, 46, 12, 0.08);
   --color-white: #ffffff;
 
   /* Typography */
@@ -13,16 +13,16 @@
 
   /* Spacing & Rhythm */
   --space-xs: 0.5rem;
-  --space-s: 1rem;
-  --space-m: 2rem;
-  --space-l: 4rem;
+  --space-s: 1.5rem;
+  --space-m: 3rem;
+  --space-l: 6rem;
   --measure: 65ch;
 
   /* Tactile */
-  --radius-soft: 12px;
-  --radius-organic: 24px 12px 24px 12px;
-  --shadow-diffuse: 0 10px 40px -10px rgba(26, 46, 12, 0.12);
-  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  --radius-soft: 16px;
+  --radius-organic: 32px 16px 32px 16px;
+  --shadow-diffuse: 0 15px 45px -15px rgba(26, 46, 12, 0.15);
+  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
 }
 
 html {
@@ -47,7 +47,7 @@ body::before {
   background-image: var(--grain);
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.4;
+  opacity: 0.8;
 }
 
 h1,
@@ -59,6 +59,9 @@ h4 {
   line-height: 1.1;
   text-wrap: balance;
   margin-bottom: 0.5em;
+  font-variation-settings:
+    'SOFT' 100,
+    'WONK' 1;
 }
 
 .site-header,
@@ -244,6 +247,40 @@ h4 {
   place-items: center;
   overflow: hidden;
   box-shadow: var(--shadow-diffuse);
+  position: relative;
+}
+
+.hero-box {
+  background: var(--color-forest);
+  color: var(--color-stone);
+  border-radius: var(--radius-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: var(--shadow-diffuse);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: var(--space-m);
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 2rem;
+  right: 2rem;
+  text-align: center;
+  z-index: 2;
 }
 
 .media__img {
@@ -251,6 +288,7 @@ h4 {
   width: 100%;
   height: auto;
   border-radius: var(--radius-soft);
+  border: 4px solid var(--color-white);
 }
 
 .media__caption {
@@ -399,16 +437,17 @@ h4 {
 /* Door cards (Neighbors page) */
 .door {
   position: relative;
-  padding: 3rem 2.5rem;
+  padding: 4rem 3rem;
   border-radius: var(--radius-organic);
-  background: var(--color-white);
+  background: var(--color-stone);
   box-shadow: var(--shadow-diffuse);
   border: 1px solid var(--color-mist);
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .door:hover {
-  transform: translateY(-4px) rotate(-0.5deg);
+  transform: translateY(-8px) rotate(-1deg);
+  background: var(--color-white);
 }
 
 .door__badge {

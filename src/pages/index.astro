@@ -20,12 +20,22 @@ import { homepageQuotes } from '../data/quotes'
         <a href={`${import.meta.env.BASE_URL}im-new/`}>I’m New Here</a>
       </p>
 
-      <figure class="media">
-        <div class="media__frame ratio-16x9">
-          <span class="media__label">Hero photo placeholder (worship / community)</span>
+      <div class="hero-box">
+        <video
+          class="hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          poster={`${import.meta.env.BASE_URL}images/church-exterior-1024x400.jpg`}
+        >
+          <source src={`${import.meta.env.BASE_URL}video/homepage-hero.mp4`} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div class="hero-overlay">
+          <span class="media__label" style="color: var(--color-stone);">A welcoming community, centered on Jesus.</span>
         </div>
-        <figcaption class="media__caption">A welcoming community, centered on Jesus.</figcaption>
-      </figure>
+      </div>
     </header>
 
     <section class="section">

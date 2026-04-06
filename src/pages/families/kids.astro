@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Kids | Pine Lake Covenant Church">
+  <article class="page">
+    <header class="page__header">
+      <h1>Pine Lake Kids</h1>
+      <p class="page__subhead">Babies through 5th Grade · Sundays at 10:00am</p>
+
+      <p class="page__lede">
+        We believe childhood is a season to be celebrated, not just a phase to get through. Our goal for Pine Lake Kids
+        is simple: that every child would feel safe, known, and loved as they begin to discover who Jesus is.
+      </p>
+
+      <div class="media">
+        <div class="media__frame ratio-16x9">
+          <img
+            class="media__img"
+            src={`${import.meta.env.BASE_URL}images/Pine-Lake-Kids-web.webp`}
+            alt="Kids having fun at Pine Lake"
+          />
+        </div>
+        <figcaption class="media__caption">Laughter, learning, and life together.</figcaption>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>Your first Sunday</h2>
+      <p>
+        If you’re visiting for the first time, look for the <strong>Kids Check-in</strong> in the foyer. One of our volunteers
+        will help you register your children and show you to their classrooms.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Nursery & Toddlers</h3>
+          <p>
+            A gentle, play-based environment where our littlest ones are cared for by consistent, loving volunteers.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Preschool & Kindergarten</h3>
+          <p>
+            Storytelling, music, and hands-on activities that introduce foundational Bible truths in an age-appropriate
+            way.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Elementary (1st–5th)</h3>
+          <p>
+            A high-energy mix of games, small group discussion, and teaching that helps kids connect faith to their
+            everyday lives.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Safety is our priority</h2>
+      <p>
+        We know that trust is earned. To ensure your child's safety and your peace of mind, we follow strict protocols:
+      </p>
+      <ul>
+        <li><strong>Background Checks:</strong> Every volunteer undergoes a comprehensive background screening.</li>
+        <li><strong>Two-Adult Rule:</strong> We maintain at least two background-checked adults in every classroom.</li>
+        <li>
+          <strong>Secure Check-in:</strong> Our digital check-in system ensures that only authorized adults can pick up your
+          child.
+        </li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Special Sundays</h2>
+      <p>
+        Once a month, our elementary students (K–5) join the adults in the main service for <strong
+          >Family Sunday</strong
+        >. We believe it’s important for kids to see what it looks like to worship as a whole community.
+      </p>
+      <p>
+        Don't worry—the service is designed with families in mind, and we provide "busy bags" to help keep little hands
+        occupied!
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Midweek & Beyond</h2>
+      <div class="link-grid">
+        <div class="link-card">
+          <strong>Club 45</strong>
+          <div class="link-card__meta">
+            A special monthly gathering for 4th and 5th graders to build deeper friendships.
+          </div>
+        </div>
+        <div class="link-card">
+          <strong>Sports Camp</strong>
+          <div class="link-card__meta">Our massive summer highlight for the whole community.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Have a question?</h2>
+      <p>
+        We’d love to help you feel at home. Reach out to our Children’s Director or check out our <a
+          href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a
+        > page for more practical details.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
