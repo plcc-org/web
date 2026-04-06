@@ -128,8 +128,12 @@ h4 {
 }
 
 .page {
-  max-width: 85ch;
+  max-width: var(--measure);
   margin: var(--space-m) 0 var(--space-l);
+}
+
+.page--wide {
+  max-width: 100%;
 }
 
 .page > * + * {
@@ -350,9 +354,9 @@ h4 {
 
 .story-grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  margin-top: 1rem;
+  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  margin-top: 3rem;
 }
 
 .vignette-grid {
@@ -480,19 +484,21 @@ h4 {
 
 /* Story/Quote Grid */
 .story-quote {
-  padding: 3rem;
+  padding: 3.5rem 2.5rem;
   border-radius: var(--radius-soft);
   background: var(--color-stone);
   border: 1px solid var(--color-mist);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .story-quote::before {
   content: '“';
   position: absolute;
-  top: -1rem;
-  left: 1rem;
+  top: -1.5rem;
+  left: 0.5rem;
   font-family: var(--font-serif);
   font-size: 8rem;
   color: var(--color-mist);
@@ -501,22 +507,35 @@ h4 {
 
 .story-quote p {
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-style: italic;
-  line-height: 1.5;
+  line-height: 1.45;
   position: relative;
   z-index: 1;
+  margin: 0;
+  flex-grow: 1;
+  color: var(--color-forest);
+  max-width: none;
 }
 
 .story-quote footer {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   font-family: var(--font-sans);
   font-weight: 600;
   color: var(--color-clay);
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.9rem;
 }
 
 .site-main p {
   max-width: var(--measure);
+}
+
+.site-main .story-quote p {
+  max-width: none;
 }
 
 .site-footer__grid div {
