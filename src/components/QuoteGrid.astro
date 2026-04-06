@@ -8,13 +8,111 @@ type Props = {
 const { quotes } = Astro.props
 ---
 
-<div class="story-grid">
-  {
-    quotes.map((q) => (
-      <blockquote class="story-quote">
-        <p>{q.text}</p>
-        {q.by && <footer>— {q.by}</footer>}
-      </blockquote>
-    ))
-  }
+<div class="quote-carousel" data-quotes={JSON.stringify(quotes)}>
+  <div class="story-grid" id="quote-grid">
+    {/* Initial 4 slots will be populated by script */}
+    <div class="quote-slot"></div>
+    <div class="quote-slot"></div>
+    <div class="quote-slot"></div>
+    <div class="quote-slot"></div>
+  </div>
 </div>
+
+<style>
+  .quote-slot {
+    min-height: 280px;
+    display: flex;
+  }
+
+  :global(.story-quote) {
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+    width: 100%;
+  }
+
+  :global(.story-quote.entering) {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  :global(.story-quote.visible) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  :global(.story-quote.exiting) {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+</style>
+
+<script>
+  function initCarousel() {
+    const carousels = document.querySelectorAll('.quote-carousel')
+
+    carousels.forEach((carousel) => {
+      const quotes = JSON.parse(carousel.getAttribute('data-quotes') || '[]')
+      const slots = carousel.querySelectorAll('.quote-slot')
+      if (quotes.length === 0 || slots.length === 0) return
+
+      let currentIndices = [0, 1, 2, 3]
+      let nextAvailableIndex = 4
+
+      // Initial render
+      slots.forEach((slot, i) => {
+        renderQuote(slot, quotes[currentIndices[i]])
+      })
+
+      // Rotation logic: Swap one slot at a time for a subtle effect
+      setInterval(() => {
+        // Don't rotate if user is hovering or window isn't focused
+        if (carousel.matches(':hover')) return
+
+        // Pick a random slot to swap
+        const slotToSwap = Math.floor(Math.random() * slots.length)
+        const slot = slots[slotToSwap]
+
+        // Get next quote
+        const nextQuote = quotes[nextAvailableIndex]
+
+        // Update indices
+        currentIndices[slotToSwap] = nextAvailableIndex
+        nextAvailableIndex = (nextAvailableIndex + 1) % quotes.length
+
+        // Animate swap
+        const currentQuoteEl = slot.querySelector('.story-quote')
+        if (currentQuoteEl) {
+          currentQuoteEl.classList.remove('visible')
+          currentQuoteEl.classList.add('exiting')
+
+          setTimeout(() => {
+            renderQuote(slot, nextQuote)
+          }, 600) // Match CSS transition duration
+        }
+      }, 5000) // Swap one every 5 seconds
+    })
+  }
+
+  function renderQuote(container: Element, quote: any) {
+    container.innerHTML = `
+      <blockquote class="story-quote entering">
+        <p>${quote.text}</p>
+        ${quote.by ? `<footer>— ${quote.by}</footer>` : ''}
+      </blockquote>
+    `
+
+    // Trigger entrance animation
+    requestAnimationFrame(() => {
+      const el = container.querySelector('.story-quote')
+      if (el) {
+        el.classList.remove('entering')
+        el.classList.add('visible')
+      }
+    })
+  }
+
+  // Handle both initial load and view transitions
+  initCarousel()
+  document.addEventListener('astro:after-swap', initCarousel)
+</script>
