@@ -31,7 +31,7 @@ import '../styles/global.css'
           <li><a href={`${import.meta.env.BASE_URL}whats-happening/`}>What’s Happening</a></li>
           <li><a href={`${import.meta.env.BASE_URL}messages/`}>Messages</a></li>
           <li><a href={`${import.meta.env.BASE_URL}next-steps/`}>Next Steps</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a></li>
+          <li><a href={`${import.meta.env.BASE_URL}plan-a-visit/`} class="site-nav__cta">Plan a Visit</a></li>
         </ul>
       </nav>
     </header>
@@ -41,35 +41,26 @@ import '../styles/global.css'
     </main>
 
     <footer class="site-footer">
-      <div class="site-footer__grid">
-        <div>
+      <div class="site-footer__main">
+        <div class="site-footer__info">
           <strong>Pine Lake Covenant Church</strong>
-          <div>Sundays at 10:00am</div>
-          <div>1715 228th Ave SE, Sammamish, WA 98075</div>
-          <div>
-            <a href="https://maps.app.goo.gl/drTdTyzUhuuoVbrM9" target="_blank" rel="noopener"> Directions </a>
-          </div>
+          <span class="site-footer__divider">|</span>
+          <span>Sundays at 10:00am</span>
+          <span class="site-footer__divider">|</span>
+          <span>1715 228th Ave SE, Sammamish, WA 98075</span>
         </div>
 
-        <div>
-          <strong>Get connected</strong>
-          <div><a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a></div>
-          <div><a href={`${import.meta.env.BASE_URL}contact/`}>Contact</a></div>
-          <div><a href={`${import.meta.env.BASE_URL}community/`}>Community</a></div>
-        </div>
-
-        <div>
-          <strong>Online</strong>
-          <div>
-            <a href="https://www.instagram.com/pinelakecov/" target="_blank" rel="noopener">Instagram</a>
-          </div>
-          <div>
-            <a href="https://www.youtube.com/@PineLkCovChurch" target="_blank" rel="noopener">YouTube</a>
-          </div>
-          <div>
-            <a href="https://covchurch.org/" target="_blank" rel="noopener">Evangelical Covenant Church</a>
-          </div>
-        </div>
+        <nav class="site-footer__links" aria-label="Footer">
+          <a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a>
+          <span class="site-footer__divider">|</span>
+          <a href={`${import.meta.env.BASE_URL}contact/`}>Contact</a>
+          <span class="site-footer__divider">|</span>
+          <a href={`${import.meta.env.BASE_URL}community/`}>Community</a>
+          <span class="site-footer__divider">|</span>
+          <a href="https://www.instagram.com/pinelakecov/" target="_blank" rel="noopener">Instagram</a>
+          <span class="site-footer__divider">|</span>
+          <a href="https://www.youtube.com/@PineLkCovChurch" target="_blank" rel="noopener">YouTube</a>
+        </nav>
       </div>
 
       <p class="site-footer__legal">© {new Date().getFullYear()} Pine Lake Covenant Church</p>
