@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import LinkCardSection from '../components/LinkCardSection.astro'
+import { imNewStartHereLinks } from '../data/startHereLinks'
 ---
 
 <BaseLayout title="I’m New | Pine Lake Covenant Church">
@@ -13,41 +15,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
     </header>
 
-    <section class="section">
-      <h2>Start here</h2>
-
-      <ul>
-        <li>
-          <strong>A Welcome from our Lead Pastor</strong><br />
-          Read a personal letter from Austin Bailey about what we’re trying to build here.<br />
-          <a href={`${import.meta.env.BASE_URL}about/pastors-letter/`}>Read the letter</a>
-        </li>
-
-        <li>
-          <strong>Plan a Visit</strong><br />
-          What Sundays are like, where to go, and what to expect when you arrive.<br />
-          <a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Learn more</a>
-        </li>
-
-        <li>
-          <strong>Families</strong><br />
-          Community, support, and programs for parents, kids, and youth — on Sundays and beyond.<br />
-          <a href={`${import.meta.env.BASE_URL}families/`}>Learn more</a>
-        </li>
-
-        <li>
-          <strong>About Pine Lake</strong><br />
-          Our story, values, and the kind of church we’re trying to be.<br />
-          <a href={`${import.meta.env.BASE_URL}about/`}>Learn more</a>
-        </li>
-
-        <li>
-          <strong>Messages</strong><br />
-          Curious what teaching is like? Watch or listen to a recent message.<br />
-          <a href={`${import.meta.env.BASE_URL}messages/`}>Listen or watch</a>
-        </li>
-      </ul>
-    </section>
+    <LinkCardSection links={imNewStartHereLinks} />
 
     <section class="section">
       <h2>What to expect here</h2>
