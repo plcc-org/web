@@ -2,8 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import VignetteGrid from '../components/VignetteGrid.astro'
 import QuoteGrid from '../components/QuoteGrid.astro'
+import LinkCardSection from '../components/LinkCardSection.astro'
 import { vignettes } from '../data/vignettes'
 import { homepageQuotes } from '../data/quotes'
+import { startHereLinks } from '../data/startHereLinks'
 ---
 
 <BaseLayout title="Pine Lake Covenant Church | Sammamish">
@@ -38,31 +40,7 @@ import { homepageQuotes } from '../data/quotes'
       </div>
     </header>
 
-    <section class="section">
-      <h2>Start here</h2>
-
-      <div class="link-grid">
-        <a href={`${import.meta.env.BASE_URL}plan-a-visit/`} class="link-card">
-          <strong>Plan a Visit</strong>
-          <div class="link-card__meta">What Sundays are like.</div>
-        </a>
-
-        <a href={`${import.meta.env.BASE_URL}families/`} class="link-card">
-          <strong>Families</strong>
-          <div class="link-card__meta">Kids, youth, and community.</div>
-        </a>
-
-        <a href={`${import.meta.env.BASE_URL}messages/`} class="link-card">
-          <strong>Messages</strong>
-          <div class="link-card__meta">Watch a recent service.</div>
-        </a>
-
-        <a href={`${import.meta.env.BASE_URL}about/`} class="link-card">
-          <strong>About</strong>
-          <div class="link-card__meta">Our ethos and beliefs.</div>
-        </a>
-      </div>
-    </section>
+    <LinkCardSection links={startHereLinks} />
 
     <section class="section">
       <h2>Welcome</h2>
