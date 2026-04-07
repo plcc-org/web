@@ -1,5 +1,11 @@
 ---
-const { title = 'Pine Lake Covenant Church' } = Astro.props
+const {
+  title = 'Pine Lake Covenant Church',
+  description = 'A church in Sammamish, discovering life with Jesus together.',
+  noindex = false,
+} = Astro.props
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
 import '../styles/global.css'
 ---
 
@@ -15,6 +21,9 @@ import '../styles/global.css'
       rel="stylesheet"
     />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
   </head>
 
   <body>

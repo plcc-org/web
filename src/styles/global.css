@@ -306,6 +306,12 @@ h4 {
   opacity: 0.6;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    display: none;
+  }
+}
+
 .hero-overlay {
   position: absolute;
   bottom: 1.5rem;

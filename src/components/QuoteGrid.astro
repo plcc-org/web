@@ -9,7 +9,7 @@ const { quotes } = Astro.props
 ---
 
 <div class="quote-carousel" data-quotes={JSON.stringify(quotes)}>
-  <div class="story-grid" id="quote-grid">
+  <div class="story-grid" id="quote-grid" aria-live="polite" aria-atomic="false">
     {/* Initial 4 slots will be populated by script */}
     <div class="quote-slot"></div>
     <div class="quote-slot"></div>
@@ -95,12 +95,22 @@ const { quotes } = Astro.props
   }
 
   function renderQuote(container: Element, quote: any) {
-    container.innerHTML = `
-      <blockquote class="story-quote entering">
-        <p>${quote.text}</p>
-        ${quote.by ? `<footer>— ${quote.by}</footer>` : ''}
-      </blockquote>
-    `
+    container.innerHTML = ''
+
+    const blockquote = document.createElement('blockquote')
+    blockquote.className = 'story-quote entering'
+
+    const p = document.createElement('p')
+    p.textContent = quote?.text ?? ''
+    blockquote.appendChild(p)
+
+    if (quote?.by) {
+      const footer = document.createElement('footer')
+      footer.textContent = `— ${quote.by}`
+      blockquote.appendChild(footer)
+    }
+
+    container.appendChild(blockquote)
 
     // Trigger entrance animation
     requestAnimationFrame(() => {

@@ -8,7 +8,10 @@ import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
 ---
 
-<BaseLayout title="Pine Lake Covenant Church | Sammamish">
+<BaseLayout
+  title="Pine Lake Covenant Church | Sammamish"
+  description="A church in Sammamish where people discover life with Jesus together. Join us Sundays at 10:00am."
+>
   <article class="page page--wide">
     <header class="page__header">
       <h1>A church in Sammamish, discovering life with Jesus together</h1>
@@ -29,6 +32,8 @@ import { startHereLinks } from '../data/startHereLinks'
           muted
           loop
           playsinline
+          aria-hidden="true"
+          tabindex="-1"
           poster={`${import.meta.env.BASE_URL}images/church-exterior-1024x400.jpg`}
         >
           <source src={`${import.meta.env.BASE_URL}video/homepage-hero.mp4`} type="video/mp4" />

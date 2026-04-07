@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="Page Not Found | Pine Lake Covenant Church"
+  description="The page you are looking for could not be found."
+  noindex={true}
+>
+  <article class="page">
+    <header class="page__header">
+      <h1>Page not found</h1>
+      <p class="page__lede">We could not find that page. It may have moved as this prototype evolves.</p>
+    </header>
+
+    <section class="section">
+      <p>
+        Try <a href={`${import.meta.env.BASE_URL}`}>Home</a>, <a href={`${import.meta.env.BASE_URL}im-new/`}>I’m New</a
+        >, or <a href={`${import.meta.env.BASE_URL}next-steps/`}>Next Steps</a>.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
