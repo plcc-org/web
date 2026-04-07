@@ -146,6 +146,15 @@ h4 {
   box-shadow: 0 6px 20px rgba(26, 46, 12, 0.2);
 }
 
+.site-nav a:focus-visible,
+.link-card:focus-visible,
+.page__lede a:focus-visible,
+.card:focus-visible,
+.site-footer a:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 3px;
+}
+
 .page {
   max-width: var(--measure);
   margin: var(--space-m) 0 var(--space-l);

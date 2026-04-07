@@ -18,7 +18,12 @@ const { images, ariaLabel = 'Vignettes from Pine Lake' } = Astro.props
 
       return (
         <div class={className}>
-          <Image src={img} alt="" sizes="(max-width: 800px) 50vw, 400px" class="vignette-img" />
+          <Image
+            src={img}
+            alt={`Moment from the Pine Lake community (${index + 1})`}
+            sizes="(max-width: 800px) 50vw, 400px"
+            class="vignette-img"
+          />
         </div>
       )
     })
