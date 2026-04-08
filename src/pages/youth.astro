@@ -1,8 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { Image } from 'astro:assets'
+import youth01 from '../assets/images/youth-01-1600x1600.jpg'
+import youth02 from '../assets/images/youth-02-1600x1600.jpg'
+import youth03 from '../assets/images/youth-03-1600x1600.jpg'
+import youth04 from '../assets/images/youth-04-1600x1600.jpg'
 ---
 
-<BaseLayout title="Youth | Pine Lake Covenant Church">
+<BaseLayout
+  title="Youth | Pine Lake Covenant Church"
+  description="Pine Lake Youth: a place for 6th–12th graders to find Jesus together, connect, and serve."
+>
   <article class="page page--wide">
     <header class="page__header">
       <h1>Pine Lake Youth</h1>
@@ -17,38 +25,38 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 
       <div class="youth-gallery" aria-label="Photos from Pine Lake Youth">
         <figure class="youth-gallery__tile">
-          <img
-            src={`${import.meta.env.BASE_URL}images/youth-01-1600x1600.jpg`}
-            width="1600"
-            height="1600"
+          <Image
+            src={youth01}
             alt="Students at Pine Lake Youth"
+            widths={[480, 800, 1200, 1600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
             loading="eager"
           />
         </figure>
         <figure class="youth-gallery__tile">
-          <img
-            src={`${import.meta.env.BASE_URL}images/youth-02-1600x1600.jpg`}
-            width="1600"
-            height="1600"
+          <Image
+            src={youth02}
             alt="A moment from a Pine Lake Youth gathering"
+            widths={[480, 800, 1200, 1600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
             loading="eager"
           />
         </figure>
         <figure class="youth-gallery__tile">
-          <img
-            src={`${import.meta.env.BASE_URL}images/youth-03-1600x1600.jpg`}
-            width="1600"
-            height="1600"
+          <Image
+            src={youth03}
             alt="Students connecting in community"
+            widths={[480, 800, 1200, 1600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
             loading="lazy"
           />
         </figure>
         <figure class="youth-gallery__tile">
-          <img
-            src={`${import.meta.env.BASE_URL}images/youth-04-1600x1600.jpg`}
-            width="1600"
-            height="1600"
+          <Image
+            src={youth04}
             alt="Pine Lake Youth activity"
+            widths={[480, 800, 1200, 1600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
             loading="lazy"
           />
         </figure>

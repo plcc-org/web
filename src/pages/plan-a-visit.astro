@@ -1,8 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { Image } from 'astro:assets'
+import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
 ---
 
-<BaseLayout title="Plan a Visit | Pine Lake Covenant Church">
+<BaseLayout
+  title="Plan a Visit | Pine Lake Covenant Church"
+  description="What to expect on Sundays at Pine Lake, including location, service format, and family details."
+>
   <article class="page">
     <header class="page__header">
       <h1>Plan a Visit</h1>
@@ -28,12 +33,12 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       <p>There’s plenty of guest parking available, including accessible parking.</p>
 
       <figure class="media">
-        <img
-          class="media__img"
-          src={`${import.meta.env.BASE_URL}images/church-exterior-1024x400.jpg`}
+        <Image
+          class="media__img media__img--cover"
+          src={churchExterior}
           alt="Pine Lake Covenant Church building in Sammamish"
-          width="1024"
-          height="400"
+          widths={[640, 1024, 1440]}
+          sizes="(max-width: 768px) 100vw, (max-width: 1100px) 90vw, 1024px"
         />
         <figcaption class="media__caption">
           Our building in Sammamish — look for guest parking near the main entrance.

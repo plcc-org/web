@@ -1,11 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { Image } from 'astro:assets'
 import VignetteGrid from '../components/VignetteGrid.astro'
 import QuoteGrid from '../components/QuoteGrid.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import { vignettes } from '../data/vignettes'
 import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
+import { imageAlt, imagePublicSrc, pickImageByAnyTag } from '../data/homePageImages'
+import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
+
+const momentsImage01 = pickImageByAnyTag(['community', 'social', 'gathering'])
+const momentsImage02 = pickImageByAnyTag(['kids', 'family', 'youth'], [momentsImage01?.filename ?? ''])
+const momentsImage03 = pickImageByAnyTag(['worship', 'prayer', 'service'], [momentsImage01?.filename ?? '', momentsImage02?.filename ?? ''])
+const momentsImage04 = pickImageByAnyTag(['youth', 'social', 'service'], [momentsImage01?.filename ?? '', momentsImage02?.filename ?? '', momentsImage03?.filename ?? ''])
 ---
 
 <BaseLayout
@@ -34,7 +42,7 @@ import { startHereLinks } from '../data/startHereLinks'
           playsinline
           aria-hidden="true"
           tabindex="-1"
-          poster={`${import.meta.env.BASE_URL}images/church-exterior-1024x400.jpg`}
+          poster={churchExterior.src}
         >
           <source src={`${import.meta.env.BASE_URL}video/homepage-hero.mp4`} type="video/mp4" />
           Your browser does not support the video tag.
@@ -75,16 +83,56 @@ import { startHereLinks } from '../data/startHereLinks'
 
       <div class="tile-grid">
         <div class="tile ratio-4x5">
-          <span class="media__label">Photo</span>
+          {
+            momentsImage01 ? (
+              <img
+                src={imagePublicSrc(momentsImage01.filename)}
+                alt={imageAlt(momentsImage01, 'People greeting each other at Pine Lake')}
+                class="tile__img"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : null
+          }
         </div>
         <div class="tile ratio-4x5">
-          <span class="media__label">Photo</span>
+          {
+            momentsImage02 ? (
+              <img
+                src={imagePublicSrc(momentsImage02.filename)}
+                alt={imageAlt(momentsImage02, 'Students gathered and listening together')}
+                class="tile__img"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : null
+          }
         </div>
         <div class="tile ratio-4x5">
-          <span class="media__label">Photo</span>
+          {
+            momentsImage03 ? (
+              <img
+                src={imagePublicSrc(momentsImage03.filename)}
+                alt={imageAlt(momentsImage03, 'A candid moment from church community life')}
+                class="tile__img"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : null
+          }
         </div>
         <div class="tile ratio-4x5">
-          <span class="media__label">Photo</span>
+          {
+            momentsImage04 ? (
+              <img
+                src={imagePublicSrc(momentsImage04.filename)}
+                alt={imageAlt(momentsImage04, 'People connecting after a service')}
+                class="tile__img"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : null
+          }
         </div>
       </div>
 
@@ -112,7 +160,13 @@ import { startHereLinks } from '../data/startHereLinks'
         </div>
 
         <div class="media__frame ratio-4x3">
-          <span class="media__label">Big photo placeholder</span>
+          <Image
+            src={churchExterior}
+            alt="Pine Lake building and entry area"
+            class="media__img media__img--cover"
+            widths={[640, 1024, 1440]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
         </div>
       </div>
     </section>

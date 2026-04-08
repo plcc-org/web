@@ -1,8 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import { Image } from 'astro:assets'
+import kidsPhoto from '../../assets/images/Pine-Lake-Kids-web.webp'
 ---
 
-<BaseLayout title="Kids | Pine Lake Covenant Church">
+<BaseLayout
+  title="Kids | Pine Lake Covenant Church"
+  description="Pine Lake Kids: a safe, welcoming place for babies through 5th grade to discover Jesus and belong."
+>
   <article class="page">
     <header class="page__header">
       <h1>Pine Lake Kids</h1>
@@ -15,10 +20,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
       <div class="media">
         <div class="media__frame ratio-16x9">
-          <img
-            class="media__img"
-            src={`${import.meta.env.BASE_URL}images/Pine-Lake-Kids-web.webp`}
+          <Image
+            class="media__img media__img--cover"
+            src={kidsPhoto}
             alt="Kids having fun at Pine Lake"
+            widths={[640, 1024, 1440]}
+            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 90vw, 1024px"
           />
         </div>
         <figcaption class="media__caption">Laughter, learning, and life together.</figcaption>

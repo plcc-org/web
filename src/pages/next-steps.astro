@@ -1,8 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { Image } from 'astro:assets'
+import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
+import youth01 from '../assets/images/youth-01-1600x1600.jpg'
+import youth02 from '../assets/images/youth-02-1600x1600.jpg'
+import youth03 from '../assets/images/youth-03-1600x1600.jpg'
+import kidsPhoto from '../assets/images/Pine-Lake-Kids-web.webp'
 ---
 
-<BaseLayout title="Next Steps | Pine Lake Covenant Church">
+<BaseLayout
+  title="Next Steps | Pine Lake Covenant Church"
+  description="Simple, low-pressure next steps to connect at Pine Lake: groups, serving, events, and conversation."
+>
   <article class="page">
     <header class="page__header">
       <h1>Next Steps</h1>
@@ -12,7 +21,14 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
       <figure class="media">
         <div class="media__frame ratio-16x9">
-          <span class="media__label">Hero photo placeholder (next steps)</span>
+          <Image
+            src={churchExterior}
+            alt="People gathering outside Pine Lake Covenant Church"
+            class="media__img media__img--cover"
+            widths={[640, 1024, 1440]}
+            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 90vw, 1024px"
+            loading="eager"
+          />
         </div>
       </figure>
     </header>
@@ -23,28 +39,52 @@ import BaseLayout from '../layouts/BaseLayout.astro'
           <h3>Find Your People</h3>
           <p>Explore groups for different life stages. You are welcome to browse first and join when ready.</p>
           <div class="media__frame ratio-16x9">
-            <span class="media__label">Photo placeholder</span>
+            <Image
+              src={youth01}
+              alt="Students talking together at a church gathering"
+              class="media__img media__img--cover"
+              widths={[480, 800, 1200]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
           </div>
         </a>
         <a href="https://plcc.churchcenter.com/registrations" class="card">
           <h3>Upcoming Signups</h3>
           <p>See events and registrations in one place. Start with one thing that feels manageable.</p>
           <div class="media__frame ratio-16x9">
-            <span class="media__label">Photo placeholder</span>
+            <Image
+              src={youth02}
+              alt="People connecting in conversation at Pine Lake"
+              class="media__img media__img--cover"
+              widths={[480, 800, 1200]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
           </div>
         </a>
         <a href={`${import.meta.env.BASE_URL}serve/`} class="card">
           <h3>Serve With Others</h3>
           <p>Serving is a practical way to meet people and contribute. We can help you find a good fit.</p>
           <div class="media__frame ratio-16x9">
-            <span class="media__label">Photo placeholder</span>
+            <Image
+              src={youth03}
+              alt="Volunteers serving together during a church event"
+              class="media__img media__img--cover"
+              widths={[480, 800, 1200]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
           </div>
         </a>
         <a href={`${import.meta.env.BASE_URL}contact/`} class="card">
           <h3>Talk With Someone</h3>
           <p>Have questions or want a personal connection point? Reach out and we will follow up.</p>
           <div class="media__frame ratio-16x9">
-            <span class="media__label">Photo placeholder</span>
+            <Image
+              src={kidsPhoto}
+              alt="A family-friendly moment at Pine Lake Kids"
+              class="media__img media__img--cover"
+              widths={[480, 800, 1200]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
           </div>
         </a>
       </div>

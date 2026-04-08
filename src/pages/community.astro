@@ -1,5 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { imageAlt, imagePublicSrc, pickImageByAnyTag } from '../data/homePageImages'
+
+const communityHeroImage = pickImageByAnyTag(['community', 'gathering', 'social'])
+const lifeTogetherImage = pickImageByAnyTag(['community', 'social', 'gathering'], [communityHeroImage?.filename ?? ''])
+const generosityImage = pickImageByAnyTag(['generosity', 'service'])
+const careImage = pickImageByAnyTag(['care', 'prayer'])
 ---
 
 <BaseLayout title="Community | Pine Lake Covenant Church">
@@ -13,7 +19,19 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
       <figure class="media">
         <div class="media__frame ratio-16x9">
-          <span class="media__label">Hero photo placeholder (community)</span>
+          {
+            communityHeroImage ? (
+              <img
+                src={imagePublicSrc(communityHeroImage.filename)}
+                alt={imageAlt(communityHeroImage, 'People connected in community at Pine Lake')}
+                class="media__img media__img--cover"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span class="media__label">Hero photo placeholder (community)</span>
+            )
+          }
         </div>
       </figure>
     </header>
@@ -27,7 +45,19 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
 
       <div class="media__frame ratio-4x3">
-        <span class="media__label">Photo placeholder</span>
+        {
+          lifeTogetherImage ? (
+            <img
+              src={imagePublicSrc(lifeTogetherImage.filename)}
+              alt={imageAlt(lifeTogetherImage, 'People sharing life together at Pine Lake')}
+              class="media__img media__img--cover"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <span class="media__label">Photo placeholder</span>
+          )
+        }
       </div>
 
       <ul>
@@ -51,7 +81,19 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
 
       <div class="media__frame ratio-4x3">
-        <span class="media__label">Photo placeholder</span>
+        {
+          generosityImage ? (
+            <img
+              src={imagePublicSrc(generosityImage.filename)}
+              alt={imageAlt(generosityImage, 'People practicing generosity through shared ministry')}
+              class="media__img media__img--cover"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <span class="media__label">Photo placeholder</span>
+          )
+        }
       </div>
 
       <p>
@@ -68,7 +110,19 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
 
       <div class="media__frame ratio-4x3">
-        <span class="media__label">Photo placeholder</span>
+        {
+          careImage ? (
+            <img
+              src={imagePublicSrc(careImage.filename)}
+              alt={imageAlt(careImage, 'Prayer and care support at Pine Lake')}
+              class="media__img media__img--cover"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <span class="media__label">Photo placeholder</span>
+          )
+        }
       </div>
     </section>
 

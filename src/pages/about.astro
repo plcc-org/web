@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { imageAlt, imagePublicSrc, pickImageByAnyTag } from '../data/homePageImages'
+
+const aboutHeroImage = pickImageByAnyTag(['community', 'gathering', 'worship'])
 ---
 
 <BaseLayout title="About | Pine Lake Covenant Church">
@@ -11,7 +14,19 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
       <figure class="media">
         <div class="media__frame ratio-16x9">
-          <span class="media__label">Hero photo placeholder (about)</span>
+          {
+            aboutHeroImage ? (
+              <img
+                src={imagePublicSrc(aboutHeroImage.filename)}
+                alt={imageAlt(aboutHeroImage, 'People gathered together at Pine Lake')}
+                class="media__img media__img--cover"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span class="media__label">Hero photo placeholder (about)</span>
+            )
+          }
         </div>
       </figure>
     </header>
