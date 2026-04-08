@@ -64,7 +64,7 @@ Pages work in a specific order:
 
 1. **Home:** "I might belong here."
 2. **I’m New / Families / Youth:** "I understand what this would feel like."
-3. **Next Steps / Neighbors:** "I can engage at my own pace."
+3. **For Our Neighbors / Next Steps:** "I can engage at my own pace."
 
 - **Implication:** Don't optimize pages in isolation; consider the user's emotional state upon arrival.
 
@@ -84,10 +84,10 @@ Families, Youth, and Care pages must "sound like the same place." Match tone, st
 
 ## 13. Current Content Gaps (Priority Order)
 
-1. **Children (Kids) page:** Split from Families.
-2. **Next Steps:** Define clearly.
-3. **For Our Neighbors:** Additional subpages.
-4. **Stories & Calendar:** Expansion and refinement.
+1. **Next Steps:** Define clearly — what specific steps, forms, or events are prioritized?
+2. **For Our Neighbors:** Additional subpages beyond Meals of Care, Stephen Ministry, Weddings & Memorials.
+3. **Stories & Calendar:** Expansion and refinement.
+4. **Youth page:** Needs same panel/MomentsSection treatment as Families and Plan a Visit.
 
 ---
 
@@ -139,8 +139,12 @@ The site is structured around a **three-stage funnel**, plus a parallel “neigh
 ### Primary Navigation Intent
 
 1. **I’m New:** Entry point for visitors; answers emotional + practical questions.
-2. **Next Steps:** For people beginning to engage (still evolving).
-3. **Community:** For those who call PLCC home; includes serving and groups (not giving-centered).
+2. **About:** Who we are, beliefs, leadership, ethos.
+3. **Families:** Kids, youth, and family life.
+4. **For Our Neighbors:** Needs-based "Doors" — how the church shows up in the community.
+5. **What's Happening / Messages:** Current events and sermon archive.
+
+> **Note:** "Next Steps" has been removed from the primary navigation while its content is still being defined. The page exists at `/next-steps/` but is not linked from the header.
 
 ### Parallel Structure
 
@@ -152,34 +156,95 @@ The site is structured around a **three-stage funnel**, plus a parallel “neigh
 
 To ensure high performance and visual quality, we follow these Astro 5 standards:
 
-### 1. Image Storage & Optimization
+### 1. Image Storage
 
-- **Rule:** Prefer `src/assets/` over `public/`.
-- **Reasoning:** Images in `src/assets/` are processed by Astro's built-in optimization (resizing, format conversion to WebP/AVIF).
-- **Status:** We are migrating `public/images/` content to `src/assets/images/`.
+- **Community/event photos:** Stored in `public/images/` and registered in `src/data/homePageImages.ts`.
+  - Each entry has `filename`, `tags[]`, and optional `alt`.
+  - Helper functions: `imagePublicSrc()`, `imageAlt()`, `imageByFilename()`.
+  - Tags include: `worship`, `kids`, `family`, `community`, `service`, `social`, `gathering`, `care`, `generosity`, `youth`, `prayer`.
+- **Optimized/processed assets** (used with the `<Image />` component): Stored in `src/assets/images/`.
+- **Logo:** `public/images/plcc-logo-icon.jpg`
 
 ### 2. The `<Image />` Component
 
-- Always use the `Image` component from `astro:assets` for localized assets.
+- Use the `Image` component from `astro:assets` for assets in `src/assets/images/`.
 - Provide clear `alt` text and appropriate `widths`/`sizes` for responsive delivery.
+- For `public/images/` photos, use `imagePublicSrc()` helper with a standard `<img>` tag.
 
-### 3. "Vignette" Processing
+### 3. The `MomentsSection` Component
 
-- New vignettes should be added to `src/assets/vignettes/`.
-- **Vignette Grid:** Use the `vignettes.ts` data file to manage imports and consumption in the `VignetteGrid` component.
+`src/components/MomentsSection.astro` — reusable 3-column portrait photo grid.
+
+```typescript
+type Props = {
+  heading?: string | null  // null = no heading rendered; default = 'Moments from Pine Lake'
+  items: MomentsItem[]     // array of { image, fallbackAlt }
+  sectionClass?: string    // default = 'section'
+}
+```
+
+- Grid: 3 cols desktop, 2 cols mobile (≤768px), portrait `ratio-4x5` tiles.
+- Used on: Home, I'm New, Plan a Visit, For Our Neighbors, Families.
+
+# Design System
+
+All design tokens are defined in `src/styles/global.css` under `:root`.
+
+### Key Tokens
+
+| Token | Value | Usage |
+|---|---|---|
+| `--color-moss` | `#6a9529` | Primary green, CTAs |
+| `--color-forest` | `#1a2e0c` | Dark text, headings |
+| `--color-stone` | `#f2ede6` | Background tones |
+| `--color-mist` | `#ddd6c8` | Borders, subtle dividers |
+| `--color-clay` | `#8b5e3c` | Accent, pull-quotes |
+| `--measure` | `65ch` | Max readable line length |
+| `--radius-soft` | `16px` | Card/panel corner radius |
+| `--shadow-diffuse` | — | Soft page-level shadow |
+| `--shadow-panel` | `0 12px 32px -20px rgba(26,46,12,0.35)` | Card/panel shadow |
+| `--surface-gradient-soft` | `linear-gradient(170deg, white→stone)` | Card background gradient |
+
+### Key Utility Classes
+
+- `.surface-gradient-soft` — applies `--surface-gradient-soft` background
+- `.text-body-large` — `font-size: 1.25rem; line-height: 1.7` for lede/intro text
+- `.logo-circle` — `border-radius: 50%; object-fit: cover` for circular image crops
+- `.page--wide` — removes `max-width` constraint for full-width layouts
+
+### Page Layout Pattern
+
+Narrow reading pages use `class="page"` (max-width: `--measure`).
+Wide pages use `class="page page--wide"` with a scoped prose class (e.g., `.plan-visit__prose { max-width: var(--measure); }`) applied only to text sections, leaving photo sections full-width.
+
+### Card/Panel Pattern
+
+Content panels on section pages (Families, Plan a Visit, etc.) use:
+```html
+<section class="section [page]__prose [page]__panel surface-gradient-soft">
+```
+With scoped CSS:
+```css
+.[page]__panel {
+  padding: clamp(1.25rem, 2.4vw, 2rem);
+  border-radius: var(--radius-soft);
+  border: 1px solid var(--color-mist);
+  box-shadow: var(--shadow-panel);
+}
+```
 
 ---
 
 # Status & Refinement Questions
 
-**Current State:** The home page and core section structures are in place. The content direction is strong, but the site is still evolving visually (image usage, layout polish).
+**Current State:** Core pages are built and styled. The design system is stable with reusable tokens and the `MomentsSection` photo component. Navigation is settled (Next Steps temporarily removed). Content is strong; remaining work is mostly filling gaps and adding real photos to pages that still use placeholders.
 
-### Questions for Future Agents:
+### Open Questions for Future Agents:
 
-- **Asset Lifecycle:** Is there a specific holding pen for raw photos before they are processed into vignettes? (Currently `public/images/`).
-- **Next Steps Definition:** What specific "steps" (forms, events, contacts) should be prioritized for this page?
-- **Data Schemas:** Should we establish explicit TypeScript Interfaces for `Event` or `Door` data?
+- **Next Steps Definition:** What specific steps, forms, or events should be prioritized for this page?
+- **Data Schemas:** Should we establish explicit TypeScript interfaces for `Event` or `Door` data?
 - **Deployment:** Confirm if `.github/workflows/deploy.yml` is fully automated on merge to `main`.
+- **Image tagging:** Several `public/images/` entries have generic `community` tags — consider refining.
 
 ---
 
