@@ -21,14 +21,29 @@ const planVisitMomentsItems = [
     fallbackAlt: 'Kids and families connecting in community',
   },
 ]
+
+const planVisitInlineMomentsItems = [
+  {
+    image: imageByFilename('527569106_18174174304338056_1814989299414124937_n.jpg'),
+    fallbackAlt: 'Neighbors connecting during a Sunday gathering',
+  },
+  {
+    image: imageByFilename('551096105_18178844185338056_8945047004848009463_n.jpg'),
+    fallbackAlt: 'Community life at Pine Lake on Sunday',
+  },
+  {
+    image: imageByFilename('500083306_18167175181338056_8168148552855409791_n.jpg'),
+    fallbackAlt: 'A candid moment from Sunday at Pine Lake',
+  },
+]
 ---
 
 <BaseLayout
   title="Plan a Visit | Pine Lake Covenant Church"
   description="What to expect on Sundays at Pine Lake, including location, service format, and family details."
 >
-  <article class="page">
-    <header class="page__header">
+  <article class="page page--wide">
+    <header class="page__header plan-visit__prose">
       <h1>Plan a Visit</h1>
 
       <p class="page__lede">
@@ -40,7 +55,7 @@ const planVisitMomentsItems = [
       <p class="page__lede">Here’s what a typical Sunday looks like.</p>
     </header>
 
-    <section class="section">
+    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
       <h2>When & where</h2>
 
       <p>
@@ -65,7 +80,7 @@ const planVisitMomentsItems = [
       </figure>
     </section>
 
-    <section class="section">
+    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
       <h2>What happens on a Sunday morning</h2>
 
       <p>
@@ -95,18 +110,7 @@ const planVisitMomentsItems = [
       </p>
     </section>
 
-    <section class="section">
-      <h2>What should I wear?</h2>
-
-      <p>Whatever you’re comfortable in.</p>
-
-      <p>
-        On any given Sunday you’ll see everything from <strong>Seahawks jerseys and jeans</strong> to
-        <strong>smart casual</strong>. There’s no dress code, and no expectations.
-      </p>
-    </section>
-
-    <section class="section">
+    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
       <h2>Will I stand out or be put on the spot?</h2>
 
       <p>No.</p>
@@ -119,7 +123,24 @@ const planVisitMomentsItems = [
       <p>Coffee is served, conversation is optional, and pressure is not part of the experience.</p>
     </section>
 
-    <section class="section">
+    <MomentsSection
+      heading={null}
+      items={planVisitInlineMomentsItems}
+      sectionClass="section plan-visit__prose plan-visit__panel surface-gradient-soft"
+    />
+
+    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
+      <h2>What should I wear?</h2>
+
+      <p>Whatever you’re comfortable in.</p>
+
+      <p>
+        On any given Sunday you’ll see everything from <strong>Seahawks jerseys and jeans</strong> to
+        <strong>smart casual</strong>. There’s no dress code, and no expectations.
+      </p>
+    </section>
+
+    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
       <h2>Bringing kids?</h2>
 
       <p>We love families, and we work hard to make Sundays smooth for parents.</p>
@@ -148,7 +169,7 @@ const planVisitMomentsItems = [
       </p>
     </section>
 
-    <section class="section">
+    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
       <h2>A place to belong — no test required</h2>
 
       <p>
@@ -162,7 +183,7 @@ const planVisitMomentsItems = [
       </p>
     </section>
 
-    <section class="section">
+    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
       <h2>Ready to come? Or just curious?</h2>
 
       <p>
@@ -178,3 +199,20 @@ const planVisitMomentsItems = [
 
   <MomentsSection items={planVisitMomentsItems} sectionClass="section" />
 </BaseLayout>
+
+<style>
+  .plan-visit__prose {
+    max-width: var(--measure);
+  }
+
+  .plan-visit__panel {
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+    border-radius: var(--radius-soft);
+    border: 1px solid var(--color-mist);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .plan-visit__panel h2 {
+    margin-top: 0;
+  }
+</style>

@@ -22,6 +22,8 @@
   --radius-soft: 16px;
   --radius-organic: 32px 16px 32px 16px;
   --shadow-diffuse: 0 15px 45px -15px rgba(26, 46, 12, 0.15);
+  --shadow-panel: 0 12px 32px -20px rgba(26, 46, 12, 0.35);
+  --surface-gradient-soft: linear-gradient(170deg, rgba(255, 255, 255, 0.94) 0%, rgba(242, 238, 230, 0.72) 100%);
   --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
 }
 
@@ -202,6 +204,10 @@ h4 {
 .text-body-large {
   font-size: 1.25rem;
   line-height: 1.7;
+}
+
+.surface-gradient-soft {
+  background: var(--surface-gradient-soft);
 }
 
 .link-grid {
@@ -550,8 +556,9 @@ h4 {
 .story-quote {
   padding: 2.25rem 2.25rem;
   border-radius: var(--radius-soft);
-  background: var(--color-stone);
+  background: var(--surface-gradient-soft);
   border: 1px solid var(--color-mist);
+  box-shadow: var(--shadow-panel);
   position: relative;
   overflow: hidden;
   display: flex;
