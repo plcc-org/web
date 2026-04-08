@@ -1,10 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { Image } from 'astro:assets'
-import VignetteGrid from '../components/VignetteGrid.astro'
 import QuoteGrid from '../components/QuoteGrid.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
-import { vignettes } from '../data/vignettes'
 import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
 import { imageAlt, imagePublicSrc, pickImageByAnyTag } from '../data/homePageImages'
@@ -29,15 +27,7 @@ const momentsImage04 = pickImageByAnyTag(
   <article class="page page--wide">
     <header class="page__header">
       <h1>A church in Sammamish, discovering life with Jesus together</h1>
-      <p class="page__subhead">
-        Sundays at 10:00am · Families, kids, and youth are an important part of our life together
-      </p>
-
-      <p class="page__lede">
-        <a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a>
-        ·
-        <a href={`${import.meta.env.BASE_URL}im-new/`}>I’m New Here</a>
-      </p>
+      <p class="page__subhead">Sundays at 10:00am · Programs and activities for all ages</p>
 
       <div class="hero-box">
         <video
@@ -59,8 +49,6 @@ const momentsImage04 = pickImageByAnyTag(
       </div>
     </header>
 
-    <LinkCardSection links={startHereLinks} />
-
     <section class="section welcome-hero" aria-labelledby="welcome-heading">
       <div class="welcome-hero__inner">
         <h2 id="welcome-heading">Welcome</h2>
@@ -77,17 +65,7 @@ const momentsImage04 = pickImageByAnyTag(
       </div>
     </section>
 
-    <section class="section">
-      <h2>Why people come to Pine Lake</h2>
-
-      <p class="measure--medium">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
-
-      <VignetteGrid images={vignettes} />
-      <QuoteGrid quotes={homepageQuotes} />
-      <p>
-        <a href={`${import.meta.env.BASE_URL}stories/`}>More stories from Pine Lake</a>
-      </p>
-    </section>
+    <LinkCardSection links={startHereLinks} />
 
     <section class="section">
       <h2>Moments from Pine Lake</h2>
@@ -153,6 +131,17 @@ const momentsImage04 = pickImageByAnyTag(
     </section>
 
     <section class="section">
+      <h2>Why people come to Pine Lake</h2>
+
+      <p class="measure--medium">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
+
+      <QuoteGrid quotes={homepageQuotes} />
+      <p>
+        <a href={`${import.meta.env.BASE_URL}stories/`}>More stories from Pine Lake</a>
+      </p>
+    </section>
+
+    <section class="section">
       <h2>Join us this Sunday</h2>
 
       <div class="split-grid">
@@ -175,6 +164,10 @@ const momentsImage04 = pickImageByAnyTag(
 </BaseLayout>
 
 <style>
+  .page--wide {
+    margin-bottom: var(--space-s);
+  }
+
   .welcome-hero {
     position: relative;
     overflow: hidden;

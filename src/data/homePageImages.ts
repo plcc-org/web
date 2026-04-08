@@ -78,6 +78,41 @@ export const homePageImages: HomePageImage[] = [
   { filename: '651028798_18198219313338056_1071593068697817126_n.jpg', tags: ['kids', 'becca'], alt: '' },
   { filename: '659061814_18200889997338056_7806695594506990174_n.jpg', tags: ['palm', 'worship'], alt: '' },
   { filename: '659595691_18200889961338056_2843340499663516152_n.jpg', tags: ['kids', 'gathering'], alt: '' },
+  {
+    filename: 'plcc-community-family-worship.jpg',
+    tags: ['community', 'family', 'worship', 'gathering'],
+    alt: 'Adults and a baby gathered in worship together at Pine Lake',
+  },
+  {
+    filename: 'plcc-kids-storytime-stage.jpg',
+    tags: ['kids', 'family', 'gathering', 'teaching'],
+    alt: 'Children listening during a kids moment at the front of the room',
+  },
+  {
+    filename: 'plcc-worship-harp.jpg',
+    tags: ['worship', 'music', 'service'],
+    alt: 'A musician singing beside a harp during worship',
+  },
+  {
+    filename: 'plcc-prayer-candles.jpg',
+    tags: ['prayer', 'care', 'reflection'],
+    alt: 'Lit candles set out for a reflective prayer moment',
+  },
+  {
+    filename: 'plcc-community-worship-cross.jpg',
+    tags: ['community', 'worship', 'gathering'],
+    alt: 'People standing together in worship beneath the cross',
+  },
+  {
+    filename: 'plcc-worship-vocals.jpg',
+    tags: ['worship', 'music', 'service'],
+    alt: 'A vocalist leading worship on stage',
+  },
+  {
+    filename: 'plcc-kids-stage-gathering.jpg',
+    tags: ['kids', 'family', 'gathering', 'community'],
+    alt: 'Children gathered together up front during a church activity',
+  },
   { filename: 'Horizontal-Logo-White-on-Transparent.png', tags: [], alt: '' },
   { filename: 'cropped-Worship-e1464544420127.jpg', tags: [], alt: '' },
   { filename: 'worship-1600 × 400.jpg', tags: [], alt: '' },
