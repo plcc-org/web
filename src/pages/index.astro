@@ -1,23 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { Image } from 'astro:assets'
 import QuoteGrid from '../components/QuoteGrid.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
-import { imageAlt, imagePublicSrc, pickImageByAnyTag } from '../data/homePageImages'
+import { homePageImages, imageAlt, imagePublicSrc } from '../data/homePageImages'
 import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
 
-const momentsImage01 = pickImageByAnyTag(['community', 'social', 'gathering'])
-const momentsImage02 = pickImageByAnyTag(['kids', 'family', 'youth'], [momentsImage01?.filename ?? ''])
-const momentsImage03 = pickImageByAnyTag(
-  ['worship', 'prayer', 'service'],
-  [momentsImage01?.filename ?? '', momentsImage02?.filename ?? '']
-)
-const momentsImage04 = pickImageByAnyTag(
-  ['youth', 'social', 'service'],
-  [momentsImage01?.filename ?? '', momentsImage02?.filename ?? '', momentsImage03?.filename ?? '']
-)
+const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+
+const welcomeImage = imageByFilename('plcc-community-family-worship.jpg')
+
+const momentsImage01 = imageByFilename('plcc-kids-storytime-stage.jpg')
+const momentsImage02 = imageByFilename('plcc-worship-vocals.jpg')
+const momentsImage03 = imageByFilename('649105057_18197705983338056_1797927855377785235_n.jpg')
+const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
 ---
 
 <BaseLayout
@@ -50,18 +47,34 @@ const momentsImage04 = pickImageByAnyTag(
     </header>
 
     <section class="section welcome-hero" aria-labelledby="welcome-heading">
-      <div class="welcome-hero__inner">
-        <h2 id="welcome-heading">Welcome</h2>
-        <p class="welcome-hero__copy">
-          We’re a community on a journey to find and follow Jesus together. You’re welcome here whether you’re all-in,
-          just looking, quietly skeptical, or because someone in your family is dragging you along.
-        </p>
+      <div class="welcome-hero__layout">
+        <div class="welcome-hero__inner">
+          <h2 id="welcome-heading">Welcome</h2>
+          <p class="welcome-hero__copy">
+            We’re a community on a journey to find and follow Jesus together. You’re welcome here whether you’re all-in,
+            just looking, quietly skeptical, or because someone in your family is dragging you along.
+          </p>
 
-        <p class="welcome-hero__copy">
-          Whether faith feels like home, a question mark, or a distant memory, there’s a place for you among us. Come as
-          you are — curious, hopeful, doubtful, weary, joyful, or unsure. And feel free to participate fully, or hang
-          back and observe.
-        </p>
+          <p class="welcome-hero__copy">
+            Whether faith feels like home, a question mark, or a distant memory, there’s a place for you among us. Come
+            as you are — curious, hopeful, doubtful, weary, joyful, or unsure. And feel free to participate fully, or
+            hang back and observe.
+          </p>
+        </div>
+
+        {
+          welcomeImage ? (
+            <div class="welcome-hero__image-frame ratio-4x5">
+              <img
+                src={imagePublicSrc(welcomeImage.filename)}
+                alt={imageAlt(welcomeImage, 'Families and adults gathered in worship together')}
+                class="welcome-hero__image"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ) : null
+        }
       </div>
     </section>
 
@@ -70,7 +83,7 @@ const momentsImage04 = pickImageByAnyTag(
     <section class="section">
       <h2>Moments from Pine Lake</h2>
 
-      <div class="tile-grid">
+      <div class="moments-grid">
         <div class="tile ratio-4x5">
           {
             momentsImage01 ? (
@@ -110,24 +123,7 @@ const momentsImage04 = pickImageByAnyTag(
             ) : null
           }
         </div>
-        <div class="tile ratio-4x5">
-          {
-            momentsImage04 ? (
-              <img
-                src={imagePublicSrc(momentsImage04.filename)}
-                alt={imageAlt(momentsImage04, 'People connecting after a service')}
-                class="tile__img"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : null
-          }
-        </div>
       </div>
-
-      <p>
-        <a href="https://www.instagram.com/pinelakecov/" rel="noopener">See more on Instagram</a>
-      </p>
     </section>
 
     <section class="section">
@@ -136,9 +132,6 @@ const momentsImage04 = pickImageByAnyTag(
       <p class="measure--medium">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
 
       <QuoteGrid quotes={homepageQuotes} />
-      <p>
-        <a href={`${import.meta.env.BASE_URL}stories/`}>More stories from Pine Lake</a>
-      </p>
     </section>
 
     <section class="section">
@@ -157,6 +150,20 @@ const momentsImage04 = pickImageByAnyTag(
             ·
             <a href={`${import.meta.env.BASE_URL}families/`}>Families</a>
           </p>
+        </div>
+
+        <div class="media__frame ratio-4x3">
+          {
+            joinUsImage ? (
+              <img
+                src={imagePublicSrc(joinUsImage.filename)}
+                alt={imageAlt(joinUsImage, 'People gathered together during worship at Pine Lake')}
+                class="media__img media__img--cover joinus-photo"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : null
+          }
         </div>
       </div>
     </section>
@@ -181,6 +188,13 @@ const momentsImage04 = pickImageByAnyTag(
     isolation: isolate;
   }
 
+  .welcome-hero__layout {
+    display: grid;
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
   .welcome-hero::before {
     content: '';
     position: absolute;
@@ -200,6 +214,42 @@ const momentsImage04 = pickImageByAnyTag(
     padding: clamp(1.6rem, 4vw, 3rem);
   }
 
+  .welcome-hero__image-frame {
+    border-radius: var(--radius-soft);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 1.25rem 1.25rem 1.25rem 0;
+    box-shadow: var(--shadow-diffuse);
+  }
+
+  .welcome-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .moments-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .split-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+    align-items: start;
+  }
+
+  .split-grid .media__frame {
+    aspect-ratio: 3 / 4;
+  }
+
+  .joinus-photo {
+    object-position: center 35%;
+  }
+
   .welcome-hero h2 {
     margin: 0;
     font-size: clamp(1.9rem, 4vw, 2.6rem);
@@ -217,8 +267,28 @@ const momentsImage04 = pickImageByAnyTag(
   }
 
   @media (max-width: 768px) {
+    .welcome-hero__layout {
+      grid-template-columns: 1fr;
+    }
+
     .welcome-hero__inner {
       padding: 1.5rem;
+    }
+
+    .welcome-hero__image-frame {
+      margin: 0 1.5rem 1.5rem;
+    }
+
+    .moments-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .split-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .split-grid .media__frame {
+      aspect-ratio: 4 / 5;
     }
   }
 </style>
