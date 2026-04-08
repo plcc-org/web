@@ -199,6 +199,11 @@ h4 {
   transform: translateY(-2px);
 }
 
+.text-body-large {
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
+
 .link-grid {
   display: grid;
   gap: 1.5rem;
