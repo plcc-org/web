@@ -1,7 +1,26 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { Image } from 'astro:assets'
+import MomentsSection from '../components/MomentsSection.astro'
+import { homePageImages } from '../data/homePageImages'
 import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
+
+const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+
+const planVisitMomentsItems = [
+  {
+    image: imageByFilename('489054059_18163289533338056_8029010570585607191_n.jpg'),
+    fallbackAlt: 'People gathered together during worship at Pine Lake',
+  },
+  {
+    image: imageByFilename('649217566_18197705956338056_8287619439099906475_n.jpg'),
+    fallbackAlt: 'A church service moment at Pine Lake',
+  },
+  {
+    image: imageByFilename('659595691_18200889961338056_2843340499663516152_n.jpg'),
+    fallbackAlt: 'Kids and families connecting in community',
+  },
+]
 ---
 
 <BaseLayout
@@ -156,4 +175,6 @@ import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
       </p>
     </section>
   </article>
+
+  <MomentsSection items={planVisitMomentsItems} sectionClass="section" />
 </BaseLayout>
