@@ -1,10 +1,29 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import MomentsSection from '../components/MomentsSection.astro'
+import { homePageImages } from '../data/homePageImages'
+
+const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+
+const familiesMomentsItems = [
+  {
+    image: imageByFilename('plcc-kids-stage-gathering.jpg'),
+    fallbackAlt: 'Kids gathered together during a church activity at Pine Lake',
+  },
+  {
+    image: imageByFilename('474748731_1030392515795404_2521947271930024728_n.jpg'),
+    fallbackAlt: 'Families connecting in community at Pine Lake',
+  },
+  {
+    image: imageByFilename('659595691_18200889961338056_2843340499663516152_n.jpg'),
+    fallbackAlt: 'Children gathered during a Sunday at Pine Lake',
+  },
+]
 ---
 
 <BaseLayout title="Families | Pine Lake Covenant Church">
-  <article class="page">
-    <header class="page__header">
+  <article class="page page--wide">
+    <header class="page__header families__prose">
       <h1>Families</h1>
 
       <p class="page__lede">
@@ -13,42 +32,42 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
 
       <p class="page__lede">
-        Whether you’re visiting for the first time, connected through a youth group, or looking for a church community
-        to grow alongside your kids, you’re welcome here.
+        Whether you're visiting for the first time, connected through a youth group, or looking for a church community
+        to grow alongside your kids, you're welcome here.
       </p>
-
-      <section class="section">
-        <h2>Find the right fit</h2>
-
-        <p>Family life looks different at every age. If you’re looking for specific info, start here:</p>
-
-        <div class="card-grid">
-          <div class="card">
-            <h3>Kids</h3>
-            <p>
-              Sunday morning programs for <strong>babies through 5th grade</strong>, plus midweek connection points and
-              summer highlights.
-            </p>
-            <p>
-              <a href={`${import.meta.env.BASE_URL}families/kids/`}>Explore Pine Lake Kids →</a>
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>Youth</h3>
-            <p>
-              For <strong>6th–12th grade</strong>. Tuesdays 6:00–8:00pm, plus students sit together on Sundays at
-              10:00am.
-            </p>
-            <p>
-              <a href={`${import.meta.env.BASE_URL}youth/`}>Explore Pine Lake Youth →</a>
-            </p>
-          </div>
-        </div>
-      </section>
     </header>
 
-    <section class="section" id="kids">
+    <section class="section families__prose families__panel surface-gradient-soft">
+      <h2>Find the right fit</h2>
+
+      <p>Family life looks different at every age. If you're looking for specific info, start here:</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Kids</h3>
+          <p>
+            Sunday morning programs for <strong>babies through 5th grade</strong>, plus midweek connection points and
+            summer highlights.
+          </p>
+          <p>
+            <a href={`${import.meta.env.BASE_URL}families/kids/`}>Explore Pine Lake Kids →</a>
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Youth</h3>
+          <p>
+            For <strong>6th–12th grade</strong>. Tuesdays 6:00–8:00pm, plus students sit together on Sundays at
+            10:00am.
+          </p>
+          <p>
+            <a href={`${import.meta.env.BASE_URL}youth/`}>Explore Pine Lake Youth →</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section families__prose families__panel surface-gradient-soft" id="kids">
       <h2>Families on Sunday mornings</h2>
 
       <p>
@@ -68,12 +87,12 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       <p>One Sunday each month, our elementary-aged kids stay in the service to worship alongside their families.</p>
 
       <p>
-        We don’t see kids and youth as something separate happening down the hall. They’re an important part of the life
+        We don't see kids and youth as something separate happening down the hall. They're an important part of the life
         of the church, and we love finding ways for families to worship and grow together.
       </p>
     </section>
 
-    <section class="section">
+    <section class="section families__prose families__panel surface-gradient-soft">
       <h2>Safety and care</h2>
 
       <p>We take the responsibility of caring for children seriously.</p>
@@ -87,7 +106,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       <p>Our goal is to create an environment where kids feel safe and known, and parents can relax and be present.</p>
     </section>
 
-    <section class="section">
+    <section class="section families__prose families__panel surface-gradient-soft">
       <h2>Beyond Sunday mornings</h2>
       <p>
         Sundays are just one part of family life at Pine Lake. Beyond weekly services, there are simple, low-pressure
@@ -118,15 +137,15 @@ import BaseLayout from '../layouts/BaseLayout.astro'
         build friendships and make memories.
       </p>
 
-      <p>Want help finding the right fit for your family? You’re always welcome to reach out — no pressure.</p>
+      <p>Want help finding the right fit for your family? You're always welcome to reach out — no pressure.</p>
     </section>
 
-    <section class="section">
+    <section class="section families__prose families__panel surface-gradient-soft">
       <h2>Questions?</h2>
 
       <p>
-        If you’d like to ask about kids, youth, or family life at Pine Lake, you’re always welcome to reach out — but
-        there’s no pressure to do so.
+        If you'd like to ask about kids, youth, or family life at Pine Lake, you're always welcome to reach out — but
+        there's no pressure to do so.
       </p>
 
       <p>
@@ -135,4 +154,23 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
     </section>
   </article>
+
+  <MomentsSection items={familiesMomentsItems} sectionClass="section" />
 </BaseLayout>
+
+<style>
+  .families__prose {
+    max-width: var(--measure);
+  }
+
+  .families__panel {
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+    border-radius: var(--radius-soft);
+    border: 1px solid var(--color-mist);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .families__panel h2 {
+    margin-top: 0;
+  }
+</style>
