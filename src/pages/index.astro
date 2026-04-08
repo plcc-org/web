@@ -12,8 +12,14 @@ import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
 
 const momentsImage01 = pickImageByAnyTag(['community', 'social', 'gathering'])
 const momentsImage02 = pickImageByAnyTag(['kids', 'family', 'youth'], [momentsImage01?.filename ?? ''])
-const momentsImage03 = pickImageByAnyTag(['worship', 'prayer', 'service'], [momentsImage01?.filename ?? '', momentsImage02?.filename ?? ''])
-const momentsImage04 = pickImageByAnyTag(['youth', 'social', 'service'], [momentsImage01?.filename ?? '', momentsImage02?.filename ?? '', momentsImage03?.filename ?? ''])
+const momentsImage03 = pickImageByAnyTag(
+  ['worship', 'prayer', 'service'],
+  [momentsImage01?.filename ?? '', momentsImage02?.filename ?? '']
+)
+const momentsImage04 = pickImageByAnyTag(
+  ['youth', 'social', 'service'],
+  [momentsImage01?.filename ?? '', momentsImage02?.filename ?? '', momentsImage03?.filename ?? '']
+)
 ---
 
 <BaseLayout
@@ -55,15 +61,20 @@ const momentsImage04 = pickImageByAnyTag(['youth', 'social', 'service'], [moment
 
     <LinkCardSection links={startHereLinks} />
 
-    <section class="section">
-      <h2>Welcome</h2>
-      <p>
-        We’re a community on a journey to find and follow Jesus together. You’re welcome here whether you’re all-in,
-        just looking, quietly skeptical, or here because someone insisted you come. Whether faith feels like home, a
-        question mark, or a distant memory, there’s a place for you among us. Come as you are — curious, hopeful,
-        doubtful, weary, joyful, or unsure — and feel free to simply listen, participate fully, or hang back and
-        observe.
-      </p>
+    <section class="section welcome-hero" aria-labelledby="welcome-heading">
+      <div class="welcome-hero__inner">
+        <h2 id="welcome-heading">Welcome</h2>
+        <p class="welcome-hero__copy">
+          We’re a community on a journey to find and follow Jesus together. You’re welcome here whether you’re all-in,
+          just looking, quietly skeptical, or because someone in your family is dragging you along.
+        </p>
+
+        <p class="welcome-hero__copy">
+          Whether faith feels like home, a question mark, or a distant memory, there’s a place for you among us. Come as
+          you are — curious, hopeful, doubtful, weary, joyful, or unsure. And feel free to participate fully, or hang
+          back and observe.
+        </p>
+      </div>
     </section>
 
     <section class="section">
@@ -158,17 +169,63 @@ const momentsImage04 = pickImageByAnyTag(['youth', 'social', 'service'], [moment
             <a href={`${import.meta.env.BASE_URL}families/`}>Families</a>
           </p>
         </div>
-
-        <div class="media__frame ratio-4x3">
-          <Image
-            src={churchExterior}
-            alt="Pine Lake building and entry area"
-            class="media__img media__img--cover"
-            widths={[640, 1024, 1440]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-        </div>
       </div>
     </section>
   </article>
 </BaseLayout>
+
+<style>
+  .welcome-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-soft);
+    background:
+      radial-gradient(circle at 92% 10%, rgba(106, 149, 41, 0.2) 0%, rgba(106, 149, 41, 0) 35%),
+      linear-gradient(155deg, rgba(26, 46, 12, 0.95) 0%, rgba(45, 77, 24, 0.9) 60%, rgba(106, 149, 41, 0.85) 100%);
+    color: var(--color-stone);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-diffuse);
+    isolation: isolate;
+  }
+
+  .welcome-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(120deg, rgba(255, 255, 255, 0.15) 0 1px, transparent 1px),
+      linear-gradient(30deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px);
+    background-size:
+      40px 40px,
+      28px 28px;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .welcome-hero__inner {
+    padding: clamp(1.6rem, 4vw, 3rem);
+  }
+
+  .welcome-hero h2 {
+    margin: 0;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    color: var(--color-stone);
+  }
+
+  .welcome-hero__copy {
+    margin: 0.85rem 0 0;
+    font-size: clamp(1.03rem, 1.4vw, 1.15rem);
+    line-height: 1.75;
+    text-wrap: pretty;
+    color: rgba(255, 255, 255, 0.94);
+    max-width: none;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .welcome-hero__inner {
+      padding: 1.5rem;
+    }
+  }
+</style>
