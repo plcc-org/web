@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import QuoteGrid from '../components/QuoteGrid.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
+import MomentsSection from '../components/MomentsSection.astro'
 import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
 import { homePageImages, imageAlt, imagePublicSrc } from '../data/homePageImages'
@@ -14,6 +15,12 @@ const welcomeImage = imageByFilename('plcc-community-family-worship.jpg')
 const momentsImage01 = imageByFilename('plcc-kids-storytime-stage.jpg')
 const momentsImage02 = imageByFilename('plcc-worship-vocals.jpg')
 const momentsImage03 = imageByFilename('649105057_18197705983338056_1797927855377785235_n.jpg')
+const momentsItems = [
+  { image: momentsImage01, fallbackAlt: 'People greeting each other at Pine Lake' },
+  { image: momentsImage02, fallbackAlt: 'Students gathered and listening together' },
+  { image: momentsImage03, fallbackAlt: 'A candid moment from church community life' },
+]
+
 const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
 ---
 
@@ -80,51 +87,7 @@ const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
 
     <LinkCardSection links={startHereLinks} />
 
-    <section class="section">
-      <h2>Moments from Pine Lake</h2>
-
-      <div class="moments-grid">
-        <div class="tile ratio-4x5">
-          {
-            momentsImage01 ? (
-              <img
-                src={imagePublicSrc(momentsImage01.filename)}
-                alt={imageAlt(momentsImage01, 'People greeting each other at Pine Lake')}
-                class="tile__img"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : null
-          }
-        </div>
-        <div class="tile ratio-4x5">
-          {
-            momentsImage02 ? (
-              <img
-                src={imagePublicSrc(momentsImage02.filename)}
-                alt={imageAlt(momentsImage02, 'Students gathered and listening together')}
-                class="tile__img"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : null
-          }
-        </div>
-        <div class="tile ratio-4x5">
-          {
-            momentsImage03 ? (
-              <img
-                src={imagePublicSrc(momentsImage03.filename)}
-                alt={imageAlt(momentsImage03, 'A candid moment from church community life')}
-                class="tile__img"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : null
-          }
-        </div>
-      </div>
-    </section>
+    <MomentsSection items={momentsItems} />
 
     <section class="section">
       <h2>Why people come to Pine Lake</h2>
@@ -229,12 +192,6 @@ const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
     display: block;
   }
 
-  .moments-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
   .split-grid {
     display: grid;
     gap: 1.5rem;
@@ -277,10 +234,6 @@ const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
 
     .welcome-hero__image-frame {
       margin: 0 1.5rem 1.5rem;
-    }
-
-    .moments-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .split-grid {

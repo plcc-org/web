@@ -1,0 +1,51 @@
+---
+import { imageAlt, imagePublicSrc, type HomePageImage } from '../data/homePageImages'
+
+type MomentsItem = {
+  image?: HomePageImage
+  fallbackAlt: string
+}
+
+type Props = {
+  heading?: string | null
+  items: MomentsItem[]
+  sectionClass?: string
+}
+
+const { heading = 'Moments from Pine Lake', items, sectionClass = 'section' } = Astro.props
+const visibleItems = items.filter((item): item is { image: HomePageImage; fallbackAlt: string } => Boolean(item.image))
+---
+
+<section class={sectionClass}>
+  {heading ? <h2>{heading}</h2> : null}
+
+  <div class="moments-grid">
+    {
+      visibleItems.map(({ image, fallbackAlt }) => (
+        <div class="tile ratio-4x5">
+          <img
+            src={imagePublicSrc(image.filename)}
+            alt={imageAlt(image, fallbackAlt)}
+            class="tile__img"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .moments-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    .moments-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

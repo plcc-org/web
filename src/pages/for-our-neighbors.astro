@@ -1,26 +1,49 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import DoorCard from '../components/DoorCard.astro'
+import MomentsSection from '../components/MomentsSection.astro'
 import { neighborsDoors } from '../data/neighborsDoors'
+import { homePageImages } from '../data/homePageImages'
+
+const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+
+const neighborsMomentsItems = [
+  {
+    image: imageByFilename('467977252_18149338267338056_1889842660921052110_n.jpg'),
+    fallbackAlt: 'People from the Pine Lake community gathered together',
+  },
+  {
+    image: imageByFilename('476750093_18157384759338056_1921287384410502360_n.jpg'),
+    fallbackAlt: 'A moment of care and prayer in community',
+  },
+  {
+    image: imageByFilename('624779024_18194108401338056_4396479470413009307_n.jpg'),
+    fallbackAlt: 'Neighbors sharing a candid moment at Pine Lake',
+  },
+]
 ---
 
 <BaseLayout title="For Our Neighbors | Pine Lake Covenant Church">
-  <header class="neighbors-hero">
-    <h1>For Our Neighbors</h1>
-    <p class="neighbors-hero__subhead">Serving Sammamish, Issaquah, and the surrounding communities</p>
+  <article class="page page--wide">
+    <header class="page__header">
+      <h1>For Our Neighbors</h1>
+      <p class="page__subhead">Serving Sammamish, Issaquah, and the surrounding communities</p>
 
-    <p class="neighbors-hero__lede">
-      Pine Lake is a church, but you don’t need to be “a church person” to be welcome here. We want to be a good
-      neighbor — offering support when life is hard, space for community to gather, and ways to connect and build
-      something meaningful together.
-    </p>
+      <p class="page__lede">
+        Pine Lake is a church, but you don’t need to be “a church person” to be welcome here. We want to be a good
+        neighbor — offering support when life is hard, space for community to gather, and ways to connect and build
+        something meaningful together.
+      </p>
 
-    <p class="neighbors-hero__lede">
-      People come through our doors for different reasons. Below are some of the most common starting points.
-    </p>
-  </header>
+      <p class="page__lede">
+        People come through our doors for different reasons. Below are some of the most common starting points.
+      </p>
+    </header>
 
-  <section class="doors" aria-label="Ways to connect with Pine Lake">
-    {neighborsDoors.map((d) => <DoorCard {...d} />)}
-  </section>
+    <section class="doors" aria-label="Ways to connect with Pine Lake">
+      {neighborsDoors.map((d) => <DoorCard {...d} />)}
+    </section>
+
+    <MomentsSection heading={null} items={neighborsMomentsItems} />
+  </article>
 </BaseLayout>
