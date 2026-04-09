@@ -3,43 +3,59 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 ---
 
 <BaseLayout title="Our Ethos | Pine Lake Covenant Church">
-  <article class="page">
-    <header class="page__header">
+  <article class="page page--wide ethos">
+    <header class="page__header ethos__header">
       <h1>Our Ethos</h1>
 
-      <p class="page__lede">
+      <p class="page__lede text-body-large">
         At Pine Lake, we try to keep things simple. Our life together as a church is shaped by three core ideas:
       </p>
     </header>
 
-    <section class="section" aria-label="Core ideas">
-      <ul>
+    <section class="section ethos__core" aria-label="Core ideas">
+      <ul class="ethos__pillars" role="list">
         <li><strong>Be with Jesus</strong></li>
         <li><strong>Become like Jesus</strong></li>
         <li><strong>Do what Jesus did</strong></li>
       </ul>
 
-      <p>These guide how we follow Jesus, how we grow together, and how we seek to love and serve our community.</p>
+      <p class="text-body-large">
+        These guide how we follow Jesus, how we grow together, and how we seek to love and serve our community.
+      </p>
     </section>
 
-    <section class="section">
+    <section class="section ethos__beliefs">
       <h2>What we believe</h2>
 
-      <p>We believe the Bible is a trustworthy guide for understanding God and learning how to live.</p>
-
-      <p>
-        We believe following Jesus is more than adopting a set of ideas: it’s about a real change of heart and
-        direction.
+      <p class="belief-statement">
+        <span class="belief-lead">We believe</span> the <span class="belief-key">Bible</span> is a trustworthy guide
+        for understanding <span class="belief-key">God</span> and learning how to live.
       </p>
 
-      <p>We believe the Church exists not just for itself, but to love, serve, and share hope with the world.</p>
+      <p class="belief-statement">
+        <span class="belief-lead">We believe</span> following <span class="belief-key">Jesus</span> is more than
+        adopting a set of ideas: it’s about a real change of heart and direction.
+      </p>
 
-      <p>We believe faith is meant to be lived in community, where people support one another and grow together.</p>
+      <p class="belief-statement">
+        <span class="belief-lead">We believe</span> the <span class="belief-key">Church</span> exists not just for
+        itself, but to love, serve, and share hope with the world.
+      </p>
 
-      <p>We believe God is present and active today through the Holy Spirit, guiding, shaping, and empowering us.</p>
+      <p class="belief-statement">
+        <span class="belief-lead">We believe</span>
+        <span class="belief-key">faith</span> is meant to be lived in <span class="belief-key">community</span>,
+        where people support one another and grow together.
+      </p>
 
-      <p>
-        We believe the Good News of the Gospel brings freedom from shame and fear, and offers grace for our failings.
+      <p class="belief-statement">
+        <span class="belief-lead">We believe</span> <span class="belief-key">God</span> is present and active today
+        through the <span class="belief-key">Holy Spirit</span>, guiding, shaping, and empowering us.
+      </p>
+
+      <p class="belief-statement">
+        <span class="belief-lead">We believe</span> the <span class="belief-key">Good News of the Gospel</span>
+        brings freedom from shame and fear, and offers grace for our failings.
       </p>
     </section>
   </article>

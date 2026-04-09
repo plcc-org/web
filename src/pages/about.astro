@@ -1,16 +1,65 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { imageAlt, imagePublicSrc, pickImageByAnyTag } from '../data/homePageImages'
+import LinkCardSection from '../components/LinkCardSection.astro'
+import MomentsSection from '../components/MomentsSection.astro'
+import type { LinkCardItem } from '../data/startHereLinks'
+import { imageAlt, imagePublicSrc, homePageImages, pickImageByAnyTag } from '../data/homePageImages'
 
-const aboutHeroImage = pickImageByAnyTag(['community', 'gathering', 'worship'])
+const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+
+const aboutHeroImage = imageByFilename('worship-1600x400.jpg') ?? pickImageByAnyTag(['community', 'gathering', 'worship'])
+
+const aboutLinks: LinkCardItem[] = [
+  {
+    href: 'about/ethos/',
+    title: 'Our Ethos',
+    meta: 'The heart and posture we hope shapes our life together.',
+  },
+  {
+    href: 'about/beliefs/',
+    title: 'What We Believe',
+    meta: 'Core convictions that guide our teaching and ministry.',
+  },
+  {
+    href: 'about/leadership/',
+    title: 'Leadership',
+    meta: 'Meet the pastors and leaders serving our community.',
+  },
+  {
+    href: 'about/pastors-letter/',
+    title: "Pastor's Letter",
+    meta: 'A personal welcome and vision for where we are headed.',
+  },
+  {
+    href: 'about/covenant/',
+    title: 'The Evangelical Covenant Church',
+    meta: 'How Pine Lake relates to the wider Covenant family of churches.',
+  },
+]
+
+const aboutMomentsItems = [
+  {
+    image: imageByFilename('496764399_18166032214338056_8744828942491316308_n.jpg'),
+    fallbackAlt: 'People gathered together after a Sunday service',
+  },
+  {
+    image: imageByFilename('475891141_1037080631793259_4238958896521856436_n.jpg'),
+    fallbackAlt: 'People worshiping together in a Sunday gathering',
+  },
+  {
+    image: imageByFilename('624779024_18194108401338056_4396479470413009307_n.jpg'),
+    fallbackAlt: 'A warm community moment at Pine Lake Covenant Church',
+  },
+]
 ---
 
 <BaseLayout title="About | Pine Lake Covenant Church">
-  <article class="page">
-    <header class="page__header">
+  <article class="page page--wide">
+    <header class="page__header about__prose">
       <h1>About Pine Lake</h1>
-      <p class="page__lede">
-        A short, plain-English narrative about who you are, what you’re like, and what you hope people experience.
+      <p class="page__lede text-body-large">
+        Pine Lake is a church in Sammamish centered on Jesus, rooted in Scripture, and committed to being a place where
+        people can belong, heal, and grow.
       </p>
       <figure class="media">
         <div class="media__frame ratio-16x9">
@@ -31,13 +80,14 @@ const aboutHeroImage = pickImageByAnyTag(['community', 'gathering', 'worship'])
       </figure>
     </header>
 
-    <section class="section">
-      <ul>
-        <li><a href={`${import.meta.env.BASE_URL}about/ethos/`}>Our Ethos</a></li>
-        <li><a href={`${import.meta.env.BASE_URL}about/beliefs/`}>What We Believe</a></li>
-        <li><a href={`${import.meta.env.BASE_URL}about/leadership/`}>Leadership</a></li>
-        <li><a href={`${import.meta.env.BASE_URL}about/covenant/`}>The Evangelical Covenant Church</a></li>
-      </ul>
-    </section>
+    <LinkCardSection heading="Explore Pine Lake" links={aboutLinks} />
+
+    <MomentsSection heading="A few moments from our community" items={aboutMomentsItems} sectionClass="section" />
   </article>
 </BaseLayout>
+
+<style>
+  .about__prose {
+    max-width: var(--measure);
+  }
+</style>
