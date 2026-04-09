@@ -7,4 +7,9 @@ import { defineConfig } from 'astro/config'
 export default defineConfig({
   site: process.env.GITHUB_ACTIONS ? 'https://timsneath.github.io' : undefined,
   base: process.env.GITHUB_ACTIONS ? '/plcc-web/' : undefined,
+  vite: {
+    server: {
+      allowedHosts: ['plcc-dev.internal', 'plcc.internal', 'localhost'],
+    },
+  },
 })
