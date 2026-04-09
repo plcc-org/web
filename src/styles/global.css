@@ -142,15 +142,22 @@ h4 {
   align-items: center;
   gap: 0.75rem;
   border-bottom: none;
+  line-height: 0;
 }
 
-.site-nav__home-name {
-  font-family: var(--font-serif);
-  font-weight: 800;
-  font-size: 1.1rem;
-  line-height: 1.2;
-  color: var(--color-forest);
-  max-width: 10rem;
+.site-nav__home-logo {
+  width: clamp(10.5rem, 22vw, 13rem);
+  height: clamp(1.8rem, 3.8vw, 2.25rem);
+  display: inline-block;
+  background-color: #73943b;
+  -webkit-mask-image: var(--logo-wordmark-url);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: var(--logo-wordmark-url);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
 }
 
 .site-nav a.site-nav__cta {

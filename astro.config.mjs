@@ -10,6 +10,12 @@ export default defineConfig({
   vite: {
     server: {
       allowedHosts: ['plcc-dev.internal', 'plcc.internal', 'localhost'],
+      watch: process.env.ASTRO_CONTAINER_DEV
+        ? {
+            usePolling: true,
+            interval: 250,
+          }
+        : undefined,
     },
   },
 })
