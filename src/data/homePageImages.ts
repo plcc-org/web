@@ -118,7 +118,6 @@ export const homePageImages: HomePageImage[] = [
     tags: ['kids', 'family', 'gathering', 'community'],
     alt: 'Children gathered together up front during a church activity',
   },
-  { filename: 'Horizontal-Logo-White-on-Transparent.png', tags: [], alt: '' },
   { filename: 'cropped-Worship-e1464544420127.jpg', tags: [], alt: '' },
-  { filename: 'worship-1600 × 400.jpg', tags: [], alt: '' },
+  { filename: 'worship-1600x400.jpg', tags: ['service'], alt: '' },
 ]
