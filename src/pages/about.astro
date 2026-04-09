@@ -7,7 +7,8 @@ import { imageAlt, imagePublicSrc, homePageImages, pickImageByAnyTag } from '../
 
 const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
 
-const aboutHeroImage = imageByFilename('worship-1600x400.jpg') ?? pickImageByAnyTag(['community', 'gathering', 'worship'])
+const aboutHeroImage =
+  imageByFilename('worship-1600x400.jpg') ?? pickImageByAnyTag(['community', 'gathering', 'worship'])
 
 const aboutLinks: LinkCardItem[] = [
   {
