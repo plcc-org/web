@@ -244,21 +244,23 @@ Renders `.link-card` tiles — white background, `--shadow-diffuse`, moss border
 
 ## Image System
 
-Photos are stored in `public/images/` and registered in `src/data/homePageImages.ts`.
+All church photos are stored in `public/images/` and registered in `src/data/homePageImages.ts`. This single-location rule applies to every photo, whether it appears in a page-specific context (hero, portrait, gallery) or in the shared dynamic pool. The only exceptions are brand assets (logos, icons) which may live in `src/assets/images/`.
+
+This pattern is intentionally CMS-ready: images are referenced by URL string, not by build-time import, so the registry entries can later be replaced by CMS API responses with minimal change.
 
 Each entry:
 ```typescript
 { filename: string, tags: string[], alt?: string }
 ```
 
-Tags in use: `worship`, `kids`, `family`, `community`, `service`, `social`, `gathering`, `care`, `generosity`, `youth`, `prayer`, `teaching`, `baptism`, `communion`
+Tags in use: `worship`, `kids`, `family`, `community`, `service`, `social`, `gathering`, `care`, `generosity`, `youth`, `prayer`, `teaching`, `baptism`, `communion`, `church`, `building`, `exterior`, `pastor`, `leadership`, `portrait`
 
 Helper functions:
 - `imagePublicSrc(filename)` — returns the correct public URL including `BASE_URL`
 - `imageAlt(image, fallback)` — returns `image.alt` if set, otherwise `fallback`
 - `imageByFilename(filename)` — finds an image entry by filename
 
-For processed/optimized images (e.g., hero shots in `src/assets/images/`), use Astro's `<Image />` component with `widths` and `sizes` props.
+Use a plain `<img>` tag with `imagePublicSrc(filename)` for all photos. Do not use Astro's `<Image />` component or `import` local image files; doing so ties the image to the build pipeline and makes a future CMS migration harder.
 
 ---
 

@@ -120,4 +120,23 @@ export const homePageImages: HomePageImage[] = [
   },
   { filename: 'cropped-Worship-e1464544420127.jpg', tags: [], alt: '' },
   { filename: 'worship-1600x400.jpg', tags: ['service'], alt: '' },
+  {
+    filename: 'church-exterior-1024x400.jpg',
+    tags: ['church', 'building', 'exterior'],
+    alt: 'Pine Lake Covenant Church building in Sammamish',
+  },
+  {
+    filename: 'Austin-2025-5-web.jpg',
+    tags: ['pastor', 'austin', 'leadership', 'portrait'],
+    alt: 'Austin Bailey, Lead Pastor at Pine Lake',
+  },
+  {
+    filename: 'Pine-Lake-Kids-web.webp',
+    tags: ['kids', 'family', 'gathering'],
+    alt: 'Children at Pine Lake Kids',
+  },
+  { filename: 'youth-01-1600x1600.jpg', tags: ['youth'], alt: 'Students at Pine Lake Youth' },
+  { filename: 'youth-02-1600x1600.jpg', tags: ['youth'], alt: 'A moment from a Pine Lake Youth gathering' },
+  { filename: 'youth-03-1600x1600.jpg', tags: ['youth'], alt: 'Students connecting in community' },
+  { filename: 'youth-04-1600x1600.jpg', tags: ['youth'], alt: 'Pine Lake Youth activity' },
 ]

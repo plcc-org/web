@@ -1,11 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { Image } from 'astro:assets'
-import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
-import youth01 from '../assets/images/youth-01-1600x1600.jpg'
-import youth02 from '../assets/images/youth-02-1600x1600.jpg'
-import youth03 from '../assets/images/youth-03-1600x1600.jpg'
-import kidsPhoto from '../assets/images/Pine-Lake-Kids-web.webp'
+import { imagePublicSrc } from '../data/homePageImages'
 ---
 
 <BaseLayout
@@ -21,13 +16,12 @@ import kidsPhoto from '../assets/images/Pine-Lake-Kids-web.webp'
       </p>
       <figure class="media">
         <div class="media__frame ratio-16x9">
-          <Image
-            src={churchExterior}
+          <img
+            src={imagePublicSrc('church-exterior-1024x400.jpg')}
             alt="People gathering outside Pine Lake Covenant Church"
             class="media__img media__img--cover"
-            widths={[640, 1024, 1440]}
-            sizes="(max-width: 768px) 100vw, (max-width: 1100px) 90vw, 1024px"
             loading="eager"
+            decoding="async"
           />
         </div>
       </figure>
@@ -39,12 +33,12 @@ import kidsPhoto from '../assets/images/Pine-Lake-Kids-web.webp'
           <h3>Find Your People</h3>
           <p>Explore groups for different life stages. You are welcome to browse first and join when ready.</p>
           <div class="media__frame ratio-16x9">
-            <Image
-              src={youth01}
+            <img
+              src={imagePublicSrc('youth-01-1600x1600.jpg')}
               alt="Students talking together at a church gathering"
               class="media__img media__img--cover"
-              widths={[480, 800, 1200]}
-              sizes="(max-width: 768px) 100vw, 50vw"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </a>
@@ -52,12 +46,12 @@ import kidsPhoto from '../assets/images/Pine-Lake-Kids-web.webp'
           <h3>Upcoming Signups</h3>
           <p>See events and registrations in one place. Start with one thing that feels manageable.</p>
           <div class="media__frame ratio-16x9">
-            <Image
-              src={youth02}
+            <img
+              src={imagePublicSrc('youth-02-1600x1600.jpg')}
               alt="People connecting in conversation at Pine Lake"
               class="media__img media__img--cover"
-              widths={[480, 800, 1200]}
-              sizes="(max-width: 768px) 100vw, 50vw"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </a>
@@ -65,12 +59,12 @@ import kidsPhoto from '../assets/images/Pine-Lake-Kids-web.webp'
           <h3>Serve With Others</h3>
           <p>Serving is a practical way to meet people and contribute. We can help you find a good fit.</p>
           <div class="media__frame ratio-16x9">
-            <Image
-              src={youth03}
+            <img
+              src={imagePublicSrc('youth-03-1600x1600.jpg')}
               alt="Volunteers serving together during a church event"
               class="media__img media__img--cover"
-              widths={[480, 800, 1200]}
-              sizes="(max-width: 768px) 100vw, 50vw"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </a>
@@ -78,12 +72,12 @@ import kidsPhoto from '../assets/images/Pine-Lake-Kids-web.webp'
           <h3>Talk With Someone</h3>
           <p>Have questions or want a personal connection point? Reach out and we will follow up.</p>
           <div class="media__frame ratio-16x9">
-            <Image
-              src={kidsPhoto}
+            <img
+              src={imagePublicSrc('Pine-Lake-Kids-web.webp')}
               alt="A family-friendly moment at Pine Lake Kids"
               class="media__img media__img--cover"
-              widths={[480, 800, 1200]}
-              sizes="(max-width: 768px) 100vw, 50vw"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </a>

@@ -1,10 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { Image } from 'astro:assets'
-import youth01 from '../assets/images/youth-01-1600x1600.jpg'
-import youth02 from '../assets/images/youth-02-1600x1600.jpg'
-import youth03 from '../assets/images/youth-03-1600x1600.jpg'
-import youth04 from '../assets/images/youth-04-1600x1600.jpg'
+import { imagePublicSrc } from '../data/homePageImages'
 ---
 
 <BaseLayout
@@ -25,39 +21,35 @@ import youth04 from '../assets/images/youth-04-1600x1600.jpg'
 
       <div class="youth-gallery" aria-label="Photos from Pine Lake Youth">
         <figure class="youth-gallery__tile">
-          <Image
-            src={youth01}
+          <img
+            src={imagePublicSrc('youth-01-1600x1600.jpg')}
             alt="Students at Pine Lake Youth"
-            widths={[480, 800, 1200, 1600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
             loading="eager"
+            decoding="async"
           />
         </figure>
         <figure class="youth-gallery__tile">
-          <Image
-            src={youth02}
+          <img
+            src={imagePublicSrc('youth-02-1600x1600.jpg')}
             alt="A moment from a Pine Lake Youth gathering"
-            widths={[480, 800, 1200, 1600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
             loading="eager"
+            decoding="async"
           />
         </figure>
         <figure class="youth-gallery__tile">
-          <Image
-            src={youth03}
+          <img
+            src={imagePublicSrc('youth-03-1600x1600.jpg')}
             alt="Students connecting in community"
-            widths={[480, 800, 1200, 1600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
             loading="lazy"
+            decoding="async"
           />
         </figure>
         <figure class="youth-gallery__tile">
-          <Image
-            src={youth04}
+          <img
+            src={imagePublicSrc('youth-04-1600x1600.jpg')}
             alt="Pine Lake Youth activity"
-            widths={[480, 800, 1200, 1600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
             loading="lazy"
+            decoding="async"
           />
         </figure>
       </div>

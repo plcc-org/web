@@ -6,7 +6,6 @@ import MomentsSection from '../components/MomentsSection.astro'
 import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
 import { homePageImages, imageAlt, imagePublicSrc } from '../data/homePageImages'
-import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
 
 const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
 
@@ -42,7 +41,7 @@ const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
           playsinline
           aria-hidden="true"
           tabindex="-1"
-          poster={churchExterior.src}
+          poster={imagePublicSrc('church-exterior-1024x400.jpg')}
         >
           <source src={`${import.meta.env.BASE_URL}video/homepage-hero.mp4`} type="video/mp4" />
           Your browser does not support the video tag.
