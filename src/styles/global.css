@@ -27,6 +27,8 @@
   --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
 }
 
+/* Base document defaults */
+
 html {
   background-color: var(--color-stone);
   color: var(--color-forest);
@@ -52,6 +54,7 @@ body::before {
   opacity: 0.8;
 }
 
+/* Shared heading treatment */
 h1,
 h2,
 h3,
@@ -66,6 +69,7 @@ h4 {
     'WONK' 1;
 }
 
+/* App shell spacing */
 .site-header,
 .site-main,
 .site-footer {
@@ -74,6 +78,7 @@ h4 {
   padding: 1.5rem;
 }
 
+/* Accessibility: keyboard skip-to-content */
 .skip-link {
   position: absolute;
   top: 0.75rem;
@@ -92,6 +97,7 @@ h4 {
   transform: translateY(0);
 }
 
+/* Header + primary navigation */
 .site-header {
   padding: 2rem 1.5rem;
 }
@@ -127,6 +133,7 @@ h4 {
   line-height: 0;
 }
 
+/* Legacy circular mark stays available for future use */
 .logo-circle {
   display: block;
   width: 3.3rem;
@@ -137,6 +144,7 @@ h4 {
   box-shadow: 0 2px 8px rgba(26, 46, 12, 0.2);
 }
 
+/* Current wordmark in brand green via image mask */
 .site-nav__home {
   display: flex;
   align-items: center;
@@ -187,6 +195,7 @@ h4 {
   outline-offset: 3px;
 }
 
+/* Page-level typography and rhythm */
 .page {
   max-width: var(--measure);
   margin: var(--space-m) 0 var(--space-l);
@@ -240,6 +249,7 @@ h4 {
   background: var(--surface-gradient-soft);
 }
 
+/* Reusable content cards and grids */
 .link-grid {
   display: grid;
   gap: 1.5rem;
@@ -314,6 +324,7 @@ h4 {
   aspect-ratio: 4 / 3;
 }
 
+/* Media primitives: photos, video, embeds */
 .media {
   margin: var(--space-m) 0;
 }
@@ -436,6 +447,7 @@ h4 {
   margin: 0 0 0.5rem;
 }
 
+/* Home/story visual grids */
 .rhythm-card__cta {
   margin-top: 0.5rem;
 }
@@ -582,7 +594,7 @@ h4 {
   border-bottom-color: var(--color-moss);
 }
 
-/* Story/Quote Grid */
+/* Story/quote cards */
 .story-quote {
   padding: 2.25rem 2.25rem;
   border-radius: var(--radius-soft);
@@ -639,6 +651,7 @@ h4 {
   max-width: none;
 }
 
+/* Footer */
 .site-footer__grid div {
   margin: 0.25rem 0;
   color: rgba(255, 255, 255, 0.7);
@@ -662,6 +675,7 @@ h4 {
   color: var(--color-white);
 }
 
+/* Pills, tags, and utility chips */
 .chip {
   display: inline-block;
   padding: 0.5rem 1rem;
@@ -697,6 +711,7 @@ h4 {
   letter-spacing: 0.02em;
 }
 
+/* Youth page gallery */
 .youth-gallery {
   display: grid;
   gap: 1.5rem;
