@@ -1,42 +1,93 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import { imagePublicSrc } from '../../data/homePageImages'
 ---
 
 <BaseLayout title="Leadership | Pine Lake Covenant Church">
   <article class="page">
     <header class="page__header">
       <h1>Leadership</h1>
-      <p class="page__lede">Pastors and leaders of Pine Lake Covenant Church.</p>
+      <p class="page__lede">Our Pastors and Staff</p>
     </header>
     <section class="section">
       <div class="leader-grid">
         <div class="leader-card">
           <div class="leader-card__photo">
             <div class="media__frame ratio-1x1">
-              <span class="media__label">Headshot</span>
+              <img
+                src={imagePublicSrc('Austin-2025-5-web.jpg')}
+                alt="Austin Bailey, Lead Pastor"
+                class="media__img media__img--cover"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
           <div class="leader-card__name">Austin Bailey</div>
           <div class="leader-card__title">Lead Pastor</div>
-          <p class="leader-card__meta"><a href={`${import.meta.env.BASE_URL}about/pastors-letter/`}>Read a letter from Austin</a></p>
+          <p class="leader-card__meta">
+            <a href={`${import.meta.env.BASE_URL}about/pastors-letter/`}>Read a letter from Austin</a>
+          </p>
         </div>
         <div class="leader-card">
           <div class="leader-card__photo">
             <div class="media__frame ratio-1x1">
-              <span class="media__label">Headshot</span>
+              <img
+                src={imagePublicSrc('Becca-2025-5-web.jpg')}
+                alt="Becca Worl, Associate Pastor"
+                class="media__img media__img--cover"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
-          <div class="leader-card__name">Firstname Lastname</div>
+          <div class="leader-card__name">Becca Worl</div>
           <div class="leader-card__title">Associate Pastor</div>
         </div>
         <div class="leader-card">
           <div class="leader-card__photo">
             <div class="media__frame ratio-1x1">
-              <span class="media__label">Headshot</span>
+              <img
+                src={imagePublicSrc('Kyle-2025-5-web.jpg')}
+                alt="Kyle Harmon, Associate Pastor, Worship and Outreach"
+                class="media__img media__img--cover"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
-          <div class="leader-card__name">Firstname Lastname</div>
-          <div class="leader-card__title">Director of Youth & Families</div>
+          <div class="leader-card__name">Kyle Harmon</div>
+          <div class="leader-card__title">Associate Pastor, Worship and Outreach</div>
+        </div>
+        <div class="leader-card">
+          <div class="leader-card__photo">
+            <div class="media__frame ratio-1x1">
+              <img
+                src={imagePublicSrc('Kim-2025-5-web.jpg')}
+                alt="Kim Witherbee, Director, Facilities and Ministries"
+                class="media__img media__img--cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+          <div class="leader-card__name">Kim Witherbee</div>
+          <div class="leader-card__title">Director, Facilities & Ministries</div>
+        </div>
+        <div class="leader-card">
+          <div class="leader-card__photo">
+            <div class="media__frame ratio-1x1">
+              <img
+                src={imagePublicSrc('Scott-2025-5-web.jpg')}
+                alt="Scott Jones, Director, Communications"
+                class="media__img media__img--cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+          <div class="leader-card__name">Scott Jones</div>
+          <div class="leader-card__title">Director, Communications</div>
         </div>
       </div>
     </section>

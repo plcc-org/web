@@ -131,6 +131,26 @@ export const homePageImages: HomePageImage[] = [
     alt: 'Austin Bailey, Lead Pastor at Pine Lake',
   },
   {
+    filename: 'Becca-2025-5-web.jpg',
+    tags: ['pastor', 'becca', 'leadership', 'portrait'],
+    alt: 'Becca Worl, Associate Pastor at Pine Lake',
+  },
+  {
+    filename: 'Kyle-2025-5-web.jpg',
+    tags: ['pastor', 'kyle', 'leadership', 'portrait'],
+    alt: 'Kyle Harmon, Associate Pastor at Pine Lake',
+  },
+  {
+    filename: 'Kim-2025-5-web.jpg',
+    tags: ['staff', 'kim', 'leadership', 'portrait'],
+    alt: 'Kim Witherbee, Director of Facilities and Ministries at Pine Lake',
+  },
+  {
+    filename: 'Scott-2025-5-web.jpg',
+    tags: ['staff', 'scott', 'leadership', 'portrait'],
+    alt: 'Scott Jones, Director of Communications at Pine Lake',
+  },
+  {
     filename: 'Pine-Lake-Kids-web.webp',
     tags: ['kids', 'family', 'gathering'],
     alt: 'Children at Pine Lake Kids',
