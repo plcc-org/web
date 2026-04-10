@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import MomentsSection from '../components/MomentsSection.astro'
-import { homePageImages } from '../data/homePageImages'
+import { homePageImages, imagePublicSrc } from '../data/homePageImages'
 
 const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
 
@@ -11,11 +11,11 @@ const familiesMomentsItems = [
     fallbackAlt: 'Kids gathered together during a church activity at Pine Lake',
   },
   {
-    image: imageByFilename('474748731_1030392515795404_2521947271930024728_n.jpg'),
+    image: imageByFilename('650251601_18198219286338056_7378060351620760269_n.jpg'),
     fallbackAlt: 'Families connecting in community at Pine Lake',
   },
   {
-    image: imageByFilename('659595691_18200889961338056_2843340499663516152_n.jpg'),
+    image: imageByFilename('499237357_18167175172338056_6041845435208425322_n.jpg'),
     fallbackAlt: 'Children gathered during a Sunday at Pine Lake',
   },
 ]
@@ -26,25 +26,26 @@ const familiesMomentsItems = [
     <header class="page__header prose-measure">
       <h1>Families</h1>
 
-      <p class="page__lede">
-        Family life is busy, beautiful, and sometimes exhausting. At Pine Lake, we want to be a place where families
-        feel supported, welcomed, and free to take part at whatever pace makes sense for them.
-      </p>
-
-      <p class="page__lede">
-        Whether you're visiting for the first time, connected through a youth group, or looking for a church community
-        to grow alongside your kids, you're welcome here.
+      <p class="page__lede text-body-large">
+        Family life can be busy, beautiful, and sometimes <i>exhausting</i>! At Pine Lake, we want to be a place where
+        families feel supported, welcomed, and free to take part at whatever pace makes sense for them.
       </p>
     </header>
 
-    <section class="section prose-measure content-panel surface-gradient-soft">
+    <section class="section">
       <h2>Find the right fit</h2>
-
-      <p>Family life looks different at every age. If you're looking for specific info, start here:</p>
 
       <div class="card-grid">
         <div class="card">
-          <h3>Kids</h3>
+          <h3>
+            <img
+              src={imagePublicSrc('Pine-Lake-Kids-web.webp')}
+              alt="Pine Lake Kids"
+              class="families__program-logo"
+              loading="lazy"
+              decoding="async"
+            />
+          </h3>
           <p>
             Sunday morning programs for <strong>babies through 5th grade</strong>, plus midweek connection points and
             summer highlights.
@@ -55,10 +56,17 @@ const familiesMomentsItems = [
         </div>
 
         <div class="card">
-          <h3>Youth</h3>
+          <h3>
+            <img
+              src={imagePublicSrc('PineLakeYouth_logo_web.png')}
+              alt="Pine Lake Youth"
+              class="families__program-logo"
+              loading="lazy"
+              decoding="async"
+            />
+          </h3>
           <p>
-            For <strong>6th–12th grade</strong>. Tuesdays 6:00–8:00pm, plus students sit together on Sundays at
-            10:00am.
+            For <strong>6th–12th grade</strong>. Tuesdays 6:00–8:00pm, plus students sit together on Sundays at 10:00am.
           </p>
           <p>
             <a href={`${import.meta.env.BASE_URL}youth/`}>Explore Pine Lake Youth →</a>
@@ -67,32 +75,51 @@ const familiesMomentsItems = [
       </div>
     </section>
 
-    <section class="section prose-measure content-panel surface-gradient-soft" id="kids">
-      <h2>Families on Sunday mornings</h2>
+    <section class="section content-panel surface-gradient-soft families__sunday-card" id="kids">
+      <div class="families__sunday-layout">
+        <div class="families__sunday-copy">
+          <h2>Families on Sunday mornings</h2>
 
-      <p>
-        On Sundays, we offer programming for children and youth of all ages, from babies through high school. Parents
-        are always welcome to keep their children with them, or to use the programs that best fit their family.
-      </p>
+          <p>
+            On Sundays, we offer programming for children and youth of all ages, from babies through high school.
+            Parents are always welcome to keep their children with them, or to use the programs that best fit their
+            family.
+          </p>
 
-      <ul>
-        <li>Programs available for <strong>ages 0–18</strong></li>
-        <li><strong>Quick check-in</strong> in the foyer</li>
-        <li>Consistent, caring volunteers who love kids</li>
-        <li>
-          A comfortable space where parents can <strong>watch the service while caring for babies and toddlers</strong>
-        </li>
-      </ul>
+          <ul>
+            <li>Programs available for <strong>ages 0–18</strong></li>
+            <li><strong>Quick check-in</strong> in the foyer</li>
+            <li>Consistent, caring volunteers who love kids</li>
+            <li>
+              A comfortable space where parents can <strong
+                >watch the service while caring for babies and toddlers</strong
+              >
+            </li>
+          </ul>
 
-      <p>One Sunday each month, our elementary-aged kids stay in the service to worship alongside their families.</p>
+          <p>
+            One Sunday each month, our elementary-aged kids stay in the service to worship alongside their families.
+          </p>
 
-      <p>
-        We don't see kids and youth as something separate happening down the hall. They're an important part of the life
-        of the church, and we love finding ways for families to worship and grow together.
-      </p>
+          <p>
+            We don't see kids and youth as something separate happening down the hall. They're an important part of the
+            life of the church, and we love finding ways for families to worship and grow together.
+          </p>
+        </div>
+
+        <figure class="families__sunday-photo media__frame">
+          <img
+            src={imagePublicSrc('539390246_18176284939338056_330744351158099611_n.jpg')}
+            alt="Kids and youth gathered during a Sunday morning at Pine Lake"
+            class="media__img media__img--cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
     </section>
 
-    <section class="section prose-measure content-panel surface-gradient-soft">
+    <section class="section section-callout">
       <h2>Safety and care</h2>
 
       <p>We take the responsibility of caring for children seriously.</p>
@@ -106,54 +133,94 @@ const familiesMomentsItems = [
       <p>Our goal is to create an environment where kids feel safe and known, and parents can relax and be present.</p>
     </section>
 
-    <section class="section prose-measure content-panel surface-gradient-soft">
+    <section class="section">
       <h2>Beyond Sunday mornings</h2>
-      <p>
+
+      <p class="prose-measure">
         Sundays are just one part of family life at Pine Lake. Beyond weekly services, there are simple, low-pressure
         ways for families to connect, build friendships, and support one another through everyday life. Here are a few:
       </p>
 
-      <h3>Community Playgroup</h3>
-      <p>
-        A relaxed weekday gathering for parents and young children — a simple place to meet other families, let little
-        ones play, and enjoy conversation (and coffee).
-      </p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Community Playgroup</h3>
+          <p>
+            A relaxed weekday gathering for parents and young children - a simple place to meet other families, let
+            little ones play, and enjoy conversation (and coffee).
+          </p>
+        </div>
 
-      <h3>MomCo</h3>
-      <p>
-        A community of moms supporting one another so no one has to do the journey of parenting alone. Practical
-        encouragement, real friendships, and space to breathe.
-      </p>
+        <div class="card">
+          <h3>MomCo</h3>
+          <p>
+            A community of moms supporting one another so no one has to do the journey of parenting alone. Practical
+            encouragement, real friendships, and space to breathe.
+          </p>
+        </div>
 
-      <h3>Club 45</h3>
-      <p>
-        For 4th and 5th graders: a fun, welcoming gathering with games, friendships, and activities that help kids grow
-        in confidence and faith.
-      </p>
+        <div class="card">
+          <h3>Club 45</h3>
+          <p>
+            For 4th and 5th graders: a fun, welcoming gathering with games, friendships, and activities that help kids
+            grow in confidence and faith.
+          </p>
+        </div>
 
-      <h3>Sports Camp</h3>
-      <p>
-        A summer highlight: a week of fun, movement, music, and age-appropriate Bible teaching — a great way for kids to
-        build friendships and make memories.
-      </p>
+        <div class="card">
+          <h3>Sports Camp</h3>
+          <p>
+            A summer highlight: a week of fun, movement, music, and age-appropriate Bible teaching - a great way for
+            kids to build friendships and make memories.
+          </p>
+        </div>
+      </div>
 
-      <p>Want help finding the right fit for your family? You're always welcome to reach out — no pressure.</p>
-    </section>
-
-    <section class="section prose-measure content-panel surface-gradient-soft">
-      <h2>Questions?</h2>
-
-      <p>
-        If you'd like to ask about kids, youth, or family life at Pine Lake, you're always welcome to reach out — but
-        there's no pressure to do so.
-      </p>
-
-      <p>
-        You can also read more about what Sundays are like on our
-        <a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a> page.
+      <p class="prose-measure">
+        Want help finding the right fit for your family? You're always welcome to reach out - no pressure.
       </p>
     </section>
   </article>
 
   <MomentsSection items={familiesMomentsItems} sectionClass="section" />
 </BaseLayout>
+
+<style>
+  .families__program-logo {
+    display: block;
+    width: clamp(11.25rem, 37.5vw, 15rem);
+    height: auto;
+    object-fit: contain;
+    margin: 0;
+  }
+
+  .families__sunday-layout {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: minmax(0, 1.35fr) minmax(220px, 320px);
+    align-items: stretch;
+  }
+
+  .families__sunday-copy h2 {
+    margin-top: 0;
+  }
+
+  .families__sunday-photo {
+    margin: 0;
+    width: min(100%, 320px);
+    height: 100%;
+    justify-self: end;
+  }
+
+  @media (max-width: 860px) {
+    .families__sunday-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .families__sunday-photo {
+      justify-self: stretch;
+      width: 100%;
+      max-width: 460px;
+      min-height: 220px;
+    }
+  }
+</style>

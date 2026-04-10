@@ -823,6 +823,21 @@ h4 {
   max-width: var(--measure);
 }
 
+.site-main a {
+  color: var(--color-moss);
+  text-decoration-color: var(--color-mist);
+  text-underline-offset: 0.12em;
+}
+
+.site-main a:visited {
+  color: var(--color-moss);
+}
+
+.site-main a:hover {
+  color: var(--color-forest);
+  text-decoration-color: var(--color-moss);
+}
+
 .site-main .story-quote p {
   max-width: none;
 }

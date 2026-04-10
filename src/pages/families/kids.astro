@@ -9,7 +9,15 @@ import { imagePublicSrc } from '../../data/homePageImages'
 >
   <article class="page">
     <header class="page__header">
-      <h1>Pine Lake Kids</h1>
+      <h1>
+        <img
+          src={imagePublicSrc('Pine-Lake-Kids-web.webp')}
+          alt="Pine Lake Kids"
+          class="kids__logo"
+          loading="eager"
+          decoding="async"
+        />
+      </h1>
       <p class="page__subhead">Babies through 5th Grade · Sundays at 10:00am</p>
 
       <p class="page__lede">
@@ -17,18 +25,6 @@ import { imagePublicSrc } from '../../data/homePageImages'
         is simple: that every child would feel safe, known, and loved as they begin to discover who Jesus is.
       </p>
 
-      <div class="media">
-        <div class="media__frame ratio-16x9">
-          <img
-            class="media__img media__img--cover"
-            src={imagePublicSrc('Pine-Lake-Kids-web.webp')}
-            alt="Kids having fun at Pine Lake"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <figcaption class="media__caption">Laughter, learning, and life together.</figcaption>
-      </div>
     </header>
 
     <section class="section">
@@ -116,3 +112,12 @@ import { imagePublicSrc } from '../../data/homePageImages'
     </section>
   </article>
 </BaseLayout>
+
+<style>
+  .kids__logo {
+    display: block;
+    width: clamp(13.75rem, 47.5vw, 20rem);
+    height: auto;
+    object-fit: contain;
+  }
+</style>

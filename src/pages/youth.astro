@@ -9,7 +9,15 @@ import { imagePublicSrc } from '../data/homePageImages'
 >
   <article class="page page--wide">
     <header class="page__header">
-      <h1>Pine Lake Youth</h1>
+      <h1>
+        <img
+          src={imagePublicSrc('PineLakeYouth_logo_web.png')}
+          alt="Pine Lake Youth"
+          class="youth__logo"
+          loading="eager"
+          decoding="async"
+        />
+      </h1>
       <p class="page__subhead">
         A place for middle school and high school students to find &amp; follow Jesus together
       </p>
@@ -164,3 +172,12 @@ import { imagePublicSrc } from '../data/homePageImages'
     </section>
   </article>
 </BaseLayout>
+
+<style>
+  .youth__logo {
+    display: block;
+    width: clamp(13.75rem, 50vw, 21.25rem);
+    height: auto;
+    object-fit: contain;
+  }
+</style>
