@@ -31,3 +31,48 @@ const { title, intro, body, bullets, ctaLabel, href } = Astro.props
     </a>
   </p>
 </article>
+
+<style>
+  .door {
+    position: relative;
+    padding: 4rem 3rem;
+    border-radius: var(--radius-organic);
+    background: var(--color-stone);
+    box-shadow: var(--shadow-diffuse);
+    border: 1px solid var(--color-mist);
+    transition: all 0.3s ease;
+  }
+
+  .door:hover {
+    transform: translateY(-8px) rotate(-1deg);
+    background: var(--color-white);
+  }
+
+  .door__badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: var(--color-mist);
+    color: var(--color-clay);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .door__title {
+    font-family: var(--font-serif);
+    font-size: 1.85rem;
+    margin-top: 0.5rem;
+    color: var(--color-forest);
+  }
+
+  .door__link {
+    color: var(--color-moss);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px solid var(--color-mist);
+  }
+
+  .door__link:hover {
+    border-bottom-color: var(--color-moss);
+  }
+</style>
