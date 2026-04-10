@@ -41,7 +41,7 @@ const planVisitInlineMomentsItems = [
   description="What to expect on Sundays at Pine Lake, including location, service format, and family details."
 >
   <article class="page page--wide">
-    <header class="page__header plan-visit__prose">
+    <header class="page__header prose-measure">
       <h1>Plan a Visit</h1>
 
       <p class="page__lede">
@@ -53,7 +53,7 @@ const planVisitInlineMomentsItems = [
       <p class="page__lede">Here’s what a typical Sunday looks like.</p>
     </header>
 
-    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>When & where</h2>
 
       <p>
@@ -78,7 +78,7 @@ const planVisitInlineMomentsItems = [
       </figure>
     </section>
 
-    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>What happens on a Sunday morning</h2>
 
       <p>
@@ -108,7 +108,7 @@ const planVisitInlineMomentsItems = [
       </p>
     </section>
 
-    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>Will I stand out or be put on the spot?</h2>
 
       <p>No.</p>
@@ -124,10 +124,10 @@ const planVisitInlineMomentsItems = [
     <MomentsSection
       heading={null}
       items={planVisitInlineMomentsItems}
-      sectionClass="section plan-visit__prose plan-visit__panel surface-gradient-soft"
+      sectionClass="section prose-measure content-panel surface-gradient-soft"
     />
 
-    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>What should I wear?</h2>
 
       <p>Whatever you’re comfortable in.</p>
@@ -138,7 +138,7 @@ const planVisitInlineMomentsItems = [
       </p>
     </section>
 
-    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>Bringing kids?</h2>
 
       <p>We love families, and we work hard to make Sundays smooth for parents.</p>
@@ -167,7 +167,7 @@ const planVisitInlineMomentsItems = [
       </p>
     </section>
 
-    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>A place to belong — no test required</h2>
 
       <p>
@@ -181,7 +181,7 @@ const planVisitInlineMomentsItems = [
       </p>
     </section>
 
-    <section class="section plan-visit__prose plan-visit__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>Ready to come? Or just curious?</h2>
 
       <p>
@@ -197,20 +197,3 @@ const planVisitInlineMomentsItems = [
 
   <MomentsSection items={planVisitMomentsItems} sectionClass="section" />
 </BaseLayout>
-
-<style>
-  .plan-visit__prose {
-    max-width: var(--measure);
-  }
-
-  .plan-visit__panel {
-    padding: clamp(1.25rem, 2.4vw, 2rem);
-    border-radius: var(--radius-soft);
-    border: 1px solid var(--color-mist);
-    box-shadow: var(--shadow-panel);
-  }
-
-  .plan-visit__panel h2 {
-    margin-top: 0;
-  }
-</style>

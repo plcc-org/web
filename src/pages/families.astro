@@ -23,7 +23,7 @@ const familiesMomentsItems = [
 
 <BaseLayout title="Families | Pine Lake Covenant Church">
   <article class="page page--wide">
-    <header class="page__header families__prose">
+    <header class="page__header prose-measure">
       <h1>Families</h1>
 
       <p class="page__lede">
@@ -37,7 +37,7 @@ const familiesMomentsItems = [
       </p>
     </header>
 
-    <section class="section families__prose families__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>Find the right fit</h2>
 
       <p>Family life looks different at every age. If you're looking for specific info, start here:</p>
@@ -67,7 +67,7 @@ const familiesMomentsItems = [
       </div>
     </section>
 
-    <section class="section families__prose families__panel surface-gradient-soft" id="kids">
+    <section class="section prose-measure content-panel surface-gradient-soft" id="kids">
       <h2>Families on Sunday mornings</h2>
 
       <p>
@@ -92,7 +92,7 @@ const familiesMomentsItems = [
       </p>
     </section>
 
-    <section class="section families__prose families__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>Safety and care</h2>
 
       <p>We take the responsibility of caring for children seriously.</p>
@@ -106,7 +106,7 @@ const familiesMomentsItems = [
       <p>Our goal is to create an environment where kids feel safe and known, and parents can relax and be present.</p>
     </section>
 
-    <section class="section families__prose families__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>Beyond Sunday mornings</h2>
       <p>
         Sundays are just one part of family life at Pine Lake. Beyond weekly services, there are simple, low-pressure
@@ -140,7 +140,7 @@ const familiesMomentsItems = [
       <p>Want help finding the right fit for your family? You're always welcome to reach out — no pressure.</p>
     </section>
 
-    <section class="section families__prose families__panel surface-gradient-soft">
+    <section class="section prose-measure content-panel surface-gradient-soft">
       <h2>Questions?</h2>
 
       <p>
@@ -157,20 +157,3 @@ const familiesMomentsItems = [
 
   <MomentsSection items={familiesMomentsItems} sectionClass="section" />
 </BaseLayout>
-
-<style>
-  .families__prose {
-    max-width: var(--measure);
-  }
-
-  .families__panel {
-    padding: clamp(1.25rem, 2.4vw, 2rem);
-    border-radius: var(--radius-soft);
-    border: 1px solid var(--color-mist);
-    box-shadow: var(--shadow-panel);
-  }
-
-  .families__panel h2 {
-    margin-top: 0;
-  }
-</style>

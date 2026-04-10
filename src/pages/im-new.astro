@@ -25,7 +25,7 @@ const imNewMomentsItems = [
 
 <BaseLayout title="I’m New | Pine Lake Covenant Church">
   <article class="page page--wide">
-    <header class="page__header im-new__prose">
+    <header class="page__header prose-measure">
       <h1>I’m New</h1>
       <p class="page__lede text-body-large">
         Visiting a new church can feel unfamiliar — especially if you haven’t been to church in a while, or aren’t quite
@@ -36,7 +36,7 @@ const imNewMomentsItems = [
 
     <LinkCardSection links={imNewStartHereLinks} />
 
-    <section class="section im-new__expect">
+    <section class="section section-callout">
       <h2>What to expect here</h2>
 
       <p>
@@ -52,62 +52,3 @@ const imNewMomentsItems = [
 
   <MomentsSection heading="Moments from Pine Lake" items={imNewMomentsItems} sectionClass="section" />
 </BaseLayout>
-
-<style>
-  .im-new__prose {
-    max-width: var(--measure);
-  }
-
-  .im-new__expect {
-    position: relative;
-    padding: clamp(1.75rem, 3.2vw, 2.75rem);
-    border-radius: var(--radius-soft);
-    border: 1px solid rgba(106, 149, 41, 0.34);
-    background:
-      linear-gradient(155deg, rgba(106, 149, 41, 0.2) 0%, rgba(106, 149, 41, 0.08) 45%, rgba(255, 255, 255, 0.88) 100%),
-      var(--color-white);
-    box-shadow: 0 20px 50px -22px rgba(26, 46, 12, 0.24);
-  }
-
-  .im-new__expect > * {
-    max-width: var(--measure);
-  }
-
-  .im-new__expect::before {
-    content: '';
-    position: absolute;
-    top: 0.9rem;
-    bottom: 0.9rem;
-    left: 0.65rem;
-    width: 6px;
-    border-radius: 999px;
-    background: linear-gradient(180deg, var(--color-moss) 0%, rgba(26, 46, 12, 0.45) 100%);
-  }
-
-  .im-new__expect h2 {
-    margin-top: 0;
-    margin-bottom: 0.9rem;
-    padding-left: 1rem;
-    font-size: clamp(1.85rem, 3.4vw, 2.35rem);
-  }
-
-  .im-new__expect p {
-    padding-left: 1rem;
-    font-size: 1.05rem;
-  }
-
-  @media (max-width: 640px) {
-    .im-new__expect {
-      padding: 1.25rem;
-    }
-
-    .im-new__expect::before {
-      left: 0.6rem;
-    }
-
-    .im-new__expect h2,
-    .im-new__expect p {
-      padding-left: 0.65rem;
-    }
-  }
-</style>
