@@ -823,17 +823,17 @@ h4 {
   max-width: var(--measure);
 }
 
-.site-main a {
+.site-main a:not(.link-card):not(.card) {
   color: var(--color-moss);
   text-decoration-color: var(--color-mist);
   text-underline-offset: 0.12em;
 }
 
-.site-main a:visited {
+.site-main a:not(.link-card):not(.card):visited {
   color: var(--color-moss);
 }
 
-.site-main a:hover {
+.site-main a:not(.link-card):not(.card):hover {
   color: var(--color-forest);
   text-decoration-color: var(--color-moss);
 }
