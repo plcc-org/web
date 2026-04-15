@@ -7,6 +7,8 @@ const {
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
 import '../styles/global.css'
+import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
+import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
 ---
 
 <!doctype html>
@@ -72,9 +74,11 @@ import '../styles/global.css'
           <span class="site-footer__divider">|</span>
           <span>Sundays at 10:00am</span>
           <span class="site-footer__divider">|</span>
-          <span>1715 228th Ave SE, Sammamish, WA 98075</span>
+          <a href="https://maps.apple/p/1EFyth--T~mePq" target="_blank" rel="noopener"
+            >1715 228th Ave SE, Sammamish, WA 98075</a
+          >
           <span class="site-footer__divider">|</span>
-          <span>office@plcc.org</span>
+          <a href="mailto:office@plcc.org">office@plcc.org</a>
         </div>
 
         <nav class="site-footer__links" aria-label="Footer">
@@ -84,13 +88,39 @@ import '../styles/global.css'
           <span class="site-footer__divider">|</span>
           <a href={`${import.meta.env.BASE_URL}community/`}>Community</a>
           <span class="site-footer__divider">|</span>
-          <a href="https://www.instagram.com/pinelakecov/" target="_blank" rel="noopener">Instagram</a>
+          <a
+            href="https://www.instagram.com/pinelakecov/"
+            target="_blank"
+            rel="noopener"
+            class="site-footer__social-link"
+          >
+            <img
+              src={instagramGlyphUrl}
+              alt=""
+              aria-hidden="true"
+              class="site-footer__social-icon site-footer__social-icon--instagram"
+            />
+            <span>Instagram</span>
+          </a>
           <span class="site-footer__divider">|</span>
-          <a href="https://www.youtube.com/@PineLkCovChurch" target="_blank" rel="noopener">YouTube</a>
+          <a
+            href="https://www.youtube.com/@PineLkCovChurch"
+            target="_blank"
+            rel="noopener"
+            class="site-footer__social-link"
+          >
+            <img
+              src={youtubeIconUrl}
+              alt=""
+              aria-hidden="true"
+              class="site-footer__social-icon site-footer__social-icon--youtube"
+            />
+            <span>YouTube</span>
+          </a>
         </nav>
-      </div>
 
-      <p class="site-footer__legal">© {new Date().getFullYear()} Pine Lake Covenant Church.</p>
+        <p class="site-footer__legal">© {new Date().getFullYear()} Pine Lake Covenant Church</p>
+      </div>
     </footer>
   </body>
 </html>
