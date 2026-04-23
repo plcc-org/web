@@ -1259,3 +1259,83 @@ h4 {
     max-width: 100%;
   }
 }
+
+/* Leadership page grid and cards */
+.leader-grid {
+  display: grid;
+  gap: 4.5rem 2.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  margin: var(--space-m) 0;
+}
+
+.leader-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.leader-card__photo {
+  margin-bottom: 1.75rem;
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.leader-card:hover .leader-card__photo {
+  transform: translateY(-10px) rotate(1deg);
+}
+
+.leader-card__photo .media__frame {
+  box-shadow: var(--shadow-diffuse);
+  background-color: var(--color-white);
+  padding: 0.65rem;
+  border: 1px solid var(--color-mist);
+}
+
+.leader-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--color-forest);
+  margin: 0 0 0.35rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.leader-card__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--color-clay);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.leader-card__meta {
+  margin-top: 1.15rem;
+  font-size: 0.95rem;
+  font-family: var(--font-sans);
+}
+
+.leader-card__meta a {
+  color: var(--color-moss);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid var(--color-mist);
+  transition: all 0.2s ease;
+}
+
+.leader-card__meta a:hover {
+  color: var(--color-forest);
+  border-bottom-color: var(--color-moss);
+}
+
+@media (max-width: 600px) {
+  .leader-grid {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+  
+  .leader-card__photo {
+    max-width: 320px;
+  }
+}
