@@ -46,6 +46,7 @@ export const homePageImages: HomePageImage[] = [
   { filename: '473716270_18155064727338056_2658407046026869686_n.jpg', tags: ['community', 'cross', 'prayer'], alt: '' },
   { filename: '474002348_18156359122338056_2617337075326128263_n.jpg', tags: ['teaching', 'pastor', 'sermon'], alt: '' },
   { filename: '474748731_1030392515795404_2521947271930024728_n.jpg', tags: ['informal', 'family', 'social'], alt: '' },
+  { filename: '475568922_18156359086338056_4047262209868672150_n.jpg', tags: ['kids', 'community'], alt: '' },
   { filename: '475891141_1037080631793259_4238958896521856436_n.jpg', tags: ['baptism', 'becca', 'mark'], alt: '' },
   { filename: '476750093_18157384759338056_1921287384410502360_n.jpg', tags: ['prayer', 'service', 'care'], alt: '' },
   { filename: '479169157_18157955926338056_118133880266586215_n.jpg', tags: ['kids', 'activity'], alt: '' },

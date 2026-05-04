@@ -1,13 +1,46 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import { imagePublicSrc } from '../../data/homePageImages'
+import MomentsSection from '../../components/MomentsSection.astro'
+import { homePageImages, imagePublicSrc } from '../../data/homePageImages'
+
+const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+
+const kidsMomentsItems = [
+  {
+    image: imageByFilename('499237357_18167175172338056_6041845435208425322_n.jpg'),
+    fallbackAlt: 'Kids smiling together during a Sunday activity',
+  },
+  {
+    image: imageByFilename('495938178_18165842899338056_2078248515916983250_n.jpg'),
+    fallbackAlt: 'Children participating in a Pine Lake Kids activity',
+  },
+  {
+    image: imageByFilename('475568922_18156359086338056_4047262209868672150_n.jpg'),
+    fallbackAlt: 'Kids engaged in learning and play on Sunday morning',
+  },
+]
+
+const kidsMomentsBottomItems = [
+  {
+    image: imageByFilename('479169157_18157955926338056_118133880266586215_n.jpg'),
+    fallbackAlt: 'Kids engaged in learning and play on Sunday morning',
+  },
+  {
+    image: imageByFilename('539390246_18176284939338056_330744351158099611_n.jpg'),
+    fallbackAlt: 'Children gathered for a Pine Lake Kids moment',
+  },
+  {
+    image: imageByFilename('503632641_18168464443338056_6100866002216681684_n.jpg'),
+    fallbackAlt: 'Kids sharing a fun Sunday moment together',
+  },
+]
 ---
 
 <BaseLayout
   title="Kids | Pine Lake Covenant Church"
   description="Pine Lake Kids: a safe, welcoming place for babies through 5th grade to discover Jesus and belong."
 >
-  <article class="page">
+  <article class="page page--wide">
     <header class="page__header">
       <h1>
         <img
@@ -24,8 +57,9 @@ import { imagePublicSrc } from '../../data/homePageImages'
         We believe childhood is a season to be celebrated, not just a phase to get through. Our goal for Pine Lake Kids
         is simple: that every child would feel safe, known, and loved as they begin to discover who Jesus is.
       </p>
-
     </header>
+
+    <MomentsSection heading="Photos of Pine Lake Kids" items={kidsMomentsItems} sectionClass="section" />
 
     <section class="section">
       <h2>Your first Sunday</h2>
@@ -101,6 +135,8 @@ import { imagePublicSrc } from '../../data/homePageImages'
         </div>
       </div>
     </section>
+
+    <MomentsSection heading={null} items={kidsMomentsBottomItems} sectionClass="section" />
 
     <section class="section">
       <h2>Have a question?</h2>
