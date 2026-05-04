@@ -1,6 +1,39 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { imagePublicSrc } from '../data/homePageImages'
+import MomentsSection from '../components/MomentsSection.astro'
+import { homePageImages, imagePublicSrc } from '../data/homePageImages'
+
+const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+
+const youthMomentsTopItems = [
+  {
+    image: imageByFilename('youth-02-1600x1600.jpg'),
+    fallbackAlt: 'A moment from a Pine Lake Youth gathering',
+  },
+  {
+    image: imageByFilename('youth-03-1600x1600.jpg'),
+    fallbackAlt: 'Students connecting in community',
+  },
+  {
+    image: imageByFilename('youth-03-1600x1600.jpg'),
+    fallbackAlt: 'Students connecting in community',
+  },
+]
+
+const youthMomentsBottomItems = [
+  {
+    image: imageByFilename('youth-04-1600x1600.jpg'),
+    fallbackAlt: 'Pine Lake Youth activity',
+  },
+  {
+    image: imageByFilename('515010876_1159769626191025_3703366804227887968_n.jpg'),
+    fallbackAlt: 'Students serving and praying together at Pine Lake Youth',
+  },
+  {
+    image: imageByFilename('650251601_18198219286338056_7378060351620760269_n.jpg'),
+    fallbackAlt: 'Students gathered together at Pine Lake Youth',
+  },
+]
 ---
 
 <BaseLayout
@@ -26,44 +59,9 @@ import { imagePublicSrc } from '../data/homePageImages'
         Our hope is that Pine Lake Youth would be a place where you can be yourself, belong to something bigger, and
         become part of bringing heaven to earth.
       </p>
-
-      <div class="youth-gallery" aria-label="Photos from Pine Lake Youth">
-        <figure class="youth-gallery__tile">
-          <img
-            src={imagePublicSrc('youth-01-1600x1600.jpg')}
-            alt="Students at Pine Lake Youth"
-            loading="eager"
-            decoding="async"
-          />
-        </figure>
-        <figure class="youth-gallery__tile">
-          <img
-            src={imagePublicSrc('youth-02-1600x1600.jpg')}
-            alt="A moment from a Pine Lake Youth gathering"
-            loading="eager"
-            decoding="async"
-          />
-        </figure>
-        <figure class="youth-gallery__tile">
-          <img
-            src={imagePublicSrc('youth-03-1600x1600.jpg')}
-            alt="Students connecting in community"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure class="youth-gallery__tile">
-          <img
-            src={imagePublicSrc('youth-04-1600x1600.jpg')}
-            alt="Pine Lake Youth activity"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
     </header>
 
-    <section class="youth-quick">
+    <section class="section youth-quick">
       <div class="card-grid">
         <div class="card">
           <h2>Tuesday nights</h2>
@@ -91,20 +89,25 @@ import { imagePublicSrc } from '../data/homePageImages'
       </div>
     </section>
 
-    <section class="measure">
+    <MomentsSection heading="Moments from Pine Lake Youth" items={youthMomentsTopItems} sectionClass="section" />
+
+    <section class="section section-callout">
       <h2>What a Tuesday night feels like</h2>
-      <p>
-        We begin with dinner because it’s hard to build community on an empty stomach. From there, the night includes
-        time to connect, worship that’s accessible, teaching that’s grounded and practical, and small groups where
-        students can talk honestly and be known.
-      </p>
+      <p>Tuesday nights are built to feel welcoming and real for both middle school and high school students.</p>
+
+      <ul>
+        <li>Dinner at 6:00pm to start the night together</li>
+        <li>Connection time and worship that is easy to step into</li>
+        <li>Biblically grounded teaching with practical application</li>
+        <li>Age-specific small groups where students can be known</li>
+      </ul>
     </section>
 
-    <section class="measure youth-connect">
+    <section class="section youth-connect">
       <h2>Want to get connected?</h2>
       <p>
-        If you’re new, you’re welcome. If you’ve never been to a youth group, you’ll be fine. If you’ve been around
-        church a lot—or hardly at all—this can still be a great place to grow.
+        New to youth group? You will not be the only one. Whether church feels familiar or brand new, this is a great
+        place to begin.
       </p>
 
       <p class="youth-connect__links">
@@ -114,55 +117,57 @@ import { imagePublicSrc } from '../data/homePageImages'
       </p>
     </section>
 
-    <section class="measure">
+    <section class="section">
       <h2>Discipleship &amp; highlights through the year</h2>
       <p>
-        In addition to our weekly rhythm, we plan retreats, service opportunities, and trips that help students grow in
-        faith and friendship. Here are a few of the recurring highlights.
+        Alongside our weekly rhythm, we run a few annual experiences that help students grow in faith and friendship.
       </p>
 
-      <h3>Confirmation</h3>
-      <p>
-        Confirmation is a 6-month discipleship experience for students 8th grade and up, taking a deep dive into
-        Scripture. Students are paired with a mentor to explore questions of life and faith, with monthly gatherings for
-        group teaching. The year is capped off with Confirmation Sunday in early June.
-      </p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Confirmation</h3>
+          <p>
+            A 6-month discipleship track for students in 8th grade and up, including mentor relationships, monthly
+            teaching, and Confirmation Sunday in early June.
+          </p>
+        </div>
 
-      <h3>Campbell Farm</h3>
-      <p>
-        Campbell Farm is the middle school highlight of the summer: a three-day discipleship trip to the Yakama nation
-        in partnership with The Campbell Farm, a community and retreat center in Wapato, WA. The trip includes immersive
-        cross-cultural learning experiences—and plenty of summer fun.
-      </p>
+        <div class="card">
+          <h3>Campbell Farm</h3>
+          <p>
+            A 3-day middle school summer trip to Wapato, WA, with discipleship, cross-cultural learning, and a lot of
+            fun together.
+          </p>
+        </div>
 
-      <h3>Retreats</h3>
-      <p>
-        Each year we make space for weekends designed for fun, worship, teaching, and building friendships—some hosted
-        alongside other churches in our conference, and some as Pine Lake Youth retreats.
-      </p>
+        <div class="card">
+          <h3>Retreats</h3>
+          <p>
+            Weekend retreats each year focused on fun, worship, teaching, and deeper friendships, both with Pine Lake
+            and partner churches.
+          </p>
+        </div>
+      </div>
     </section>
 
-    <section class="measure">
+    <section class="section">
       <h2>Service &amp; missions</h2>
-      <p>
-        We want students to see faith as something that moves outward—serving with others, showing up locally, and
-        learning how to love our neighbors in practical ways.
-      </p>
+      <p>We want students to see faith move outward through practical service, both locally and globally.</p>
 
       <ul>
         <li>
-          <strong>Global 6K for Water</strong> — a whole-family event that helps provide clean water (next date: May 16, 2026).
+          <strong>Global 6K for Water</strong> - a whole-family event that helps provide clean water (next date: May 16, 2026).
         </li>
         <li>
-          <strong>Capernaum Talent Show</strong> — a yearly highlight with Young Life Capernaum (students with special needs
-          and their families).
+          <strong>Capernaum Talent Show</strong> - an annual event with Young Life Capernaum for students with special needs
+          and their families.
         </li>
         <li>
-          <strong>Community Meal Packaging</strong> — typically in early December, partnering to package meals for kids in
-          Sierra Leone.
+          <strong>Community Meal Packaging</strong> - typically in early December, helping package meals for kids in Sierra
+          Leone.
         </li>
         <li>
-          <strong>Unite</strong> — a regional high school event held every other summer (next planned: Summer 2027).
+          <strong>Unite</strong> - a regional high school gathering held every other summer (next planned: Summer 2027).
         </li>
       </ul>
 
@@ -170,6 +175,8 @@ import { imagePublicSrc } from '../data/homePageImages'
         <a href={`${import.meta.env.BASE_URL}whats-happening/`}>See what’s coming up →</a>
       </p>
     </section>
+
+    <MomentsSection heading={null} items={youthMomentsBottomItems} sectionClass="section" />
   </article>
 </BaseLayout>
 
@@ -179,5 +186,11 @@ import { imagePublicSrc } from '../data/homePageImages'
     width: clamp(13.75rem, 50vw, 21.25rem);
     height: auto;
     object-fit: contain;
+  }
+
+  .youth-connect__links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 </style>
