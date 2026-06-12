@@ -49,16 +49,18 @@ consistency** — not a redesign.
   5. If events can't be made reliable for launch, hide "What's Happening" from nav
      (strategically incomplete) rather than ship an empty page.
 
-### 1.3 Placeholder content visible to users
-- `serve.astro`: three one-line stubs with "Photo placeholder" labels — not shippable.
-- `stories.astro`: six testimonials with `Photo` placeholders instead of images.
-- **Plan (use repo assets):**
-  - `stories.astro`: wire real community photos from `public/images/` and the genuine quotes
-    from `quotes.ts`; drop fabricated ones. Decide whether `stories` is linked in nav or kept
-    as a deep link.
-  - `serve.astro`: either flesh out with real role descriptions + contact + repo photos, or
-    fold into `next-steps` / cut for launch. Currently it conflicts with the "Serve Locally"
-    door (internal roles vs. local partners) — resolve the overlap.
+### 1.3 Placeholder content visible to users — _done in this pass_
+- `serve.astro` and `stories.astro` each rendered visible "Photo placeholder" labels.
+- **Fix (per decisions):**
+  - **Serve merged into Serve Locally.** Folded the in-church roles (Hospitality, Kids &
+    Youth, Worship & Tech) into `/for-our-neighbors/serve-locally/` as a "Serve on a Sunday
+    team" section; the page now covers both community partners and Sunday teams. Deleted the
+    `/serve/` stub and repointed the Next Steps card to serve-locally.
+  - **Stories cut for launch.** Deleted `stories.astro` (it was orphaned — not linked
+    anywhere). Homepage testimonials continue via the `quotes.ts` carousel.
+  - Verified the build renders **no placeholder text** anywhere. The remaining placeholder
+    *fallbacks* in `about.astro` / `community.astro` never trigger (images resolve), but could
+    be hardened in a later pass.
 
 ### 1.4 SEO / indexing controls — _done in this pass_
 - `robots.txt` was a static `Disallow: /` (blocks all indexing).
@@ -152,8 +154,9 @@ consistency** — not a redesign.
 
 ## Open questions for Tim
 
-- **Stories page:** link it in nav, or keep as a deep link only?
-- **Serve vs. Serve Locally:** keep both (internal roles + local partners) or merge?
-- **Events scrape:** is the existing site's calendar (or a public Church Center calendar URL)
-  scrapeable, and what's the source URL?
 - **Production cutover:** timeline for `plcc.org` so SEO/redirects can be staged.
+- **Homepage testimonials:** `quotes.ts` still includes a few fabricated "placeholder" personas
+  alongside the real quotes — replace with attributed real ones in the Phase 4 testimonial pass.
+
+_Resolved: Stories cut for launch; Serve merged into Serve Locally; events use the live Church
+Center JSON:API (no scrape needed)._
