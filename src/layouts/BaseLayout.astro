@@ -1,15 +1,26 @@
 ---
+import { getImage } from 'astro:assets'
+import '../styles/global.css'
+import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
+import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
+import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
+import socialImageSource from '../assets/images/plcc-community-family-worship.jpg'
+import iconSource from '../assets/images/plcc-logo-icon.jpg'
+
 const {
   title = 'Pine Lake Covenant Church',
   description = 'A church in Sammamish, discovering life with Jesus together.',
   noindex = false,
 } = Astro.props
 
+const base = import.meta.env.BASE_URL
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
-import '../styles/global.css'
-import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
-import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
-import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
+
+// Social share image (1200x630) and Apple touch icon, generated at build time.
+const socialImage = await getImage({ src: socialImageSource, width: 1200, height: 630, fit: 'cover', format: 'jpeg' })
+const appleTouchIcon = await getImage({ src: iconSource, width: 180, height: 180, fit: 'cover', format: 'png' })
+// Open Graph images must be absolute URLs.
+const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toString() : socialImage.src
 ---
 
 <!doctype html>
@@ -27,6 +38,30 @@ import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.p
     <meta name="description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="theme-color" content="#6a9529" />
+
+    <!-- Icons + PWA manifest -->
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={appleTouchIcon.src} />
+    <link rel="manifest" href={`${base}manifest.webmanifest`} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Pine Lake Covenant Church" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
   </head>
 
   <body>

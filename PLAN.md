@@ -29,6 +29,7 @@ consistency** — not a redesign.
 ## Phase 1 — Launch blockers
 
 ### 1.1 Broken navigation (404s) — _done in this pass_
+
 - `neighborsDoors.ts` linked to `/care-support/` and `/serve-locally/`, neither of which
   exists. Two of the five "For Our Neighbors" doors 404'd.
 - **Fix:** created `/for-our-neighbors/care-support/` and `/for-our-neighbors/serve-locally/`
@@ -36,6 +37,7 @@ consistency** — not a redesign.
   repointed the door hrefs. This also improves IA: the doors now lead to real hub pages.
 
 ### 1.2 "What's Happening" is empty / stale
+
 - Every event in `events.ts` is dated Jan–Feb 2026; today is mid-2026, and the page filters
   to upcoming events → it renders nothing. Several rows use placeholder URLs
   (`.../events/XXXXXXX`) and "Tuesdays Together" is duplicated.
@@ -50,6 +52,7 @@ consistency** — not a redesign.
      (strategically incomplete) rather than ship an empty page.
 
 ### 1.3 Placeholder content visible to users — _done in this pass_
+
 - `serve.astro` and `stories.astro` each rendered visible "Photo placeholder" labels.
 - **Fix (per decisions):**
   - **Serve merged into Serve Locally.** Folded the in-church roles (Hospitality, Kids &
@@ -59,20 +62,23 @@ consistency** — not a redesign.
   - **Stories cut for launch.** Deleted `stories.astro` (it was orphaned — not linked
     anywhere). Homepage testimonials continue via the `quotes.ts` carousel.
   - Verified the build renders **no placeholder text** anywhere. The remaining placeholder
-    *fallbacks* in `about.astro` / `community.astro` never trigger (images resolve), but could
+    _fallbacks_ in `about.astro` / `community.astro` never trigger (images resolve), but could
     be hardened in a later pass.
 
 ### 1.4 SEO / indexing controls — _done in this pass_
+
 - `robots.txt` was a static `Disallow: /` (blocks all indexing).
 - **Fix:** replaced with an environment-aware `src/pages/robots.txt.ts` endpoint —
   `Disallow: /` on dev/staging, `Allow` + sitemap reference on production.
 
 ### 1.5 Environment configuration — _done in this pass_
+
 - `astro.config.mjs` now resolves `site` / `base` from a `DEPLOY_ENV` variable
   (`development` | `staging` | `production`), with the old `GITHUB_ACTIONS` path preserved as
   the staging default. `src/config/site.ts` centralizes the per-environment values.
 
 ### 1.6 Image weight & optimization (also perf — see 2.1)
+
 - ~14 MB of full-res Instagram JPGs + an 8.6 MB hero video, all served raw via `<img>`.
   The Astro `<Image>` component (mandated by CLAUDE.md) is used nowhere, and most `<img>`
   tags lack `width`/`height` (layout shift). This is both a blocker-level perf issue and a
@@ -83,6 +89,7 @@ consistency** — not a redesign.
 ## Phase 2 — Performance & SEO
 
 ### 2.1 Adopt Astro image optimization — _done in this pass_
+
 - Moved all photos from `public/images/` to `src/assets/images/`; added `src/lib/images.ts`
   (filename→loader registry via `import.meta.glob`) and a `<Photo>` wrapper around `<Image>`
   that emits responsive, lazy, intrinsic-sized **WebP**. Converted every `<img>` call site
@@ -96,19 +103,25 @@ consistency** — not a redesign.
   images (~5 MB of dead weight in `dist`, never referenced/served). Could be pruned later or
   removed by replacing the random-pick pools with explicit images.
 
-### 2.2 Social & favicon metadata
-- `BaseLayout` has no Open Graph / Twitter / `theme-color` tags and only a single
-  `favicon.svg`. Add OG/Twitter tags (per-page title/description/image), `theme-color`, and a
-  favicon set (PNG + apple-touch + web manifest).
+### 2.2 Social & favicon metadata — _done in this pass_
 
-### 2.3 Sitemap
-- Add `@astrojs/sitemap`; reference it from the production `robots.txt`.
+- `BaseLayout` now emits per-page **Open Graph** + **Twitter** (`summary_large_image`) tags, a
+  build-generated 1200×630 social image (absolute URL via `Astro.site`), `theme-color`, SVG
+  favicon (base-aware), an `apple-touch-icon` (180×180 PNG via `getImage`), and a
+  `manifest.webmanifest` endpoint that generates 192/512 PNG icons.
+
+### 2.3 Sitemap — _done in this pass_
+
+- Added `@astrojs/sitemap` (emits when `site` is set). Production `robots.txt` already points to
+  `sitemap-index.xml`; verified the URLs match per environment (staging → github.io,
+  production → plcc.org).
 
 ---
 
 ## Phase 3 — Consistency & maintainability
 
 ### 3.1 One convention for page-level CSS
+
 - Page styles currently live in two places: baked into the 1,341-line `global.css`
   (`.ethos__*`, `.leader-*`, footer) **and** in scoped `<style>` blocks (`index`,
   `pastors-letter`, a 178-line block in `messages.astro`). Pick one: prefer scoped `<style>`
@@ -116,14 +129,17 @@ consistency** — not a redesign.
   splitting `global.css` into `tokens.css` + `base.css` + `components.css`.
 
 ### 3.2 De-duplicate helpers
+
 - `imageByFilename` is copy-pasted into `index`, `im-new`, `plan-a-visit`, `community`,
   `families`, `youth`, `for-our-neighbors`. Hoist to `homePageImages.ts` and import.
 
 ### 3.3 Split `messages.astro` (424 lines)
+
 - Separate the YouTube RSS fetch/parse (→ `src/lib/messages/`) from the view and the 178-line
   style block. Regex XML parsing works but is fragile; isolate it behind a typed function.
 
 ### 3.4 Dead code / undefined classes
+
 - `.measure--medium` (`index.astro:94`) and `.page__quote` (`weddings-memorials.astro:16`)
   were referenced but undefined → unstyled. _Addressed in this pass._
 - `QuoteGrid` listens for `astro:after-swap` but `<ClientRouter>` isn't enabled (dead branch).
@@ -132,6 +148,7 @@ consistency** — not a redesign.
   uses the logo image as a card photo — normalize.
 
 ### 3.5 Tooling
+
 - Add a link-checker (catch future 404s like 1.1), run Prettier in CI, and add a basic
   `astro check` step.
 
@@ -140,6 +157,7 @@ consistency** — not a redesign.
 ## Phase 4 — Voice & visual polish
 
 ### 4.1 Copy pass against CLAUDE.md guardrails
+
 - `families.astro:179` "...no pressure" — communicate low pressure structurally, not by
   saying it. _Addressed in this pass._
 - `youth.astro` "Discipleship & highlights" heading + hardcoded "May 16, 2026" date —
@@ -150,10 +168,12 @@ consistency** — not a redesign.
 - `community.astro` "Community at Pine Lake takes many forms..." is generic — make it specific.
 
 ### 4.2 Testimonials & photography
+
 - Replace fabricated quotes with attributed, real ones; ensure photos are vignettes, not
   posed stock (guardrail #7). Reconcile `quotes.ts` (homepage carousel) with `stories.astro`.
 
 ### 4.3 Hero & homepage
+
 - Revisit hero video treatment, poster, and the welcome section rhythm once images are
   optimized.
 
