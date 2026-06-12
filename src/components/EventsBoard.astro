@@ -1,0 +1,190 @@
+---
+import type { CalendarEvent, EventCategory } from '../lib/events/types'
+
+type Props = {
+  events: CalendarEvent[]
+  selected: EventCategory
+}
+
+const { events, selected } = Astro.props
+
+const categories: EventCategory[] = ['Everyone', 'Families', 'Youth', 'Groups', 'Serve']
+
+// Event times are absolute instants (often UTC from Church Center); always render
+// them in the church's local timezone so the build server's tz (UTC in CI) can't
+// shift displayed times.
+const TZ = 'America/Los_Angeles'
+const fmtDay = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'short', timeZone: TZ })
+const fmtDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: TZ })
+const fmtTime = (d: Date) => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ })
+const weekLabel = (d: Date) => `Week of ${fmtDate(d)}`
+
+const base = import.meta.env.BASE_URL
+const categoryHref = (c: EventCategory) =>
+  c === 'Everyone' ? `${base}whats-happening/` : `${base}whats-happening/${c.toLowerCase()}/`
+
+// Each page is a single category, so filtering happens at build time — no client JS.
+const items = (selected === 'Everyone' ? events : events.filter((e) => e.category === selected)).map((e) => ({
+  ...e,
+  _start: new Date(e.start),
+}))
+
+// Featured: explicitly-featured events, or — if none are flagged — the nearest few
+// so the section is always a useful highlight.
+const explicitFeatured = items.filter((e) => e.featured)
+const featured = (explicitFeatured.length ? explicitFeatured : items).slice(0, 3)
+
+const grouped = new Map<string, typeof items>()
+for (const e of items) {
+  const label = weekLabel(e._start)
+  const group = grouped.get(label) ?? []
+  group.push(e)
+  grouped.set(label, group)
+}
+---
+
+<article class="page page--wide">
+  <header class="page__header">
+    <h1>What’s Happening</h1>
+
+    <p class="page__lede measure">
+      A curated view of what’s coming up at Pine Lake — the kind of things that are easy to join and a good fit for
+      different seasons of life.
+    </p>
+  </header>
+
+  <section class="section">
+    <h2>Browse</h2>
+
+    <div class="chip-row">
+      {
+        categories.map((c) => (
+          <a
+            href={categoryHref(c)}
+            class={`chip ${c === selected ? 'chip--active' : ''}`}
+            aria-current={c === selected ? 'page' : undefined}
+          >
+            {c}
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    selected === 'Everyone' && featured.length > 0 && (
+      <section class="section">
+        <h2>Featured</h2>
+
+        <div class="event-grid">
+          {featured.map((e) => (
+            <article class="event-card">
+              <div class="event-date">
+                <div class="event-day">{fmtDay(e._start)}</div>
+                <div class="event-md">{fmtDate(e._start)}</div>
+                <div class="event-time">{fmtTime(e._start)}</div>
+              </div>
+
+              <div class="event-body">
+                <h3 class="event-card__title">{e.title}</h3>
+                <div class="event-meta">
+                  <span>{e.category}</span>
+                  {e.location && <span> · {e.location}</span>}
+                </div>
+                {e.summary && <p class="event-card__summary">{e.summary}</p>}
+
+                <p class="event-card__cta">
+                  <a
+                    href={e.url}
+                    rel={e.url.startsWith('http') ? 'noopener' : undefined}
+                    target={e.url.startsWith('http') ? '_blank' : undefined}
+                  >
+                    Details →
+                  </a>
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <h2>{selected === 'Everyone' ? 'Coming up' : `Coming up · ${selected}`}</h2>
+
+    {
+      items.length === 0 ? (
+        <p class="coming-empty">Nothing in this category right now. Try another, or browse Everyone.</p>
+      ) : (
+        [...grouped.entries()].map(([label, list]) => (
+          <div class="event-group">
+            <h3 class="event-group__label">{label}</h3>
+
+            <div class="event-list">
+              {list.map((e) => (
+                <article class="event-row">
+                  <div class="event-row__date-chip" aria-hidden="true">
+                    <span class="event-row__dow">{fmtDay(e._start)}</span>
+                    <span class="event-row__dnum">{fmtDate(e._start)}</span>
+                  </div>
+
+                  <div class="event-row__main">
+                    <div class="event-row__title">{e.title}</div>
+                    <div class="event-row__meta">
+                      <span class="tag event-row__cat">{e.category}</span>
+                      <span>
+                        {fmtTime(e._start)}
+                        {e.location ? ` · ${e.location}` : ''}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="event-row__cta">
+                    <a
+                      href={e.url}
+                      rel={e.url.startsWith('http') ? 'noopener' : undefined}
+                      target={e.url.startsWith('http') ? '_blank' : undefined}
+                    >
+                      Details →
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        ))
+      )
+    }
+  </section>
+
+  <section class="section">
+    <h2>Ongoing rhythms</h2>
+
+    <div class="rhythm-grid">
+      <div class="rhythm-card">
+        <strong>Sundays at 10:00am</strong>
+        <div>Worship + teaching, with kids and youth programs.</div>
+        <div class="rhythm-card__cta">
+          <a href={`${base}plan-a-visit/`}>Plan a Visit</a>
+        </div>
+      </div>
+
+      <div class="rhythm-card">
+        <strong>Families & Youth</strong>
+        <div>Kids and youth are a big part of our life together.</div>
+        <div class="rhythm-card__cta">
+          <a href={`${base}families/`}>Families</a>
+        </div>
+      </div>
+
+      <div class="rhythm-card">
+        <strong>Groups & Serving</strong>
+        <div>Small groups and serving teams are simple ways to find community.</div>
+        <div class="rhythm-card__cta">
+          <a href={`${base}next-steps/`}>Next Steps</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>

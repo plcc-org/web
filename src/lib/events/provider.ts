@@ -48,7 +48,16 @@ function normalizeUpcoming(events: CalendarEvent[]): CalendarEvent[] {
     .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
 }
 
-export async function getUpcomingEvents(): Promise<CalendarEvent[]> {
+// Memoized for the lifetime of the build process so the multiple "What's
+// Happening" pages (Everyone + one per category) share a single live fetch.
+let cached: Promise<CalendarEvent[]> | null = null
+
+export function getUpcomingEvents(): Promise<CalendarEvent[]> {
+  if (!cached) cached = loadUpcomingEvents()
+  return cached
+}
+
+async function loadUpcomingEvents(): Promise<CalendarEvent[]> {
   const source = (process.env.EVENTS_SOURCE as EventSource | undefined) ?? defaultSource()
 
   let raw: CalendarEvent[]

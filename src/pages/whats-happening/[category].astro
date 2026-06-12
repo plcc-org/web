@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import EventsBoard from '../../components/EventsBoard.astro'
+import { getUpcomingEvents } from '../../lib/events/provider'
+import type { EventCategory } from '../../lib/events/types'
+
+// One statically-generated page per category — no client-side filtering. The
+// events are fetched once here and shared across all category pages via props.
+export async function getStaticPaths() {
+  const events = await getUpcomingEvents()
+  const categories: EventCategory[] = ['Families', 'Youth', 'Groups', 'Serve']
+  return categories.map((category) => ({
+    params: { category: category.toLowerCase() },
+    props: { selected: category, events },
+  }))
+}
+
+const { selected, events } = Astro.props
+---
+
+<BaseLayout title={`${selected} · What’s Happening | Pine Lake Covenant Church`}>
+  <EventsBoard events={events} selected={selected} />
+</BaseLayout>

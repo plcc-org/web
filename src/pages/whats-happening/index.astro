@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import EventsBoard from '../../components/EventsBoard.astro'
+import { getUpcomingEvents } from '../../lib/events/provider'
+
+const events = await getUpcomingEvents()
+---
+
+<BaseLayout title="What’s Happening | Pine Lake Covenant Church">
+  <EventsBoard events={events} selected="Everyone" />
+</BaseLayout>
