@@ -120,7 +120,7 @@ consistency** — not a redesign.
 
 ## Phase 3 — Consistency & maintainability
 
-### 3.1 One convention for page-level CSS
+### 3.1 One convention for page-level CSS — _done: global.css split into partials_
 
 - Page styles currently live in two places: baked into the 1,341-line `global.css`
   (`.ethos__*`, `.leader-*`, footer) **and** in scoped `<style>` blocks (`index`,

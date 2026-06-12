@@ -1,0 +1,116 @@
+/* Page-level typography and rhythm */
+.page {
+  max-width: var(--measure);
+  margin: var(--space-m) 0 var(--space-l);
+}
+
+.page--wide {
+  max-width: 100%;
+}
+
+.page > * + * {
+  margin-top: var(--space-m);
+}
+
+.page__header h1 {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.page__subhead {
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  color: var(--color-clay);
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+.page__quote {
+  margin-top: 1.25rem;
+  padding-left: 1.1rem;
+  border-left: 3px solid rgba(106, 149, 41, 0.45);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--color-forest);
+}
+
+.page__lede a {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  background: var(--color-moss);
+  color: var(--color-white);
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-diffuse);
+}
+
+.page__lede a:hover {
+  background: var(--color-forest);
+  transform: translateY(-2px);
+}
+
+.text-body-large {
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
+
+.prose-measure {
+  max-width: var(--measure);
+}
+
+.content-panel {
+  padding: clamp(1.25rem, 2.4vw, 2rem);
+  border-radius: var(--radius-soft);
+  border: 1px solid var(--color-mist);
+  box-shadow: var(--shadow-panel);
+}
+
+.content-panel h2 {
+  margin-top: 0;
+}
+
+.section-callout {
+  position: relative;
+  padding: clamp(1.75rem, 3.2vw, 2.75rem);
+  border-radius: var(--radius-soft);
+  border: 1px solid rgba(106, 149, 41, 0.34);
+  background:
+    linear-gradient(155deg, rgba(106, 149, 41, 0.2) 0%, rgba(106, 149, 41, 0.08) 45%, rgba(255, 255, 255, 0.88) 100%),
+    var(--color-white);
+  box-shadow: 0 20px 50px -22px rgba(26, 46, 12, 0.24);
+}
+
+.section-callout > * {
+  max-width: var(--measure);
+}
+
+.section-callout::before {
+  content: '';
+  position: absolute;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  left: 0.65rem;
+  width: 6px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--color-moss) 0%, rgba(26, 46, 12, 0.45) 100%);
+}
+
+.section-callout h2 {
+  margin-top: 0;
+  margin-bottom: 0.9rem;
+  padding-left: 1rem;
+  font-size: clamp(1.85rem, 3.4vw, 2.35rem);
+}
+
+.section-callout p {
+  padding-left: 1rem;
+  font-size: 1.05rem;
+}
+.surface-gradient-soft {
+  background: var(--surface-gradient-soft);
+}

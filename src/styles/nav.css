@@ -1,0 +1,223 @@
+/* Header + primary navigation */
+.site-header {
+  padding: 2rem 1.5rem;
+}
+
+/* Desktop: bar (logo) and list sit side-by-side */
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.site-nav__bar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.site-nav__toggle {
+  display: none; /* shown only on mobile */
+}
+
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.site-nav a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 180ms ease;
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+}
+
+.site-nav a:not(.site-nav__cta):hover {
+  color: var(--color-moss);
+  border-bottom-color: var(--color-mist);
+}
+
+/* Legacy circular mark stays available for future use */
+.logo-circle {
+  display: block;
+  width: 3.3rem;
+  height: 3.3rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(26, 46, 12, 0.2);
+}
+
+/* Current wordmark in brand green via image mask */
+.site-nav__home {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: none;
+  line-height: 0;
+}
+
+.site-nav__home-logo {
+  width: clamp(10.5rem, 22vw, 13rem);
+  height: clamp(1.8rem, 3.8vw, 2.25rem);
+  display: inline-block;
+  background-color: #73943b;
+  -webkit-mask-image: var(--logo-wordmark-url);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: var(--logo-wordmark-url);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+.site-nav a.site-nav__cta {
+  background: var(--color-moss);
+  color: var(--color-white);
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border-bottom: none;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(106, 149, 41, 0.15);
+  margin-left: 0.5rem; /* Give it a little extra breathing room */
+}
+
+.site-nav a.site-nav__cta:hover {
+  background: var(--color-forest);
+  color: var(--color-white);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(26, 46, 12, 0.2);
+}
+
+.site-nav a:focus-visible,
+.link-card:focus-visible,
+.page__lede a:focus-visible,
+.card:focus-visible,
+.site-footer a:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 3px;
+}
+
+/* Hamburger menu for mobile */
+@media (max-width: 1080px) {
+  .site-header {
+    padding: 1rem 1.5rem;
+  }
+
+  /* Stack bar on top, list (when open) below */
+  .site-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    position: relative;
+  }
+
+  .site-nav__bar {
+    justify-content: space-between;
+  }
+
+  /* Hamburger button */
+  .site-nav__toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background 180ms ease;
+  }
+
+  .site-nav__toggle:hover {
+    background: var(--color-mist);
+  }
+
+  .site-nav__toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-forest);
+    border-radius: 2px;
+    transition:
+      transform 200ms ease,
+      opacity 200ms ease;
+    transform-origin: center;
+  }
+
+  /* Animate to × when open */
+  .site-nav.is-open .site-nav__toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .site-nav.is-open .site-nav__toggle span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .site-nav.is-open .site-nav__toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Nav list: hidden until toggled open */
+  .site-nav__list {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin-top: 0.75rem;
+    padding: 0.5rem 0 1rem;
+    border-top: 1px solid rgba(26, 46, 12, 0.1);
+  }
+
+  .site-nav.is-open .site-nav__list {
+    display: flex;
+  }
+
+  /* Each link is a full-width tap target */
+  .site-nav__list li {
+    width: 100%;
+  }
+
+  .site-nav__list li + li {
+    border-top: 1px solid rgba(26, 46, 12, 0.08);
+  }
+
+  .site-nav__list a:not(.site-nav__cta) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 0.25rem;
+    font-size: 1.05rem;
+    border-bottom: none;
+  }
+
+  .site-nav__list a:not(.site-nav__cta)::after {
+    content: '›';
+    font-size: 1.25rem;
+    color: var(--color-moss);
+    opacity: 0.7;
+    line-height: 1;
+  }
+
+  /* CTA at the bottom, full width */
+  .site-nav a.site-nav__cta {
+    display: block;
+    text-align: center;
+    margin: 0.75rem 0 0;
+    padding: 0.85rem 1.25rem;
+    border-radius: 999px;
+  }
+
+  .site-nav__list li:last-child {
+    border-top: none;
+  }
+}

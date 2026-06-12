@@ -1,0 +1,272 @@
+/* Ethos page */
+.ethos {
+  max-width: 100%;
+}
+
+.ethos__header {
+  max-width: var(--measure);
+}
+
+.ethos__header .page__lede {
+  margin-bottom: 0;
+}
+
+.ethos__core {
+  max-width: 100%;
+}
+
+.ethos__pillars {
+  position: relative;
+  counter-reset: ethos-step;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0.25rem 0;
+  list-style: none;
+}
+
+.ethos__pillars::before {
+  content: '';
+  position: absolute;
+  top: 1.1rem;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(106, 149, 41, 0.3) 0%,
+    rgba(106, 149, 41, 0.75) 50%,
+    rgba(26, 46, 12, 0.45) 100%
+  );
+}
+
+.ethos__pillars li {
+  position: relative;
+  padding-top: 2.25rem;
+  text-align: center;
+}
+
+.ethos__pillars li::before {
+  content: counter(ethos-step);
+  counter-increment: ethos-step;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--color-white);
+  background: var(--color-moss);
+  box-shadow: 0 6px 16px rgba(26, 46, 12, 0.2);
+}
+
+.ethos__pillars strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  color: var(--color-forest);
+  line-height: 1.25;
+}
+
+.ethos__core > p {
+  max-width: var(--measure);
+  margin-top: 1.25rem;
+}
+
+.ethos__core > p.text-body-large {
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
+
+.ethos__beliefs {
+  max-width: var(--measure);
+  padding: clamp(1.4rem, 2.8vw, 2.2rem);
+  border-radius: var(--radius-soft);
+  border: 1px solid var(--color-mist);
+  background: var(--surface-gradient-soft);
+  box-shadow: var(--shadow-panel);
+}
+
+.ethos__beliefs h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.ethos .belief-statement {
+  --belief-indent: 0rem;
+  --belief-accent: rgba(106, 149, 41, 0.3);
+  --belief-surface-a: rgba(255, 255, 255, 0.78);
+  --belief-surface-b: rgba(106, 149, 41, 0.07);
+  margin: 0;
+  margin-left: var(--belief-indent);
+  max-width: calc(100% - var(--belief-indent));
+  position: relative;
+  padding: 0.95rem 1rem 0.95rem 1.15rem;
+  border-left: 3px solid var(--belief-accent);
+  border-radius: 0 10px 10px 0;
+  background: linear-gradient(100deg, var(--belief-surface-a) 0%, var(--belief-surface-b) 100%);
+  font-size: clamp(1.12rem, 1.35vw, 1.26rem);
+  line-height: 1.62;
+}
+
+.ethos .belief-statement:nth-of-type(2) {
+  --belief-indent: 0.55rem;
+  --belief-accent: rgba(116, 156, 63, 0.34);
+  --belief-surface-b: rgba(116, 156, 63, 0.08);
+}
+
+.ethos .belief-statement:nth-of-type(3) {
+  --belief-indent: 1.1rem;
+  --belief-accent: rgba(124, 163, 76, 0.38);
+  --belief-surface-b: rgba(124, 163, 76, 0.09);
+}
+
+.ethos .belief-statement:nth-of-type(4) {
+  --belief-indent: 1.65rem;
+  --belief-accent: rgba(131, 170, 90, 0.4);
+  --belief-surface-b: rgba(131, 170, 90, 0.1);
+}
+
+.ethos .belief-statement:nth-of-type(5) {
+  --belief-indent: 2.2rem;
+  --belief-accent: rgba(137, 176, 101, 0.42);
+  --belief-surface-b: rgba(137, 176, 101, 0.11);
+}
+
+.ethos .belief-statement:nth-of-type(6) {
+  --belief-indent: 2.75rem;
+  --belief-accent: rgba(143, 182, 112, 0.44);
+  --belief-surface-b: rgba(143, 182, 112, 0.12);
+}
+
+.ethos .belief-statement + .belief-statement {
+  margin-top: 0.85rem;
+}
+
+.ethos .belief-lead {
+  margin-right: 0.3rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 520;
+  color: var(--color-forest);
+}
+
+.ethos .belief-key {
+  color: #73943b;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .ethos__pillars {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+    padding-left: 2rem;
+  }
+
+  .ethos__pillars::before {
+    display: none;
+  }
+
+  .ethos__pillars li {
+    padding-top: 0;
+    padding-left: 1.9rem;
+    text-align: left;
+  }
+
+  .ethos__pillars li::before {
+    left: -1.15rem;
+    transform: none;
+  }
+
+  .ethos .belief-statement {
+    --belief-indent: 0rem;
+    max-width: 100%;
+  }
+}
+
+/* Leadership page grid and cards */
+.leader-grid {
+  display: grid;
+  gap: 4.5rem 2.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  margin: var(--space-m) 0;
+}
+
+.leader-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.leader-card__photo {
+  margin-bottom: 1.75rem;
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.leader-card:hover .leader-card__photo {
+  transform: translateY(-10px) rotate(1deg);
+}
+
+.leader-card__photo .media__frame {
+  box-shadow: var(--shadow-diffuse);
+  background-color: var(--color-white);
+  padding: 0.65rem;
+  border: 1px solid var(--color-mist);
+}
+
+.leader-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--color-forest);
+  margin: 0 0 0.35rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.leader-card__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--color-clay);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.leader-card__meta {
+  margin-top: 1.15rem;
+  font-size: 0.95rem;
+  font-family: var(--font-sans);
+}
+
+.leader-card__meta a {
+  color: var(--color-moss);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid var(--color-mist);
+  transition: all 0.2s ease;
+}
+
+.leader-card__meta a:hover {
+  color: var(--color-forest);
+  border-bottom-color: var(--color-moss);
+}
+
+@media (max-width: 600px) {
+  .leader-grid {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .leader-card__photo {
+    max-width: 320px;
+  }
+}
