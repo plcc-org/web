@@ -30,12 +30,17 @@ const items = (selected === 'Everyone' ? events : events.filter((e) => e.categor
 }))
 
 // Featured: explicitly-featured events, or — if none are flagged — the nearest few
-// so the section is always a useful highlight.
+// so the section is always a useful highlight. Only shown in the Everyone view.
 const explicitFeatured = items.filter((e) => e.featured)
 const featured = (explicitFeatured.length ? explicitFeatured : items).slice(0, 3)
+const showFeatured = selected === 'Everyone' && featured.length > 0
+
+// Don't repeat featured events in "Coming up".
+const featuredIds = new Set(showFeatured ? featured.map((e) => e.id) : [])
+const comingUp = items.filter((e) => !featuredIds.has(e.id))
 
 const grouped = new Map<string, typeof items>()
-for (const e of items) {
+for (const e of comingUp) {
   const label = weekLabel(e._start)
   const group = grouped.get(label) ?? []
   group.push(e)
@@ -72,7 +77,7 @@ for (const e of items) {
   </section>
 
   {
-    selected === 'Everyone' && featured.length > 0 && (
+    showFeatured && (
       <section class="section">
         <h2>Featured</h2>
 
@@ -114,8 +119,12 @@ for (const e of items) {
     <h2>{selected === 'Everyone' ? 'Coming up' : `Coming up · ${selected}`}</h2>
 
     {
-      items.length === 0 ? (
-        <p class="coming-empty">Nothing in this category right now. Try another, or browse Everyone.</p>
+      comingUp.length === 0 ? (
+        <p class="coming-empty">
+          {selected === 'Everyone'
+            ? 'Nothing else coming up just now — check back soon.'
+            : 'Nothing in this category right now. Try another, or browse Everyone.'}
+        </p>
       ) : (
         [...grouped.entries()].map(([label, list]) => (
           <div class="event-group">
