@@ -35,6 +35,10 @@ export function imageAlt(image: HomePageImage, fallback: string): string {
   return fallback
 }
 
+export function imageByFilename(filename: string): HomePageImage | undefined {
+  return homePageImages.find((image) => image.filename === filename)
+}
+
 export const homePageImages: HomePageImage[] = [
   { filename: '463487542_18145527859338056_2415919883470249546_n.jpg', tags: ['worship'], alt: '' },
   { filename: '467977252_18149338267338056_1889842660921052110_n.jpg', tags: ['church'], alt: '' },

@@ -1,0 +1,23 @@
+name: CI
+
+# Validate pull requests (formatting, types, build) without deploying.
+# Direct pushes to main run the same checks inside deploy.yml.
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: npm
+
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run check
+      - run: npm run build

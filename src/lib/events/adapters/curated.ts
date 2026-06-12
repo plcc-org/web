@@ -115,7 +115,7 @@ export async function curatedEvents(): Promise<CalendarEvent[]> {
         featured: r.featured,
         source: 'curated' as const,
       }
-    }),
+    })
   )
 
   return [...recurring, ...fixedEvents]

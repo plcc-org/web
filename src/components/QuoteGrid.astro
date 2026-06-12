@@ -122,7 +122,5 @@ const { quotes } = Astro.props
     })
   }
 
-  // Handle both initial load and view transitions
   initCarousel()
-  document.addEventListener('astro:after-swap', initCarousel)
 </script>

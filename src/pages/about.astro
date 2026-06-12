@@ -4,9 +4,7 @@ import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import type { LinkCardItem } from '../data/startHereLinks'
 import Photo from '../components/Photo.astro'
-import { imageAlt, homePageImages, pickImageByAnyTag } from '../data/homePageImages'
-
-const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+import { imageAlt, imageByFilename, pickImageByAnyTag } from '../data/homePageImages'
 
 const aboutHeroImage =
   imageByFilename('worship-1600x400.jpg') ?? pickImageByAnyTag(['community', 'gathering', 'worship'])

@@ -72,15 +72,15 @@ src/lib/events/
 
 ```ts
 export type CalendarEvent = {
-  id: string                 // stable id from source (for dedupe + keys)
+  id: string // stable id from source (for dedupe + keys)
   title: string
-  start: string              // ISO with tz offset
+  start: string // ISO with tz offset
   end?: string
   allDay?: boolean
   location?: string
-  summary?: string           // short, curated description
-  url: string                // Church Center event/registration link
-  category: EventCategory    // mapped from source
+  summary?: string // short, curated description
+  url: string // Church Center event/registration link
+  category: EventCategory // mapped from source
   tags?: EventTag[]
   featured?: boolean
   source: 'ics' | 'pco' | 'churchcenter' | 'curated'
@@ -91,17 +91,19 @@ export type CalendarEvent = {
 
 ## Data source options (ranked)
 
-### Option A — Public iCal/ICS feed  ★ recommended near-term
+### Option A — Public iCal/ICS feed ★ recommended near-term
+
 - **How:** church admin publishes the public calendar on Church Center and shares the public
   **subscribe/iCal URL** (token-bearing but public — no login). We parse it at build time with
   a small ICS library; RRULE recurrence expansion comes for free.
 - **Pros:** no API secret, stable standardized format, no browser, low maintenance.
-- **Cons:** needs the church to expose a *public* calendar feed (some configs only expose the
+- **Cons:** needs the church to expose a _public_ calendar feed (some configs only expose the
   personal schedule feed); ICS lacks our category taxonomy → we map via `curation.ts`.
 - **Unblocker:** Tim obtains the public calendar feed URL from Church Center Calendar admin
   ("Show events on Church Center" → public calendar → Subscribe / feed link).
 
-### Option B — Planning Center Calendar API  ★ best long-term ("the real way")
+### Option B — Planning Center Calendar API ★ best long-term ("the real way")
+
 - **How:** `GET /calendar/v2/event_instances?filter=published&where[starts_at][gte]=…` with a
   PCO **Personal Access Token** (App ID + Secret), stored as a GitHub Actions secret. Rich,
   documented JSON; can include event, tags, and registration links.
@@ -109,7 +111,8 @@ export type CalendarEvent = {
 - **Cons:** secret must live in CI (never client-side); slightly more code (pagination, includes).
 - **Unblocker:** generate a PAT at `api.planningcenteronline.com` (self-serve for an admin).
 
-### Option C — Headless capture (Playwright)  — stopgap only
+### Option C — Headless capture (Playwright) — stopgap only
+
 - **How:** in CI, load the public calendar SPA, capture the JSON it requests from
   `api.churchcenter.com`, normalize it. (Or scrape the rendered DOM.)
 - **Pros:** works with zero credentials right now.
@@ -117,7 +120,8 @@ export type CalendarEvent = {
   re: replaying an internal endpoint. Use only if A and B are both blocked, and keep it behind
   the same adapter interface so it's trivially removed later.
 
-### Option D — Curated fallback list  — always present
+### Option D — Curated fallback list — always present
+
 - Keep a small, **real, forward-dated** hand list (the current `events.ts`, cleaned up:
   remove `XXXXXXX` placeholder URLs and duplicate "Tuesdays Together"). Used as the resilience
   fallback and for launch if A/B/C aren't ready in time.

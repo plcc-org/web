@@ -9,6 +9,7 @@ This document describes the visual language, design tokens, components, and layo
 The visual style is **editorial, earthy, and unhurried** — closer to a thoughtful magazine spread than a corporate web app. It should feel like a real place made of real people, not a polished brand.
 
 Key principles:
+
 - **Warmth without softness.** Earthy tones and organic shapes, but not saccharine.
 - **Photos over illustration.** Real moments from community life carry more weight than icons or decoration.
 - **Grain and texture.** A subtle SVG grain overlay sits above all content, giving the site a slight print quality.
@@ -20,14 +21,14 @@ Key principles:
 
 All colors are defined as CSS custom properties on `:root`.
 
-| Token | Value | Usage |
-|---|---|---|
-| `--color-forest` | `rgb(26, 46, 12)` | Primary text, dark backgrounds, headings |
-| `--color-moss` | `rgb(106, 149, 41)` | CTAs, hover states, accent green |
-| `--color-stone` | `rgb(242, 238, 230)` | Page background, card fills |
-| `--color-clay` | `rgb(166, 123, 91)` | Subheads, captions, secondary labels |
-| `--color-mist` | `rgba(26, 46, 12, 0.08)` | Borders, dividers |
-| `--color-white` | `#ffffff` | Text on dark backgrounds, card surfaces |
+| Token            | Value                    | Usage                                    |
+| ---------------- | ------------------------ | ---------------------------------------- |
+| `--color-forest` | `rgb(26, 46, 12)`        | Primary text, dark backgrounds, headings |
+| `--color-moss`   | `rgb(106, 149, 41)`      | CTAs, hover states, accent green         |
+| `--color-stone`  | `rgb(242, 238, 230)`     | Page background, card fills              |
+| `--color-clay`   | `rgb(166, 123, 91)`      | Subheads, captions, secondary labels     |
+| `--color-mist`   | `rgba(26, 46, 12, 0.08)` | Borders, dividers                        |
+| `--color-white`  | `#ffffff`                | Text on dark backgrounds, card surfaces  |
 
 **Color intent:** Forest and stone are the base (dark type on warm off-white). Moss is used sparingly for actionable elements. Clay appears for supporting text — captions, attributions, metadata. Mist is for structural lines that shouldn't compete visually.
 
@@ -37,19 +38,23 @@ All colors are defined as CSS custom properties on `:root`.
 
 ### Typefaces
 
-| Role | Font | Weights |
-|---|---|---|
-| Headings & display | [Fraunces](https://fonts.google.com/specimen/Fraunces) (serif, variable) | 700, 800 |
-| Body & UI | [Instrument Sans](https://fonts.google.com/specimen/Instrument+Sans) (sans, variable) | 400, 500, 700 |
+| Role               | Font                                                                                  | Weights       |
+| ------------------ | ------------------------------------------------------------------------------------- | ------------- |
+| Headings & display | [Fraunces](https://fonts.google.com/specimen/Fraunces) (serif, variable)              | 700, 800      |
+| Body & UI          | [Instrument Sans](https://fonts.google.com/specimen/Instrument+Sans) (sans, variable) | 400, 500, 700 |
 
 Both are loaded via Google Fonts (`preconnect` headers in `BaseLayout.astro`).
 
 ### Fraunces Variation Settings
 
 Headings use optical size and softness axes:
+
 ```css
-font-variation-settings: 'SOFT' 100, 'WONK' 1;
+font-variation-settings:
+  'SOFT' 100,
+  'WONK' 1;
 ```
+
 This gives headings a hand-drawn, slightly organic quality that reinforces the earthy tone.
 
 ### Heading Scale
@@ -57,6 +62,7 @@ This gives headings a hand-drawn, slightly organic quality that reinforces the e
 Headings use `font-family: var(--font-serif)`, `font-weight: 700`, `line-height: 1.1`, and `text-wrap: balance`.
 
 Page `h1` elements use a fluid scale:
+
 ```css
 font-size: clamp(2.5rem, 8vw, 4.5rem);
 letter-spacing: -0.02em;
@@ -72,13 +78,13 @@ letter-spacing: -0.02em;
 
 ## Spacing
 
-| Token | Value | Typical Use |
-|---|---|---|
-| `--space-xs` | `0.5rem` | Tight gaps |
-| `--space-s` | `1.5rem` | Between related items |
-| `--space-m` | `3rem` | Between sections, page margins |
-| `--space-l` | `6rem` | Bottom of page, generous breathing room |
-| `--measure` | `65ch` | Maximum readable line length |
+| Token        | Value    | Typical Use                             |
+| ------------ | -------- | --------------------------------------- |
+| `--space-xs` | `0.5rem` | Tight gaps                              |
+| `--space-s`  | `1.5rem` | Between related items                   |
+| `--space-m`  | `3rem`   | Between sections, page margins          |
+| `--space-l`  | `6rem`   | Bottom of page, generous breathing room |
+| `--measure`  | `65ch`   | Maximum readable line length            |
 
 ---
 
@@ -86,14 +92,14 @@ letter-spacing: -0.02em;
 
 These define the physical feel of surfaces and elevation.
 
-| Token | Value | Usage |
-|---|---|---|
-| `--radius-soft` | `16px` | Cards, panels, images |
-| `--radius-organic` | `32px 16px 32px 16px` | Featured/hero elements with irregular rounding |
-| `--shadow-diffuse` | `0 15px 45px -15px rgba(26,46,12,0.15)` | Subtle lift for cards and tiles |
-| `--shadow-panel` | `0 12px 32px -20px rgba(26,46,12,0.35)` | Stronger shadow for section panels |
-| `--surface-gradient-soft` | `linear-gradient(170deg, rgba(255,255,255,0.94) 0%, rgba(242,238,230,0.72) 100%)` | Card/panel background — warm white fading to stone |
-| `--grain` | SVG fractal noise | Global texture overlay (applied via `body::before`) |
+| Token                     | Value                                                                             | Usage                                               |
+| ------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `--radius-soft`           | `16px`                                                                            | Cards, panels, images                               |
+| `--radius-organic`        | `32px 16px 32px 16px`                                                             | Featured/hero elements with irregular rounding      |
+| `--shadow-diffuse`        | `0 15px 45px -15px rgba(26,46,12,0.15)`                                           | Subtle lift for cards and tiles                     |
+| `--shadow-panel`          | `0 12px 32px -20px rgba(26,46,12,0.35)`                                           | Stronger shadow for section panels                  |
+| `--surface-gradient-soft` | `linear-gradient(170deg, rgba(255,255,255,0.94) 0%, rgba(242,238,230,0.72) 100%)` | Card/panel background — warm white fading to stone  |
+| `--grain`                 | SVG fractal noise                                                                 | Global texture overlay (applied via `body::before`) |
 
 The grain overlay (`opacity: 0.8`) is fixed-position and pointer-events-none — it doesn't interrupt interaction but adds a slightly printed, tactile quality to the whole page.
 
@@ -103,12 +109,12 @@ The grain overlay (`opacity: 0.8`) is fixed-position and pointer-events-none —
 
 Global single-purpose classes in `global.css`:
 
-| Class | Effect |
-|---|---|
-| `.surface-gradient-soft` | Applies `--surface-gradient-soft` as background |
-| `.text-body-large` | `font-size: 1.25rem; line-height: 1.7` |
-| `.logo-circle` | `border-radius: 50%; object-fit: cover` — for circular image crops |
-| `.page--wide` | Removes `max-width` from `.page` for full-width layouts |
+| Class                    | Effect                                                             |
+| ------------------------ | ------------------------------------------------------------------ |
+| `.surface-gradient-soft` | Applies `--surface-gradient-soft` as background                    |
+| `.text-body-large`       | `font-size: 1.25rem; line-height: 1.7`                             |
+| `.logo-circle`           | `border-radius: 50%; object-fit: cover` — for circular image crops |
+| `.page--wide`            | Removes `max-width` from `.page` for full-width layouts            |
 
 ---
 
@@ -118,8 +124,8 @@ Global single-purpose classes in `global.css`:
 
 ```html
 <article class="page">
-  <header class="page__header"> ... </header>
-  <section class="section"> ... </section>
+  <header class="page__header">...</header>
+  <section class="section">...</section>
 </article>
 ```
 
@@ -131,8 +137,8 @@ For pages that mix full-bleed photos with readable text (e.g., Plan a Visit, Fam
 
 ```html
 <article class="page page--wide">
-  <header class="page__header [page]__prose"> ... </header>
-  <section class="section [page]__prose [page]__panel surface-gradient-soft"> ... </section>
+  <header class="page__header [page]__prose">...</header>
+  <section class="section [page]__prose [page]__panel surface-gradient-soft">...</section>
 </article>
 ```
 
@@ -150,6 +156,7 @@ The primary content pattern on section pages. Every `<section>` becomes a visual
 ```
 
 With scoped CSS:
+
 ```css
 .[page]__panel {
   padding: clamp(1.25rem, 2.4vw, 2rem);
@@ -196,29 +203,30 @@ A reusable 3-column portrait photo grid. Used on all main section pages to injec
 
 ```typescript
 type Props = {
-  heading?: string | null  // null suppresses the heading; default = 'Moments from Pine Lake'
-  items: MomentsItem[]     // { image?: HomePageImage, fallbackAlt: string }
-  sectionClass?: string    // wrapping section class; default = 'section'
+  heading?: string | null // null suppresses the heading; default = 'Moments from Pine Lake'
+  items: MomentsItem[] // { image?: HomePageImage, fallbackAlt: string }
+  sectionClass?: string // wrapping section class; default = 'section'
 }
 ```
 
 Grid layout:
+
 - Desktop: 3 columns, `aspect-ratio: 4/5` (portrait)
 - Mobile (≤768px): 2 columns
 
 Usage pattern:
+
 ```astro
 ---
 import MomentsSection from '../components/MomentsSection.astro'
-import { homePageImages } from '../data/homePageImages'
-
-const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+import { imageByFilename } from '../data/homePageImages'
 
 const items = [
   { image: imageByFilename('filename.jpg'), fallbackAlt: 'Descriptive alt text' },
-  ...
+  { image: imageByFilename('another.jpg'), fallbackAlt: 'Another moment' },
 ]
 ---
+
 <MomentsSection items={items} sectionClass="section" />
 ```
 
@@ -244,18 +252,20 @@ Renders `.link-card` tiles — white background, `--shadow-diffuse`, moss border
 
 ## Image System
 
-All church photos are stored in `public/images/` and registered in `src/data/homePageImages.ts`. This single-location rule applies to every photo, whether it appears in a page-specific context (hero, portrait, gallery) or in the shared dynamic pool. The only exceptions are brand assets (logos, icons) which may live in `src/assets/images/`.
+All church photos live in `src/assets/images/` and are catalogued (tags + alt) in `src/data/homePageImages.ts`. Photos render through the `<Photo>` component — a wrapper around Astro's `<Image>` — which resolves a filename to an optimized, responsive WebP via the `src/lib/images.ts` registry (`import.meta.glob`). Brand assets (logos, icons) live alongside the photos in `src/assets/images/`.
 
-This pattern is intentionally CMS-ready: images are referenced by URL string, not by build-time import, so the registry entries can later be replaced by CMS API responses with minimal change.
+Filenames remain the data-level identifier (in `homePageImages.ts` and `<Photo filename="…" />`), so the catalogue could later be swapped for a CMS response with minimal change.
 
-Each entry:
+Each catalogue entry:
+
 ```typescript
-{ filename: string, tags: string[], alt?: string }
+type HomePageImage = { filename: string; tags: string[]; alt?: string }
 ```
 
 Tags in use: `worship`, `kids`, `family`, `community`, `service`, `social`, `gathering`, `care`, `generosity`, `youth`, `prayer`, `teaching`, `baptism`, `communion`, `church`, `building`, `exterior`, `pastor`, `leadership`, `portrait`
 
 Helper functions:
+
 - `imagePublicSrc(filename)` — returns the correct public URL including `BASE_URL`
 - `imageAlt(image, fallback)` — returns `image.alt` if set, otherwise `fallback`
 - `imageByFilename(filename)` — finds an image entry by filename

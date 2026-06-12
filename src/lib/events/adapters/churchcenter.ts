@@ -117,7 +117,8 @@ export async function churchCenterEvents(): Promise<CalendarEvent[]> {
 
   const included = new Map<string, JsonApiResource>()
   for (const r of (body.included ?? []) as JsonApiResource[]) included.set(`${r.type}:${r.id}`, r)
-  const resolve = (ref?: { type: string; id: string } | null) => (ref ? included.get(`${ref.type}:${ref.id}`) : undefined)
+  const resolve = (ref?: { type: string; id: string } | null) =>
+    ref ? included.get(`${ref.type}:${ref.id}`) : undefined
 
   const events: CalendarEvent[] = []
   for (const ev of (body.data ?? []) as JsonApiResource[]) {

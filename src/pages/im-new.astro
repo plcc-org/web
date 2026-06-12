@@ -3,9 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { imNewStartHereLinks } from '../data/startHereLinks'
-import { homePageImages } from '../data/homePageImages'
-
-const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+import { imageByFilename } from '../data/homePageImages'
 
 const imNewMomentsItems = [
   {

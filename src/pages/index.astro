@@ -7,10 +7,8 @@ import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
 import { getImage } from 'astro:assets'
 import Photo from '../components/Photo.astro'
-import { homePageImages, imageAlt } from '../data/homePageImages'
+import { imageByFilename, imageAlt } from '../data/homePageImages'
 import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
-
-const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
 
 const welcomeImage = imageByFilename('plcc-community-family-worship.jpg')
 

@@ -128,17 +128,17 @@ consistency** — not a redesign.
   for page-specific rules, reserve `global.css` for tokens + shared primitives. Consider
   splitting `global.css` into `tokens.css` + `base.css` + `components.css`.
 
-### 3.2 De-duplicate helpers
+### 3.2 De-duplicate helpers — _done in this pass_
 
 - `imageByFilename` is copy-pasted into `index`, `im-new`, `plan-a-visit`, `community`,
   `families`, `youth`, `for-our-neighbors`. Hoist to `homePageImages.ts` and import.
 
-### 3.3 Split `messages.astro` (424 lines)
+### 3.3 Split `messages.astro` (424 lines) — _done in this pass_
 
 - Separate the YouTube RSS fetch/parse (→ `src/lib/messages/`) from the view and the 178-line
   style block. Regex XML parsing works but is fragile; isolate it behind a typed function.
 
-### 3.4 Dead code / undefined classes
+### 3.4 Dead code / undefined classes — _done (handler removed; serve/next-steps already fixed)_
 
 - `.measure--medium` (`index.astro:94`) and `.page__quote` (`weddings-memorials.astro:16`)
   were referenced but undefined → unstyled. _Addressed in this pass._
@@ -147,7 +147,7 @@ consistency** — not a redesign.
 - `serve.astro` hand-rolls `.media__frame` instead of the shared `.card` grid; `next-steps`
   uses the logo image as a card photo — normalize.
 
-### 3.5 Tooling
+### 3.5 Tooling — _done in this pass (CI: format + types + build)_
 
 - Add a link-checker (catch future 404s like 1.1), run Prettier in CI, and add a basic
   `astro check` step.

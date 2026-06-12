@@ -2,9 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import MomentsSection from '../../components/MomentsSection.astro'
 import Photo from '../../components/Photo.astro'
-import { homePageImages } from '../../data/homePageImages'
-
-const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
+import { imageByFilename } from '../../data/homePageImages'
 
 const kidsMomentsItems = [
   {
