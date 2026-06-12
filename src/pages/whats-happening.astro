@@ -1,10 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { events, type Event, type EventCategory } from '../data/events'
+import { getUpcomingEvents } from '../lib/events/provider'
+import type { EventCategory } from '../lib/events/types'
 
 const categories: EventCategory[] = ['Everyone', 'Families', 'Youth', 'Groups', 'Serve']
 
 const selectedCategory = (Astro.url.searchParams.get('c') as EventCategory | null) ?? 'Everyone'
+
+// Source-agnostic: provider returns upcoming, de-duped, sorted events (curated
+// fallback today; live Church Center source later). See docs/events-plan.md.
+const events = await getUpcomingEvents()
 
 function parseDate(iso: string) {
   return new Date(iso)
