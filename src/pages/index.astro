@@ -5,7 +5,10 @@ import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
-import { homePageImages, imageAlt, imagePublicSrc } from '../data/homePageImages'
+import { getImage } from 'astro:assets'
+import Photo from '../components/Photo.astro'
+import { homePageImages, imageAlt } from '../data/homePageImages'
+import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
 
 const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
 
@@ -21,6 +24,9 @@ const momentsItems = [
 ]
 
 const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
+
+// Optimized WebP poster for the hero video (needs a plain URL string).
+const heroPoster = await getImage({ src: churchExterior, width: 1024, format: 'webp' })
 ---
 
 <BaseLayout
@@ -41,7 +47,7 @@ const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
           playsinline
           aria-hidden="true"
           tabindex="-1"
-          poster={imagePublicSrc('church-exterior-1024x400.jpg')}
+          poster={heroPoster.src}
         >
           <source src={`${import.meta.env.BASE_URL}video/homepage-hero.mp4`} type="video/mp4" />
           Your browser does not support the video tag.
@@ -71,12 +77,12 @@ const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
         {
           welcomeImage ? (
             <div class="welcome-hero__image-frame ratio-4x5">
-              <img
-                src={imagePublicSrc(welcomeImage.filename)}
+              <Photo
+                filename={welcomeImage.filename}
                 alt={imageAlt(welcomeImage, 'Families and adults gathered in worship together')}
                 class="welcome-hero__image"
-                loading="lazy"
-                decoding="async"
+                widths={[360, 720]}
+                sizes="(max-width: 768px) 100vw, 360px"
               />
             </div>
           ) : null
@@ -117,12 +123,12 @@ const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
         <div class="media__frame ratio-4x3">
           {
             joinUsImage ? (
-              <img
-                src={imagePublicSrc(joinUsImage.filename)}
+              <Photo
+                filename={joinUsImage.filename}
                 alt={imageAlt(joinUsImage, 'People gathered together during worship at Pine Lake')}
                 class="media__img media__img--cover joinus-photo"
-                loading="lazy"
-                decoding="async"
+                widths={[360, 720]}
+                sizes="(max-width: 768px) 100vw, 420px"
               />
             ) : null
           }

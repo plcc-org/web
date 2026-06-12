@@ -27,10 +27,6 @@ export function pickImageByAnyTag(tags: string[], excludeFilenames: string[] = [
   return matches[randomIndex]
 }
 
-export function imagePublicSrc(filename: string): string {
-  return `${import.meta.env.BASE_URL}images/${encodeURIComponent(filename)}`
-}
-
 export function imageAlt(image: HomePageImage, fallback: string): string {
   if (image.alt && image.alt.trim().length > 0) {
     return image.alt
@@ -43,8 +39,16 @@ export const homePageImages: HomePageImage[] = [
   { filename: '463487542_18145527859338056_2415919883470249546_n.jpg', tags: ['worship'], alt: '' },
   { filename: '467977252_18149338267338056_1889842660921052110_n.jpg', tags: ['church'], alt: '' },
   { filename: '468021140_18149338252338056_8213645161142400436_n.jpg', tags: ['teaching', 'sermon', 'becca'], alt: '' },
-  { filename: '473716270_18155064727338056_2658407046026869686_n.jpg', tags: ['community', 'cross', 'prayer'], alt: '' },
-  { filename: '474002348_18156359122338056_2617337075326128263_n.jpg', tags: ['teaching', 'pastor', 'sermon'], alt: '' },
+  {
+    filename: '473716270_18155064727338056_2658407046026869686_n.jpg',
+    tags: ['community', 'cross', 'prayer'],
+    alt: '',
+  },
+  {
+    filename: '474002348_18156359122338056_2617337075326128263_n.jpg',
+    tags: ['teaching', 'pastor', 'sermon'],
+    alt: '',
+  },
   { filename: '474748731_1030392515795404_2521947271930024728_n.jpg', tags: ['informal', 'family', 'social'], alt: '' },
   { filename: '475568922_18156359086338056_4047262209868672150_n.jpg', tags: ['kids', 'community'], alt: '' },
   { filename: '475891141_1037080631793259_4238958896521856436_n.jpg', tags: ['baptism', 'becca', 'mark'], alt: '' },

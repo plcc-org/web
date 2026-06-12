@@ -1,5 +1,6 @@
 ---
-import { imageAlt, imagePublicSrc, type HomePageImage } from '../data/homePageImages'
+import Photo from './Photo.astro'
+import { imageAlt, type HomePageImage } from '../data/homePageImages'
 
 type MomentsItem = {
   image?: HomePageImage
@@ -23,12 +24,12 @@ const visibleItems = items.filter((item): item is { image: HomePageImage; fallba
     {
       visibleItems.map(({ image, fallbackAlt }) => (
         <div class="tile ratio-4x5">
-          <img
-            src={imagePublicSrc(image.filename)}
+          <Photo
+            filename={image.filename}
             alt={imageAlt(image, fallbackAlt)}
             class="tile__img"
-            loading="lazy"
-            decoding="async"
+            widths={[300, 500, 700]}
+            sizes="(max-width: 768px) 50vw, 33vw"
           />
         </div>
       ))

@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import MomentsSection from '../../components/MomentsSection.astro'
-import { homePageImages, imagePublicSrc } from '../../data/homePageImages'
+import Photo from '../../components/Photo.astro'
+import { homePageImages } from '../../data/homePageImages'
 
 const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
 
@@ -43,12 +44,14 @@ const kidsMomentsBottomItems = [
   <article class="page page--wide">
     <header class="page__header">
       <h1>
-        <img
-          src={imagePublicSrc('Pine-Lake-Kids-web.webp')}
+        <Photo
+          filename="Pine-Lake-Kids-web.webp"
           alt="Pine Lake Kids"
           class="kids__logo"
           loading="eager"
-          decoding="async"
+          fetchpriority="high"
+          widths={[240, 480]}
+          sizes="(max-width: 600px) 60vw, 320px"
         />
       </h1>
       <p class="page__subhead">Babies through 5th Grade · Sundays at 10:00am</p>

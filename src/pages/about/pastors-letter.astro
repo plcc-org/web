@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import { imagePublicSrc } from '../../data/homePageImages'
+import Photo from '../../components/Photo.astro'
 ---
 
 <BaseLayout title="A Welcome from our Lead Pastor | Pine Lake Covenant Church">
@@ -55,12 +55,12 @@ import { imagePublicSrc } from '../../data/homePageImages'
 
       <aside class="letter-sidebar">
         <div class="letter-portrait">
-          <img
-            src={imagePublicSrc('Austin-2025-5-web.jpg')}
-            alt="Austin Bailey"
+          <Photo
+            filename="Austin-2025-5-web.jpg"
+            alt="Austin Bailey, Lead Pastor at Pine Lake"
             class="media__img"
-            loading="lazy"
-            decoding="async"
+            widths={[320, 640]}
+            sizes="(max-width: 900px) 100vw, 320px"
           />
         </div>
       </aside>

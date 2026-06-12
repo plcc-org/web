@@ -9,6 +9,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString(
 import '../styles/global.css'
 import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
 import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
+import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
 ---
 
 <!doctype html>
@@ -35,10 +36,8 @@ import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
       <nav class="site-nav" aria-label="Primary">
         <div class="site-nav__bar">
           <a href={`${import.meta.env.BASE_URL}`} class="site-nav__home" aria-label="Pine Lake Covenant Church — Home">
-            <span
-              class="site-nav__home-logo"
-              style={`--logo-wordmark-url: url('${import.meta.env.BASE_URL}images/Horizontal-Logo-White-on-Transparent.png')`}
-              aria-hidden="true"></span>
+            <span class="site-nav__home-logo" style={`--logo-wordmark-url: url('${wordmarkUrl}')`} aria-hidden="true"
+            ></span>
           </a>
           <button
             class="site-nav__toggle"

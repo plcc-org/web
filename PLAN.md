@@ -82,12 +82,19 @@ consistency** — not a redesign.
 
 ## Phase 2 — Performance & SEO
 
-### 2.1 Adopt Astro image optimization
-- Move photos from `public/images/` into `src/assets/` and render via `<Image>` / `<Picture>`
-  (auto WebP/AVIF, responsive `srcset`, intrinsic `width`/`height`).
-- Wrap in a small `<Photo>` component so pages stay terse and the `imagePublicSrc` call sites
-  migrate cleanly. Keep the `homePageImages` tag/alt metadata model.
-- Compress/poster the hero video; provide a static poster fallback (already partly present).
+### 2.1 Adopt Astro image optimization — _done in this pass_
+- Moved all photos from `public/images/` to `src/assets/images/`; added `src/lib/images.ts`
+  (filename→loader registry via `import.meta.glob`) and a `<Photo>` wrapper around `<Image>`
+  that emits responsive, lazy, intrinsic-sized **WebP**. Converted every `<img>` call site
+  (pages + `MomentsSection`); removed `imagePublicSrc`.
+- Hero-video poster now an optimized WebP via `getImage()`; nav wordmark mask uses a hashed
+  `?url` import. Remote YouTube thumbnails (`messages.astro`) stay as-is (can't be locally
+  optimized).
+- Result: users download **only WebP** photos (responsive `srcset`); the only original-format
+  asset served is the tiny footer YouTube icon. Per-image savings ~30–80%.
+- _Known residual:_ the glob still emits originals for the ~unused `pickImageByAnyTag` pool
+  images (~5 MB of dead weight in `dist`, never referenced/served). Could be pruned later or
+  removed by replacing the random-pick pools with explicit images.
 
 ### 2.2 Social & favicon metadata
 - `BaseLayout` has no Open Graph / Twitter / `theme-color` tags and only a single

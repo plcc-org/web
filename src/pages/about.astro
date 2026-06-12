@@ -3,7 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import type { LinkCardItem } from '../data/startHereLinks'
-import { imageAlt, imagePublicSrc, homePageImages, pickImageByAnyTag } from '../data/homePageImages'
+import Photo from '../components/Photo.astro'
+import { imageAlt, homePageImages, pickImageByAnyTag } from '../data/homePageImages'
 
 const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
 
@@ -66,16 +67,14 @@ const aboutMomentsItems = [
         <div class="media__frame ratio-16x9">
           {
             aboutHeroImage ? (
-              <img
-                src={imagePublicSrc(aboutHeroImage.filename)}
+              <Photo
+                filename={aboutHeroImage.filename}
                 alt={imageAlt(aboutHeroImage, 'People gathered together at Pine Lake')}
                 class="media__img media__img--cover"
-                loading="lazy"
-                decoding="async"
+                loading="eager"
+                fetchpriority="high"
               />
-            ) : (
-              <span class="media__label">Hero photo placeholder (about)</span>
-            )
+            ) : null
           }
         </div>
       </figure>

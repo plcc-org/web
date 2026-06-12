@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets'
+import { imageLoader } from '../lib/images'
+
+// Thin wrapper around Astro's <Image> that resolves a data-driven filename
+// (from src/assets/images) and emits an optimized, responsive WebP <img> with
+// intrinsic width/height (no layout shift). Renders nothing if the file is
+// missing, so callers don't need their own fallback. Astro caps generated
+// widths at the source width, so oversized `widths` are harmless.
+
+type Props = {
+  filename: string
+  alt: string
+  class?: string
+  widths?: number[]
+  sizes?: string
+  loading?: 'lazy' | 'eager'
+  fetchpriority?: 'high' | 'low' | 'auto'
+  format?: 'webp' | 'avif' | 'png' | 'jpeg'
+}
+
+const {
+  filename,
+  alt,
+  class: className,
+  widths = [400, 800, 1200],
+  sizes = '(max-width: 1100px) 100vw, 1100px',
+  loading = 'lazy',
+  fetchpriority,
+  format = 'webp',
+} = Astro.props
+
+const loader = imageLoader(filename)
+if (!loader) {
+  console.warn(`[Photo] image not found in src/assets/images: ${filename}`)
+}
+---
+
+{
+  loader && (
+    <Image
+      src={loader()}
+      alt={alt}
+      class={className}
+      widths={widths}
+      sizes={sizes}
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchpriority}
+      format={format}
+    />
+  )
+}

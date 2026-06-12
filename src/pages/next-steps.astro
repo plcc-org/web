@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { imagePublicSrc } from '../data/homePageImages'
+import Photo from '../components/Photo.astro'
 ---
 
 <BaseLayout
@@ -16,12 +16,12 @@ import { imagePublicSrc } from '../data/homePageImages'
       </p>
       <figure class="media">
         <div class="media__frame ratio-16x9">
-          <img
-            src={imagePublicSrc('church-exterior-1024x400.jpg')}
+          <Photo
+            filename="church-exterior-1024x400.jpg"
             alt="People gathering outside Pine Lake Covenant Church"
             class="media__img media__img--cover"
             loading="eager"
-            decoding="async"
+            fetchpriority="high"
           />
         </div>
       </figure>
@@ -33,12 +33,12 @@ import { imagePublicSrc } from '../data/homePageImages'
           <h3>Find Your People</h3>
           <p>Explore groups for different life stages. You are welcome to browse first and join when ready.</p>
           <div class="media__frame ratio-16x9">
-            <img
-              src={imagePublicSrc('youth-01-1600x1600.jpg')}
+            <Photo
+              filename="youth-01-1600x1600.jpg"
               alt="Students talking together at a church gathering"
               class="media__img media__img--cover"
-              loading="lazy"
-              decoding="async"
+              widths={[300, 500, 700]}
+              sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
         </a>
@@ -46,12 +46,12 @@ import { imagePublicSrc } from '../data/homePageImages'
           <h3>Upcoming Signups</h3>
           <p>See events and registrations in one place. Start with one thing that feels manageable.</p>
           <div class="media__frame ratio-16x9">
-            <img
-              src={imagePublicSrc('youth-02-1600x1600.jpg')}
+            <Photo
+              filename="youth-02-1600x1600.jpg"
               alt="People connecting in conversation at Pine Lake"
               class="media__img media__img--cover"
-              loading="lazy"
-              decoding="async"
+              widths={[300, 500, 700]}
+              sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
         </a>
@@ -59,12 +59,12 @@ import { imagePublicSrc } from '../data/homePageImages'
           <h3>Serve With Others</h3>
           <p>Serving is a practical way to meet people and contribute. We can help you find a good fit.</p>
           <div class="media__frame ratio-16x9">
-            <img
-              src={imagePublicSrc('youth-03-1600x1600.jpg')}
+            <Photo
+              filename="youth-03-1600x1600.jpg"
               alt="Volunteers serving together during a church event"
               class="media__img media__img--cover"
-              loading="lazy"
-              decoding="async"
+              widths={[300, 500, 700]}
+              sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
         </a>
@@ -72,12 +72,12 @@ import { imagePublicSrc } from '../data/homePageImages'
           <h3>Talk With Someone</h3>
           <p>Have questions or want a personal connection point? Reach out and we will follow up.</p>
           <div class="media__frame ratio-16x9">
-            <img
-              src={imagePublicSrc('Pine-Lake-Kids-web.webp')}
+            <Photo
+              filename="Pine-Lake-Kids-web.webp"
               alt="A family-friendly moment at Pine Lake Kids"
               class="media__img media__img--cover"
-              loading="lazy"
-              decoding="async"
+              widths={[300, 500, 700]}
+              sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
         </a>

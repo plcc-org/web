@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import MomentsSection from '../components/MomentsSection.astro'
-import { homePageImages, imagePublicSrc } from '../data/homePageImages'
+import Photo from '../components/Photo.astro'
+import { homePageImages } from '../data/homePageImages'
 
 const imageByFilename = (filename: string) => homePageImages.find((image) => image.filename === filename)
 
@@ -65,12 +66,10 @@ const planVisitInlineMomentsItems = [
       <p>There’s plenty of guest parking available, including accessible parking.</p>
 
       <figure class="media">
-        <img
-          class="media__img media__img--cover"
-          src={imagePublicSrc('church-exterior-1024x400.jpg')}
+        <Photo
+          filename="church-exterior-1024x400.jpg"
           alt="Pine Lake Covenant Church building in Sammamish"
-          loading="lazy"
-          decoding="async"
+          class="media__img media__img--cover"
         />
         <figcaption class="media__caption">
           Our building in Sammamish — look for guest parking near the main entrance.

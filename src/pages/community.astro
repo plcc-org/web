@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { imageAlt, imagePublicSrc, pickImageByAnyTag } from '../data/homePageImages'
+import Photo from '../components/Photo.astro'
+import { imageAlt, pickImageByAnyTag } from '../data/homePageImages'
 
 const communityHeroImage = pickImageByAnyTag(['community', 'gathering', 'social'])
 const lifeTogetherImage = pickImageByAnyTag(['community', 'social', 'gathering'], [communityHeroImage?.filename ?? ''])
@@ -21,16 +22,14 @@ const careImage = pickImageByAnyTag(['care', 'prayer'])
         <div class="media__frame ratio-16x9">
           {
             communityHeroImage ? (
-              <img
-                src={imagePublicSrc(communityHeroImage.filename)}
+              <Photo
+                filename={communityHeroImage.filename}
                 alt={imageAlt(communityHeroImage, 'People connected in community at Pine Lake')}
                 class="media__img media__img--cover"
-                loading="lazy"
-                decoding="async"
+                loading="eager"
+                fetchpriority="high"
               />
-            ) : (
-              <span class="media__label">Hero photo placeholder (community)</span>
-            )
+            ) : null
           }
         </div>
       </figure>
@@ -47,16 +46,12 @@ const careImage = pickImageByAnyTag(['care', 'prayer'])
       <div class="media__frame ratio-4x3">
         {
           lifeTogetherImage ? (
-            <img
-              src={imagePublicSrc(lifeTogetherImage.filename)}
+            <Photo
+              filename={lifeTogetherImage.filename}
               alt={imageAlt(lifeTogetherImage, 'People sharing life together at Pine Lake')}
               class="media__img media__img--cover"
-              loading="lazy"
-              decoding="async"
             />
-          ) : (
-            <span class="media__label">Photo placeholder</span>
-          )
+          ) : null
         }
       </div>
 
@@ -83,16 +78,12 @@ const careImage = pickImageByAnyTag(['care', 'prayer'])
       <div class="media__frame ratio-4x3">
         {
           generosityImage ? (
-            <img
-              src={imagePublicSrc(generosityImage.filename)}
+            <Photo
+              filename={generosityImage.filename}
               alt={imageAlt(generosityImage, 'People practicing generosity through shared ministry')}
               class="media__img media__img--cover"
-              loading="lazy"
-              decoding="async"
             />
-          ) : (
-            <span class="media__label">Photo placeholder</span>
-          )
+          ) : null
         }
       </div>
 
@@ -112,16 +103,12 @@ const careImage = pickImageByAnyTag(['care', 'prayer'])
       <div class="media__frame ratio-4x3">
         {
           careImage ? (
-            <img
-              src={imagePublicSrc(careImage.filename)}
+            <Photo
+              filename={careImage.filename}
               alt={imageAlt(careImage, 'Prayer and care support at Pine Lake')}
               class="media__img media__img--cover"
-              loading="lazy"
-              decoding="async"
             />
-          ) : (
-            <span class="media__label">Photo placeholder</span>
-          )
+          ) : null
         }
       </div>
     </section>

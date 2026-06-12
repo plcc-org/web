@@ -157,9 +157,7 @@ const extractSundayServicesFromFeed = (xml: string): SundayService[] => {
 let sundayServices: SundayService[] = fallbackSundayServices.map(asService)
 
 try {
-  const feedResponse = await fetch(
-    'https://www.youtube.com/feeds/videos.xml?channel_id=UC1eeiv-tSWoCkB33rskGggw'
-  )
+  const feedResponse = await fetch('https://www.youtube.com/feeds/videos.xml?channel_id=UC1eeiv-tSWoCkB33rskGggw')
 
   if (feedResponse.ok) {
     const feedXml = await feedResponse.text()
@@ -183,8 +181,8 @@ const [latestService, ...archiveServices] = sundayServices
       <h1>Worship With Us Anytime</h1>
 
       <p class="page__lede">
-        Catch up on recent Sunday services or revisit a message that encouraged you. Start with the latest service below,
-        then browse the archive.
+        Catch up on recent Sunday services or revisit a message that encouraged you. Start with the latest service
+        below, then browse the archive.
       </p>
     </header>
 
@@ -204,9 +202,7 @@ const [latestService, ...archiveServices] = sundayServices
         <h2 id="latest-service-heading">{latestService.title}</h2>
         <p class="service-hero__date">{latestService.dateLabel}</p>
 
-        <p>
-          Join in worship, prayer, and Scripture from our latest Sunday gathering.
-        </p>
+        <p>Join in worship, prayer, and Scripture from our latest Sunday gathering.</p>
 
         <div class="service-hero__actions">
           <a href={latestService.watchUrl} target="_blank" rel="noopener">Watch on YouTube</a>
@@ -224,20 +220,24 @@ const [latestService, ...archiveServices] = sundayServices
       </div>
 
       <ul class="service-grid" role="list">
-        {archiveServices.map((service) => (
-          <li>
-            <article class="service-card">
-              <a class="service-card__image-link" href={service.watchUrl} target="_blank" rel="noopener">
-                <img src={service.thumbnailUrl} alt={service.title} loading="lazy" width="480" height="360" />
-              </a>
-              <div class="service-card__body">
-                <p class="service-card__date">{service.dateLabel}</p>
-                <h3>{service.title}</h3>
-                <a href={service.watchUrl} target="_blank" rel="noopener">Watch Service</a>
-              </div>
-            </article>
-          </li>
-        ))}
+        {
+          archiveServices.map((service) => (
+            <li>
+              <article class="service-card">
+                <a class="service-card__image-link" href={service.watchUrl} target="_blank" rel="noopener">
+                  <img src={service.thumbnailUrl} alt={service.title} loading="lazy" width="480" height="360" />
+                </a>
+                <div class="service-card__body">
+                  <p class="service-card__date">{service.dateLabel}</p>
+                  <h3>{service.title}</h3>
+                  <a href={service.watchUrl} target="_blank" rel="noopener">
+                    Watch Service
+                  </a>
+                </div>
+              </article>
+            </li>
+          ))
+        }
       </ul>
     </section>
   </article>
