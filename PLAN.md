@@ -1,0 +1,159 @@
+# Pine Lake Covenant Church — Prototype → Release Plan
+
+A roadmap for taking the PLCC site from working prototype to release-worthy. Findings are
+grouped into phases by priority. Phase 1 items are launch blockers; later phases improve
+polish, performance, and maintainability.
+
+**Decisions baked into this plan**
+
+- **Hosting:** three environments — `development` (localhost), `staging` (GitHub Pages,
+  `timsneath.github.io/plcc-web/`, **not** indexed), `production` (`plcc.org`, indexed).
+  `site` / `base` / indexing are environment-driven, not hardcoded.
+- **Events:** no Church Center API key yet. Build an **events provider abstraction** so a
+  temporary scraper can stand in now and be swapped for the real API later without touching
+  the page. Until then, "What's Happening" must not render an empty or stale list.
+- **Stories / testimonials:** use assets already in the repo — real community photos and the
+  genuine quotes in `quotes.ts`; drop the fabricated placeholder quotes/stories.
+
+---
+
+## Overall assessment
+
+Strong prototype with a genuine, distinctive voice and a coherent design system. The
+CLAUDE.md philosophy is actually lived in the copy (`im-new`, `plan-a-visit`, the care
+pages are excellent). The gap to release is **finishing, hardening, and tightening
+consistency** — not a redesign.
+
+---
+
+## Phase 1 — Launch blockers
+
+### 1.1 Broken navigation (404s) — _done in this pass_
+- `neighborsDoors.ts` linked to `/care-support/` and `/serve-locally/`, neither of which
+  exists. Two of the five "For Our Neighbors" doors 404'd.
+- **Fix:** created `/for-our-neighbors/care-support/` and `/for-our-neighbors/serve-locally/`
+  (modeled on the existing neighbor subpages), seeded from the on-voice door content, and
+  repointed the door hrefs. This also improves IA: the doors now lead to real hub pages.
+
+### 1.2 "What's Happening" is empty / stale
+- Every event in `events.ts` is dated Jan–Feb 2026; today is mid-2026, and the page filters
+  to upcoming events → it renders nothing. Several rows use placeholder URLs
+  (`.../events/XXXXXXX`) and "Tuesdays Together" is duplicated.
+- **Plan:**
+  1. Introduce `src/lib/events/` with a provider interface
+     (`getUpcomingEvents(): Promise<Event[]>`).
+  2. First implementation: a build-time scraper of the existing public Church Center /
+     calendar (Playwright or fetch+parse), normalized to the existing `Event` type.
+  3. Keep a small curated fallback list (real, forward-dated) for when the scrape fails.
+  4. Swap to the official API later by adding one provider — no page changes.
+  5. If events can't be made reliable for launch, hide "What's Happening" from nav
+     (strategically incomplete) rather than ship an empty page.
+
+### 1.3 Placeholder content visible to users
+- `serve.astro`: three one-line stubs with "Photo placeholder" labels — not shippable.
+- `stories.astro`: six testimonials with `Photo` placeholders instead of images.
+- **Plan (use repo assets):**
+  - `stories.astro`: wire real community photos from `public/images/` and the genuine quotes
+    from `quotes.ts`; drop fabricated ones. Decide whether `stories` is linked in nav or kept
+    as a deep link.
+  - `serve.astro`: either flesh out with real role descriptions + contact + repo photos, or
+    fold into `next-steps` / cut for launch. Currently it conflicts with the "Serve Locally"
+    door (internal roles vs. local partners) — resolve the overlap.
+
+### 1.4 SEO / indexing controls — _done in this pass_
+- `robots.txt` was a static `Disallow: /` (blocks all indexing).
+- **Fix:** replaced with an environment-aware `src/pages/robots.txt.ts` endpoint —
+  `Disallow: /` on dev/staging, `Allow` + sitemap reference on production.
+
+### 1.5 Environment configuration — _done in this pass_
+- `astro.config.mjs` now resolves `site` / `base` from a `DEPLOY_ENV` variable
+  (`development` | `staging` | `production`), with the old `GITHUB_ACTIONS` path preserved as
+  the staging default. `src/config/site.ts` centralizes the per-environment values.
+
+### 1.6 Image weight & optimization (also perf — see 2.1)
+- ~14 MB of full-res Instagram JPGs + an 8.6 MB hero video, all served raw via `<img>`.
+  The Astro `<Image>` component (mandated by CLAUDE.md) is used nowhere, and most `<img>`
+  tags lack `width`/`height` (layout shift). This is both a blocker-level perf issue and a
+  maintainability one. See Phase 2.
+
+---
+
+## Phase 2 — Performance & SEO
+
+### 2.1 Adopt Astro image optimization
+- Move photos from `public/images/` into `src/assets/` and render via `<Image>` / `<Picture>`
+  (auto WebP/AVIF, responsive `srcset`, intrinsic `width`/`height`).
+- Wrap in a small `<Photo>` component so pages stay terse and the `imagePublicSrc` call sites
+  migrate cleanly. Keep the `homePageImages` tag/alt metadata model.
+- Compress/poster the hero video; provide a static poster fallback (already partly present).
+
+### 2.2 Social & favicon metadata
+- `BaseLayout` has no Open Graph / Twitter / `theme-color` tags and only a single
+  `favicon.svg`. Add OG/Twitter tags (per-page title/description/image), `theme-color`, and a
+  favicon set (PNG + apple-touch + web manifest).
+
+### 2.3 Sitemap
+- Add `@astrojs/sitemap`; reference it from the production `robots.txt`.
+
+---
+
+## Phase 3 — Consistency & maintainability
+
+### 3.1 One convention for page-level CSS
+- Page styles currently live in two places: baked into the 1,341-line `global.css`
+  (`.ethos__*`, `.leader-*`, footer) **and** in scoped `<style>` blocks (`index`,
+  `pastors-letter`, a 178-line block in `messages.astro`). Pick one: prefer scoped `<style>`
+  for page-specific rules, reserve `global.css` for tokens + shared primitives. Consider
+  splitting `global.css` into `tokens.css` + `base.css` + `components.css`.
+
+### 3.2 De-duplicate helpers
+- `imageByFilename` is copy-pasted into `index`, `im-new`, `plan-a-visit`, `community`,
+  `families`, `youth`, `for-our-neighbors`. Hoist to `homePageImages.ts` and import.
+
+### 3.3 Split `messages.astro` (424 lines)
+- Separate the YouTube RSS fetch/parse (→ `src/lib/messages/`) from the view and the 178-line
+  style block. Regex XML parsing works but is fragile; isolate it behind a typed function.
+
+### 3.4 Dead code / undefined classes
+- `.measure--medium` (`index.astro:94`) and `.page__quote` (`weddings-memorials.astro:16`)
+  were referenced but undefined → unstyled. _Addressed in this pass._
+- `QuoteGrid` listens for `astro:after-swap` but `<ClientRouter>` isn't enabled (dead branch).
+  Either enable view transitions or drop the handler.
+- `serve.astro` hand-rolls `.media__frame` instead of the shared `.card` grid; `next-steps`
+  uses the logo image as a card photo — normalize.
+
+### 3.5 Tooling
+- Add a link-checker (catch future 404s like 1.1), run Prettier in CI, and add a basic
+  `astro check` step.
+
+---
+
+## Phase 4 — Voice & visual polish
+
+### 4.1 Copy pass against CLAUDE.md guardrails
+- `families.astro:179` "...no pressure" — communicate low pressure structurally, not by
+  saying it. _Addressed in this pass._
+- `youth.astro` "Discipleship & highlights" heading + hardcoded "May 16, 2026" date —
+  reworded to evergreen. _Addressed in this pass._ (Remaining "discipleship track" wording is
+  a judgment call for the full copy pass.)
+- Homepage subhead "Programs and activities for all ages" leans generic / "program gravity"
+  (guardrail #2) — revisit.
+- `community.astro` "Community at Pine Lake takes many forms..." is generic — make it specific.
+
+### 4.2 Testimonials & photography
+- Replace fabricated quotes with attributed, real ones; ensure photos are vignettes, not
+  posed stock (guardrail #7). Reconcile `quotes.ts` (homepage carousel) with `stories.astro`.
+
+### 4.3 Hero & homepage
+- Revisit hero video treatment, poster, and the welcome section rhythm once images are
+  optimized.
+
+---
+
+## Open questions for Tim
+
+- **Stories page:** link it in nav, or keep as a deep link only?
+- **Serve vs. Serve Locally:** keep both (internal roles + local partners) or merge?
+- **Events scrape:** is the existing site's calendar (or a public Church Center calendar URL)
+  scrapeable, and what's the source URL?
+- **Production cutover:** timeline for `plcc.org` so SEO/redirects can be staged.

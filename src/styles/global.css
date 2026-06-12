@@ -347,6 +347,17 @@ h4 {
   font-style: italic;
 }
 
+.page__quote {
+  margin-top: 1.25rem;
+  padding-left: 1.1rem;
+  border-left: 3px solid rgba(106, 149, 41, 0.45);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--color-forest);
+}
+
 .page__lede a {
   display: inline-block;
   padding: 0.85rem 1.75rem;

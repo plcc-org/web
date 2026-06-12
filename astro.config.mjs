@@ -1,12 +1,14 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
+import { siteConfig } from './src/config/site.ts'
 
 // https://astro.build/config
-// When building for GitHub Pages (in GitHub Actions), set site and base path.
-// When building for a container, these are omitted so the site serves from root.
+// `site` and `base` are resolved per environment (development | staging | production)
+// from DEPLOY_ENV — see src/config/site.ts. Defaults to the GitHub Pages staging
+// target under GitHub Actions, and to a root-served localhost build otherwise.
 export default defineConfig({
-  site: process.env.GITHUB_ACTIONS ? 'https://timsneath.github.io' : undefined,
-  base: process.env.GITHUB_ACTIONS ? '/plcc-web/' : undefined,
+  site: siteConfig.site,
+  base: siteConfig.base,
   vite: {
     server: {
       allowedHosts: ['plcc-dev.internal', 'plcc.internal', 'localhost'],

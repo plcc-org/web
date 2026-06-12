@@ -22,7 +22,7 @@ export const neighborsDoors: Door[] = [
       'Care and presence around memorial services and times of loss',
     ],
     ctaLabel: 'Care & Support',
-    href: '/care-support/',
+    href: '/for-our-neighbors/care-support/',
   },
   {
     id: 'connection',
@@ -71,6 +71,6 @@ export const neighborsDoors: Door[] = [
     body: 'We partner with local organizations we trust and join them with time, relationships, and practical help. For many people, serving becomes a way to build community while contributing to something larger.',
     bullets: ['Issaquah Food Bank', 'Bright Bridge', 'Echo Glen', 'Young Life'],
     ctaLabel: 'Serve Locally',
-    href: '/serve-locally/',
+    href: '/for-our-neighbors/serve-locally/',
   },
 ]

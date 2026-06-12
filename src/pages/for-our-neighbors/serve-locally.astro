@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="Serve Locally | Pine Lake Covenant Church"
+  description="Ways to serve the Sammamish and Issaquah area alongside local organizations Pine Lake partners with."
+>
+  <article class="page">
+    <header class="page__header">
+      <h1>Serve Locally</h1>
+      <p class="page__subhead">Making a difference close to home</p>
+
+      <p class="page__lede">
+        If you’re looking for a way to help nearby, you don’t need to invent something new. We partner with local
+        organizations we trust and join them with time, relationships, and practical help. For a lot of people, serving
+        becomes a way to build community while contributing to something larger.
+      </p>
+    </header>
+
+    <section class="section">
+      <h2>Who we partner with</h2>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Issaquah Food &amp; Clothing Bank</h3>
+          <p>Helping stock shelves and serve neighbors facing food insecurity across the Issaquah area.</p>
+        </div>
+
+        <div class="card">
+          <h3>Bright Bridge</h3>
+          <p>Supporting families in the region with practical help in moments of acute need.</p>
+        </div>
+
+        <div class="card">
+          <h3>Echo Glen</h3>
+          <p>Showing up for young people at the Echo Glen Children’s Center through ongoing relationships.</p>
+        </div>
+
+        <div class="card">
+          <h3>Young Life</h3>
+          <p>Coming alongside local students, including Young Life Capernaum for students with disabilities.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Getting started</h2>
+
+      <p>
+        You don’t need experience or a long-term commitment to begin — most people start by showing up once with
+        someone who’s already involved.
+      </p>
+
+      <p>
+        To find a good first step, email <a href="mailto:office@plcc.org">office@plcc.org</a> or call
+        <a href="tel:+14253928636">(425) 392-8636</a>, and we’ll point you toward what’s coming up.
+      </p>
+    </section>
+
+    <p>
+      <a href={`${import.meta.env.BASE_URL}for-our-neighbors/`}>Back to For Our Neighbors</a>
+    </p>
+  </article>
+</BaseLayout>
