@@ -11,25 +11,30 @@ const selectedCategory = (Astro.url.searchParams.get('c') as EventCategory | nul
 // fallback today; live Church Center source later). See docs/events-plan.md.
 const events = await getUpcomingEvents()
 
+// Event times are absolute instants (often UTC from Church Center); always
+// render them in the church's local timezone so the build server's tz (UTC in
+// CI) can't shift displayed times.
+const TZ = 'America/Los_Angeles'
+
 function parseDate(iso: string) {
   return new Date(iso)
 }
 
 function formatDay(d: Date) {
-  return d.toLocaleDateString('en-US', { weekday: 'short' })
+  return d.toLocaleDateString('en-US', { weekday: 'short', timeZone: TZ })
 }
 
 function formatDate(d: Date) {
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: TZ })
 }
 
 function formatTime(d: Date) {
-  return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ })
 }
 
 function weekLabel(d: Date) {
   // Week label like: "Week of Jan 11"
-  const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: TZ })
   return `Week of ${label}`
 }
 

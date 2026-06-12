@@ -8,18 +8,29 @@
 
 import type { CalendarEvent, EventSource } from './types'
 import { curatedEvents } from './adapters/curated'
+import { churchCenterEvents } from './adapters/churchcenter'
 
 async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
   switch (source) {
     case 'churchcenter':
+      return churchCenterEvents()
     case 'ics':
     case 'pco':
-      // Live adapters are not implemented yet; the provider falls back to curated.
+      // Not implemented yet; the provider falls back to curated.
       throw new Error(`events source "${source}" is not implemented yet`)
     case 'curated':
     default:
       return curatedEvents()
   }
+}
+
+/**
+ * Default source: live Church Center data for production builds, curated for
+ * local dev (fast, offline-friendly, and avoids hitting their API on every
+ * reload). Override anytime with EVENTS_SOURCE.
+ */
+function defaultSource(): EventSource {
+  return process.env.NODE_ENV === 'production' ? 'churchcenter' : 'curated'
 }
 
 /** Build-time "now" as the start of today (used to drop past events). */
@@ -38,7 +49,7 @@ function normalizeUpcoming(events: CalendarEvent[]): CalendarEvent[] {
 }
 
 export async function getUpcomingEvents(): Promise<CalendarEvent[]> {
-  const source = (process.env.EVENTS_SOURCE as EventSource | undefined) ?? 'curated'
+  const source = (process.env.EVENTS_SOURCE as EventSource | undefined) ?? defaultSource()
 
   let raw: CalendarEvent[]
   try {

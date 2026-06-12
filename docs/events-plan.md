@@ -177,28 +177,55 @@ only if needed.
 2. **Launch behavior:** keep "What's Happening" live with the **curated list** (no hiding).
 3. **Freshness:** **daily GitHub Actions rebuild** approved.
 
+## Update: Option C got much cheaper — no Playwright needed
+
+Investigation of the live calendar showed the public Church Center calendar is backed by a
+plain **JSON:API** that needs no login and no headless browser — just a short-lived public
+"organization read token" obtained via a three-step HTTP handshake:
+
+1. `GET  /calendar` → session cookie + `<meta name="csrf-token">`
+2. `POST /sessions/tokens` (cookie + CSRF) → `{ data.attributes.token: "ort_…" }` (2-hr expiry)
+3. `GET  api.churchcenter.com/calendar/v2/events?…` with `Authorization: Bearer ort_…` and
+   `X-PCO-API-Version: 2020-06-16`
+
+The events endpoint returns recurring occurrences already expanded within a date window, plus
+location, category tags, and registration URLs. So the "Playwright stopgap" became a
+**dependency-free `fetch` adapter** — lighter, faster, and more reliable in CI. (Org id 65711.)
+
 ## Status
 
-- ✅ **Phase 1 (abstraction + curated) — done.** Added `src/lib/events/`
-  (`types.ts`, `provider.ts`, `adapters/curated.ts`); repointed `whats-happening.astro` to
-  `getUpcomingEvents()`; deleted the stale `src/data/events.ts` (placeholder URLs + duplicate
-  rows). The curated adapter generates real upcoming Sundays from a recurrence rule (never
-  stale, no invented dates); `fixedEvents[]` is the slot for confirmed one-offs. Provider falls
-  back to curated on any source failure, so the page is never empty.
-- ✅ **Daily rebuild — done.** Added `schedule` + `workflow_dispatch` triggers to
-  `.github/workflows/deploy.yml` (13:00 UTC).
-- ⬜ **Phase 2 (Playwright stopgap, Option C) — next.** New `adapters/churchcenter.ts`:
-  in CI, load the public calendar SPA, capture the JSON it fetches from
-  `api.churchcenter.com`, normalize via `normalize.ts`/`curation.ts`, and write a last-good
-  `events.cache.json`. Select with `EVENTS_SOURCE=churchcenter`. Adds Playwright as a dev
-  dependency + a browser install step in CI (notable cost — confirm before adding).
-- ⬜ **Phase 3 — migrate to ICS (A) or PCO API (B)** when a feed URL or token exists; flip
-  `EVENTS_SOURCE`. Remove the Playwright stopgap.
+- ✅ **Phase 1 (abstraction + curated) — done.** `src/lib/events/`
+  (`types.ts`, `provider.ts`, `adapters/curated.ts`); `whats-happening.astro` reads
+  `getUpcomingEvents()`; deleted the stale `src/data/events.ts`. Curated adapter generates real
+  upcoming Sundays from a recurrence rule (no invented dates); `fixedEvents[]` slot for
+  one-offs.
+- ✅ **Live Church Center adapter — done** (`adapters/churchcenter.ts`). Pure `fetch`
+  handshake; maps JSON:API → `CalendarEvent`; keyword category mapping; a curation
+  `EXCLUDE_TITLE` list (currently drops third-party "Pedalheads" facility rentals). **No
+  Playwright** — the package was removed.
+- ✅ **Source selection.** `EVENTS_SOURCE` overrides; default is **live (`churchcenter`) for
+  production builds, `curated` for dev** (fast/offline). On any live failure the provider falls
+  back to curated, so the page is never empty (verified).
+- ✅ **Timezone fix.** Church Center returns UTC instants; `whats-happening.astro` now formats
+  all dates/times in `America/Los_Angeles`, so CI's UTC build no longer shifts times
+  (Sunday Service correctly shows 10:00 AM).
+- ✅ **Daily rebuild — done.** `schedule` + `workflow_dispatch` in `deploy.yml` (13:00 UTC).
+- ⬜ **Phase 3 — migrate to a public ICS feed (A) or PCO API token (B)** if/when available;
+  flip `EVENTS_SOURCE` and retire the read-token handshake.
+
+## Risks / notes
+
+- The `ort_` read-token rotates and is fetched fresh each build, so there's nothing to
+  hardcode. If Church Center changes the handshake or endpoint, the adapter throws and the page
+  falls back to curated until fixed; the daily rebuild self-heals transient outages.
+- **Curation is keyword-based.** Category mapping and the exclude list are heuristics — review
+  what surfaces (e.g. "Blood Drive", facility rentals) and tune `mapCategory` / `EXCLUDE_TITLE`.
+- **No build-time cache yet.** A failed live fetch falls straight back to curated for that
+  build. A last-good cache (persisted via `actions/cache`) is a possible future enhancement.
 
 ## Open items for Tim
 
-- Confirming any **real recurring rhythms** to add to the curated list now (e.g. Youth Tuesday
-  nights during the school year, MomCo cadence) — these can be added as recurrence rules so
-  they stay current, but I left them out pending confirmation of exact cadence/seasonality.
-- A heads-up that the Playwright stopgap replays an internal Church Center endpoint; getting
-  the **public ICS feed URL** (Option A) whenever convenient would let us retire it.
+- Review the live event list on `/whats-happening/` and tell me what to **exclude or
+  re-categorize** (third-party rentals, internal-only items).
+- Optional: a **public iCal feed URL** or **PCO API token** would let us retire the
+  read-token handshake for something more officially supported.
