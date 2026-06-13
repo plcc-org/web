@@ -85,69 +85,27 @@
   line-height: 1.7;
 }
 
-.ethos__beliefs {
-  max-width: var(--measure);
-  padding: clamp(1.4rem, 2.8vw, 2.2rem);
-  border-radius: var(--radius-soft);
-  border: 1px solid var(--color-mist);
-  background: var(--surface-gradient-soft);
-  box-shadow: var(--shadow-panel);
-}
-
 .ethos__beliefs h2 {
   margin-top: 0;
-  margin-bottom: 1rem;
+}
+
+.belief-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: var(--space-md);
 }
 
 .ethos .belief-statement {
-  --belief-indent: 0rem;
-  --belief-accent: rgba(106, 149, 41, 0.3);
-  --belief-surface-a: rgba(255, 255, 255, 0.78);
-  --belief-surface-b: rgba(106, 149, 41, 0.07);
   margin: 0;
-  margin-left: var(--belief-indent);
-  max-width: calc(100% - var(--belief-indent));
-  position: relative;
-  padding: 0.95rem 1rem 0.95rem 1.15rem;
-  border-left: 3px solid var(--belief-accent);
-  border-radius: 0 10px 10px 0;
-  background: linear-gradient(100deg, var(--belief-surface-a) 0%, var(--belief-surface-b) 100%);
-  font-size: clamp(1.12rem, 1.35vw, 1.26rem);
-  line-height: 1.62;
-}
-
-.ethos .belief-statement:nth-of-type(2) {
-  --belief-indent: 0.55rem;
-  --belief-accent: rgba(116, 156, 63, 0.34);
-  --belief-surface-b: rgba(116, 156, 63, 0.08);
-}
-
-.ethos .belief-statement:nth-of-type(3) {
-  --belief-indent: 1.1rem;
-  --belief-accent: rgba(124, 163, 76, 0.38);
-  --belief-surface-b: rgba(124, 163, 76, 0.09);
-}
-
-.ethos .belief-statement:nth-of-type(4) {
-  --belief-indent: 1.65rem;
-  --belief-accent: rgba(131, 170, 90, 0.4);
-  --belief-surface-b: rgba(131, 170, 90, 0.1);
-}
-
-.ethos .belief-statement:nth-of-type(5) {
-  --belief-indent: 2.2rem;
-  --belief-accent: rgba(137, 176, 101, 0.42);
-  --belief-surface-b: rgba(137, 176, 101, 0.11);
-}
-
-.ethos .belief-statement:nth-of-type(6) {
-  --belief-indent: 2.75rem;
-  --belief-accent: rgba(143, 182, 112, 0.44);
-  --belief-surface-b: rgba(143, 182, 112, 0.12);
-}
-
-.ethos .belief-statement + .belief-statement {
-  margin-top: 0.85rem;
+  padding: clamp(1.4rem, 2.2vw, 1.85rem);
+  background: var(--color-paper);
+  border: 1px solid var(--color-mist);
+  border-left: 3px solid var(--color-moss);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
 }
 
 .ethos .belief-lead {
@@ -159,7 +117,7 @@
 }
 
 .ethos .belief-key {
-  color: #73943b;
+  color: var(--color-moss-2);
   font-weight: 700;
 }
 
@@ -184,10 +142,11 @@
     left: -1.15rem;
     transform: none;
   }
+}
 
-  .ethos .belief-statement {
-    --belief-indent: 0rem;
-    max-width: 100%;
+@media (max-width: 640px) {
+  .belief-grid {
+    grid-template-columns: 1fr;
   }
 }
 

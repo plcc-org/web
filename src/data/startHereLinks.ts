@@ -6,6 +6,11 @@ export type LinkCardItem = {
 
 export const startHereLinks: LinkCardItem[] = [
   {
+    href: 'about/pastors-letter/',
+    title: 'A Welcome from our Pastor',
+    meta: 'A personal letter from Austin Bailey.',
+  },
+  {
     href: 'plan-a-visit/',
     title: 'Plan a Visit',
     meta: 'What Sundays are like.',
@@ -19,11 +24,6 @@ export const startHereLinks: LinkCardItem[] = [
     href: 'messages/',
     title: 'Messages',
     meta: 'Watch a recent service.',
-  },
-  {
-    href: 'about/pastors-letter/',
-    title: 'A Welcome from our Pastor',
-    meta: 'A personal letter from Austin Bailey.',
   },
 ]
 
