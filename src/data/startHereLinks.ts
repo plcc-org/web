@@ -21,9 +21,9 @@ export const startHereLinks: LinkCardItem[] = [
     meta: 'Watch a recent service.',
   },
   {
-    href: 'about/',
-    title: 'About',
-    meta: 'Our ethos and beliefs.',
+    href: 'about/pastors-letter/',
+    title: 'A Welcome from our Pastor',
+    meta: 'A personal letter from Austin Bailey.',
   },
 ]
 

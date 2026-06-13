@@ -21,8 +21,6 @@ const momentsItems = [
   { image: momentsImage03, fallbackAlt: 'A candid moment from church community life' },
 ]
 
-const joinUsImage = imageByFilename('plcc-community-worship-cross.jpg')
-
 // Optimized WebP poster for the hero video (needs a plain URL string).
 const heroPoster = await getImage({ src: churchExterior, width: 1024, format: 'webp' })
 ---
@@ -50,9 +48,6 @@ const heroPoster = await getImage({ src: churchExterior, width: 1024, format: 'w
           <source src={`${import.meta.env.BASE_URL}video/homepage-hero.mp4`} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div class="hero-overlay">
-          <span class="media__label" style="color: var(--color-stone);">A welcoming community, centered on Jesus.</span>
-        </div>
       </div>
     </header>
 
@@ -100,38 +95,15 @@ const heroPoster = await getImage({ src: churchExterior, width: 1024, format: 'w
       <QuoteGrid quotes={homepageQuotes} />
     </section>
 
-    <section class="section">
-      <h2>Join us this Sunday</h2>
-
-      <div class="split-grid">
-        <div>
-          <p>
-            <strong>Sunday at 10:00am</strong><br />
-            1715 228th Ave SE<br />
-            Sammamish, WA 98075
-          </p>
-
-          <p>
-            <a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a>
-            ·
-            <a href={`${import.meta.env.BASE_URL}families/`}>Families</a>
-          </p>
-        </div>
-
-        <div class="media__frame ratio-4x3">
-          {
-            joinUsImage ? (
-              <Photo
-                filename={joinUsImage.filename}
-                alt={imageAlt(joinUsImage, 'People gathered together during worship at Pine Lake')}
-                class="media__img media__img--cover joinus-photo"
-                widths={[420, 840]}
-                sizes="(max-width: 768px) 100vw, 420px"
-              />
-            ) : null
-          }
-        </div>
-      </div>
+    <section class="section section-callout">
+      <h2>Come this Sunday</h2>
+      <p>
+        We gather at 10:00am at 1715 228th Ave SE in Sammamish. There's guest parking by the main entrance — walk in,
+        grab a coffee, and sit wherever you like.
+      </p>
+      <p class="page__lede">
+        <a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a>
+      </p>
     </section>
   </article>
 </BaseLayout>
@@ -195,21 +167,6 @@ const heroPoster = await getImage({ src: churchExterior, width: 1024, format: 'w
     display: block;
   }
 
-  .split-grid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
-    align-items: start;
-  }
-
-  .split-grid .media__frame {
-    aspect-ratio: 3 / 4;
-  }
-
-  :global(.joinus-photo) {
-    object-position: center 35%;
-  }
-
   .welcome-hero h2 {
     margin: 0;
     font-size: clamp(1.9rem, 4vw, 2.6rem);
@@ -237,14 +194,6 @@ const heroPoster = await getImage({ src: churchExterior, width: 1024, format: 'w
 
     .welcome-hero__image-frame {
       margin: 0 1.5rem 1.5rem;
-    }
-
-    .split-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .split-grid .media__frame {
-      aspect-ratio: 4 / 5;
     }
   }
 </style>

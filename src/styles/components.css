@@ -556,17 +556,22 @@
   max-width: var(--measure);
 }
 
-.site-main a:not(.link-card):not(.card) {
+/*
+ * Default styling for in-content prose links. Wrapped in :where() so it carries
+ * (almost) no specificity — any link that's also a button/pill/chip (which sets
+ * its own color) overrides this instead of inheriting moss-on-moss text.
+ */
+:where(.site-main a:not(.link-card):not(.card)) {
   color: var(--color-moss);
   text-decoration-color: var(--color-mist);
   text-underline-offset: 0.12em;
 }
 
-.site-main a:not(.link-card):not(.card):visited {
+:where(.site-main a:not(.link-card):not(.card)):visited {
   color: var(--color-moss);
 }
 
-.site-main a:not(.link-card):not(.card):hover {
+:where(.site-main a:not(.link-card):not(.card)):hover {
   color: var(--color-forest);
   text-decoration-color: var(--color-moss);
 }
