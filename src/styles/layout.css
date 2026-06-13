@@ -182,6 +182,23 @@
   max-width: var(--measure);
 }
 
+/* Calm page intro (text-only header) for reading pages without a photo opener */
+.page-intro {
+  padding-top: var(--space-xl);
+}
+
+.page-intro > * {
+  max-width: var(--measure);
+}
+
+.page-intro .display {
+  margin-bottom: var(--space-md);
+}
+
+.page-intro .subhead {
+  margin-bottom: var(--space-md);
+}
+
 .prose-measure {
   max-width: var(--measure);
 }
@@ -231,15 +248,33 @@
   border-color: var(--color-forest);
 }
 
+/* On dark surfaces (hero scrim, forest bands/splits), a moss button reads as
+   green-on-green. Flip the primary button to a light fill so it pops. */
+.hero .btn:not(.btn--ghost),
+.band--forest .btn:not(.btn--ghost),
+.split--forest .btn:not(.btn--ghost) {
+  background: var(--color-white);
+  color: var(--color-forest);
+}
+
+.hero .btn:not(.btn--ghost):hover,
+.band--forest .btn:not(.btn--ghost):hover,
+.split--forest .btn:not(.btn--ghost):hover {
+  background: var(--color-stone);
+  color: var(--color-forest);
+}
+
 /* On dark bands, ghost buttons invert */
 .band--forest .btn--ghost,
-.split--forest .btn--ghost {
+.split--forest .btn--ghost,
+.hero .btn--ghost {
   color: var(--color-white);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
 .band--forest .btn--ghost:hover,
-.split--forest .btn--ghost:hover {
+.split--forest .btn--ghost:hover,
+.hero .btn--ghost:hover {
   background: var(--color-white);
   color: var(--color-forest);
   border-color: var(--color-white);

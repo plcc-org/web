@@ -216,11 +216,6 @@ export const homePageImages: HomePageImage[] = [
     alt: 'A leader talking warmly with a child at a craft table',
   },
   {
-    filename: '670670045_18201955972338056_6373692375101503343_n.jpg',
-    tags: ['graphic', 'series'],
-    alt: 'Multiply — a sermon series at Pine Lake',
-  },
-  {
     filename: '671831314_18202547362338056_8232655850918342196_n.jpg',
     tags: ['kids'],
     alt: 'A child painting rocks during a Pine Lake Kids activity',

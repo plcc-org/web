@@ -1,21 +1,24 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Split from '../../components/Split.astro'
 import MomentsSection from '../../components/MomentsSection.astro'
 import Photo from '../../components/Photo.astro'
 import { imageByFilename } from '../../data/homePageImages'
 
+const base = import.meta.env.BASE_URL
+
 const kidsMomentsItems = [
   {
-    image: imageByFilename('499237357_18167175172338056_6041845435208425322_n.jpg'),
-    fallbackAlt: 'Kids smiling together during a Sunday activity',
+    image: imageByFilename('658068289_18200890006338056_950690086570532728_n.jpg'),
+    fallbackAlt: 'Young children waving ribbons during worship',
+  },
+  {
+    image: imageByFilename('689066880_18204342118338056_5079636707719185461_n.jpg'),
+    fallbackAlt: 'Children singing together on stage during a service',
   },
   {
     image: imageByFilename('495938178_18165842899338056_2078248515916983250_n.jpg'),
     fallbackAlt: 'Children participating in a Pine Lake Kids activity',
-  },
-  {
-    image: imageByFilename('475568922_18156359086338056_4047262209868672150_n.jpg'),
-    fallbackAlt: 'Kids engaged in learning and play on Sunday morning',
   },
 ]
 
@@ -25,12 +28,12 @@ const kidsMomentsBottomItems = [
     fallbackAlt: 'Kids engaged in learning and play on Sunday morning',
   },
   {
-    image: imageByFilename('539390246_18176284939338056_330744351158099611_n.jpg'),
-    fallbackAlt: 'Children gathered for a Pine Lake Kids moment',
-  },
-  {
     image: imageByFilename('503632641_18168464443338056_6100866002216681684_n.jpg'),
     fallbackAlt: 'Kids sharing a fun Sunday moment together',
+  },
+  {
+    image: imageByFilename('475568922_18156359086338056_4047262209868672150_n.jpg'),
+    fallbackAlt: 'Kids engaged in learning and play on Sunday morning',
   },
 ]
 ---
@@ -39,45 +42,54 @@ const kidsMomentsBottomItems = [
   title="Kids | Pine Lake Covenant Church"
   description="Pine Lake Kids: a safe, welcoming place for babies through 5th grade to discover Jesus and belong."
 >
-  <article class="page page--wide">
-    <header class="page__header">
-      <h1>
-        <Photo
-          filename="Pine-Lake-Kids-web.webp"
-          alt="Pine Lake Kids"
-          class="kids__logo"
-          loading="eager"
-          fetchpriority="high"
-          widths={[320, 640, 960]}
-          sizes="(max-width: 600px) 60vw, 320px"
-        />
-      </h1>
-      <p class="page__subhead">Babies through 5th Grade · Sundays at 10:00am</p>
-
-      <p class="page__lede">
-        We believe childhood is a season to be celebrated, not just a phase to get through. Our goal for Pine Lake Kids
-        is simple: that every child would feel safe, known, and loved as they begin to discover who Jesus is.
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename="671831314_18202547362338056_8232655850918342196_n.jpg"
+      alt="A child painting rocks during a Pine Lake Kids activity"
+      tone="sand"
+      reverse
+      eyebrow="Babies through 5th grade · Sundays at 10am"
+    >
+      <Photo
+        filename="Pine-Lake-Kids-web.webp"
+        alt="Pine Lake Kids"
+        class="kids__logo"
+        loading="eager"
+        fetchpriority="high"
+        widths={[320, 640, 960]}
+        sizes="(max-width: 600px) 70vw, 320px"
+      />
+      <p class="lede">
+        We believe childhood is a season to be celebrated, not just a phase to get through. Our goal is simple: that
+        every child would feel safe, known, and loved as they begin to discover who Jesus is.
       </p>
-    </header>
+    </Split>
 
-    <MomentsSection heading="Photos of Pine Lake Kids" items={kidsMomentsItems} sectionClass="section" />
+    <MomentsSection
+      heading="Photos of Pine Lake Kids"
+      eyebrow="Life together"
+      items={kidsMomentsItems}
+      sectionClass="to-wide"
+    />
 
     <section class="section">
+      <p class="eyebrow">Getting started</p>
       <h2>Your first Sunday</h2>
-      <p>
+      <p class="measure">
         If you’re visiting for the first time, look for the <strong>Kids Check-in</strong> in the foyer. One of our volunteers
         will help you register your children and show you to their classrooms.
       </p>
 
       <div class="card-grid">
         <div class="card">
-          <h3>Nursery & Toddlers</h3>
+          <h3>Nursery &amp; Toddlers</h3>
           <p>
             A gentle, play-based environment where our littlest ones are cared for by consistent, loving volunteers.
           </p>
         </div>
         <div class="card">
-          <h3>Preschool & Kindergarten</h3>
+          <h3>Preschool &amp; Kindergarten</h3>
           <p>
             Storytelling, music, and hands-on activities that introduce foundational Bible truths in an age-appropriate
             way.
@@ -93,36 +105,35 @@ const kidsMomentsBottomItems = [
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-callout">
       <h2>Safety is our priority</h2>
       <p>
-        We know that trust is earned. To ensure your child's safety and your peace of mind, we follow strict protocols:
+        We know that trust is earned. To ensure your child’s safety and your peace of mind, we follow strict protocols:
       </p>
       <ul>
-        <li><strong>Background Checks:</strong> Every volunteer undergoes a comprehensive background screening.</li>
-        <li><strong>Two-Adult Rule:</strong> We maintain at least two background-checked adults in every classroom.</li>
+        <li><strong>Background checks:</strong> Every volunteer undergoes a comprehensive background screening.</li>
+        <li><strong>Two-adult rule:</strong> We maintain at least two background-checked adults in every classroom.</li>
         <li>
-          <strong>Secure Check-in:</strong> Our digital check-in system ensures that only authorized adults can pick up your
+          <strong>Secure check-in:</strong> Our digital check-in system ensures that only authorized adults can pick up your
           child.
         </li>
       </ul>
     </section>
 
     <section class="section">
+      <p class="eyebrow">Worshipping together</p>
       <h2>Special Sundays</h2>
-      <p>
+      <p class="measure">
         Once a month, our elementary students (K–5) join the adults in the main service for <strong
           >Family Sunday</strong
-        >. We believe it’s important for kids to see what it looks like to worship as a whole community.
-      </p>
-      <p>
-        Don't worry—the service is designed with families in mind, and we provide "busy bags" to help keep little hands
-        occupied!
+        >. We believe it’s important for kids to see what it looks like to worship as a whole community. Don’t worry —
+        the service is designed with families in mind, and we provide “busy bags” to help keep little hands occupied!
       </p>
     </section>
 
     <section class="section">
-      <h2>Midweek & Beyond</h2>
+      <p class="eyebrow">Midweek &amp; beyond</p>
+      <h2>More ways to connect</h2>
       <div class="link-grid">
         <div class="link-card">
           <strong>Club 45</strong>
@@ -137,17 +148,16 @@ const kidsMomentsBottomItems = [
       </div>
     </section>
 
-    <MomentsSection heading={null} items={kidsMomentsBottomItems} sectionClass="section" />
+    <MomentsSection heading={null} items={kidsMomentsBottomItems} sectionClass="to-wide" />
 
     <section class="section">
       <h2>Have a question?</h2>
-      <p>
-        We’d love to help you feel at home. Reach out to our Children’s Director or check out our <a
-          href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a
-        > page for more practical details.
+      <p class="measure">
+        We’d love to help you feel at home. Reach out to our Children’s Director or check out our
+        <a href={`${base}plan-a-visit/`}>Plan a Visit</a> page for more practical details.
       </p>
     </section>
-  </article>
+  </div>
 </BaseLayout>
 
 <style>
@@ -157,5 +167,6 @@ const kidsMomentsBottomItems = [
     width: clamp(13.75rem, 47.5vw, 20rem);
     height: auto;
     object-fit: contain;
+    margin: 0 0 1rem;
   }
 </style>

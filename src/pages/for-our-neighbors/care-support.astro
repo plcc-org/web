@@ -1,32 +1,39 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Split from '../../components/Split.astro'
+
+const base = import.meta.env.BASE_URL
 ---
 
 <BaseLayout
   title="Care & Support | Pine Lake Covenant Church"
   description="Pastoral care, prayer, meals, and support around illness, grief, and hard seasons — for anyone who needs it."
 >
-  <article class="page">
-    <header class="page__header">
-      <h1>Care &amp; Support</h1>
-      <p class="page__subhead">Help and presence in hard seasons</p>
-
-      <p class="page__lede">
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename="660105701_18200889916338056_3408852217555726193_n.jpg"
+      alt="A leader talking warmly with someone at Pine Lake"
+      tone="sand"
+      reverse
+      eyebrow="Care & Support"
+    >
+      <h1 class="display">Care &amp; Support</h1>
+      <p class="subhead">Help and presence in hard seasons</p>
+      <p class="lede">
         If you’re in a difficult season — illness, grief, family stress, or simply feeling overwhelmed — support at Pine
         Lake often begins quietly and personally. You don’t need to be a member, or to have it all figured out, to ask
         for help.
       </p>
-    </header>
+    </Split>
 
     <section class="section">
       <h2>What care usually looks like</h2>
-
-      <p>
+      <p class="measure">
         Care here is simple and human: a conversation, prayer if that’s meaningful to you, practical help when life is
         heavy, and connection to people who can walk with you for a while.
       </p>
-
-      <ul>
+      <ul class="measure">
         <li>Pastoral care and prayer</li>
         <li>Meals and practical support during illness or crisis</li>
         <li>Support groups, including an Alzheimer’s caregivers group</li>
@@ -35,20 +42,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
     </section>
 
     <section class="section">
-      <h2>Specific ways we show up</h2>
+      <p class="eyebrow">Specific ways we show up</p>
+      <h2>Where to start</h2>
 
       <div class="card-grid">
-        <a class="card" href={`${import.meta.env.BASE_URL}for-our-neighbors/meals-of-care/`}>
+        <a class="card" href={`${base}for-our-neighbors/meals-of-care/`}>
           <h3>Meals of Care</h3>
           <p>Short-term meals during illness, recovery, a new baby, or grief.</p>
         </a>
 
-        <a class="card" href={`${import.meta.env.BASE_URL}for-our-neighbors/stephen-ministry/`}>
+        <a class="card" href={`${base}for-our-neighbors/stephen-ministry/`}>
           <h3>One-to-one care</h3>
           <p>A trained caregiver who will listen and walk alongside you, confidentially.</p>
         </a>
 
-        <a class="card" href={`${import.meta.env.BASE_URL}for-our-neighbors/weddings-memorials/`}>
+        <a class="card" href={`${base}for-our-neighbors/weddings-memorials/`}>
           <h3>Memorials &amp; loss</h3>
           <p>Support and presence around memorial services and seasons of grief.</p>
         </a>
@@ -57,20 +65,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
     <section class="section">
       <h2>How to reach us</h2>
-
-      <p>
+      <p class="measure">
         To ask for care — for yourself or on behalf of someone else — contact the church office. A member of our care
-        team will follow up privately.
+        team will follow up privately. Call <a href="tel:+14253928636">(425) 392-8636</a> or email
+        <a href="mailto:office@plcc.org">office@plcc.org</a>.
       </p>
-
-      <p>
-        Call <a href="tel:+14253928636">(425) 392-8636</a> or email <a href="mailto:office@plcc.org">office@plcc.org</a
-        >.
-      </p>
+      <p><a href={`${base}for-our-neighbors/`}>← Back to For Our Neighbors</a></p>
     </section>
-
-    <p>
-      <a href={`${import.meta.env.BASE_URL}for-our-neighbors/`}>Back to For Our Neighbors</a>
-    </p>
-  </article>
+  </div>
 </BaseLayout>

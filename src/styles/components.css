@@ -725,11 +725,14 @@
   text-underline-offset: 0.12em;
 }
 
-:where(.site-main a:not(.link-card):not(.card)):visited {
+/* Keep :visited and :hover INSIDE :where() so the pseudo-class doesn't raise
+   specificity to (0,1,0) — otherwise it ties with (and, being later, beats)
+   button classes like .btn, repainting visited buttons moss-on-moss. */
+:where(.site-main a:not(.link-card):not(.card):visited) {
   color: var(--color-moss);
 }
 
-:where(.site-main a:not(.link-card):not(.card)):hover {
+:where(.site-main a:not(.link-card):not(.card):hover) {
   color: var(--color-forest);
   text-decoration-color: var(--color-moss);
 }

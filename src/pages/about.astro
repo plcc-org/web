@@ -1,13 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Split from '../components/Split.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import type { LinkCardItem } from '../data/startHereLinks'
-import Photo from '../components/Photo.astro'
-import { imageAlt, imageByFilename, pickImageByAnyTag } from '../data/homePageImages'
-
-const aboutHeroImage =
-  imageByFilename('worship-1600x400.jpg') ?? pickImageByAnyTag(['community', 'gathering', 'worship'])
+import { imageByFilename } from '../data/homePageImages'
 
 const aboutLinks: LinkCardItem[] = [
   {
@@ -54,32 +51,29 @@ const aboutMomentsItems = [
 ---
 
 <BaseLayout title="About | Pine Lake Covenant Church">
-  <article class="page page--wide">
-    <header class="page__header prose-measure">
-      <h1>About Pine Lake</h1>
-      <p class="page__lede text-body-large">
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename="688099949_18204342151338056_3539234897453255183_n.jpg"
+      alt="The worship team leading music on a Sunday morning"
+      tone="sand"
+      reverse
+      eyebrow="About"
+    >
+      <h1 class="display">About Pine Lake</h1>
+      <p class="lede">
         Pine Lake is a church in Sammamish centered on Jesus, rooted in Scripture, and committed to being a place where
         people can belong, heal, and grow.
       </p>
-      <figure class="media">
-        <div class="media__frame ratio-16x9">
-          {
-            aboutHeroImage ? (
-              <Photo
-                filename={aboutHeroImage.filename}
-                alt={imageAlt(aboutHeroImage, 'People gathered together at Pine Lake')}
-                class="media__img media__img--cover"
-                loading="eager"
-                fetchpriority="high"
-              />
-            ) : null
-          }
-        </div>
-      </figure>
-    </header>
+    </Split>
 
     <LinkCardSection heading="Explore Pine Lake" links={aboutLinks} />
 
-    <MomentsSection heading="A few moments from our community" items={aboutMomentsItems} sectionClass="section" />
-  </article>
+    <MomentsSection
+      heading="A few moments from our community"
+      eyebrow="Life together"
+      items={aboutMomentsItems}
+      sectionClass="to-wide"
+    />
+  </div>
 </BaseLayout>

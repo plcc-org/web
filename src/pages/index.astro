@@ -52,18 +52,16 @@ const heroPoster = await getImage({ src: churchExterior, width: 1600, format: 'w
     <Split
       class="to-full"
       filename={welcomeImage ? welcomeImage.filename : 'plcc-community-family-worship.jpg'}
-      alt={
-        welcomeImage
-          ? imageAlt(welcomeImage, 'Families and adults gathered in worship together')
-          : 'Families and adults gathered in worship together'
-      }
+      alt={welcomeImage
+        ? imageAlt(welcomeImage, 'Families and adults gathered in worship together')
+        : 'Families and adults gathered in worship together'}
       tone="paper"
       eyebrow="Welcome"
       heading="Come as you are"
     >
       <p>
-        We’re a community on a journey to find and follow Jesus together. You’re welcome here whether you’re all-in, just
-        looking, quietly skeptical, or because someone in your family is dragging you along.
+        We’re a community on a journey to find and follow Jesus together. You’re welcome here whether you’re all-in,
+        just looking, quietly skeptical, or because someone in your family is dragging you along.
       </p>
       <p>
         Whether faith feels like home, a question mark, or a distant memory, there’s a place for you among us. Come
@@ -104,6 +102,20 @@ const heroPoster = await getImage({ src: churchExterior, width: 1600, format: 'w
 </BaseLayout>
 
 <style>
+  /* The closing forest CTA band flows straight into the (also-forest) footer,
+     so the page ends on a continuous dark base instead of a stray stone gap. */
+  .canvas {
+    margin-bottom: 0;
+  }
+
+  :global(.site-main) {
+    padding-bottom: 0;
+  }
+
+  :global(.site-footer) {
+    margin-top: 0;
+  }
+
   .home-cta .band__inner {
     max-width: 44rem;
     text-align: center;

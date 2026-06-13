@@ -48,19 +48,18 @@ for (const e of comingUp) {
 }
 ---
 
-<article class="page page--wide">
-  <header class="page__header">
-    <h1>What’s Happening</h1>
+<div class="canvas">
+  <header class="section page-intro">
+    <p class="eyebrow">What’s Happening</p>
+    <h1 class="display">What’s Happening</h1>
 
-    <p class="page__lede measure">
+    <p class="lede">
       A curated view of what’s coming up at Pine Lake — the kind of things that are easy to join and a good fit for
       different seasons of life.
     </p>
   </header>
 
-  <section class="section">
-    <h2>Browse</h2>
-
+  <section class="section" aria-label="Browse by category">
     <div class="chip-row">
       {
         categories.map((c) => (
@@ -196,4 +195,4 @@ for (const e of comingUp) {
       </div>
     </div>
   </section>
-</article>
+</div>

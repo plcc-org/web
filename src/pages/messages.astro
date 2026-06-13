@@ -6,18 +6,18 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
 ---
 
 <BaseLayout title="Messages | Pine Lake Covenant Church">
-  <article class="page archive-page">
-    <header class="page__header archive-header">
-      <p class="archive-header__eyebrow">Sunday Messages</p>
-      <h1>Worship With Us Anytime</h1>
+  <div class="canvas archive-page">
+    <header class="section page-intro archive-header">
+      <p class="eyebrow">Sunday Messages</p>
+      <h1 class="display">Worship with us anytime</h1>
 
-      <p class="page__lede">
+      <p class="lede">
         Catch up on recent Sunday services or revisit a message that encouraged you. Start with the latest service
         below, then browse the archive.
       </p>
     </header>
 
-    <section class="service-hero" aria-labelledby="latest-service-heading">
+    <section class="section service-hero" aria-labelledby="latest-service-heading">
       <div class="service-hero__media">
         <iframe
           src={latestService.embedUrl}
@@ -44,9 +44,10 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
       </div>
     </section>
 
-    <section class="section" aria-labelledby="archive-heading">
+    <section class="section to-wide" aria-labelledby="archive-heading">
       <div class="section__header">
-        <h2 id="archive-heading">Service Archive</h2>
+        <p class="eyebrow">Archive</p>
+        <h2 id="archive-heading">Service archive</h2>
         <p>Recent Sunday services in reverse chronological order.</p>
       </div>
 
@@ -71,57 +72,33 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
         }
       </ul>
     </section>
-  </article>
+  </div>
 </BaseLayout>
 
 <style>
   .archive-page {
-    --archive-bg: #fbf7f0;
-    --archive-surface: #fffdf8;
-    --archive-border: #dfd4c3;
-    --archive-text: #2a2118;
-    --archive-muted: #6f6255;
-    --archive-accent: #b9622f;
-    --archive-accent-soft: #f0d8c9;
+    --archive-surface: var(--color-paper);
+    --archive-border: var(--color-mist);
+    --archive-muted: var(--color-clay);
 
-    color: var(--archive-text);
-  }
-
-  .archive-header {
-    margin-bottom: clamp(1.25rem, 2.8vw, 2rem);
-  }
-
-  .archive-header__eyebrow {
-    display: inline-block;
-    margin: 0 0 0.75rem;
-    padding: 0.35rem 0.7rem;
-    border: 1px solid var(--archive-border);
-    border-radius: 999px;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--archive-muted);
-    background: var(--archive-surface);
+    color: var(--color-forest);
   }
 
   .service-hero {
     display: grid;
-    gap: 1.25rem;
-    margin-bottom: clamp(2rem, 4vw, 3rem);
-    padding: clamp(1rem, 2vw, 1.5rem);
-    border-radius: 1.25rem;
+    gap: 1.5rem;
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+    border-radius: var(--radius-lg);
     border: 1px solid var(--archive-border);
-    background:
-      radial-gradient(circle at 0% 100%, var(--archive-accent-soft), transparent 32%),
-      linear-gradient(180deg, #fffefb, var(--archive-bg));
-    box-shadow: 0 0.8rem 2rem rgb(42 33 24 / 0.08);
+    background: var(--surface-gradient-soft);
+    box-shadow: var(--shadow-md);
   }
 
   .service-hero__media {
     position: relative;
     width: 100%;
     padding-top: 56.25%;
-    border-radius: 1rem;
+    border-radius: var(--radius-soft);
     overflow: hidden;
     background: #111;
   }
@@ -135,12 +112,12 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
   }
 
   .service-hero__tag {
-    margin: 0 0 0.35rem;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
+    margin: 0 0 0.5rem;
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--archive-accent);
-    font-weight: 700;
+    color: var(--color-moss-2);
+    font-weight: 600;
   }
 
   .service-hero h2 {
@@ -161,19 +138,33 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
 
   .service-hero__actions a {
     display: inline-block;
-    padding: 0.62rem 0.95rem;
-    border-radius: 0.65rem;
-    border: 1px solid var(--archive-border);
+    padding: 0.7rem 1.2rem;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-line);
     text-decoration: none;
     font-weight: 600;
-    color: var(--archive-text);
-    background: var(--archive-surface);
+    color: var(--color-forest);
+    background: transparent;
+    transition:
+      background 0.2s var(--ease-out),
+      color 0.2s var(--ease-out);
+  }
+
+  .service-hero__actions a:hover {
+    background: var(--color-forest);
+    color: var(--color-white);
+    border-color: var(--color-forest);
   }
 
   .service-hero__actions a:first-child {
-    color: #fff;
-    background: var(--archive-accent);
-    border-color: var(--archive-accent);
+    color: var(--color-white);
+    background: var(--color-moss);
+    border-color: var(--color-moss);
+  }
+
+  .service-hero__actions a:first-child:hover {
+    background: var(--color-forest);
+    border-color: var(--color-forest);
   }
 
   .section__header {
@@ -200,11 +191,19 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
 
   .service-card {
     height: 100%;
-    border-radius: 0.95rem;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1px solid var(--archive-border);
     background: var(--archive-surface);
-    box-shadow: 0 0.3rem 1rem rgb(42 33 24 / 0.06);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform 0.2s var(--ease-out),
+      box-shadow 0.2s var(--ease-out);
+  }
+
+  .service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
   }
 
   .service-card__image-link {

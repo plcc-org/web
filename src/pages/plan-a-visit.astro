@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Split from '../components/Split.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
 import { imageByFilename } from '../data/homePageImages'
+
+const base = import.meta.env.BASE_URL
 
 const planVisitMomentsItems = [
   {
@@ -18,50 +21,36 @@ const planVisitMomentsItems = [
     fallbackAlt: 'Kids and families connecting in community',
   },
 ]
-
-const planVisitInlineMomentsItems = [
-  {
-    image: imageByFilename('527569106_18174174304338056_1814989299414124937_n.jpg'),
-    fallbackAlt: 'Neighbors connecting during a Sunday gathering',
-  },
-  {
-    image: imageByFilename('551096105_18178844185338056_8945047004848009463_n.jpg'),
-    fallbackAlt: 'Community life at Pine Lake on Sunday',
-  },
-  {
-    image: imageByFilename('500083306_18167175181338056_8168148552855409791_n.jpg'),
-    fallbackAlt: 'A candid moment from Sunday at Pine Lake',
-  },
-]
 ---
 
 <BaseLayout
   title="Plan a Visit | Pine Lake Covenant Church"
   description="What to expect on Sundays at Pine Lake, including location, service format, and family details."
 >
-  <article class="page page--wide">
-    <header class="page__header prose-measure">
-      <h1>Plan a Visit</h1>
-
-      <p class="page__lede">
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename="651034879_18198219322338056_9008954644945760140_n.jpg"
+      alt="A volunteer making coffee at the welcome café before the service"
+      tone="sand"
+      reverse
+      eyebrow="Plan a Visit"
+    >
+      <h1 class="display">Plan a Visit</h1>
+      <p class="lede">
         Visiting a church for the first time can feel awkward — especially if you haven’t been to one in a while (or
-        ever). Our hope at Pine Lake is simple: that you’d feel comfortable, unpressured, and free to participate at
-        whatever level feels right to you.
+        ever). Our hope is simple: that you’d feel comfortable, unpressured, and free to participate at whatever level
+        feels right to you.
       </p>
+    </Split>
 
-      <p class="page__lede">Here’s what a typical Sunday looks like.</p>
-    </header>
-
-    <section class="section prose-measure content-panel surface-gradient-soft">
-      <h2>When & where</h2>
-
-      <p>
-        <strong>Sunday at 10:00am</strong><br />
-        1715 228th Ave SE<br />
-        Sammamish, WA 98075
+    <section class="section">
+      <p class="eyebrow">When &amp; where</p>
+      <h2>Sundays at 10:00am</h2>
+      <p class="measure">
+        1715 228th Ave SE, Sammamish, WA 98075. There’s plenty of guest parking available, including accessible parking
+        near the main entrance.
       </p>
-
-      <p>There’s plenty of guest parking available, including accessible parking.</p>
 
       <figure class="media">
         <Photo
@@ -75,122 +64,108 @@ const planVisitInlineMomentsItems = [
       </figure>
     </section>
 
-    <section class="section prose-measure content-panel surface-gradient-soft">
-      <h2>What happens on a Sunday morning</h2>
-
+    <Split
+      class="to-full"
+      filename="719135962_18207937108338056_3061581680291060435_n.jpg"
+      alt="The congregation standing in worship on a Sunday morning"
+      tone="paper"
+      eyebrow="The morning"
+      heading="What happens on a Sunday"
+    >
       <p>
         Our services last about <strong>75 minutes</strong> and include a mix of music, teaching, and time together.
       </p>
 
       <ul>
         <li>
-          Around <strong>20 minutes of contemporary worship music</strong>, led by a band
-          <br />
-          <em>(You’re welcome to join in — or just listen.)</em>
+          Around <strong>20 minutes of contemporary worship music</strong>, led by a band — join in, or just listen
         </li>
         <li>A short kids’ moment and a few brief Bible readings</li>
-        <li>
-          A brief meet-and-greet moment to say hello to those around you
-          <br />
-          <em>(No pressure — many people simply smile and stay seated.)</em>
-        </li>
-        <li>
-          A <strong>20–25 minute message</strong> that’s thoughtful, practical, and grounded in the Bible
-        </li>
+        <li>A brief meet-and-greet to say hello — no pressure; many people simply smile and stay seated</li>
+        <li>A <strong>20–25 minute message</strong> that’s thoughtful, practical, and grounded in the Bible</li>
       </ul>
 
       <p>
         Once a month, we also share <strong>communion</strong> together. You’re always free to participate — or not — as you
         feel comfortable.
       </p>
-    </section>
+    </Split>
 
-    <section class="section prose-measure content-panel surface-gradient-soft">
+    <section class="section section-callout">
       <h2>Will I stand out or be put on the spot?</h2>
-
       <p>No.</p>
-
       <p>
         You won’t be asked to introduce yourself, stand up, or share anything publicly. You’re free to come, observe,
-        participate as much or as little as you like, and head out when the service ends.
-      </p>
-
-      <p>Coffee is served, conversation is optional, and pressure is not part of the experience.</p>
-    </section>
-
-    <MomentsSection
-      heading={null}
-      items={planVisitInlineMomentsItems}
-      sectionClass="section prose-measure content-panel surface-gradient-soft"
-    />
-
-    <section class="section prose-measure content-panel surface-gradient-soft">
-      <h2>What should I wear?</h2>
-
-      <p>Whatever you’re comfortable in.</p>
-
-      <p>
-        On any given Sunday you’ll see everything from <strong>Seahawks jerseys and jeans</strong> to
-        <strong>smart casual</strong>. There’s no dress code, and no expectations.
+        participate as much or as little as you like, and head out when the service ends. Coffee is served, conversation
+        is optional, and pressure is not part of the experience.
       </p>
     </section>
 
-    <section class="section prose-measure content-panel surface-gradient-soft">
-      <h2>Bringing kids?</h2>
-
-      <p>We love families, and we work hard to make Sundays smooth for parents.</p>
-
+    <Split
+      class="to-full"
+      filename="658026969_18200890024338056_5693344916949832542_n.jpg"
+      alt="A child happily playing in the Pine Lake Kids room"
+      tone="sand"
+      eyebrow="Bringing kids?"
+      heading="We make Sundays smooth for parents"
+    >
       <ul>
-        <li>
-          Programs for children and youth of all ages, from <strong>0–18</strong>
-        </li>
+        <li>Programs for children and youth of all ages, from <strong>0–18</strong></li>
         <li><strong>Quick check-in</strong> in the foyer</li>
         <li>All volunteers are <strong>background checked</strong></li>
         <li>A <strong>secure pickup system</strong> for children</li>
         <li>At least <strong>two adults</strong> in every room</li>
-        <li>
-          One Sunday a month, <strong>K–5 students stay in the service</strong>
-        </li>
+        <li>One Sunday a month, <strong>K–5 students stay in the service</strong></li>
       </ul>
 
       <p>
-        For babies and toddlers, there’s also a comfortable space where you can
-        <strong>watch the service while caring for your child</strong>.
+        For babies and toddlers, there’s a comfortable space where you can
+        <strong>watch the service while caring for your child</strong>. You can learn more on our
+        <a href={`${base}families/kids/`}>Kids &amp; Families</a> page.
       </p>
+    </Split>
 
-      <p>
-        You can learn more on our
-        <a href={`${import.meta.env.BASE_URL}families/kids/`}>Kids & Families</a> page.
-      </p>
-    </section>
-
-    <section class="section prose-measure content-panel surface-gradient-soft">
-      <h2>A place to belong — no test required</h2>
-
-      <p>
-        Identity matters to us, but you’ll never be asked what you believe or feel like you have to pass some kind of
-        test to be welcome here.
-      </p>
-
-      <p>
-        Some people who come to Pine Lake are deeply rooted in their faith. Others are exploring, returning after time
-        away, or connected through family or community. All are welcome.
+    <section class="section">
+      <p class="eyebrow">A few practical things</p>
+      <h2>What should I wear?</h2>
+      <p class="measure">
+        Whatever you’re comfortable in. On any given Sunday you’ll see everything from
+        <strong>Seahawks jerseys and jeans</strong> to <strong>smart casual</strong>. There’s no dress code, and no
+        expectations.
       </p>
     </section>
 
-    <section class="section prose-measure content-panel surface-gradient-soft">
-      <h2>Ready to come? Or just curious?</h2>
+    <MomentsSection heading={null} items={planVisitMomentsItems} sectionClass="to-wide" />
 
-      <p>
-        Whether you’re planning to visit this Sunday or simply getting a feel for who we are, we’re glad you’re here.
-      </p>
-
-      <p>
-        If you’d like to connect with someone ahead of time, you’re always welcome to — but there’s no expectation that
-        you do.
-      </p>
+    <section class="band band--forest to-full visit-cta">
+      <div class="band__inner">
+        <p class="eyebrow">No test required</p>
+        <h2>A place to belong</h2>
+        <p>
+          Some people who come to Pine Lake are deeply rooted in their faith. Others are exploring, returning after time
+          away, or connected through family or community. All are welcome — you’ll never be asked what you believe to be
+          welcome here.
+        </p>
+        <p>
+          If you’d like to connect with someone ahead of time, you’re always welcome to —
+          <a href={`${base}contact/`}>say hello</a> — but there’s no expectation that you do.
+        </p>
+      </div>
     </section>
-  </article>
-
-  <MomentsSection items={planVisitMomentsItems} sectionClass="section" />
+  </div>
 </BaseLayout>
+
+<style>
+  .visit-cta .band__inner {
+    max-width: 46rem;
+  }
+
+  .visit-cta h2 {
+    margin-top: 0;
+  }
+
+  .visit-cta a {
+    color: var(--color-white);
+    text-decoration-color: rgba(255, 255, 255, 0.5);
+  }
+</style>

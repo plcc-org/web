@@ -1,29 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Split from '../components/Split.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
 import { imageByFilename } from '../data/homePageImages'
 
+const base = import.meta.env.BASE_URL
+
 const youthMomentsTopItems = [
-  {
-    image: imageByFilename('youth-02-1600x1600.jpg'),
-    fallbackAlt: 'A moment from a Pine Lake Youth gathering',
-  },
-  {
-    image: imageByFilename('youth-03-1600x1600.jpg'),
-    fallbackAlt: 'Students connecting in community',
-  },
-  {
-    image: imageByFilename('youth-03-1600x1600.jpg'),
-    fallbackAlt: 'Students connecting in community',
-  },
+  { image: imageByFilename('youth-02-1600x1600.jpg'), fallbackAlt: 'A moment from a Pine Lake Youth gathering' },
+  { image: imageByFilename('youth-03-1600x1600.jpg'), fallbackAlt: 'Students connecting in community' },
+  { image: imageByFilename('youth-04-1600x1600.jpg'), fallbackAlt: 'Pine Lake Youth activity' },
 ]
 
 const youthMomentsBottomItems = [
-  {
-    image: imageByFilename('youth-04-1600x1600.jpg'),
-    fallbackAlt: 'Pine Lake Youth activity',
-  },
   {
     image: imageByFilename('515010876_1159769626191025_3703366804227887968_n.jpg'),
     fallbackAlt: 'Students serving and praying together at Pine Lake Youth',
@@ -32,6 +22,10 @@ const youthMomentsBottomItems = [
     image: imageByFilename('650251601_18198219286338056_7378060351620760269_n.jpg'),
     fallbackAlt: 'Students gathered together at Pine Lake Youth',
   },
+  {
+    image: imageByFilename('715550230_18207937264338056_8366812198487572303_n.jpg'),
+    fallbackAlt: 'A student carrying groceries for the Issaquah & Sammamish food project',
+  },
 ]
 ---
 
@@ -39,28 +33,30 @@ const youthMomentsBottomItems = [
   title="Youth | Pine Lake Covenant Church"
   description="Pine Lake Youth: a place for 6th–12th graders to find Jesus together, connect, and serve."
 >
-  <article class="page page--wide">
-    <header class="page__header">
-      <h1>
-        <Photo
-          filename="PineLakeYouth_logo_web.png"
-          alt="Pine Lake Youth"
-          class="youth__logo"
-          loading="eager"
-          fetchpriority="high"
-          widths={[340, 680]}
-          sizes="(max-width: 600px) 50vw, 340px"
-        />
-      </h1>
-      <p class="page__subhead">
-        A place for middle school and high school students to find &amp; follow Jesus together
-      </p>
-
-      <p class="page__lede measure">
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename="youth-01-1600x1600.jpg"
+      alt="Students at Pine Lake Youth"
+      tone="sand"
+      reverse
+      eyebrow="Middle & high school"
+    >
+      <Photo
+        filename="PineLakeYouth_logo_web.png"
+        alt="Pine Lake Youth"
+        class="youth__logo"
+        loading="eager"
+        fetchpriority="high"
+        widths={[340, 680]}
+        sizes="(max-width: 600px) 70vw, 340px"
+      />
+      <p class="subhead">A place for students to find &amp; follow Jesus together</p>
+      <p class="lede">
         Our hope is that Pine Lake Youth would be a place where you can be yourself, belong to something bigger, and
         become part of bringing heaven to earth.
       </p>
-    </header>
+    </Split>
 
     <section class="section youth-quick">
       <div class="card-grid">
@@ -90,7 +86,12 @@ const youthMomentsBottomItems = [
       </div>
     </section>
 
-    <MomentsSection heading="Moments from Pine Lake Youth" items={youthMomentsTopItems} sectionClass="section" />
+    <MomentsSection
+      heading="Moments from Pine Lake Youth"
+      eyebrow="Life together"
+      items={youthMomentsTopItems}
+      sectionClass="to-wide"
+    />
 
     <section class="section section-callout">
       <h2>What a Tuesday night feels like</h2>
@@ -106,7 +107,7 @@ const youthMomentsBottomItems = [
 
     <section class="section youth-connect">
       <h2>Want to get connected?</h2>
-      <p>
+      <p class="measure">
         New to youth group? You will not be the only one. Whether church feels familiar or brand new, this is a great
         place to begin.
       </p>
@@ -114,13 +115,14 @@ const youthMomentsBottomItems = [
       <p class="youth-connect__links">
         <a href="https://www.instagram.com/pinelakeyouth/" target="_blank" rel="noopener">Instagram</a>
         <a href="mailto:office@plcc.org">Email</a>
-        <a href={`${import.meta.env.BASE_URL}whats-happening/`}>Current schedule</a>
+        <a href={`${base}whats-happening/`}>Current schedule</a>
       </p>
     </section>
 
     <section class="section">
+      <p class="eyebrow">Through the year</p>
       <h2>Highlights through the year</h2>
-      <p>
+      <p class="measure">
         Alongside our weekly rhythm, we run a few annual experiences that help students grow in faith and friendship.
       </p>
 
@@ -152,33 +154,34 @@ const youthMomentsBottomItems = [
     </section>
 
     <section class="section">
+      <p class="eyebrow">Faith that moves outward</p>
       <h2>Service &amp; missions</h2>
-      <p>We want students to see faith move outward through practical service, both locally and globally.</p>
+      <p class="measure">
+        We want students to see faith move outward through practical service, both locally and globally.
+      </p>
 
       <ul>
+        <li><strong>Global 6K for Water</strong> — a whole-family walk each spring that helps provide clean water.</li>
         <li>
-          <strong>Global 6K for Water</strong> - a whole-family walk each spring that helps provide clean water.
-        </li>
-        <li>
-          <strong>Capernaum Talent Show</strong> - an annual event with Young Life Capernaum for students with special needs
+          <strong>Capernaum Talent Show</strong> — an annual event with Young Life Capernaum for students with special needs
           and their families.
         </li>
         <li>
-          <strong>Community Meal Packaging</strong> - typically in early December, helping package meals for kids in Sierra
+          <strong>Community Meal Packaging</strong> — typically in early December, helping package meals for kids in Sierra
           Leone.
         </li>
         <li>
-          <strong>Unite</strong> - a regional high school gathering held every other summer (next planned: Summer 2027).
+          <strong>Unite</strong> — a regional high school gathering held every other summer (next planned: Summer 2027).
         </li>
       </ul>
 
       <p>
-        <a href={`${import.meta.env.BASE_URL}whats-happening/`}>See what’s coming up →</a>
+        <a href={`${base}whats-happening/`}>See what’s coming up →</a>
       </p>
     </section>
 
-    <MomentsSection heading={null} items={youthMomentsBottomItems} sectionClass="section" />
-  </article>
+    <MomentsSection heading={null} items={youthMomentsBottomItems} sectionClass="to-wide" />
+  </div>
 </BaseLayout>
 
 <style>
@@ -188,6 +191,7 @@ const youthMomentsBottomItems = [
     width: clamp(13.75rem, 50vw, 21.25rem);
     height: auto;
     object-fit: contain;
+    margin: 0 0 0.75rem;
   }
 
   .youth-connect__links {
