@@ -7,24 +7,18 @@ import { imageByFilename } from '../data/homePageImages'
 
 const base = import.meta.env.BASE_URL
 
-const youthMomentsTopItems = [
-  { image: imageByFilename('youth-02-1600x1600.jpg'), fallbackAlt: 'A moment from a Pine Lake Youth gathering' },
-  { image: imageByFilename('youth-03-1600x1600.jpg'), fallbackAlt: 'Students connecting in community' },
-  { image: imageByFilename('youth-04-1600x1600.jpg'), fallbackAlt: 'Pine Lake Youth activity' },
-]
-
-const youthMomentsBottomItems = [
+const youthMomentsItems = [
   {
     image: imageByFilename('515010876_1159769626191025_3703366804227887968_n.jpg'),
-    fallbackAlt: 'Students serving and praying together at Pine Lake Youth',
+    fallbackAlt: 'Students praying together at Pine Lake Youth',
+  },
+  {
+    image: imageByFilename('649105057_18197705947338056_7727010854774354017_n.jpg'),
+    fallbackAlt: 'A student leading worship at Pine Lake Youth',
   },
   {
     image: imageByFilename('650251601_18198219286338056_7378060351620760269_n.jpg'),
     fallbackAlt: 'Students gathered together at Pine Lake Youth',
-  },
-  {
-    image: imageByFilename('715550230_18207937264338056_8366812198487572303_n.jpg'),
-    fallbackAlt: 'A student carrying groceries for the Issaquah & Sammamish food project',
   },
 ]
 ---
@@ -36,8 +30,8 @@ const youthMomentsBottomItems = [
   <div class="canvas">
     <Split
       class="to-full"
-      filename="youth-01-1600x1600.jpg"
-      alt="Students at Pine Lake Youth"
+      filename="587395483_18187772734338056_5738413555925055591_n.jpg"
+      alt="A group of students together at Pine Lake Youth"
       tone="sand"
       reverse
       eyebrow="Middle & high school"
@@ -89,7 +83,7 @@ const youthMomentsBottomItems = [
     <MomentsSection
       heading="Moments from Pine Lake Youth"
       eyebrow="Life together"
-      items={youthMomentsTopItems}
+      items={youthMomentsItems}
       sectionClass="to-wide"
     />
 
@@ -179,8 +173,6 @@ const youthMomentsBottomItems = [
         <a href={`${base}whats-happening/`}>See what’s coming up →</a>
       </p>
     </section>
-
-    <MomentsSection heading={null} items={youthMomentsBottomItems} sectionClass="to-wide" />
   </div>
 </BaseLayout>
 

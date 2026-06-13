@@ -103,11 +103,6 @@ export const homePageImages: HomePageImage[] = [
     alt: 'Children listening during a kids moment at the front of the room',
   },
   {
-    filename: 'plcc-worship-harp.jpg',
-    tags: ['worship', 'music', 'service'],
-    alt: 'A musician singing beside a harp during worship',
-  },
-  {
     filename: 'plcc-prayer-candles.jpg',
     tags: ['prayer', 'care', 'reflection'],
     alt: 'Lit candles set out for a reflective prayer moment',
@@ -118,17 +113,11 @@ export const homePageImages: HomePageImage[] = [
     alt: 'People standing together in worship beneath the cross',
   },
   {
-    filename: 'plcc-worship-vocals.jpg',
-    tags: ['worship', 'music', 'service'],
-    alt: 'A vocalist leading worship on stage',
-  },
-  {
     filename: 'plcc-kids-stage-gathering.jpg',
     tags: ['kids', 'family', 'gathering', 'community'],
     alt: 'Children gathered together up front during a church activity',
   },
   { filename: 'cropped-Worship-e1464544420127.jpg', tags: [], alt: '' },
-  { filename: 'worship-1600x400.jpg', tags: ['service'], alt: '' },
   {
     filename: 'church-exterior-1024x400.jpg',
     tags: ['church', 'building', 'exterior'],
@@ -164,10 +153,6 @@ export const homePageImages: HomePageImage[] = [
     tags: ['kids', 'family', 'gathering'],
     alt: 'Children at Pine Lake Kids',
   },
-  { filename: 'youth-01-1600x1600.jpg', tags: ['youth'], alt: 'Students at Pine Lake Youth' },
-  { filename: 'youth-02-1600x1600.jpg', tags: ['youth'], alt: 'A moment from a Pine Lake Youth gathering' },
-  { filename: 'youth-03-1600x1600.jpg', tags: ['youth'], alt: 'Students connecting in community' },
-  { filename: 'youth-04-1600x1600.jpg', tags: ['youth'], alt: 'Pine Lake Youth activity' },
 
   // --- Added 2026-06: recent candid photos ---
   {
