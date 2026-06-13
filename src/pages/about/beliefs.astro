@@ -1,77 +1,145 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Split from '../../components/Split.astro'
+
+const base = import.meta.env.BASE_URL
+
+const tenets = [
+  {
+    title: 'Scripture',
+    body: 'We look to the Bible as the primary guide for understanding who God is and how we are called to live. We trust Scripture to shape our faith, our life together as a church, and our mission in the world.',
+  },
+  {
+    title: 'New life in Christ',
+    body: 'Following Jesus involves real transformation — a new beginning marked by forgiveness, grace, and a growing life of love, joy, and peace. This new life is not a one-time event, but a lifelong journey of growth and formation.',
+  },
+  {
+    title: 'The mission of the Church',
+    body: 'The Church exists not for itself, but to participate in God’s work of restoring the world: sharing the good news of Jesus, forming disciples, and practicing compassion, mercy, and justice in our communities and beyond.',
+  },
+  {
+    title: 'Life together',
+    body: 'Faith is meant to be lived in community. The Church is not primarily a building or an institution, but a fellowship of believers learning to follow Jesus together — and all followers of Christ share in its life and ministry.',
+  },
+  {
+    title: 'The Holy Spirit',
+    body: 'God is present and active today through the Holy Spirit, who draws people to Christ, shapes our lives, equips us with gifts, and empowers us to love, serve, and bear witness in the world.',
+  },
+  {
+    title: 'Freedom in Christ',
+    body: 'The Good News of the Gospel brings freedom from shame and fear, and offers grace for our failings. United in Christ, we focus on what unites us rather than what divides us — extending generosity where faithful Christians may differ.',
+  },
+]
 ---
 
 <BaseLayout title="What We Believe | Pine Lake Covenant Church">
-  <article class="page">
-    <header class="page__header">
-      <p class="eyebrow">About</p>
-      <h1>What We Believe</h1>
-
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename="689198585_18204342169338056_6577419158000891110_n.jpg"
+      alt="A woman worshipping with her hand raised toward the cross"
+      tone="sand"
+      reverse
+      eyebrow="About"
+    >
+      <h1 class="display">What We Believe</h1>
       <p class="lede">
-        This page offers a bit more detail about the Christian beliefs that shape Pine Lake Covenant Church, and how
-        those beliefs connect us to the wider Evangelical Covenant Church. Our aim is to be clear and thoughtful, while
-        keeping the focus on what matters most.
+        A bit more detail about the Christian beliefs that shape Pine Lake Covenant Church, and how they connect us to
+        the wider Evangelical Covenant Church. We aim to be clear and thoughtful, while keeping the focus on what
+        matters most.
       </p>
-    </header>
+    </Split>
 
     <section class="section">
-      <h2>Scripture</h2>
-      <p>
-        We look to the Bible as the primary guide for understanding who God is and how we are called to live. We trust
-        Scripture to shape our faith, our life together as a church, and our mission in the world.
-      </p>
+      <p class="eyebrow">Six core tenets</p>
+      <ol class="tenets">
+        {
+          tenets.map((t, i) => (
+            <li class="tenet">
+              <span class="tenet__num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h2 class="tenet__title">{t.title}</h2>
+              <p>{t.body}</p>
+            </li>
+          ))
+        }
+      </ol>
     </section>
 
     <section class="section">
-      <h2>New life in Christ</h2>
-      <p>
-        We believe following Jesus involves real transformation — a new beginning marked by forgiveness, grace, and a
-        growing life of love, joy, and peace. This new life is not a one-time event, but a lifelong journey of growth
-        and formation.
-      </p>
+      <div class="creed-note">
+        <p class="eyebrow">Part of something bigger</p>
+        <p class="measure">
+          Pine Lake Covenant Church is part of the <a href={`${base}about/covenant/`}>Evangelical Covenant Church</a>, a
+          Christian denomination rooted in historic Christian faith and formed in 1885. To go deeper, visit
+          <a href="https://covchurch.org">covchurch.org</a> or read the
+          <a href="https://covchurch.org/resource/covenant-affirmations/">Covenant Affirmations</a>.
+        </p>
+      </div>
     </section>
-
-    <section class="section">
-      <h2>The mission of the Church</h2>
-      <p>
-        We believe the Church exists not for itself, but to participate in God’s work of restoring the world. This
-        includes sharing the good news of Jesus, forming disciples, and practicing compassion, mercy, and justice in our
-        communities and beyond.
-      </p>
-    </section>
-
-    <section class="section">
-      <h2>Life together</h2>
-      <p>
-        We believe faith is meant to be lived in community. The Church is not primarily a building or an institution,
-        but a fellowship of believers learning to follow Jesus together. We believe all followers of Christ share in the
-        life and ministry of the Church.
-      </p>
-    </section>
-
-    <section class="section">
-      <h2>The Holy Spirit</h2>
-      <p>
-        We believe God is present and active today through the Holy Spirit. The Spirit draws people to Christ, shapes
-        our lives, equips us with gifts, and empowers us to love, serve, and bear witness in the world.
-      </p>
-    </section>
-
-    <section class="section">
-      <h2>Freedom in Christ</h2>
-      <p>
-        We believe the Good News of the Gospel brings freedom from shame and fear, and offers grace for our failings.
-        United in Christ, we seek to focus on what unites us rather than what divides us, extending generosity and grace
-        to one another where faithful Christians may differ.
-      </p>
-
-      <p>
-        Pine Lake Covenant Church is part of the Evangelical Covenant Church, a Christian denomination rooted in
-        historic Christian faith and formed in 1885. If you would like to learn more about the Covenant Church, you can
-        visit <a href="https://covchurch.org">covchurch.org</a> or read more about the
-        <a href="https://covchurch.org/resource/covenant-affirmations/">Covenant Affirmations</a>.
-      </p>
-    </section>
-  </article>
+  </div>
 </BaseLayout>
+
+<style>
+  .tenets {
+    list-style: none;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .tenet {
+    position: relative;
+    padding: clamp(1.5rem, 2.4vw, 2rem);
+    background: var(--color-paper);
+    border: 1px solid var(--color-mist);
+    border-left: 4px solid var(--color-moss);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .tenet__num {
+    display: block;
+    font-family: var(--font-serif);
+    font-variation-settings: var(--serif-display);
+    font-weight: 800;
+    font-size: var(--text-xl);
+    line-height: 1;
+    color: var(--color-moss-2);
+    margin-bottom: 0.6rem;
+  }
+
+  .tenet__title {
+    margin: 0 0 0.5rem;
+    font-size: var(--text-lg);
+  }
+
+  .tenet p {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+
+  .creed-note {
+    padding: clamp(1.5rem, 2.4vw, 2rem);
+    background: var(--color-sand);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-line);
+  }
+
+  .creed-note .eyebrow {
+    margin-bottom: 0.5rem;
+  }
+
+  .creed-note p:last-child {
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .tenets {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
