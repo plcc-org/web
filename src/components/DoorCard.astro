@@ -35,17 +35,21 @@ const { title, intro, body, bullets, ctaLabel, href } = Astro.props
 <style>
   .door {
     position: relative;
-    padding: 4rem 3rem;
-    border-radius: var(--radius-organic);
-    background: var(--color-stone);
-    box-shadow: var(--shadow-diffuse);
+    padding: clamp(1.75rem, 3.2vw, 2.75rem);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    box-shadow: var(--shadow-md);
     border: 1px solid var(--color-mist);
-    transition: all 0.3s ease;
+    transition:
+      transform 0.3s var(--ease-out),
+      box-shadow 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out);
   }
 
   .door:hover {
-    transform: translateY(-8px) rotate(-1deg);
-    background: var(--color-white);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(106, 149, 41, 0.4);
   }
 
   .door__badge {
@@ -60,8 +64,8 @@ const { title, intro, body, bullets, ctaLabel, href } = Astro.props
 
   .door__title {
     font-family: var(--font-serif);
-    font-size: 1.85rem;
-    margin-top: 0.5rem;
+    font-size: var(--text-xl);
+    margin-top: 0;
     color: var(--color-forest);
   }
 

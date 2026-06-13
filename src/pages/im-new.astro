@@ -1,51 +1,71 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Split from '../components/Split.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { imNewStartHereLinks } from '../data/startHereLinks'
 import { imageByFilename } from '../data/homePageImages'
 
+const base = import.meta.env.BASE_URL
+
 const imNewMomentsItems = [
   {
-    image: imageByFilename('474748731_1030392515795404_2521947271930024728_n.jpg'),
-    fallbackAlt: 'People connecting together in community',
+    image: imageByFilename('689198585_18204342169338056_6577419158000891110_n.jpg'),
+    fallbackAlt: 'A woman worshipping with her hand raised toward the cross',
   },
   {
-    image: imageByFilename('527613266_18174174280338056_1626054179180271796_n.jpg'),
-    fallbackAlt: 'A prayer moment during a church gathering',
+    image: imageByFilename('632596313_18195791983338056_8968669861789057843_n.jpg'),
+    fallbackAlt: 'People worshipping with hands raised during a Sunday service',
   },
   {
-    image: imageByFilename('551447661_18178844206338056_8896943485236580927_n.jpg'),
-    fallbackAlt: 'A candid community moment at Pine Lake',
+    image: imageByFilename('716210270_18207937219338056_973750074017894335_n.jpg'),
+    fallbackAlt: 'Two friends sharing a laugh before the service',
   },
 ]
 ---
 
 <BaseLayout title="I’m New | Pine Lake Covenant Church">
-  <article class="page page--wide">
-    <header class="page__header prose-measure">
-      <h1>I’m New</h1>
-      <p class="page__lede text-body-large">
-        Visiting a new church can feel unfamiliar — especially if you haven’t been to church in a while, or aren’t quite
-        sure what you’re looking for. Whether you’re just curious or thinking about visiting for the first time, we’re
-        glad you’re here.
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename="688117169_18204342136338056_7738717935775703001_n.jpg"
+      alt="Friends catching up in the foyer near the Pine Lake Kids check-in"
+      tone="sand"
+      reverse
+      eyebrow="Welcome"
+    >
+      <h1 class="display">I’m New</h1>
+      <p class="lede">
+        Visiting a new church can feel unfamiliar — especially if you haven’t been in a while, or aren’t quite sure what
+        you’re looking for. Whether you’re just curious or thinking about visiting for the first time, we’re glad you’re
+        here.
       </p>
-    </header>
+      <p><a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a></p>
+    </Split>
 
     <LinkCardSection links={imNewStartHereLinks} />
 
-    <section class="section section-callout">
-      <h2>What to expect here</h2>
-
+    <Split
+      class="to-full"
+      filename="496814139_18165842923338056_8245433015909218005_n.jpg"
+      alt="The congregation worshipping together under the sanctuary’s timber-framed ceiling"
+      tone="paper"
+      eyebrow="No pressure"
+      heading="What to expect here"
+    >
       <p>
         You won’t be asked to introduce yourself, explain what you believe, or commit to anything. Some people who come
-        to Pine Lake have deep faith, others are exploring, returning after time away, or connected through family or
+        to Pine Lake have deep faith; others are exploring, returning after time away, or connected through family or
         community.
       </p>
-
       <p>You’re welcome to participate at whatever pace feels right to you.</p>
-    </section>
-  </article>
+    </Split>
 
-  <MomentsSection heading="Moments from Pine Lake" items={imNewMomentsItems} sectionClass="section" />
+    <MomentsSection
+      heading="Moments from Pine Lake"
+      eyebrow="Life together"
+      items={imNewMomentsItems}
+      sectionClass="to-wide"
+    />
+  </div>
 </BaseLayout>

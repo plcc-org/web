@@ -1,0 +1,50 @@
+---
+import Photo from './Photo.astro'
+
+// Full-bleed cinematic hero. Renders a background video (with a still poster
+// fallback for reduced-motion) or a portrait background image, under a forest
+// gradient scrim, with contained content anchored bottom-left.
+
+type Props = {
+  video?: string
+  poster?: string
+  filename?: string
+  alt?: string
+  eyebrow?: string
+  title: string
+  subhead?: string
+}
+
+const { video, poster, filename, alt = '', eyebrow, title, subhead } = Astro.props
+---
+
+<section class="hero">
+  <div class="hero__media" style={poster ? `background-image:url('${poster}')` : undefined}>
+    {
+      video ? (
+        <video class="hero__video" autoplay muted loop playsinline aria-hidden="true" tabindex="-1" poster={poster}>
+          <source src={video} type="video/mp4" />
+        </video>
+      ) : filename ? (
+        <Photo
+          filename={filename}
+          alt={alt}
+          class="hero__img"
+          widths={[768, 1280, 1920]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      ) : null
+    }
+  </div>
+
+  <div class="hero__inner">
+    <div class="hero__content">
+      {eyebrow && <p class="eyebrow hero__eyebrow">{eyebrow}</p>}
+      <h1 class="hero__title">{title}</h1>
+      {subhead && <p class="hero__subhead">{subhead}</p>}
+      <slot />
+    </div>
+  </div>
+</section>

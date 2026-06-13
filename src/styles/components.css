@@ -1,3 +1,200 @@
+/* ======================================================================
+ * Hero — full-bleed cinematic media header (see Hero.astro)
+ * ==================================================================== */
+.hero {
+  position: relative;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  min-height: clamp(28rem, 72vh, 44rem);
+  display: flex;
+  align-items: flex-end;
+  overflow: clip;
+  isolation: isolate;
+  color: var(--color-on-dark);
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero__video,
+.hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 46, 12, 0.2) 0%,
+    rgba(26, 46, 12, 0) 28%,
+    rgba(26, 46, 12, 0.1) 52%,
+    rgba(26, 46, 12, 0.85) 100%
+  );
+}
+
+.hero__inner {
+  width: 100%;
+  max-width: var(--width-content);
+  margin-inline: auto;
+  padding: var(--gutter);
+  padding-block-end: clamp(2rem, 5vw, 3.5rem);
+}
+
+.hero__content {
+  max-width: 44rem;
+}
+
+.hero__eyebrow {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero__title {
+  color: var(--color-white);
+  font-size: var(--text-display);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin: 0;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35);
+}
+
+.hero__subhead {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: var(--text-lg);
+  margin: 0.85rem 0 0;
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+}
+
+.hero__content .btn,
+.hero__content :where(a.btn) {
+  margin-top: 1.6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__video {
+    display: none;
+  }
+}
+
+/* ======================================================================
+ * Split — asymmetric portrait photo + text (see Split.astro)
+ * ==================================================================== */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  background: var(--color-paper);
+  overflow: clip;
+}
+
+.split--sand {
+  background: var(--color-sand);
+}
+
+.split--forest {
+  background: var(--gradient-forest);
+  color: var(--color-on-dark);
+  isolation: isolate;
+}
+
+.split--forest :is(h2, h3) {
+  color: var(--color-white);
+}
+
+.split--forest .split__body-inner :where(p) {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.split__media {
+  position: relative;
+  min-height: clamp(20rem, 40vw, 34rem);
+}
+
+.split__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.split__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.split__body-inner {
+  width: 100%;
+  max-width: 36rem;
+}
+
+.split__heading {
+  margin-top: 0;
+}
+
+/* Media left, text right (default) */
+.split:not(.split--reverse) .split__media {
+  order: 1;
+}
+
+.split:not(.split--reverse) .split__body {
+  order: 2;
+  padding-inline: clamp(1.5rem, 4vw, 3rem) max(var(--gutter), calc((100vw - var(--width-content)) / 2));
+}
+
+/* Text left, media right (reversed) */
+.split--reverse .split__media {
+  order: 2;
+}
+
+.split--reverse .split__body {
+  order: 1;
+  justify-items: end;
+  padding-inline: max(var(--gutter), calc((100vw - var(--width-content)) / 2)) clamp(1.5rem, 4vw, 3rem);
+}
+
+.split--reverse .split__body-inner {
+  margin-left: auto;
+}
+
+@media (max-width: 860px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .split__media,
+  .split--reverse .split__media {
+    order: 1;
+    min-height: clamp(18rem, 72vw, 28rem);
+  }
+
+  .split__body,
+  .split--reverse .split__body {
+    order: 2;
+    padding: clamp(1.75rem, 6vw, 2.75rem) var(--gutter);
+  }
+
+  .split__body-inner,
+  .split--reverse .split__body-inner {
+    max-width: 40rem;
+    margin-left: 0;
+  }
+}
+
 /* Reusable content cards and grids */
 .card-grid {
   display: grid;
@@ -131,45 +328,6 @@
   overflow: hidden;
   box-shadow: var(--shadow-diffuse);
   position: relative;
-}
-
-.hero-box {
-  background: var(--color-forest);
-  color: var(--color-stone);
-  border-radius: var(--radius-soft);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  box-shadow: var(--shadow-diffuse);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  margin-bottom: var(--space-m);
-  overflow: hidden;
-  position: relative;
-  aspect-ratio: 16 / 9;
-}
-
-.hero-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.6;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-video {
-    display: none;
-  }
-}
-
-.hero-overlay {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 2rem;
-  right: 2rem;
-  text-align: center;
-  z-index: 2;
 }
 
 .media__img {

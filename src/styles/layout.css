@@ -1,4 +1,17 @@
-/* Page-level typography and rhythm */
+/* ======================================================================
+ * LAYOUT
+ *
+ * Two systems live here:
+ *  1. Legacy `.page` flow — the original narrow/wide reading wrapper. Kept
+ *     intact so existing pages render unchanged until they're migrated.
+ *  2. `.canvas` full-bleed grid — the modern system. A single grid whose
+ *     children sit in a centered content column by default, but can opt into
+ *     full-viewport-width bleed. This is what photo-forward pages are built on.
+ * ==================================================================== */
+
+/* ----------------------------------------------------------------------
+ * 1. Legacy page flow
+ * -------------------------------------------------------------------- */
 .page {
   max-width: var(--measure);
   margin: var(--space-m) 0 var(--space-l);
@@ -13,14 +26,14 @@
 }
 
 .page__header h1 {
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
-  letter-spacing: -0.02em;
+  font-size: var(--text-display);
+  letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .page__subhead {
   margin-top: 0.5rem;
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   color: var(--color-clay);
   font-family: var(--font-serif);
   font-style: italic;
@@ -37,52 +50,228 @@
   color: var(--color-forest);
 }
 
-.page__lede a {
-  display: inline-block;
-  padding: 0.85rem 1.75rem;
-  background: var(--color-moss);
+/* ----------------------------------------------------------------------
+ * 2. Canvas — full-bleed content grid
+ *
+ * Breaks out of `.site-main`'s constraint to span the viewport, then lays
+ * out children in a centered column. Children bleed full-width by adding
+ * `.to-full`; reading-width text uses `.measure` inside a content child.
+ * -------------------------------------------------------------------- */
+.canvas {
+  --canvas-gutter: var(--gutter);
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(var(--canvas-gutter), 1fr)
+    [content-start] min(100% - 2 * var(--canvas-gutter), var(--width-content))
+    [content-end] minmax(var(--canvas-gutter), 1fr)
+    [full-end];
+  row-gap: var(--space-section);
+  margin-bottom: var(--space-3xl);
+}
+
+.canvas > * {
+  grid-column: content;
+  min-width: 0;
+}
+
+.canvas > .to-full {
+  grid-column: full;
+}
+
+/* Slightly wider than text but not full bleed — for galleries/splits */
+.canvas > .to-wide {
+  grid-column: full;
+  width: min(100% - 2 * var(--canvas-gutter), var(--width-wide));
+  margin-inline: auto;
+}
+
+/* Tighten the gap above/below when blocks should read as a pair */
+.canvas > .pull-up {
+  margin-top: calc(var(--space-section) * -0.45);
+}
+
+/* ----------------------------------------------------------------------
+ * Bands — full-bleed colored/▒photo sections with re-contained inner content
+ * -------------------------------------------------------------------- */
+.band {
+  padding-block: clamp(2.5rem, 5vw, var(--space-3xl));
+  position: relative;
+}
+
+.band__inner {
+  width: 100%;
+  max-width: var(--width-content);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.band--forest {
+  background: var(--gradient-forest);
+  color: var(--color-on-dark);
+  isolation: isolate;
+}
+
+.band--forest :is(h1, h2, h3, h4) {
   color: var(--color-white);
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 700;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-diffuse);
 }
 
-.page__lede a:hover {
-  background: var(--color-forest);
-  transform: translateY(-2px);
+.band--sand {
+  background: var(--color-sand);
 }
 
+.band--paper {
+  background: var(--color-paper);
+}
+
+/* ----------------------------------------------------------------------
+ * Section rhythm utilities (work anywhere, not just inside .page)
+ * -------------------------------------------------------------------- */
+.flow > * + * {
+  margin-top: var(--space-section);
+}
+
+.flow-tight > * + * {
+  margin-top: var(--space-lg);
+}
+
+.stack > * + * {
+  margin-top: var(--space-md);
+}
+
+/* ----------------------------------------------------------------------
+ * Typographic utilities (decoupled from .page)
+ * -------------------------------------------------------------------- */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-moss-2);
+  margin: 0 0 0.75rem;
+}
+
+.subhead {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-lg);
+  color: var(--color-clay);
+  margin: 0.5rem 0 0;
+}
+
+.display {
+  font-size: var(--text-display);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin: 0;
+}
+
+.lede,
 .text-body-large {
-  font-size: 1.25rem;
-  line-height: 1.7;
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+}
+
+.lede {
+  color: var(--color-ink-soft);
+}
+
+.measure {
+  max-width: var(--measure);
 }
 
 .prose-measure {
   max-width: var(--measure);
 }
 
+.measure-wide {
+  max-width: 52rem;
+}
+
+/* ----------------------------------------------------------------------
+ * Buttons (reusable; .page__lede a kept below for legacy pages)
+ * -------------------------------------------------------------------- */
+.btn,
+.page__lede a {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  background: var(--color-moss);
+  color: var(--color-white);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  transition:
+    transform 0.2s var(--ease-out),
+    background 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:hover,
+.page__lede a:hover {
+  background: var(--color-forest);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-forest);
+  box-shadow: none;
+  border: 1.5px solid var(--color-line);
+}
+
+.btn--ghost:hover {
+  background: var(--color-forest);
+  color: var(--color-white);
+  border-color: var(--color-forest);
+}
+
+/* On dark bands, ghost buttons invert */
+.band--forest .btn--ghost,
+.split--forest .btn--ghost {
+  color: var(--color-white);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.band--forest .btn--ghost:hover,
+.split--forest .btn--ghost:hover {
+  background: var(--color-white);
+  color: var(--color-forest);
+  border-color: var(--color-white);
+}
+
+/* ----------------------------------------------------------------------
+ * Panels & callouts (refined; class names preserved for legacy pages)
+ * -------------------------------------------------------------------- */
 .content-panel {
-  padding: clamp(1.25rem, 2.4vw, 2rem);
-  border-radius: var(--radius-soft);
+  padding: clamp(1.5rem, 2.4vw, 2.25rem);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-panel);
+  box-shadow: var(--shadow-md);
 }
 
 .content-panel h2 {
   margin-top: 0;
 }
 
+.surface-gradient-soft {
+  background: var(--surface-gradient-soft);
+}
+
 .section-callout {
   position: relative;
   padding: clamp(1.75rem, 3.2vw, 2.75rem);
-  border-radius: var(--radius-soft);
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(106, 149, 41, 0.34);
   background:
     linear-gradient(155deg, rgba(106, 149, 41, 0.2) 0%, rgba(106, 149, 41, 0.08) 45%, rgba(255, 255, 255, 0.88) 100%),
     var(--color-white);
-  box-shadow: 0 20px 50px -22px rgba(26, 46, 12, 0.24);
+  box-shadow: var(--shadow-md);
 }
 
 .section-callout > * {
@@ -96,7 +285,7 @@
   bottom: 0.9rem;
   left: 0.65rem;
   width: 6px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: linear-gradient(180deg, var(--color-moss) 0%, rgba(26, 46, 12, 0.45) 100%);
 }
 
@@ -104,13 +293,10 @@
   margin-top: 0;
   margin-bottom: 0.9rem;
   padding-left: 1rem;
-  font-size: clamp(1.85rem, 3.4vw, 2.35rem);
+  font-size: var(--text-xl);
 }
 
 .section-callout p {
   padding-left: 1rem;
   font-size: 1.05rem;
-}
-.surface-gradient-soft {
-  background: var(--surface-gradient-soft);
 }

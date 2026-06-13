@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Split from '../components/Split.astro'
 import DoorCard from '../components/DoorCard.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { neighborsDoors } from '../data/neighborsDoors'
@@ -7,41 +8,49 @@ import { imageByFilename } from '../data/homePageImages'
 
 const neighborsMomentsItems = [
   {
-    image: imageByFilename('467977252_18149338267338056_1889842660921052110_n.jpg'),
-    fallbackAlt: 'People from the Pine Lake community gathered together',
+    image: imageByFilename('518360506_1167866075381380_870034891620119747_n.jpg'),
+    fallbackAlt: 'An older volunteer and a young girl serving communion together',
   },
   {
-    image: imageByFilename('476750093_18157384759338056_1921287384410502360_n.jpg'),
-    fallbackAlt: 'A moment of care and prayer in community',
+    image: imageByFilename('713744286_18207297163338056_6646989916077687669_n.jpg'),
+    fallbackAlt: 'An adult being baptized as the congregation looks on',
   },
   {
-    image: imageByFilename('624779024_18194108401338056_4396479470413009307_n.jpg'),
-    fallbackAlt: 'Neighbors sharing a candid moment at Pine Lake',
+    image: imageByFilename('660105701_18200889916338056_3408852217555726193_n.jpg'),
+    fallbackAlt: 'A leader talking warmly with a child at a craft table',
   },
 ]
 ---
 
 <BaseLayout title="For Our Neighbors | Pine Lake Covenant Church">
-  <article class="page page--wide">
-    <header class="page__header">
-      <h1>For Our Neighbors</h1>
-      <p class="page__subhead">Serving Sammamish, Issaquah, and the surrounding communities</p>
-
-      <p class="page__lede">
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename="715550230_18207937264338056_8366812198487572303_n.jpg"
+      alt="A student carrying groceries for the Issaquah & Sammamish food project"
+      tone="sand"
+      reverse
+      eyebrow="For Our Neighbors"
+    >
+      <h1 class="display">For Our Neighbors</h1>
+      <p class="subhead">Serving Sammamish, Issaquah, and the surrounding communities</p>
+      <p class="lede">
         Pine Lake is a church, but you don’t need to be “a church person” to be welcome here. We want to be a good
-        neighbor — offering support when life is hard, space for community to gather, and ways to connect and build
-        something meaningful together.
+        neighbor — offering support when life is hard, space for community to gather, and ways to build something
+        meaningful together.
       </p>
+    </Split>
 
-      <p class="page__lede">
-        People come through our doors for different reasons. Below are some of the most common starting points.
-      </p>
-    </header>
+    <section class="section">
+      <p class="eyebrow">Where to start</p>
+      <h2>Common starting points</h2>
+      <p class="measure">People come through our doors for different reasons. Here are a few of the most common.</p>
 
-    <section class="doors" aria-label="Ways to connect with Pine Lake">
-      {neighborsDoors.map((d) => <DoorCard {...d} />)}
+      <div class="doors" aria-label="Ways to connect with Pine Lake">
+        {neighborsDoors.map((d) => <DoorCard {...d} />)}
+      </div>
     </section>
 
-    <MomentsSection heading={null} items={neighborsMomentsItems} />
-  </article>
+    <MomentsSection heading="Moments from Pine Lake" eyebrow="Life together" items={neighborsMomentsItems} sectionClass="to-wide" />
+  </div>
 </BaseLayout>

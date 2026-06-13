@@ -1,28 +1,119 @@
 :root {
-  /* Colors: Earth & Moss */
-  --color-moss: rgb(106, 149, 41);
-  --color-forest: rgb(26, 46, 12);
-  --color-stone: rgb(242, 238, 230);
-  --color-clay: rgb(166, 123, 91);
-  --color-mist: rgba(26, 46, 12, 0.08);
+  /* ----------------------------------------------------------------------
+   * Color — Earth & Moss
+   * A warm, earthy identity. Forest + stone are the base (dark type on warm
+   * off-white); moss carries action; clay carries supporting text. The added
+   * tonal shades (sand/paper/ink/line) give the system enough range to build
+   * alternating bands and embedded photo panels without inventing one-offs.
+   * -------------------------------------------------------------------- */
+  --color-forest: rgb(26, 46, 12); /* primary ink, dark panels */
+  --color-forest-2: rgb(45, 77, 24); /* mid forest, for gradients */
+  --color-moss: rgb(106, 149, 41); /* primary action / accent */
+  --color-moss-2: rgb(115, 148, 59); /* brighter moss (logo, keylines) */
+  --color-clay: rgb(166, 123, 91); /* captions, metadata, italic subheads */
+  --color-ember: rgb(189, 101, 56); /* warm secondary accent — used sparingly */
+
+  --color-stone: rgb(242, 238, 230); /* page background */
+  --color-sand: rgb(233, 226, 213); /* deeper warm band, alternating sections */
+  --color-paper: rgb(250, 248, 244); /* lightest surface (cards) */
   --color-white: #ffffff;
 
-  /* Typography */
-  --font-serif: 'Fraunces', serif;
-  --font-sans: 'Instrument Sans', sans-serif;
+  --color-ink: var(--color-forest);
+  --color-ink-soft: rgba(26, 46, 12, 0.72); /* secondary body text */
+  --color-mist: rgba(26, 46, 12, 0.08); /* hairline borders, dividers */
+  --color-line: rgba(26, 46, 12, 0.14); /* slightly stronger border */
 
-  /* Spacing & Rhythm */
-  --space-xs: 0.5rem;
-  --space-s: 1.5rem;
-  --space-m: 3rem;
-  --space-l: 6rem;
-  --measure: 65ch;
+  /* On-dark text (over forest panels / footer) */
+  --color-on-dark: rgba(255, 255, 255, 0.94);
+  --color-on-dark-soft: rgba(255, 255, 255, 0.72);
 
-  /* Tactile */
+  /* ----------------------------------------------------------------------
+   * Typography
+   * Fraunces (serif, organic) for display; Instrument Sans for body/UI.
+   * One fluid modular scale — every size below is shared site-wide so pages
+   * stop inventing their own clamp() values.
+   * -------------------------------------------------------------------- */
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'Instrument Sans', system-ui, sans-serif;
+
+  --text-xs: 0.78rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: clamp(1.05rem, 0.4vw + 0.97rem, 1.2rem);
+  --text-lg: clamp(1.2rem, 0.7vw + 1.05rem, 1.45rem);
+  --text-xl: clamp(1.45rem, 1.4vw + 1.1rem, 1.95rem);
+  --text-2xl: clamp(1.85rem, 2.6vw + 1.1rem, 2.6rem);
+  --text-3xl: clamp(2.3rem, 4vw + 1.1rem, 3.4rem);
+  --text-display: clamp(2.6rem, 6vw + 1rem, 4.75rem);
+
+  --leading-tight: 1.12;
+  --leading-snug: 1.3;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.72;
+
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.06em;
+
+  /* Organic axes for Fraunces display headings */
+  --serif-display:
+    'SOFT' 100, 'WONK' 1;
+
+  /* ----------------------------------------------------------------------
+   * Spacing & rhythm
+   * A single ramp. Legacy aliases (xs/s/m/l) keep their original values so
+   * existing pages don't shift before they're migrated.
+   * -------------------------------------------------------------------- */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.5rem; /* legacy alias */
+  --space-s: 1.5rem; /* legacy alias */
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-m: 3rem; /* legacy alias */
+  --space-lg: 2rem;
+  --space-l: 6rem; /* legacy alias */
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 6rem;
+
+  /* Fluid rhythm between major page sections */
+  --space-section: clamp(3.25rem, 6vw, 6rem);
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+  /* ----------------------------------------------------------------------
+   * Layout widths
+   * -------------------------------------------------------------------- */
+  --measure: 65ch; /* max readable line length */
+  --width-text: 38rem; /* narrow reading column */
+  --width-content: 70rem; /* default content container */
+  --width-wide: 78rem; /* wide container for galleries/splits */
+  --width-shell: 1120px; /* header/footer shell */
+
+  /* ----------------------------------------------------------------------
+   * Tactile — radii, shadows, surfaces, grain
+   * -------------------------------------------------------------------- */
+  --radius-sm: 10px;
   --radius-soft: 16px;
+  --radius-lg: 24px;
   --radius-organic: 32px 16px 32px 16px;
-  --shadow-diffuse: 0 15px 45px -15px rgba(26, 46, 12, 0.15);
+  --radius-pill: 999px;
+
+  /* Layered, low-contrast shadows for a soft physical lift */
+  --shadow-sm: 0 1px 2px rgba(26, 46, 12, 0.06), 0 2px 6px -2px rgba(26, 46, 12, 0.08);
+  --shadow-md: 0 4px 10px -4px rgba(26, 46, 12, 0.12), 0 12px 28px -16px rgba(26, 46, 12, 0.2);
+  --shadow-lg: 0 8px 20px -8px rgba(26, 46, 12, 0.16), 0 28px 60px -28px rgba(26, 46, 12, 0.32);
+  /* Legacy aliases */
+  --shadow-diffuse: var(--shadow-md);
   --shadow-panel: 0 12px 32px -20px rgba(26, 46, 12, 0.35);
+
   --surface-gradient-soft: linear-gradient(170deg, rgba(255, 255, 255, 0.94) 0%, rgba(242, 238, 230, 0.72) 100%);
-  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+
+  /* Forest panel gradient — shared by hero/dark sections so they all match */
+  --gradient-forest: radial-gradient(circle at 92% 8%, rgba(106, 149, 41, 0.28) 0%, rgba(106, 149, 41, 0) 42%),
+    linear-gradient(155deg, rgba(26, 46, 12, 0.97) 0%, rgba(45, 77, 24, 0.92) 60%, rgba(106, 149, 41, 0.82) 100%);
+
+  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+
+  --ease-out: cubic-bezier(0.2, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }

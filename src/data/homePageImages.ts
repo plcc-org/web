@@ -168,4 +168,136 @@ export const homePageImages: HomePageImage[] = [
   { filename: 'youth-02-1600x1600.jpg', tags: ['youth'], alt: 'A moment from a Pine Lake Youth gathering' },
   { filename: 'youth-03-1600x1600.jpg', tags: ['youth'], alt: 'Students connecting in community' },
   { filename: 'youth-04-1600x1600.jpg', tags: ['youth'], alt: 'Pine Lake Youth activity' },
+
+  // --- Added 2026-06: recent candid photos ---
+  {
+    filename: '474778198_18155740735338056_3713170999697187589_n.jpg',
+    tags: ['family', 'kids', 'care'],
+    alt: 'A parent holding a smiling baby during a Sunday gathering',
+  },
+  {
+    filename: '496814139_18165842923338056_8245433015909218005_n.jpg',
+    tags: ['worship', 'gathering', 'building'],
+    alt: 'The congregation worshipping together under the sanctuary’s timber-framed ceiling',
+  },
+  {
+    filename: '518360506_1167866075381380_870034891620119747_n.jpg',
+    tags: ['communion', 'service', 'community'],
+    alt: 'An older volunteer and a young girl serving communion together',
+  },
+  {
+    filename: '632596313_18195791983338056_8968669861789057843_n.jpg',
+    tags: ['worship', 'prayer', 'gathering'],
+    alt: 'People worshipping with hands raised during a Sunday service',
+  },
+  {
+    filename: '651034879_18198219322338056_9008954644945760140_n.jpg',
+    tags: ['community', 'social', 'coffee', 'welcome'],
+    alt: 'A volunteer making coffee at the welcome café before the service',
+  },
+  {
+    filename: '656838890_18200890015338056_1357170169128708571_n.jpg',
+    tags: ['kids', 'family', 'care'],
+    alt: 'A volunteer playing with toddlers during a weekday playgroup',
+  },
+  {
+    filename: '658026969_18200890024338056_5693344916949832542_n.jpg',
+    tags: ['kids'],
+    alt: 'A child happily strumming a guitar in the Pine Lake Kids room',
+  },
+  {
+    filename: '658068289_18200890006338056_950690086570532728_n.jpg',
+    tags: ['kids', 'worship'],
+    alt: 'Young children waving ribbons during worship',
+  },
+  {
+    filename: '660105701_18200889916338056_3408852217555726193_n.jpg',
+    tags: ['care', 'kids', 'community'],
+    alt: 'A leader talking warmly with a child at a craft table',
+  },
+  {
+    filename: '670670045_18201955972338056_6373692375101503343_n.jpg',
+    tags: ['graphic', 'series'],
+    alt: 'Multiply — a sermon series at Pine Lake',
+  },
+  {
+    filename: '671831314_18202547362338056_8232655850918342196_n.jpg',
+    tags: ['kids'],
+    alt: 'A child painting rocks during a Pine Lake Kids activity',
+  },
+  {
+    filename: '672470327_18202547344338056_2701967790999045946_n.jpg',
+    tags: ['community', 'gathering', 'social', 'welcome'],
+    alt: 'New friends laughing together before a Sunday service',
+  },
+  {
+    filename: '688099949_18204342151338056_3539234897453255183_n.jpg',
+    tags: ['worship', 'music'],
+    alt: 'The worship team leading music on a Sunday morning',
+  },
+  {
+    filename: '688117169_18204342136338056_7738717935775703001_n.jpg',
+    tags: ['community', 'gathering', 'welcome', 'building'],
+    alt: 'Friends catching up in the foyer near the Pine Lake Kids check-in',
+  },
+  {
+    filename: '689066880_18204342118338056_5079636707719185461_n.jpg',
+    tags: ['kids', 'worship'],
+    alt: 'Children singing together on stage during a service',
+  },
+  {
+    filename: '689126575_18204342181338056_3955013236978091516_n.jpg',
+    tags: ['kids'],
+    alt: 'Two young friends coloring together during a service',
+  },
+  {
+    filename: '689198585_18204342169338056_6577419158000891110_n.jpg',
+    tags: ['worship', 'prayer'],
+    alt: 'A woman worshipping with her hand raised toward the cross',
+  },
+  {
+    filename: '713744286_18207297163338056_6646989916077687669_n.jpg',
+    tags: ['baptism', 'worship', 'community'],
+    alt: 'An adult being baptized as the congregation looks on',
+  },
+  {
+    filename: '713823534_18207297274338056_2978870533965255670_n.jpg',
+    tags: ['baptism', 'kids', 'prayer'],
+    alt: 'A leader praying with a child beside the baptism tank',
+  },
+  {
+    filename: '715550230_18207937264338056_8366812198487572303_n.jpg',
+    tags: ['service', 'generosity', 'youth'],
+    alt: 'A student carrying groceries for the Issaquah & Sammamish food project',
+  },
+  {
+    filename: '716210270_18207937219338056_973750074017894335_n.jpg',
+    tags: ['community', 'social', 'gathering'],
+    alt: 'Two friends sharing a laugh before the service',
+  },
+  {
+    filename: '716230305_18207937204338056_7473215551578781003_n.jpg',
+    tags: ['community', 'gathering', 'social'],
+    alt: 'Members talking and laughing together in the sanctuary',
+  },
+  {
+    filename: '717076557_18207937231338056_670985796948202660_n.jpg',
+    tags: ['kids', 'teaching'],
+    alt: 'A volunteer reading a story to children during Pine Lake Kids',
+  },
+  {
+    filename: '718553950_18207937192338056_7548100352354445130_n.jpg',
+    tags: ['family', 'kids', 'care'],
+    alt: 'A parent cradling a sleeping newborn during the service',
+  },
+  {
+    filename: '718687687_18207937183338056_4793907761382693236_n.jpg',
+    tags: ['family', 'community', 'momco'],
+    alt: 'Moms talking together, one holding a baby, near the Families banner',
+  },
+  {
+    filename: '719135962_18207937108338056_3061581680291060435_n.jpg',
+    tags: ['worship', 'gathering', 'prayer'],
+    alt: 'The congregation standing in worship on a Sunday morning',
+  },
 ]

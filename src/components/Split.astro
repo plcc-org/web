@@ -1,0 +1,55 @@
+---
+import Photo from './Photo.astro'
+
+// Asymmetric photo + text section. The portrait photo fills its half and
+// bleeds to the viewport edge (when placed as a `.to-full` child of `.canvas`);
+// the text column aligns to the page's content column. Reversible and tonal.
+// Body content is passed as a default slot so callers control the copy/markup.
+
+type Props = {
+  filename: string
+  alt: string
+  reverse?: boolean
+  tone?: 'paper' | 'sand' | 'forest'
+  eyebrow?: string
+  heading?: string
+  class?: string
+  imgClass?: string
+  id?: string
+}
+
+const {
+  filename,
+  alt,
+  reverse = false,
+  tone = 'paper',
+  eyebrow,
+  heading,
+  class: className,
+  imgClass,
+  id,
+} = Astro.props
+---
+
+<section
+  id={id}
+  class:list={['split', `split--${tone}`, reverse && 'split--reverse', className]}
+>
+  <div class="split__media">
+    <Photo
+      filename={filename}
+      alt={alt}
+      class:list={['split__img', imgClass]}
+      widths={[480, 720, 1000, 1280]}
+      sizes="(max-width: 860px) 100vw, 50vw"
+    />
+  </div>
+
+  <div class="split__body">
+    <div class="split__body-inner">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      {heading && <h2 class="split__heading">{heading}</h2>}
+      <slot />
+    </div>
+  </div>
+</section>

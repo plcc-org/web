@@ -9,44 +9,93 @@ type MomentsItem = {
 
 type Props = {
   heading?: string | null
+  eyebrow?: string | null
   items: MomentsItem[]
   sectionClass?: string
 }
 
-const { heading = 'Moments from Pine Lake', items, sectionClass = 'section' } = Astro.props
+const { heading = 'Moments from Pine Lake', eyebrow = null, items, sectionClass = 'section' } = Astro.props
 const visibleItems = items.filter((item): item is { image: HomePageImage; fallbackAlt: string } => Boolean(item.image))
 ---
 
-<section class={sectionClass}>
-  {heading ? <h2>{heading}</h2> : null}
+<section class:list={['moments', sectionClass]}>
+  {
+    (eyebrow || heading) && (
+      <div class="moments__head">
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {heading && <h2 class="moments__heading">{heading}</h2>}
+      </div>
+    )
+  }
 
   <div class="moments-grid">
     {
-      visibleItems.map(({ image, fallbackAlt }) => (
-        <div class="tile ratio-4x5">
+      visibleItems.map(({ image, fallbackAlt }, i) => (
+        <figure class:list={['moments__tile', i % 2 === 1 && 'moments__tile--offset']}>
           <Photo
             filename={image.filename}
             alt={imageAlt(image, fallbackAlt)}
-            class="tile__img"
+            class="moments__img"
             widths={[400, 700, 1080]}
             sizes="(max-width: 768px) 50vw, 33vw"
           />
-        </div>
+        </figure>
       ))
     }
   </div>
 </section>
 
 <style>
+  .moments__head {
+    margin-bottom: var(--space-md);
+  }
+
+  .moments__heading {
+    margin: 0;
+  }
+
   .moments-grid {
     display: grid;
-    gap: 1rem;
+    gap: clamp(0.75rem, 1.5vw, 1.5rem);
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .moments__tile {
+    margin: 0;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    background: var(--color-mist);
+  }
+
+  /* Gentle editorial stagger on wide viewports */
+  .moments__tile--offset {
+    transform: translateY(clamp(0.75rem, 2.5vw, 2.25rem));
+  }
+
+  /* The <img> is rendered by the child <Photo> component, so these must be
+     :global() — Astro's scoped styles don't reach into child components. */
+  :global(.moments__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .moments__tile:hover :global(.moments__img) {
+    transform: scale(1.04);
   }
 
   @media (max-width: 768px) {
     .moments-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .moments__tile--offset {
+      transform: none;
     }
   }
 </style>

@@ -1,20 +1,32 @@
 /* Base document defaults */
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   background-color: var(--color-stone);
-  color: var(--color-forest);
+  color: var(--color-ink);
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  /* Contain full-bleed (100vw) sections without a horizontal scrollbar.
+     `clip` (not `hidden`) preserves position: sticky descendants. */
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
-  line-height: 1.6;
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   position: relative;
 }
 
-/* Tactile Grain Overlay */
+/* Tactile grain overlay — subtle print quality, never interrupts interaction */
 body::before {
   content: '';
   position: fixed;
@@ -22,7 +34,14 @@ body::before {
   background-image: var(--grain);
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.8;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* Shared heading treatment */
@@ -32,21 +51,54 @@ h3,
 h4 {
   font-family: var(--font-serif);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: var(--leading-tight);
   text-wrap: balance;
-  margin-bottom: 0.5em;
-  font-variation-settings:
-    'SOFT' 100,
-    'WONK' 1;
+  margin: 0 0 0.5em;
+  color: var(--color-forest);
+  font-variation-settings: var(--serif-display);
+}
+
+h1 {
+  font-size: var(--text-3xl);
+  letter-spacing: var(--tracking-tight);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+h4 {
+  font-size: var(--text-lg);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--color-moss);
+}
+
+img {
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 3px;
 }
 
 /* App shell spacing */
 .site-header,
 .site-main,
 .site-footer {
-  max-width: 1100px;
-  margin: auto;
-  padding: 1.5rem;
+  max-width: var(--width-shell);
+  margin-inline: auto;
+  padding: var(--space-s);
 }
 
 /* Accessibility: keyboard skip-to-content */
@@ -57,7 +109,7 @@ h4 {
   padding: 0.5rem 1rem;
   background: var(--color-moss);
   color: var(--color-white);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   text-decoration: none;
   font-weight: 600;
   transform: translateY(-200%);

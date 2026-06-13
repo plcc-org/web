@@ -1,199 +1,125 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Hero from '../components/Hero.astro'
+import Split from '../components/Split.astro'
 import QuoteGrid from '../components/QuoteGrid.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
 import { getImage } from 'astro:assets'
-import Photo from '../components/Photo.astro'
 import { imageByFilename, imageAlt } from '../data/homePageImages'
 import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
 
-const welcomeImage = imageByFilename('plcc-community-family-worship.jpg')
+const welcomeImage = imageByFilename('672470327_18202547344338056_2701967790999045946_n.jpg')
 
-const momentsImage01 = imageByFilename('plcc-kids-storytime-stage.jpg')
-const momentsImage02 = imageByFilename('plcc-worship-vocals.jpg')
-const momentsImage03 = imageByFilename('649105057_18197705983338056_1797927855377785235_n.jpg')
 const momentsItems = [
-  { image: momentsImage01, fallbackAlt: 'People greeting each other at Pine Lake' },
-  { image: momentsImage02, fallbackAlt: 'Students gathered and listening together' },
-  { image: momentsImage03, fallbackAlt: 'A candid moment from church community life' },
+  {
+    image: imageByFilename('651034879_18198219322338056_9008954644945760140_n.jpg'),
+    fallbackAlt: 'A volunteer making coffee at the welcome café before the service',
+  },
+  {
+    image: imageByFilename('719135962_18207937108338056_3061581680291060435_n.jpg'),
+    fallbackAlt: 'The congregation standing in worship on a Sunday morning',
+  },
+  {
+    image: imageByFilename('716230305_18207937204338056_7473215551578781003_n.jpg'),
+    fallbackAlt: 'Members talking and laughing together in the sanctuary',
+  },
 ]
 
+const base = import.meta.env.BASE_URL
+
 // Optimized WebP poster for the hero video (needs a plain URL string).
-const heroPoster = await getImage({ src: churchExterior, width: 1024, format: 'webp' })
+const heroPoster = await getImage({ src: churchExterior, width: 1600, format: 'webp' })
 ---
 
 <BaseLayout
   title="Pine Lake Covenant Church | Sammamish"
   description="A church in Sammamish where people discover life with Jesus together. Join us Sundays at 10:00am."
 >
-  <article class="page page--wide">
-    <header class="page__header">
-      <h1>A church in Sammamish, discovering life with Jesus together</h1>
-      <p class="page__subhead">Sundays at 10:00am · Kids, students, and grown-ups</p>
+  <Hero
+    video={`${base}video/homepage-hero.mp4`}
+    poster={heroPoster.src}
+    eyebrow="Pine Lake Covenant Church · Sammamish"
+    title="Discovering life with Jesus together"
+    subhead="Sundays at 10:00am — for kids, students, and grown-ups."
+  >
+    <a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a>
+  </Hero>
 
-      <div class="hero-box">
-        <video
-          class="hero-video"
-          autoplay
-          muted
-          loop
-          playsinline
-          aria-hidden="true"
-          tabindex="-1"
-          poster={heroPoster.src}
-        >
-          <source src={`${import.meta.env.BASE_URL}video/homepage-hero.mp4`} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-    </header>
-
-    <section class="section welcome-hero" aria-labelledby="welcome-heading">
-      <div class="welcome-hero__layout">
-        <div class="welcome-hero__inner">
-          <h2 id="welcome-heading">Welcome</h2>
-          <p class="welcome-hero__copy">
-            We’re a community on a journey to find and follow Jesus together. You’re welcome here whether you’re all-in,
-            just looking, quietly skeptical, or because someone in your family is dragging you along.
-          </p>
-
-          <p class="welcome-hero__copy">
-            Whether faith feels like home, a question mark, or a distant memory, there’s a place for you among us. Come
-            as you are — curious, hopeful, doubtful, weary, joyful, or unsure. And feel free to participate fully, or
-            hang back and observe.
-          </p>
-        </div>
-
-        {
-          welcomeImage ? (
-            <div class="welcome-hero__image-frame ratio-4x5">
-              <Photo
-                filename={welcomeImage.filename}
-                alt={imageAlt(welcomeImage, 'Families and adults gathered in worship together')}
-                class="welcome-hero__image"
-                widths={[360, 720]}
-                sizes="(max-width: 768px) 100vw, 360px"
-              />
-            </div>
-          ) : null
-        }
-      </div>
-    </section>
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename={welcomeImage ? welcomeImage.filename : 'plcc-community-family-worship.jpg'}
+      alt={
+        welcomeImage
+          ? imageAlt(welcomeImage, 'Families and adults gathered in worship together')
+          : 'Families and adults gathered in worship together'
+      }
+      tone="paper"
+      eyebrow="Welcome"
+      heading="Come as you are"
+    >
+      <p>
+        We’re a community on a journey to find and follow Jesus together. You’re welcome here whether you’re all-in, just
+        looking, quietly skeptical, or because someone in your family is dragging you along.
+      </p>
+      <p>
+        Whether faith feels like home, a question mark, or a distant memory, there’s a place for you among us. Come
+        curious, hopeful, doubtful, weary, joyful, or unsure — and feel free to participate fully, or hang back and
+        observe.
+      </p>
+      <p><a class="btn btn--ghost" href={`${base}im-new/`}>What to expect →</a></p>
+    </Split>
 
     <LinkCardSection links={startHereLinks} />
 
-    <MomentsSection items={momentsItems} />
+    <MomentsSection
+      items={momentsItems}
+      eyebrow="Life together"
+      heading="Moments from Pine Lake"
+      sectionClass="to-wide"
+    />
 
     <section class="section">
+      <p class="eyebrow">In their words</p>
       <h2>Why people have made Pine Lake their church</h2>
-
-      <p class="prose-measure">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
-
+      <p class="measure">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
       <QuoteGrid quotes={homepageQuotes} />
     </section>
 
-    <section class="section section-callout">
-      <h2>Come this Sunday</h2>
-      <p>
-        We gather at 10:00am at 1715 228th Ave SE in Sammamish. There's guest parking by the main entrance — walk in,
-        grab a coffee, and sit wherever you like.
-      </p>
-      <p class="page__lede">
-        <a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a>
-      </p>
+    <section class="band band--forest to-full home-cta">
+      <div class="band__inner">
+        <p class="eyebrow">Visiting</p>
+        <h2>Come this Sunday</h2>
+        <p>
+          We gather at 10:00am at 1715 228th Ave SE in Sammamish. There’s guest parking by the main entrance — walk in,
+          grab a coffee, and sit wherever you like.
+        </p>
+        <a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a>
+      </div>
     </section>
-  </article>
+  </div>
 </BaseLayout>
 
 <style>
-  .page--wide {
-    margin-bottom: var(--space-s);
+  .home-cta .band__inner {
+    max-width: 44rem;
+    text-align: center;
   }
 
-  .welcome-hero {
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--radius-soft);
-    background:
-      radial-gradient(circle at 92% 10%, rgba(106, 149, 41, 0.2) 0%, rgba(106, 149, 41, 0) 35%),
-      linear-gradient(155deg, rgba(26, 46, 12, 0.95) 0%, rgba(45, 77, 24, 0.9) 60%, rgba(106, 149, 41, 0.85) 100%);
-    color: var(--color-stone);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--shadow-diffuse);
-    isolation: isolate;
+  .home-cta h2 {
+    font-size: var(--text-2xl);
+    margin-top: 0;
   }
 
-  .welcome-hero__layout {
-    display: grid;
-    grid-template-columns: 1.35fr 0.65fr;
-    gap: 1.5rem;
-    align-items: stretch;
+  .home-cta p {
+    margin-inline: auto;
+    max-width: 40rem;
   }
 
-  .welcome-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(120deg, rgba(255, 255, 255, 0.15) 0 1px, transparent 1px),
-      linear-gradient(30deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px);
-    background-size:
-      40px 40px,
-      28px 28px;
-    opacity: 0.12;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .welcome-hero__inner {
-    padding: clamp(1.6rem, 4vw, 3rem);
-  }
-
-  .welcome-hero__image-frame {
-    border-radius: var(--radius-soft);
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    margin: 1.25rem 1.25rem 1.25rem 0;
-    box-shadow: var(--shadow-diffuse);
-  }
-
-  :global(.welcome-hero__image) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .welcome-hero h2 {
-    margin: 0;
-    font-size: clamp(1.9rem, 4vw, 2.6rem);
-    color: var(--color-stone);
-  }
-
-  .welcome-hero__copy {
-    margin: 0.85rem 0 0;
-    font-size: clamp(1.03rem, 1.4vw, 1.15rem);
-    line-height: 1.75;
-    text-wrap: pretty;
-    color: rgba(255, 255, 255, 0.94);
-    max-width: none;
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    .welcome-hero__layout {
-      grid-template-columns: 1fr;
-    }
-
-    .welcome-hero__inner {
-      padding: 1.5rem;
-    }
-
-    .welcome-hero__image-frame {
-      margin: 0 1.5rem 1.5rem;
-    }
+  .home-cta .btn {
+    margin-top: 1.5rem;
   }
 </style>
