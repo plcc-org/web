@@ -280,4 +280,116 @@ export const homePageImages: HomePageImage[] = [
     tags: ['worship', 'gathering', 'prayer'],
     alt: 'The congregation standing in worship on a Sunday morning',
   },
+
+  // --- Added 2026-06 (round 2): serving, youth, family & worship ---
+  {
+    filename: '466385371_18147982168338056_7378464810073953101_n.jpg',
+    tags: ['teaching', 'sermon', 'becca'],
+    alt: 'Becca teaching during a Sunday service',
+  },
+  {
+    filename: '467829712_18149338099338056_6151106923639228859_n.jpg',
+    tags: ['prayer', 'care', 'community'],
+    alt: 'People praying with one another beneath the prayer banner',
+  },
+  {
+    filename: '468085493_18149338141338056_5968639349141303893_n.jpg',
+    tags: ['prayer', 'reflection', 'teaching'],
+    alt: 'Holding a response card during a reflective moment in the service',
+  },
+  {
+    filename: '477260052_18157955872338056_6576623373435896628_n.jpg',
+    tags: ['community', 'groups', 'activity'],
+    alt: 'People making art together during a group gathering',
+  },
+  {
+    filename: '478391769_18157955899338056_4878743424480137230_n.jpg',
+    tags: ['kids', 'care'],
+    alt: 'A child’s handmade card sharing God’s love',
+  },
+  {
+    filename: '481180421_1059870072847648_7088653592036533892_n.jpg',
+    tags: ['service', 'generosity', 'missions'],
+    alt: 'The Global 6K for Water table set up for a clean-water fundraiser',
+  },
+  {
+    filename: '481269178_1059869906180998_2732338907948607869_n.jpg',
+    tags: ['service', 'generosity', 'missions', 'community'],
+    alt: 'The church gathered in matching shirts for the Global 6K for Water walk',
+  },
+  {
+    filename: '481945007_1064667082367947_8529665630976327005_n.jpg',
+    tags: ['worship', 'prayer'],
+    alt: 'Open hands raised during worship',
+  },
+  {
+    filename: '487826650_18162510592338056_1348719743468332978_n.jpg',
+    tags: ['worship', 'gathering', 'building'],
+    alt: 'The congregation gathered for worship under the timber-framed ceiling',
+  },
+  {
+    filename: '494466260_18165174907338056_8436364112915676659_n.jpg',
+    tags: ['family', 'community', 'neighbor'],
+    alt: 'A family wearing “love thy neighbor” shirts on a Sunday morning',
+  },
+  {
+    filename: '513859992_1153019160199405_8490361532613234663_n.jpg',
+    tags: ['family', 'community', 'worship'],
+    alt: 'Parents with a baby during worship on a Sunday morning',
+  },
+  {
+    filename: '514021688_1153019170199404_7424160633501321068_n.jpg',
+    tags: ['teaching', 'sermon', 'pastor', 'austin'],
+    alt: 'Austin Bailey teaching during a Sunday service',
+  },
+  {
+    filename: '515954979_1162096809291640_4380900858754798587_n.jpg',
+    tags: ['youth', 'community'],
+    alt: 'Students together on a weekend retreat',
+  },
+  {
+    filename: '524488764_18173482933338056_6896393400124828554_n.jpg',
+    tags: ['youth', 'teaching', 'community'],
+    alt: 'Youth leaders introducing the night as students gather',
+  },
+  {
+    filename: '587497434_18187772761338056_6575013280016458585_n.jpg',
+    tags: ['service', 'generosity', 'youth'],
+    alt: 'Students loading groceries to serve the community',
+  },
+  {
+    filename: '587801958_18187772770338056_8255242398512079168_n.jpg',
+    tags: ['service', 'generosity', 'youth'],
+    alt: 'Students collecting gift cards to serve neighbors in need',
+  },
+  {
+    filename: '587873749_18187772710338056_4306907528259398035_n.jpg',
+    tags: ['service', 'generosity', 'youth'],
+    alt: 'Students and a leader shopping for a community food drive',
+  },
+  {
+    filename: '609677054_18191253013338056_6460546908009467524_n.jpg',
+    tags: ['worship', 'music', 'christmas'],
+    alt: 'Leading worship with a ukulele at a Christmas gathering',
+  },
+  {
+    filename: '650398531_18198219304338056_7874541032610820038_n.jpg',
+    tags: ['youth', 'community'],
+    alt: 'Students gathered for food after a youth celebration',
+  },
+  {
+    filename: '657972950_18200889988338056_8294978016122872582_n.jpg',
+    tags: ['care', 'youth', 'community'],
+    alt: 'A leader and a student together at a community family event',
+  },
+  {
+    filename: '715970017_18207937117338056_1177766278064408406_n.jpg',
+    tags: ['youth', 'teaching'],
+    alt: 'Students leading from the stage at Pine Lake Youth',
+  },
+  {
+    filename: '716722551_18207937243338056_4731496310256514273_n.jpg',
+    tags: ['service', 'generosity', 'kids'],
+    alt: 'Carrying groceries for the Issaquah & Sammamish food project',
+  },
 ]
