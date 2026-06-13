@@ -121,23 +121,45 @@ The site is structured around a **three-stage funnel**, plus a parallel “neigh
 
 # Technical Project Overview
 
-- **Framework:** [Astro 5](https://astro.build/)
+- **Framework:** [Astro 6](https://astro.build/)
 - **Language:** TypeScript
-- **Styling:** Vanilla CSS (`src/styles/global.css`)
+- **Styling:** Vanilla CSS with design tokens, split into partials under `src/styles/` (entry: `global.css`).
 - **Architecture:** Static Site Generation (SSG)
-- **Deployment:** GitHub Pages (`https://timsneath.github.io/plcc-web/`)
+- **Images:** Astro's `<Image>` pipeline, via the `<Photo>` wrapper component; photos are catalogued in `src/data/homePageImages.ts`.
+- **Deployment:** Environment-aware via `DEPLOY_ENV` (`src/config/site.ts`):
+  - `development` — localhost, served from root, not indexed
+  - `staging` — GitHub Pages (`https://timsneath.github.io/plcc-web/`), not indexed
+  - `production` — `https://plcc.org`, served from root, indexed
+
+  GitHub Actions builds the **staging** target by default.
+
+## Design System
+
+The visual language, design tokens, layout system, and components are documented in **[`DESIGN.md`](./DESIGN.md)** — read it before making visual changes. Key points:
+
+- **Tokens first.** Reference `var(--color-…)`, `var(--text-…)`, `var(--space-…)`, etc. Never hard-code colors, sizes, radii, or shadows.
+- **Layout:** photo-forward pages use the `.canvas` full-bleed grid with the `Hero`, `Split` (portrait photo + text), and `MomentsSection` components; dense reading pages use the legacy narrow `.page` flow.
+- **Portrait-first photography.** The library is ~90% portrait (4:5 or taller) — avoid landscape crops (the hero video and incidental building shots are the exceptions).
+- **Surfaces & rhythm.** Alternate paper / sand / forest bands; a subtle grain overlay sits above all content.
 
 ## Building and Running
 
 ```bash
 npm install
-npm run dev    # Local development at http://localhost:4321/plcc-web/
-npm run build  # Production build to dist/
-npm run format # Prettier formatting
+npm run dev      # Local dev server at http://localhost:4321/
+npm run build    # Production build to dist/
+npm run preview  # Preview the production build
+npm run check    # astro check (types + templates)
+npm run format   # Prettier formatting
 ```
+
+Optional containerized (Apple `container`) workflows are documented in `README.md`.
 
 ## Development Conventions
 
-- **Internal Linking:** Use `${import.meta.env.BASE_URL}` prefix (e.g., `<a href={`${import.meta.env.BASE_URL}about/`}>`).
+- **Internal Linking:** Use the `${import.meta.env.BASE_URL}` prefix (e.g., `<a href={`${import.meta.env.BASE_URL}about/`}>`).
 - **Data-Driven:** Define repetitive items in `src/data/` and map over them.
-- **Images:** Use the Astro `<Image />` component for optimization.
+- **Images:** Render photos through the `<Photo>` component (a wrapper over Astro's `<Image>`); add new photos to the `src/data/homePageImages.ts` catalogue with descriptive alt text. Favor portrait imagery.
+- **Tokens & components:** Prefer existing tokens and components (see `DESIGN.md`) over new one-off CSS.
+- **Scoped styles** don't reach child-component markup — use `:global()` to style a child like `<Photo>`'s `<img>`.
+- Run `npm run format` before committing.
