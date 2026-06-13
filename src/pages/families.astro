@@ -185,7 +185,8 @@ const familiesMomentsItems = [
 </BaseLayout>
 
 <style>
-  .families__program-logo {
+  /* On a <Photo>-rendered <img>, so must be global. */
+  :global(.families__program-logo) {
     display: block;
     width: clamp(11.25rem, 37.5vw, 15rem);
     height: auto;

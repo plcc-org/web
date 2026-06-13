@@ -188,7 +188,7 @@ const heroPoster = await getImage({ src: churchExterior, width: 1024, format: 'w
     box-shadow: var(--shadow-diffuse);
   }
 
-  .welcome-hero__image {
+  :global(.welcome-hero__image) {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -206,7 +206,7 @@ const heroPoster = await getImage({ src: churchExterior, width: 1024, format: 'w
     aspect-ratio: 3 / 4;
   }
 
-  .joinus-photo {
+  :global(.joinus-photo) {
     object-position: center 35%;
   }
 

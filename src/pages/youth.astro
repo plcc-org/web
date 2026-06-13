@@ -182,7 +182,8 @@ const youthMomentsBottomItems = [
 </BaseLayout>
 
 <style>
-  .youth__logo {
+  /* On a <Photo>-rendered <img>, so must be global. */
+  :global(.youth__logo) {
     display: block;
     width: clamp(13.75rem, 50vw, 21.25rem);
     height: auto;

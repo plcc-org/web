@@ -151,7 +151,8 @@ const kidsMomentsBottomItems = [
 </BaseLayout>
 
 <style>
-  .kids__logo {
+  /* On a <Photo>-rendered <img>, so must be global. */
+  :global(.kids__logo) {
     display: block;
     width: clamp(13.75rem, 47.5vw, 20rem);
     height: auto;
