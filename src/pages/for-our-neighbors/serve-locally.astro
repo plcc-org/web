@@ -2,11 +2,28 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Split from '../../components/Split.astro'
 import SectionHeader from '../../components/SectionHeader.astro'
+import MomentsSection from '../../components/MomentsSection.astro'
+import { imageByFilename } from '../../data/homePageImages'
+
+const serveMomentsItems = [
+  {
+    image: imageByFilename('587873749_18187772710338056_4306907528259398035_n.jpg'),
+    fallbackAlt: 'Students and a leader shopping for a community food drive',
+  },
+  {
+    image: imageByFilename('624779024_18194108401338056_4396479470413009307_n.jpg'),
+    fallbackAlt: 'Handmade valentines collected for the Echo Glen return box',
+  },
+  {
+    image: imageByFilename('587801958_18187772770338056_8255242398512079168_n.jpg'),
+    fallbackAlt: 'Collecting gift cards to serve neighbors in need',
+  },
+]
 ---
 
 <BaseLayout
-  title="Serve | Pine Lake Covenant Church"
-  description="Ways to serve at Pine Lake — alongside local partners in the Sammamish and Issaquah area, and on the teams that make Sundays work."
+  title="Serving Locally | Pine Lake Covenant Church"
+  description="How Pine Lake shows up in the local community — partnering with the Issaquah Food & Clothing Bank, Bright Bridge, Echo Glen, and Young Life across Sammamish and Issaquah."
 >
   <div class="canvas">
     <Split
@@ -15,70 +32,61 @@ import SectionHeader from '../../components/SectionHeader.astro'
       alt="A student carrying groceries for the Issaquah & Sammamish food project"
       tone="sand"
       reverse
-      eyebrow="Serve"
+      eyebrow="In the community"
     >
-      <h1 class="display">Serve</h1>
-      <p class="subhead">Ways to help — nearby and on Sundays</p>
+      <h1 class="display">Serving Locally</h1>
+      <p class="subhead">Showing up across Sammamish and Issaquah</p>
       <p class="lede">
-        If you’re looking for a way to help, you don’t need to invent something new. There are two simple places to
-        start: alongside the local organizations we partner with, or on one of the teams that make Sunday mornings work.
+        Being a good neighbor doesn’t stop at our doors. Pine Lake people show up across the area — not by starting our
+        own programs, but by coming alongside trusted local organizations already doing good work.
       </p>
     </Split>
 
     <section class="section">
-      <SectionHeader eyebrow="In the community" heading="Serve alongside local partners" />
-
-      <div class="card-grid">
-        <div class="card">
-          <h3>Issaquah Food &amp; Clothing Bank</h3>
-          <p>Helping stock shelves and serve neighbors facing food insecurity across the Issaquah area.</p>
-        </div>
-
-        <div class="card">
-          <h3>Bright Bridge</h3>
-          <p>Supporting families in the region with practical help in moments of acute need.</p>
-        </div>
-
-        <div class="card">
-          <h3>Echo Glen</h3>
-          <p>Showing up for young people at the Echo Glen Children’s Center through ongoing relationships.</p>
-        </div>
-
-        <div class="card">
-          <h3>Young Life</h3>
-          <p>Coming alongside local students, including Young Life Capernaum for students with disabilities.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <SectionHeader eyebrow="On a Sunday" heading="Serve on a Sunday team" />
-      <p class="measure">Sundays come together because people show up to help. A few of the teams you can join:</p>
-
-      <div class="card-grid">
-        <div class="card">
-          <h3>Hospitality</h3>
-          <p>Greeting people, making coffee, and helping everyone feel welcome from the moment they arrive.</p>
-        </div>
-
-        <div class="card">
-          <h3>Kids &amp; Youth</h3>
-          <p>Investing in the next generation by serving alongside our kids and youth programs.</p>
-        </div>
-
-        <div class="card">
-          <h3>Worship &amp; Tech</h3>
-          <p>Using musical or technical gifts to help lead worship and run sound, slides, and video.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Getting started</h2>
+      <SectionHeader eyebrow="Local partners" heading="Organizations we partner with" />
       <p class="measure">
-        You don’t need experience or a long-term commitment to begin — most people start by showing up once with someone
-        who’s already involved. To find a good first step, email <a href="mailto:office@plcc.org">office@plcc.org</a> or call
-        <a href="tel:+14253928636">(425) 392-8636</a>, and we’ll point you toward what’s coming up.
+        We bring time, relationships, and practical help to a handful of partners we know and trust.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>
+            <a href="https://issaquahfoodbank.org" target="_blank" rel="noopener">Issaquah Food &amp; Clothing Bank</a>
+          </h3>
+          <p>Stocking shelves and serving neighbors facing food insecurity across the Issaquah area.</p>
+        </div>
+
+        <div class="card">
+          <h3><a href="https://brightbridgefoundation.org" target="_blank" rel="noopener">Bright Bridge</a></h3>
+          <p>Coming alongside neighbors in a sudden financial crisis with emergency, practical support.</p>
+        </div>
+
+        <div class="card">
+          <h3><a href="https://www.echoglen.org" target="_blank" rel="noopener">Echo Glen</a></h3>
+          <p>
+            Showing up for young people at the Echo Glen Children’s Center nearby — through ongoing encouragement and
+            the handmade cards and gifts our church sends in.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3><a href="https://capernaum.younglife.org" target="_blank" rel="noopener">Young Life</a></h3>
+          <p>
+            Coming alongside local middle and high schoolers, including Young Life Capernaum for students with
+            disabilities.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <MomentsSection heading={null} items={serveMomentsItems} sectionClass="to-wide" />
+
+    <section class="section">
+      <h2>Want to join in?</h2>
+      <p class="measure">
+        Most people start by showing up once, alongside someone who’s already involved. To find a good first step, email
+        <a href="mailto:office@plcc.org">office@plcc.org</a> or call <a href="tel:+14253928636">(425) 392-8636</a>, and
+        we’ll point you toward what’s coming up.
       </p>
     </section>
   </div>
