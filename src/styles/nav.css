@@ -79,7 +79,8 @@
 .site-nav__list {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  flex-wrap: wrap; /* safety net: drop whole items to a second row before squashing */
+  gap: 1rem;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -88,9 +89,14 @@
   font-size: 0.95rem;
 }
 
+.site-nav__list li {
+  flex-shrink: 0; /* never compress an item until its label wraps mid-phrase */
+}
+
 .site-nav a {
   text-decoration: none;
   color: inherit;
+  white-space: nowrap;
   transition: all 180ms ease;
   padding: 0.25rem 0;
   border-bottom: 2px solid transparent;
@@ -163,8 +169,8 @@
   outline-offset: 3px;
 }
 
-/* Hamburger menu for mobile */
-@media (max-width: 1080px) {
+/* Hamburger menu for mobile and narrower desktops (the full row needs ~1120px) */
+@media (max-width: 1180px) {
   .site-header {
     padding-block: 1rem;
   }

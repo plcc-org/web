@@ -12,7 +12,7 @@ us. The new site is built on a **belonging** model — here's what life here fee
 like, and where you might fit.
 
 That's not a cosmetic change. We rebuilt the site around a single question a first-time
-visitor is actually asking: *"Could this be a place for me and my family?"* Everything
+visitor is actually asking: _"Could this be a place for me and my family?"_ Everything
 else is in service of answering that honestly.
 
 The primary audience is **people outside the church** — young families and first-time
@@ -31,12 +31,12 @@ This reframes the whole writing job. The test for any sentence is simple:
 > **If it could describe any church, it's too generic to keep.**
 
 Generic copy ("we're a welcoming community on a journey") reassures insiders and tells
-a newcomer nothing. Specific, human signals do the real work: *"Sundays at 10am,"*
-*"K–5 students stay in the service one Sunday a month,"* *"all volunteers are
-background-checked."* Concrete beats warm-and-vague every time.
+a newcomer nothing. Specific, human signals do the real work: _"Sundays at 10am,"_
+_"K–5 students stay in the service one Sunday a month,"_ _"all volunteers are
+background-checked."_ Concrete beats warm-and-vague every time.
 
-A related principle we call **the Doors model**: organize around *how the church shows
-up in people's lives*, not around our internal departments. A newcomer doesn't search
+A related principle we call **the Doors model**: organize around _how the church shows
+up in people's lives_, not around our internal departments. A newcomer doesn't search
 for "the Care Ministry" — they're having a hard week and wondering if anyone would
 help. We lead with the situation, then offer a specific door.
 
@@ -48,12 +48,12 @@ The voice is **grounded, human, and understated** — warm, but not soft. We str
 marketing fluff and church insider-speak, because both erode trust with the exact
 people we're trying to reach.
 
-| We avoid | Because | We prefer |
-|---|---|---|
+| We avoid                                            | Because                               | We prefer                                                           |
+| --------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------- |
 | "Fellowship," "discipleship," "plug in," "outreach" | Jargon that assumes you're already in | "Connection," "support," "find a place," "learning to follow Jesus" |
-| "We'd love to invite you on a journey…" | Too soft; says nothing | "Visiting a church can feel awkward. Here's what actually happens." |
-| "Other ministries we offer…" | Program gravity — a list nobody reads | Group content around real life situations |
-| Repeating "no pressure" everywhere | Protesting too much | Communicate low pressure through *structure and clarity* |
+| "We'd love to invite you on a journey…"             | Too soft; says nothing                | "Visiting a church can feel awkward. Here's what actually happens." |
+| "Other ministries we offer…"                        | Program gravity — a list nobody reads | Group content around real life situations                           |
+| Repeating "no pressure" everywhere                  | Protesting too much                   | Communicate low pressure through _structure and clarity_            |
 
 Two non-negotiables that keep us honest:
 
@@ -72,16 +72,16 @@ The site is a **three-stage funnel**, plus a parallel path for the wider communi
 It is **intentionally asymmetric** — we only built pages where there's real content and
 a real need, and the emotional order of the pages is deliberate:
 
-1. **Home** → *"I might belong here."*
-2. **I'm New / Families / Youth** → *"I understand what this would feel like."*
-3. **For Our Neighbors / Next Steps** → *"I can engage at my own pace."*
+1. **Home** → _"I might belong here."_
+2. **I'm New / Families / Youth** → _"I understand what this would feel like."_
+3. **For Our Neighbors / Next Steps** → _"I can engage at my own pace."_
 
 Primary navigation:
 
 - **I'm New** — the front door; answers the practical and emotional questions a guest has.
 - **About** — who we are, what we believe, leadership, ethos.
 - **Families** — kids, youth, and family life.
-- **For Our Neighbors** — organized around *needs*, not departments (the Doors model).
+- **For Our Neighbors** — organized around _needs_, not departments (the Doors model).
 - **What's Happening / Messages** — current events and the sermon archive.
 
 This is a **high-signal front door, not an exhaustive catalog.** Strategic
@@ -129,4 +129,4 @@ Three things keep the site coherent as it grows:
    same place — because they are.
 
 The result we're after: a website where the right person, on their first visit, thinks
-*"these are my people"* — and where the team can keep it that way without friction.
+_"these are my people"_ — and where the team can keep it that way without friction.

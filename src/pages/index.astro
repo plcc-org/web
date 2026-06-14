@@ -8,9 +8,7 @@ import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
-import { getImage } from 'astro:assets'
 import { imageByFilename, imageAlt } from '../data/homePageImages'
-import churchExterior from '../assets/images/church-exterior-1024x400.jpg'
 
 const welcomeImage = imageByFilename('672470327_18202547344338056_2701967790999045946_n.jpg')
 
@@ -30,9 +28,6 @@ const momentsItems = [
 ]
 
 const base = import.meta.env.BASE_URL
-
-// Optimized WebP poster for the hero video (needs a plain URL string).
-const heroPoster = await getImage({ src: churchExterior, width: 1600, format: 'webp' })
 ---
 
 <BaseLayout
@@ -41,7 +36,8 @@ const heroPoster = await getImage({ src: churchExterior, width: 1600, format: 'w
 >
   <Hero
     video={`${base}video/homepage-hero.mp4`}
-    poster={heroPoster.src}
+    filename="pine-lake-exterior-2026.jpg"
+    alt="The Pine Lake Covenant Church building in Sammamish, with its tall wooden cross"
     eyebrow="Pine Lake Covenant Church · Sammamish"
     title="Discovering life with Jesus together"
     subhead="Sundays at 10:00am — for kids, students, and grown-ups."
@@ -65,9 +61,8 @@ const heroPoster = await getImage({ src: churchExterior, width: 1600, format: 'w
         just looking, quietly skeptical, or because someone in your family is dragging you along.
       </p>
       <p>
-        Whether faith feels like home, a question mark, or a distant memory, there’s a place for you among us. Come
-        curious, hopeful, doubtful, weary, joyful, or unsure — and feel free to participate fully, or hang back and
-        observe.
+        Whether faith feels like home, a question mark, or a distant memory, there’s a place for you among us. We don’t
+        care where you are on the journey — we just want to travel with you.
       </p>
       <p><a class="btn btn--ghost" href={`${base}im-new/`}>What to expect →</a></p>
     </Split>

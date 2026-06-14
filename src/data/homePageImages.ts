@@ -291,9 +291,9 @@ export const homePageImages: HomePageImage[] = [
     alt: 'The congregation standing in worship in the Pine Lake sanctuary',
   },
   {
-    filename: 'church-exterior-1024x400.jpg',
+    filename: 'pine-lake-exterior-2026.jpg',
     tags: ['church', 'building', 'exterior'],
-    alt: 'Pine Lake Covenant Church building in Sammamish',
+    alt: 'The Pine Lake Covenant Church building in Sammamish, with its tall wooden cross, on a clear summer day',
   },
   {
     filename: 'Austin-2025-5-web.jpg',
@@ -573,5 +573,22 @@ export const homePageImages: HomePageImage[] = [
     filename: '496822774_18166032259338056_2694588483717587761_n.jpg',
     tags: ['women', 'event', 'social'],
     alt: 'A table set for a Mother’s Day tea, with flowers and desserts',
+  },
+
+  // --- Added 2026-06: building & grounds (facility shots) ---
+  {
+    filename: 'pine-lake-kids-checkin.jpg',
+    tags: ['kids', 'family', 'welcome', 'building'],
+    alt: 'The Pine Lake Kids check-in desk in the foyer, beneath a bright welcome sign',
+  },
+  {
+    filename: 'pine-lake-reading-nook.jpg',
+    tags: ['building', 'community', 'groups'],
+    alt: 'A quiet lounge and library corner with a bookshelf and comfortable chairs',
+  },
+  {
+    filename: 'pine-lake-playground.jpg',
+    tags: ['kids', 'family', 'building'],
+    alt: 'The outdoor playground beside the church, with slides and climbing structures',
   },
 ]

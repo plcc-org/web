@@ -1,13 +1,13 @@
 ---
 import Photo from './Photo.astro'
 
-// Full-bleed cinematic hero. Renders a background video (with a still poster
-// fallback for reduced-motion) or a portrait background image, under a forest
-// gradient scrim, with contained content anchored bottom-left.
+// Full-bleed cinematic hero. While the background video loads, a soft "glow"
+// gradient stands in; the video then fades in on top once it can play. A still
+// photo is shown instead when motion is reduced, when scripting is unavailable,
+// or when the page is loaded with ?video=0.
 
 type Props = {
   video?: string
-  poster?: string
   filename?: string
   alt?: string
   eyebrow?: string
@@ -15,17 +15,13 @@ type Props = {
   subhead?: string
 }
 
-const { video, poster, filename, alt = '', eyebrow, title, subhead } = Astro.props
+const { video, filename, alt = '', eyebrow, title, subhead } = Astro.props
 ---
 
-<section class="hero">
-  <div class="hero__media" style={poster ? `background-image:url('${poster}')` : undefined}>
+<section class:list={['hero', { 'hero--has-video': video }]} data-hero>
+  <div class="hero__media">
     {
-      video ? (
-        <video class="hero__video" autoplay muted loop playsinline aria-hidden="true" tabindex="-1" poster={poster}>
-          <source src={video} type="video/mp4" />
-        </video>
-      ) : filename ? (
+      filename && (
         <Photo
           filename={filename}
           alt={alt}
@@ -35,7 +31,15 @@ const { video, poster, filename, alt = '', eyebrow, title, subhead } = Astro.pro
           loading="eager"
           fetchpriority="high"
         />
-      ) : null
+      )
+    }
+    {
+      video && (
+        <video class="hero__video" muted loop playsinline autoplay preload="none" aria-hidden="true" tabindex="-1">
+          {/* src is held in data-src so nothing downloads until the script opts in */}
+          <source data-src={video} type="video/mp4" />
+        </video>
+      )
     }
   </div>
 
@@ -48,3 +52,36 @@ const { video, poster, filename, alt = '', eyebrow, title, subhead } = Astro.pro
     </div>
   </div>
 </section>
+
+<script>
+  for (const hero of document.querySelectorAll('[data-hero]')) {
+    const video = hero.querySelector('.hero__video') as HTMLVideoElement | null
+    if (!video) continue
+
+    const params = new URLSearchParams(window.location.search)
+    const disabled = params.get('video') === '0'
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    // Fall back to the still photo: skip the video entirely so it never downloads.
+    if (disabled || reduceMotion) {
+      hero.classList.remove('hero--has-video')
+      hero.classList.add('hero--no-video')
+      video.remove()
+      continue
+    }
+
+    const source = video.querySelector('source') as HTMLSourceElement | null
+    if (source && source.dataset.src) {
+      source.src = source.dataset.src
+    }
+
+    // Fade the video in only once it actually has frames to show.
+    video.addEventListener('playing', () => hero.classList.add('hero--video-ready'), { once: true })
+
+    video.load()
+    const attempt = video.play()
+    if (attempt && typeof attempt.catch === 'function') {
+      attempt.catch(() => {})
+    }
+  }
+</script>
