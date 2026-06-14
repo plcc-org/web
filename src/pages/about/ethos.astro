@@ -1,28 +1,50 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Split from '../../components/Split.astro'
+
+const pillars = [
+  {
+    title: 'Be with Jesus',
+    desc: 'Staying close to him — through prayer, Scripture, worship, and rest.',
+  },
+  {
+    title: 'Become like Jesus',
+    desc: 'Letting his character slowly reshape ours, over a lifetime.',
+  },
+  {
+    title: 'Do what Jesus did',
+    desc: 'Loving and serving the people around us, and our wider community.',
+  },
+]
 ---
 
 <BaseLayout title="Our Ethos | Pine Lake Covenant Church">
   <div class="canvas ethos">
-    <header class="section page-intro ethos__header">
-      <p class="eyebrow">About</p>
+    <Split
+      class="to-full"
+      filename="481945007_1064667082367947_8529665630976327005_n.jpg"
+      alt="Open hands raised during worship"
+      tone="sand"
+      reverse
+      eyebrow="About"
+    >
       <h1 class="display">Our Ethos</h1>
-
       <p class="lede">
-        At Pine Lake, we try to keep things simple. Our life together as a church is shaped by three core ideas:
+        At Pine Lake, we try to keep things simple. Our life together as a church is shaped by three core ideas.
       </p>
-    </header>
+    </Split>
 
     <section class="section ethos__core" aria-label="Core ideas">
-      <ul class="ethos__pillars" role="list">
-        <li><strong>Be with Jesus</strong></li>
-        <li><strong>Become like Jesus</strong></li>
-        <li><strong>Do what Jesus did</strong></li>
-      </ul>
-
-      <p class="text-body-large">
-        These guide how we follow Jesus, how we grow together, and how we seek to love and serve our community.
-      </p>
+      <ol class="ethos__pillars" role="list">
+        {
+          pillars.map((p) => (
+            <li>
+              <strong>{p.title}</strong>
+              <span class="ethos__pillar-desc">{p.desc}</span>
+            </li>
+          ))
+        }
+      </ol>
     </section>
 
     <section class="section ethos__beliefs">

@@ -75,14 +75,12 @@
   line-height: 1.25;
 }
 
-.ethos__core > p {
-  max-width: var(--measure);
-  margin-top: 1.25rem;
-}
-
-.ethos__core > p.text-body-large {
-  font-size: 1.25rem;
-  line-height: 1.7;
+.ethos__pillar-desc {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
 }
 
 .ethos__beliefs h2 {
