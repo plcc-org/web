@@ -1,13 +1,69 @@
-/* Header + primary navigation */
+/* Header + primary navigation — sticky, frosting into the content on scroll */
 .site-header {
-  padding: 2rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-block: 1.75rem;
+  background: transparent;
+  transition:
+    padding 0.3s var(--ease-out),
+    background 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out);
 }
 
-/* Desktop: bar (logo) and list sit side-by-side */
+/* Once the page is scrolled, the bar frosts over and tightens */
+.site-header.is-scrolled {
+  padding-block: 0.85rem;
+  background: rgba(var(--color-stone-rgb), 0.82);
+  -webkit-backdrop-filter: blur(12px) saturate(1.08);
+  backdrop-filter: blur(12px) saturate(1.08);
+  box-shadow: 0 1px 0 var(--color-mist);
+}
+
+/* A soft, blurred gradient skirt below the bar so content dissolves under it.
+   The mask fades the blur itself out, not just the tint. */
+.site-header::after {
+  content: '';
+  position: absolute;
+  inset: 100% 0 auto 0;
+  height: 3rem;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(var(--color-stone-rgb), 0.8), rgba(var(--color-stone-rgb), 0));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
+  mask-image: linear-gradient(to bottom, #000, transparent);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.site-header.is-scrolled::after {
+  opacity: 1;
+}
+
+/* Keep the bar fully legible while the mobile menu is open */
+.site-header:has(.site-nav.is-open) {
+  background: rgba(var(--color-stone-rgb), 0.95);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--color-mist);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .site-header::after {
+    transition: none;
+  }
+}
+
+/* Desktop: bar (logo) and list side-by-side, centered at the shell width */
 .site-nav {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  max-width: var(--width-shell);
+  margin-inline: auto;
+  padding-inline: var(--space-s);
 }
 
 .site-nav__bar {
@@ -110,7 +166,11 @@
 /* Hamburger menu for mobile */
 @media (max-width: 1080px) {
   .site-header {
-    padding: 1rem 1.5rem;
+    padding-block: 1rem;
+  }
+
+  .site-header.is-scrolled {
+    padding-block: 0.7rem;
   }
 
   /* Stack bar on top, list (when open) below */

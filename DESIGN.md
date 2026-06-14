@@ -375,7 +375,14 @@ rendered by the child `<Photo>` (see §9).
 
 - **Header** (`nav.css`) — wordmark (a green image mask) + nav links + a moss
   "Plan a Visit" CTA pill. Collapses to a hamburger ≤ 1080px (toggle script in
-  `BaseLayout.astro`).
+  `BaseLayout.astro`). The bar is **sticky**: transparent at the top, then a
+  scroll listener adds `.is-scrolled` (past 8px) to frost it over (translucent
+  stone + `backdrop-filter` blur), tighten its padding, and add a hairline. A
+  masked, blurred `::after` skirt below the bar lets content dissolve under it
+  rather than meeting a hard edge; `:has(.site-nav.is-open)` keeps the bar opaque
+  while the mobile menu is open. `html { scroll-padding-top }` keeps anchor
+  targets clear of the bar. The full-width bar lives on `.site-header`; the nav
+  is centered at `--width-shell` on `.site-nav`.
 - **Footer** (`footer.css`) — full-bleed forest panel (`margin-inline: calc(50% - 50vw)`)
   with church info, footer nav, and social links on a faint grid texture. On the
   Home page the closing `band--forest` CTA flows flush into it (the page zeroes the

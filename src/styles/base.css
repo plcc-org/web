@@ -14,6 +14,8 @@ html {
   /* Contain full-bleed (100vw) sections without a horizontal scrollbar.
      `clip` (not `hidden`) preserves position: sticky descendants. */
   overflow-x: clip;
+  /* Keep in-page anchor targets clear of the sticky header. */
+  scroll-padding-top: 5.5rem;
 }
 
 body {
@@ -92,8 +94,7 @@ img {
   outline-offset: 3px;
 }
 
-/* App shell spacing */
-.site-header,
+/* App shell spacing (the header manages its own full-width sticky bar) */
 .site-main,
 .site-footer {
   max-width: var(--width-shell);

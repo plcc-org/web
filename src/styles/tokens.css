@@ -14,6 +14,7 @@
   --color-ember: rgb(189, 101, 56); /* warm secondary accent — used sparingly */
 
   --color-stone: rgb(242, 238, 230); /* page background */
+  --color-stone-rgb: 242, 238, 230; /* for translucent stone, e.g. the sticky header */
   --color-sand: rgb(233, 226, 213); /* deeper warm band, alternating sections */
   --color-paper: rgb(250, 248, 244); /* lightest surface (cards) */
   --color-white: #ffffff;
