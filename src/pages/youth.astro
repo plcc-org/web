@@ -21,6 +21,21 @@ const youthMomentsItems = [
     fallbackAlt: 'Students gathered together at Pine Lake Youth',
   },
 ]
+
+const youthMomentsBottomItems = [
+  {
+    image: imageByFilename('515954979_1162096809291640_4380900858754798587_n.jpg'),
+    fallbackAlt: 'Students together on a weekend retreat',
+  },
+  {
+    image: imageByFilename('715970017_18207937117338056_1177766278064408406_n.jpg'),
+    fallbackAlt: 'Students leading from the stage at Pine Lake Youth',
+  },
+  {
+    image: imageByFilename('650398531_18198219304338056_7874541032610820038_n.jpg'),
+    fallbackAlt: 'Students gathered for food after a youth celebration',
+  },
+]
 ---
 
 <BaseLayout
@@ -173,6 +188,8 @@ const youthMomentsItems = [
         <a href={`${base}whats-happening/`}>See what’s coming up →</a>
       </p>
     </section>
+
+    <MomentsSection heading={null} items={youthMomentsBottomItems} sectionClass="to-wide" />
   </div>
 </BaseLayout>
 
