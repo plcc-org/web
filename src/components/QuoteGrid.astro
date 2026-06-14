@@ -20,7 +20,7 @@ const { quotes } = Astro.props
 
 <style>
   .quote-slot {
-    height: 360px;
+    height: 380px;
     display: flex;
   }
 
@@ -63,6 +63,9 @@ const { quotes } = Astro.props
       slots.forEach((slot, i) => {
         renderQuote(slot, quotes[currentIndices[i]])
       })
+
+      // Respect reduced-motion: show the first set of quotes, but don't auto-rotate.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
       // Rotation logic: Swap one slot at a time for a subtle effect
       setInterval(() => {

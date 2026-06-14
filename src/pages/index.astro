@@ -80,11 +80,13 @@ const heroPoster = await getImage({ src: churchExterior, width: 1600, format: 'w
       sectionClass="to-wide"
     />
 
-    <section class="section">
-      <p class="eyebrow">In their words</p>
-      <h2>Why people have made Pine Lake their church</h2>
-      <p class="measure">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
-      <QuoteGrid quotes={homepageQuotes} />
+    <section class="band band--sand to-full quotes">
+      <div class="band__inner">
+        <p class="eyebrow">In their words</p>
+        <h2>Why people have made Pine Lake their church</h2>
+        <p class="measure">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
+        <QuoteGrid quotes={homepageQuotes} />
+      </div>
     </section>
 
     <section class="band band--forest to-full home-cta">

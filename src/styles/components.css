@@ -413,9 +413,9 @@ a.card:hover {
 
 .story-grid {
   display: grid;
-  gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  margin-top: 3rem;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  margin-top: var(--space-lg);
 }
 
 .vignette-grid {
@@ -672,51 +672,47 @@ a.card:hover {
 
 /* Story/quote cards */
 .story-quote {
-  padding: 2.25rem 2.25rem;
-  border-radius: var(--radius-soft);
-  background: var(--surface-gradient-soft);
+  padding: clamp(1.75rem, 2.6vw, 2.4rem);
+  border-radius: var(--radius-lg);
+  background: var(--color-paper);
   border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-panel);
-  position: relative;
-  overflow: hidden;
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
 }
 
+/* A small moss rule reads as a quote accent without the heavy glyph.
+   flex-shrink: 0 keeps it from collapsing when a long quote fills the card. */
 .story-quote::before {
-  content: '“';
-  position: absolute;
-  top: 0rem;
-  left: 0.5rem;
-  font-family: var(--font-serif);
-  font-size: 7rem;
-  color: var(--color-mist);
-  line-height: 1;
+  content: '';
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-moss);
+  margin-bottom: 1.15rem;
 }
 
 .story-quote p {
-  font-family: var(--font-serif);
-  font-size: 1.35rem;
-  font-style: italic;
-  line-height: 1.45;
-  position: relative;
-  z-index: 1;
   margin: 0;
   flex-grow: 1;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.5;
   color: var(--color-forest);
   max-width: none;
+  text-wrap: pretty;
 }
 
 .story-quote footer {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
   font-family: var(--font-sans);
   font-weight: 600;
-  color: var(--color-clay);
-  position: relative;
-  z-index: 1;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 0.9rem;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-clay);
 }
 
 .site-main p {
