@@ -156,6 +156,20 @@ const planVisitMomentsItems = [
 </BaseLayout>
 
 <style>
+  /* The closing forest CTA flows straight into the (also-forest) footer,
+     so the page doesn't end on a stray stone gap. */
+  .canvas {
+    margin-bottom: 0;
+  }
+
+  :global(.site-main) {
+    padding-bottom: 0;
+  }
+
+  :global(.site-footer) {
+    margin-top: 0;
+  }
+
   .visit-cta .band__inner {
     max-width: 46rem;
   }
