@@ -27,30 +27,27 @@ export const startHereLinks: LinkCardItem[] = [
   },
 ]
 
+// "I'm New" → for someone considering coming: get-to-know-us links, kept to four
+// so they don't wrap. (Plan a Visit is already the hero CTA on that page.)
 export const imNewStartHereLinks: LinkCardItem[] = [
   {
+    href: 'about/what-were-about/',
+    title: 'What We’re About',
+    meta: 'What shapes our life together, in plain language.',
+  },
+  {
     href: 'about/pastors-letter/',
-    title: 'A Welcome from our Lead Pastor',
-    meta: 'Read a personal letter from Austin Bailey about what we are trying to build here.',
+    title: 'A Welcome from our Pastor',
+    meta: 'A personal letter from Austin Bailey.',
   },
   {
-    href: 'plan-a-visit/',
-    title: 'Plan a Visit',
-    meta: 'What Sundays are like, where to go, and what to expect when you arrive.',
-  },
-  {
-    href: 'families/',
-    title: 'Families',
-    meta: 'Community, support, and programs for parents, kids, and youth on Sundays and beyond.',
-  },
-  {
-    href: 'about/',
-    title: 'About Pine Lake',
-    meta: 'Our story, values, and the kind of church we are trying to be.',
+    href: 'about/beliefs/',
+    title: 'What We Believe',
+    meta: 'The convictions we hold, if you want the specifics.',
   },
   {
     href: 'messages/',
     title: 'Messages',
-    meta: 'Curious what teaching is like? Watch or listen to a recent message.',
+    meta: 'Watch or listen to a recent service.',
   },
 ]
