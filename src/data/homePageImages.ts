@@ -392,4 +392,9 @@ export const homePageImages: HomePageImage[] = [
     tags: ['service', 'generosity', 'kids'],
     alt: 'Carrying groceries for the Issaquah & Sammamish food project',
   },
+  {
+    filename: '467727902_18149338249338056_7861795867212358283_n.jpg',
+    tags: ['church', 'building'],
+    alt: 'A light-filled room at Pine Lake, set up with chairs for a ceremony',
+  },
 ]
