@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Hero from '../components/Hero.astro'
 import Split from '../components/Split.astro'
+import Band from '../components/Band.astro'
 import QuoteGrid from '../components/QuoteGrid.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
@@ -80,60 +81,17 @@ const heroPoster = await getImage({ src: churchExterior, width: 1600, format: 'w
       sectionClass="to-wide"
     />
 
-    <section class="band band--sand to-full quotes">
-      <div class="band__inner">
-        <p class="eyebrow">In their words</p>
-        <h2>Why people have made Pine Lake their church</h2>
-        <p class="measure">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
-        <QuoteGrid quotes={homepageQuotes} />
-      </div>
-    </section>
+    <Band tone="sand" eyebrow="In their words" heading="Why people have made Pine Lake their church">
+      <p class="measure">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
+      <QuoteGrid quotes={homepageQuotes} />
+    </Band>
 
-    <section class="band band--forest to-full home-cta">
-      <div class="band__inner">
-        <p class="eyebrow">Visiting</p>
-        <h2>Come this Sunday</h2>
-        <p>
-          We gather at 10:00am at 1715 228th Ave SE in Sammamish. There’s guest parking by the main entrance — walk in,
-          grab a coffee, and sit wherever you like.
-        </p>
-        <a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a>
-      </div>
-    </section>
+    <Band tone="forest" flush centered eyebrow="Visiting" heading="Come this Sunday">
+      <p>
+        We gather at 10:00am at 1715 228th Ave SE in Sammamish. There’s guest parking by the main entrance — walk in,
+        grab a coffee, and sit wherever you like.
+      </p>
+      <a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a>
+    </Band>
   </div>
 </BaseLayout>
-
-<style>
-  /* The closing forest CTA band flows straight into the (also-forest) footer,
-     so the page ends on a continuous dark base instead of a stray stone gap. */
-  .canvas {
-    margin-bottom: 0;
-  }
-
-  :global(.site-main) {
-    padding-bottom: 0;
-  }
-
-  :global(.site-footer) {
-    margin-top: 0;
-  }
-
-  .home-cta .band__inner {
-    max-width: 44rem;
-    text-align: center;
-  }
-
-  .home-cta h2 {
-    font-size: var(--text-2xl);
-    margin-top: 0;
-  }
-
-  .home-cta p {
-    margin-inline: auto;
-    max-width: 40rem;
-  }
-
-  .home-cta .btn {
-    margin-top: 1.5rem;
-  }
-</style>

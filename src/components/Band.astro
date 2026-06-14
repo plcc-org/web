@@ -1,0 +1,42 @@
+---
+// A full-bleed colored band with re-contained inner content. Backs the home
+// "voices" band, the closing CTAs, and the weddings verse band.
+//
+// - tone:     forest | sand | paper  (forest = dark gradient, light text)
+// - flush:    sits flush against the footer (for a page's closing band) — the
+//             trailing stone gap is removed globally via `.band--flush` (no
+//             per-page CSS). Use only on the last element of a page.
+// - narrow:   caps the inner content at a readable column (left-aligned).
+// - centered: like narrow, but also centers the text (CTAs, pull-quotes).
+// - eyebrow / heading: optional; rendered at the top of the band.
+
+type Props = {
+  tone?: 'forest' | 'sand' | 'paper'
+  flush?: boolean
+  narrow?: boolean
+  centered?: boolean
+  eyebrow?: string
+  heading?: string
+  class?: string
+}
+
+const { tone = 'sand', flush = false, narrow = false, centered = false, eyebrow, heading, class: className } = Astro.props
+---
+
+<section
+  class:list={[
+    'band',
+    `band--${tone}`,
+    'to-full',
+    flush && 'band--flush',
+    narrow && 'band--narrow',
+    centered && 'band--centered',
+    className,
+  ]}
+>
+  <div class="band__inner">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    {heading && <h2>{heading}</h2>}
+    <slot />
+  </div>
+</section>

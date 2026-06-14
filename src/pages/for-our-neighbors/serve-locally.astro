@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Split from '../../components/Split.astro'
+import SectionHeader from '../../components/SectionHeader.astro'
 ---
 
 <BaseLayout
@@ -25,8 +26,7 @@ import Split from '../../components/Split.astro'
     </Split>
 
     <section class="section">
-      <p class="eyebrow">In the community</p>
-      <h2>Serve alongside local partners</h2>
+      <SectionHeader eyebrow="In the community" heading="Serve alongside local partners" />
 
       <div class="card-grid">
         <div class="card">
@@ -52,8 +52,7 @@ import Split from '../../components/Split.astro'
     </section>
 
     <section class="section">
-      <p class="eyebrow">On a Sunday</p>
-      <h2>Serve on a Sunday team</h2>
+      <SectionHeader eyebrow="On a Sunday" heading="Serve on a Sunday team" />
       <p class="measure">Sundays come together because people show up to help. A few of the teams you can join:</p>
 
       <div class="card-grid">

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Split from '../components/Split.astro'
+import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
 import { imageByFilename } from '../data/homePageImages'
@@ -129,8 +130,7 @@ const youthMomentsBottomItems = [
     </section>
 
     <section class="section">
-      <p class="eyebrow">Through the year</p>
-      <h2>Highlights through the year</h2>
+      <SectionHeader eyebrow="Through the year" heading="Highlights through the year" />
       <p class="measure">
         Alongside our weekly rhythm, we run a few annual experiences that help students grow in faith and friendship.
       </p>
@@ -163,8 +163,7 @@ const youthMomentsBottomItems = [
     </section>
 
     <section class="section">
-      <p class="eyebrow">Faith that moves outward</p>
-      <h2>Service &amp; missions</h2>
+      <SectionHeader eyebrow="Faith that moves outward" heading="Service & missions" />
       <p class="measure">
         We want students to see faith move outward through practical service, both locally and globally.
       </p>

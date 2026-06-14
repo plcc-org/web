@@ -1,0 +1,19 @@
+---
+// The calm, text-only page header used on reading pages (no photo opener):
+// eyebrow + display heading + optional subhead, with the lede passed as a slot.
+
+type Props = {
+  eyebrow?: string
+  title: string
+  subhead?: string
+}
+
+const { eyebrow, title, subhead } = Astro.props
+---
+
+<header class="section page-intro">
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h1 class="display">{title}</h1>
+  {subhead && <p class="subhead">{subhead}</p>}
+  <slot />
+</header>

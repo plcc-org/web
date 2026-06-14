@@ -1,21 +1,24 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Split from '../../components/Split.astro'
+import SectionHeader from '../../components/SectionHeader.astro'
+import AccentList from '../../components/AccentList.astro'
+import Band from '../../components/Band.astro'
 
 const base = import.meta.env.BASE_URL
 
 const emphases = [
-  { title: 'Scripture', desc: 'We look to the Bible as our primary guide for faith and life.' },
-  { title: 'New life in Christ', desc: 'Following Jesus is not just an idea; it’s transformation and renewal.' },
+  { title: 'Scripture', body: 'We look to the Bible as our primary guide for faith and life.' },
+  { title: 'New life in Christ', body: 'Following Jesus is not just an idea; it’s transformation and renewal.' },
   {
     title: 'Mission',
-    desc: 'The Church exists to share the good news of Jesus and to love and serve the world with compassion and justice.',
+    body: 'The Church exists to share the good news of Jesus and to love and serve the world with compassion and justice.',
   },
-  { title: 'Community', desc: 'Faith grows best in fellowship, not in isolation.' },
-  { title: 'The Holy Spirit', desc: 'We depend on the Spirit’s presence and power to guide and equip us.' },
+  { title: 'Community', body: 'Faith grows best in fellowship, not in isolation.' },
+  { title: 'The Holy Spirit', body: 'We depend on the Spirit’s presence and power to guide and equip us.' },
   {
     title: 'Freedom in Christ',
-    desc: 'We seek unity in essentials, grace in differences, and humility in how we hold our convictions.',
+    body: 'We seek unity in essentials, grace in differences, and humility in how we hold our convictions.',
   },
 ]
 ---
@@ -39,8 +42,7 @@ const emphases = [
     </Split>
 
     <section class="section">
-      <p class="eyebrow">Why a denomination?</p>
-      <h2>Accountable, supported, connected</h2>
+      <SectionHeader eyebrow="Why a denomination?" heading="Accountable, supported, connected" />
       <p class="measure">
         For us, being part of a denomination isn’t about being institutional — it’s about being accountable, supported,
         and connected. The Covenant provides shared theology, pastoral care and training, and partnership in mission,
@@ -49,23 +51,12 @@ const emphases = [
     </section>
 
     <section class="section">
-      <p class="eyebrow">What the Covenant emphasizes</p>
-      <h2>A few long-standing convictions</h2>
+      <SectionHeader eyebrow="What the Covenant emphasizes" heading="A few long-standing convictions" />
       <p class="measure">
         A combination of historic Christian orthodoxy and a warm, lived faith. These are the same convictions we hold at
         Pine Lake — you can read ours in <a href={`${base}about/beliefs/`}>What We Believe</a>.
       </p>
-
-      <ol class="emphases">
-        {
-          emphases.map((e) => (
-            <li class="emphasis">
-              <h3 class="emphasis__title">{e.title}</h3>
-              <p>{e.desc}</p>
-            </li>
-          ))
-        }
-      </ol>
+      <AccentList items={emphases} columns={3} />
     </section>
 
     <section class="section section-callout">
@@ -78,103 +69,36 @@ const emphases = [
     </section>
 
     <section class="section">
-      <p class="eyebrow">Connected beyond Pine Lake</p>
-      <h2>Part of a global family</h2>
+      <SectionHeader eyebrow="Connected beyond Pine Lake" heading="Part of a global family" />
       <p class="measure">
         Being Covenant connects Pine Lake to churches across the U.S. and around the world, as well as missionaries and
         partner organizations. It also provides oversight and support for our pastors and leaders.
       </p>
     </section>
 
-    <section class="band band--forest to-full covenant-cta">
-      <div class="band__inner">
-        <p class="eyebrow">Go deeper</p>
-        <h2>Explore the wider Covenant</h2>
-        <p>Learn more about the Covenant family of churches — its history, its mission, and its theology.</p>
-        <p class="covenant-cta__links">
-          <a class="btn" href="https://covchurch.org" target="_blank" rel="noopener">Visit covchurch.org</a>
-          <a
-            class="btn btn--ghost"
-            href="https://covchurch.org/resource/covenant-affirmations/"
-            target="_blank"
-            rel="noopener"
-          >
-            Covenant Affirmations
-          </a>
-        </p>
-      </div>
-    </section>
+    <Band tone="forest" flush narrow eyebrow="Go deeper" heading="Explore the wider Covenant">
+      <p>Learn more about the Covenant family of churches — its history, its mission, and its theology.</p>
+      <p class="covenant-cta__links">
+        <a class="btn" href="https://covchurch.org" target="_blank" rel="noopener">Visit covchurch.org</a>
+        <a
+          class="btn btn--ghost"
+          href="https://covchurch.org/resource/covenant-affirmations/"
+          target="_blank"
+          rel="noopener"
+        >
+          Covenant Affirmations
+        </a>
+      </p>
+    </Band>
   </div>
 </BaseLayout>
 
 <style>
-  /* The closing forest CTA flows straight into the (also-forest) footer. */
-  .canvas {
-    margin-bottom: 0;
-  }
-
-  :global(.site-main) {
-    padding-bottom: 0;
-  }
-
-  :global(.site-footer) {
-    margin-top: 0;
-  }
-
-  .emphases {
-    list-style: none;
-    margin: var(--space-md) 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
-  }
-
-  .emphasis {
-    padding: clamp(1.25rem, 2vw, 1.6rem);
-    background: var(--color-paper);
-    border: 1px solid var(--color-mist);
-    border-left: 4px solid var(--color-moss);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .emphasis__title {
-    margin: 0 0 0.4rem;
-    font-size: var(--text-lg);
-  }
-
-  .emphasis p {
-    margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: var(--color-ink-soft);
-  }
-
-  .covenant-cta .band__inner {
-    max-width: 44rem;
-  }
-
-  .covenant-cta h2 {
-    margin-top: 0;
-  }
-
+  /* The two CTA buttons sit in a row beneath the copy */
   .covenant-cta__links {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
     margin: 1.5rem 0 0;
-  }
-
-  @media (max-width: 860px) {
-    .emphases {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 560px) {
-    .emphases {
-      grid-template-columns: 1fr;
-    }
   }
 </style>

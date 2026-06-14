@@ -1,0 +1,17 @@
+---
+// The recurring "eyebrow + heading" block that opens most sections.
+// Composable: drop it inside any <section>. A trailing lede/body stays inline.
+
+type Props = {
+  eyebrow?: string
+  heading?: string
+  /** Heading level — sections use h2 by default. */
+  as?: 'h2' | 'h3'
+  id?: string
+}
+
+const { eyebrow, heading, as: Heading = 'h2', id } = Astro.props
+---
+
+{eyebrow && <p class="eyebrow">{eyebrow}</p>}
+{heading && <Heading id={id}>{heading}</Heading>}

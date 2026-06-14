@@ -1,18 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import PageIntro from '../components/PageIntro.astro'
 
 const base = import.meta.env.BASE_URL
 ---
 
 <BaseLayout title="Contact | Pine Lake Covenant Church">
   <div class="canvas">
-    <header class="section page-intro">
-      <p class="eyebrow">Contact</p>
-      <h1 class="display">Contact</h1>
+    <PageIntro eyebrow="Contact" title="Contact">
       <p class="lede">
         Have a question, want to connect, or need support? We’d love to help you find the right next step.
       </p>
-    </header>
+    </PageIntro>
 
     <section class="section" aria-label="Contact options">
       <div class="card-grid">

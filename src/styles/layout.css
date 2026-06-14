@@ -125,6 +125,46 @@
   background: var(--color-paper);
 }
 
+/* Narrower band content; centered also centers the text (closing CTAs, quotes) */
+.band--narrow .band__inner,
+.band--centered .band__inner {
+  max-width: 46rem;
+}
+
+.band--centered .band__inner {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.band--centered .band__inner > p {
+  max-width: 42rem;
+  margin-inline: auto;
+}
+
+.band--centered .band__inner > .btn {
+  margin-top: 1.5rem;
+}
+
+/* Prose links on a forest band need light text to stay legible */
+.band--forest a:not(.btn):not(.btn--ghost) {
+  color: var(--color-white);
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+}
+
+/* A flush band closes a page against the (also-dark) footer with no stone gap.
+   Driven by :has() so there's no per-page CSS — use only on a page's last band. */
+.canvas:has(> .band--flush) {
+  margin-bottom: 0;
+}
+
+.site-main:has(.band--flush) {
+  padding-bottom: 0;
+}
+
+body:has(.band--flush) .site-footer {
+  margin-top: 0;
+}
+
 /* ----------------------------------------------------------------------
  * Section rhythm utilities (work anywhere, not just inside .page)
  * -------------------------------------------------------------------- */

@@ -215,8 +215,9 @@ The original reading wrapper, kept for dense text pages. `.page` caps at `--meas
 
 ### Bands
 
-Full-bleed colored sections with re-contained inner content. Use as a `.to-full`
-canvas child (or standalone).
+Full-bleed colored sections with re-contained inner content. Prefer the
+**`<Band>`** component (§6) over hand-writing the markup; the raw classes below are
+what it renders and what older markup uses.
 
 ```html
 <section class="band band--forest to-full">
@@ -226,7 +227,13 @@ canvas child (or standalone).
 ```
 
 Tones: `band--forest` (dark gradient, light text — headings forced white),
-`band--sand`, `band--paper`.
+`band--sand`, `band--paper`. Modifiers: `band--narrow` (caps the inner column at
+46rem, left-aligned), `band--centered` (46rem **and** centered text — closing CTAs,
+pull-quotes), `band--flush` (closes a page flush against the dark footer).
+
+`band--flush` removes the trailing stone gap with **no per-page CSS** — global
+`:has()` rules in `layout.css` zero the canvas/main/footer margins whenever a
+`.band--flush` is present. Use it only on a page's **last** band.
 
 ### Rhythm utilities
 
@@ -236,7 +243,8 @@ Tones: `band--forest` (dark gradient, light text — headings forced white),
 ### `.page-intro`
 
 A calm, photo-less header for reading pages: adds top breathing room and caps its
-children at `--measure`.
+children at `--measure`. Prefer the **`<PageIntro>`** component (§6), which renders
+exactly this markup.
 
 ```html
 <header class="section page-intro">
@@ -312,6 +320,66 @@ Props: `heading?` (`null` to hide), `eyebrow?`, `items: { image?, fallbackAlt }[
 (entries without an `image` are skipped), `sectionClass?` (default `'section'`; pass
 `'to-wide'` in a canvas). Image styles are `:global()` because the `<img>` is
 rendered by the child `<Photo>` (see §9).
+
+### `SectionHeader` — eyebrow + heading pair
+
+`src/components/SectionHeader.astro`. The recurring eyebrow-over-heading block that
+opens most in-page `<section class="section">`s. No styling of its own — it just
+renders the shared `.eyebrow` + heading elements, so it looks identical to the
+hand-written pair it replaces.
+
+```astro
+<section class="section">
+  <SectionHeader eyebrow="Where to start" heading="Common starting points" />
+  <p class="measure">…</p>
+</section>
+```
+
+Props: `eyebrow?`, `heading?`, `as?` (`'h2'` default | `'h3'`), `id?`. A lone
+eyebrow with no heading stays a bare `<p class="eyebrow">`.
+
+### `PageIntro` — calm reading-page header
+
+`src/components/PageIntro.astro`. Renders the `.page-intro` header (§5) for
+photo-less reading pages: eyebrow, `display` h1, optional italic `subhead`, then any
+slot content (e.g. a `.lede`).
+
+```astro
+<PageIntro eyebrow="About" title="Leadership" subhead="Our pastors and staff" />
+```
+
+Props: `eyebrow?`, `title`, `subhead?` + default slot.
+
+### `Band` — full-bleed colored section
+
+`src/components/Band.astro`. Wraps the `.band` / `.band__inner` markup (§5) and
+optionally renders a leading eyebrow + heading. Backs the home "voices" band, the
+closing CTAs, and the weddings verse band.
+
+```astro
+<Band tone="forest" flush centered eyebrow="Visiting" heading="Come this Sunday">
+  <p>…</p>
+  <a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a>
+</Band>
+```
+
+Props: `tone?` (`'sand'` default | `'forest'` | `'paper'`), `flush?`, `narrow?`,
+`centered?`, `eyebrow?`, `heading?`, `class?` + default slot. Slot content keeps the
+**page's** scope, so page scoped styles can target it; the component-rendered
+`.band__inner` needs `:global()` (see §9, and the weddings verse band).
+
+### `AccentList` — moss-accent point cards
+
+`src/components/AccentList.astro`. The shared card-grid behind the Beliefs tenets and
+Covenant emphases: paper cards with a 4px moss left accent. Two-across cards are
+roomier; three-across are tighter (smaller padding and body copy).
+
+```astro
+<AccentList items={tenets} numbered columns={2} />
+```
+
+Props: `items: { title, body }[]`, `numbered?` (adds the `01–06` serif numerals),
+`columns?` (`2` default | `3`). Collapses to one column on small screens.
 
 ### Other components
 

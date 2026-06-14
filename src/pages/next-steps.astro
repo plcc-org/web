@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import PageIntro from '../components/PageIntro.astro'
 import Photo from '../components/Photo.astro'
 
 const base = import.meta.env.BASE_URL
@@ -10,14 +11,12 @@ const base = import.meta.env.BASE_URL
   description="Simple, low-pressure next steps to connect at Pine Lake: groups, serving, events, and conversation."
 >
   <div class="canvas">
-    <header class="section page-intro">
-      <p class="eyebrow">Next Steps</p>
-      <h1 class="display">Next Steps</h1>
+    <PageIntro eyebrow="Next Steps" title="Next Steps">
       <p class="lede">
         If you are wondering what comes after a first visit, this is a good place to start. You do not need to do
         everything at once — pick one step that fits your pace.
       </p>
-    </header>
+    </PageIntro>
 
     <section class="section">
       <div class="card-grid">

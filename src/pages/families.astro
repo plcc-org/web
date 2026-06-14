@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Split from '../components/Split.astro'
+import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
 import { imageByFilename } from '../data/homePageImages'
@@ -41,8 +42,7 @@ const familiesMomentsItems = [
     </Split>
 
     <section class="section">
-      <p class="eyebrow">Find the right fit</p>
-      <h2>Kids and youth at Pine Lake</h2>
+      <SectionHeader eyebrow="Find the right fit" heading="Kids and youth at Pine Lake" />
 
       <div class="card-grid">
         <div class="card">
@@ -112,8 +112,7 @@ const familiesMomentsItems = [
     </Split>
 
     <section class="section">
-      <p class="eyebrow">Beyond Sunday mornings</p>
-      <h2>Simple ways to connect</h2>
+      <SectionHeader eyebrow="Beyond Sunday mornings" heading="Simple ways to connect" />
 
       <p class="measure">
         Sundays are just one part of family life at Pine Lake. Beyond weekly services, there are simple, low-pressure

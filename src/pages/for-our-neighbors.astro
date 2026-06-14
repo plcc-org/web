@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Split from '../components/Split.astro'
+import SectionHeader from '../components/SectionHeader.astro'
 import DoorCard from '../components/DoorCard.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { neighborsDoors } from '../data/neighborsDoors'
@@ -42,8 +43,7 @@ const neighborsMomentsItems = [
     </Split>
 
     <section class="section">
-      <p class="eyebrow">Where to start</p>
-      <h2>Common starting points</h2>
+      <SectionHeader eyebrow="Where to start" heading="Common starting points" />
       <p class="measure">People come through our doors for different reasons. Here are a few of the most common.</p>
 
       <div class="doors" aria-label="Ways to connect with Pine Lake">

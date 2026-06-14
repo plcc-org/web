@@ -1,0 +1,119 @@
+---
+// A grid of titled "point" cards with a moss accent — the shared treatment
+// behind the Beliefs tenets and the Covenant emphases. Pass `numbered` for the
+// 01–06 style; `columns` controls the grid.
+
+type Item = { title: string; body: string }
+
+type Props = {
+  items: Item[]
+  numbered?: boolean
+  columns?: 2 | 3
+}
+
+const { items, numbered = false, columns = 2 } = Astro.props
+---
+
+<ol class:list={['accent-list', `accent-list--${columns}`]}>
+  {
+    items.map((item, i) => (
+      <li class="accent-card">
+        {numbered && (
+          <span class="accent-card__num" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+        )}
+        <h3 class="accent-card__title">{item.title}</h3>
+        <p>{item.body}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .accent-list {
+    list-style: none;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    display: grid;
+  }
+
+  /* Two across (beliefs): roomier cards. Three across (covenant): tighter. */
+  .accent-list--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .accent-list--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .accent-card {
+    background: var(--color-paper);
+    border: 1px solid var(--color-mist);
+    border-left: 4px solid var(--color-moss);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .accent-list--2 .accent-card {
+    padding: clamp(1.5rem, 2.4vw, 2rem);
+  }
+
+  .accent-list--3 .accent-card {
+    padding: clamp(1.25rem, 2vw, 1.6rem);
+  }
+
+  .accent-card__num {
+    display: block;
+    font-family: var(--font-serif);
+    font-variation-settings: var(--serif-display);
+    font-weight: 800;
+    font-size: var(--text-xl);
+    line-height: 1;
+    color: var(--color-moss-2);
+    margin-bottom: 0.6rem;
+  }
+
+  .accent-card__title {
+    font-size: var(--text-lg);
+  }
+
+  .accent-list--2 .accent-card__title {
+    margin: 0 0 0.5rem;
+  }
+
+  .accent-list--3 .accent-card__title {
+    margin: 0 0 0.4rem;
+  }
+
+  .accent-card p {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+
+  /* Three across only: slightly smaller, tighter body copy */
+  .accent-list--3 .accent-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 860px) {
+    .accent-list--3 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .accent-list--2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .accent-list--3 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

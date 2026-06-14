@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Split from '../components/Split.astro'
+import Band from '../components/Band.astro'
+import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
 import { imageByFilename } from '../data/homePageImages'
@@ -45,8 +47,7 @@ const planVisitMomentsItems = [
     </Split>
 
     <section class="section">
-      <p class="eyebrow">When &amp; where</p>
-      <h2>Sundays at 10:00am</h2>
+      <SectionHeader eyebrow="When & where" heading="Sundays at 10:00am" />
       <p class="measure">
         1715 228th Ave SE, Sammamish, WA 98075. There’s plenty of guest parking available, including accessible parking
         near the main entrance.
@@ -126,8 +127,7 @@ const planVisitMomentsItems = [
     </Split>
 
     <section class="section">
-      <p class="eyebrow">A few practical things</p>
-      <h2>What should I wear?</h2>
+      <SectionHeader eyebrow="A few practical things" heading="What should I wear?" />
       <p class="measure">
         Whatever you’re comfortable in. On any given Sunday you’ll see everything from
         <strong>Seahawks jerseys and jeans</strong> to <strong>smart casual</strong>. There’s no dress code, and no
@@ -137,49 +137,16 @@ const planVisitMomentsItems = [
 
     <MomentsSection heading={null} items={planVisitMomentsItems} sectionClass="to-wide" />
 
-    <section class="band band--forest to-full visit-cta">
-      <div class="band__inner">
-        <p class="eyebrow">No test required</p>
-        <h2>A place to belong</h2>
-        <p>
-          Some people who come to Pine Lake are deeply rooted in their faith. Others are exploring, returning after time
-          away, or connected through family or community. All are welcome — you’ll never be asked what you believe to be
-          welcome here.
-        </p>
-        <p>
-          If you’d like to connect with someone ahead of time, you’re always welcome to —
-          <a href={`${base}contact/`}>say hello</a> — but there’s no expectation that you do.
-        </p>
-      </div>
-    </section>
+    <Band tone="forest" flush narrow eyebrow="No test required" heading="A place to belong">
+      <p>
+        Some people who come to Pine Lake are deeply rooted in their faith. Others are exploring, returning after time
+        away, or connected through family or community. All are welcome — you’ll never be asked what you believe to be
+        welcome here.
+      </p>
+      <p>
+        If you’d like to connect with someone ahead of time, you’re always welcome to —
+        <a href={`${base}contact/`}>say hello</a> — but there’s no expectation that you do.
+      </p>
+    </Band>
   </div>
 </BaseLayout>
-
-<style>
-  /* The closing forest CTA flows straight into the (also-forest) footer,
-     so the page doesn't end on a stray stone gap. */
-  .canvas {
-    margin-bottom: 0;
-  }
-
-  :global(.site-main) {
-    padding-bottom: 0;
-  }
-
-  :global(.site-footer) {
-    margin-top: 0;
-  }
-
-  .visit-cta .band__inner {
-    max-width: 46rem;
-  }
-
-  .visit-cta h2 {
-    margin-top: 0;
-  }
-
-  .visit-cta a {
-    color: var(--color-white);
-    text-decoration-color: rgba(255, 255, 255, 0.5);
-  }
-</style>

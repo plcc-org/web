@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Split from '../../components/Split.astro'
+import SectionHeader from '../../components/SectionHeader.astro'
 import MomentsSection from '../../components/MomentsSection.astro'
 import Photo from '../../components/Photo.astro'
 import { imageByFilename } from '../../data/homePageImages'
@@ -74,8 +75,7 @@ const kidsMomentsBottomItems = [
     />
 
     <section class="section">
-      <p class="eyebrow">Getting started</p>
-      <h2>Your first Sunday</h2>
+      <SectionHeader eyebrow="Getting started" heading="Your first Sunday" />
       <p class="measure">
         If you’re visiting for the first time, look for the <strong>Kids Check-in</strong> in the foyer. One of our volunteers
         will help you register your children and show you to their classrooms.
@@ -121,8 +121,7 @@ const kidsMomentsBottomItems = [
     </section>
 
     <section class="section">
-      <p class="eyebrow">Worshipping together</p>
-      <h2>Special Sundays</h2>
+      <SectionHeader eyebrow="Worshipping together" heading="Special Sundays" />
       <p class="measure">
         Once a month, our elementary students (K–5) join the adults in the main service for <strong
           >Family Sunday</strong
@@ -132,8 +131,7 @@ const kidsMomentsBottomItems = [
     </section>
 
     <section class="section">
-      <p class="eyebrow">Midweek &amp; beyond</p>
-      <h2>More ways to connect</h2>
+      <SectionHeader eyebrow="Midweek & beyond" heading="More ways to connect" />
       <div class="link-grid">
         <div class="link-card">
           <strong>Club 45</strong>
