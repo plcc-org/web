@@ -66,11 +66,12 @@ export const neighborsDoors: Door[] = [
   },
   {
     id: 'serve',
-    title: 'Want to serve locally?',
-    intro: 'If you’re looking for a way to make a difference nearby, you don’t need to invent something new.',
-    body: 'We partner with local organizations we trust and join them with time, relationships, and practical help. For many people, serving becomes a way to build community while contributing to something larger.',
-    bullets: ['Issaquah Food Bank', 'Bright Bridge', 'Echo Glen', 'Young Life'],
-    ctaLabel: 'Serve Locally',
+    title: 'Curious how we show up locally?',
+    intro:
+      'Being a good neighbor is part of who we are — we invest in the local community through giving and by showing up to serve.',
+    body: 'We back trusted local organizations with financial support and our own volunteers, bringing time, relationships, and practical help where it’s needed most.',
+    bullets: ['Issaquah Food & Clothing Bank', 'Bright Bridge', 'Echo Glen', 'Young Life'],
+    ctaLabel: 'Serving Locally',
     href: '/for-our-neighbors/serve-locally/',
   },
 ]
