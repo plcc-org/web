@@ -1,29 +1,49 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import Split from '../../components/Split.astro'
+
+const base = import.meta.env.BASE_URL
 ---
 
 <BaseLayout title="Weddings & Memorials | Pine Lake Covenant Church">
-  <article class="page">
-    <header class="page__header">
-      <p class="eyebrow">For Our Neighbors</p>
-      <h1>Weddings &amp; Memorials</h1>
-      <p class="page__subhead">A place to celebrate, remember, and be supported by community.</p>
-
+  <div class="canvas">
+    <Split
+      class="to-full"
+      filename="467829712_18149338099338056_6151106923639228859_n.jpg"
+      alt="People comforting and praying with one another"
+      tone="sand"
+      reverse
+      eyebrow="For Our Neighbors"
+    >
+      <h1 class="display">Weddings &amp; Memorials</h1>
+      <p class="subhead">A place to celebrate, remember, and be supported by community.</p>
       <p class="lede">
         Our lives include seasons of great joy and great sorrow. In both, we need community — people to celebrate with
-        us and people to mourn with us. Pine Lake offers support in coordinating weddings and memorial services.
+        us, and people to mourn with us. Pine Lake offers support in coordinating weddings and memorial services.
       </p>
+    </Split>
 
-      <p class="page__quote">“Rejoice with those who rejoice; mourn with those who mourn.” — Romans 12:15</p>
-    </header>
+    <section class="band band--forest to-full verse-band">
+      <div class="band__inner">
+        <blockquote class="verse">
+          <p>“Rejoice with those who rejoice; mourn with those who mourn.”</p>
+          <footer>Romans 12:15</footer>
+        </blockquote>
+      </div>
+    </section>
 
-    <section class="section">
-      <h2>Weddings</h2>
+    <Split
+      class="to-full"
+      filename="487826650_18162510592338056_1348719743468332978_n.jpg"
+      alt="Inside the Pine Lake sanctuary"
+      tone="paper"
+      eyebrow="Celebrate"
+      heading="Weddings"
+    >
       <p>
         Weddings are a significant moment of transition and commitment. Our Wedding Coordinator is available to support
-        you through planning, rehearsal, and the wedding day.
+        you through planning, rehearsal, and the wedding day, including:
       </p>
-
       <ul>
         <li>Verifying availability of wedding support staff and requested services</li>
         <li>Working with pastoral staff to help direct the rehearsal</li>
@@ -31,42 +51,71 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
         <li>Assisting the wedding party prior to the ceremony</li>
         <li>Helping oversee on-site details at the church</li>
       </ul>
-
       <p>
-        To inquire about having your wedding at Pine Lake, please call
-        <a href="tel:+14253928636">(425) 392-8636</a> or email
+        To inquire about a wedding at Pine Lake, call <a href="tel:+14253928636">(425) 392-8636</a> or email
         <a href="mailto:office@plcc.org">office@plcc.org</a>.
       </p>
-    </section>
+    </Split>
 
-    <section class="section">
-      <h2>Memorials</h2>
+    <Split
+      class="to-full"
+      filename="plcc-prayer-candles.jpg"
+      alt="Candles lit for a reflective moment of remembrance"
+      tone="sand"
+      reverse
+      eyebrow="Remember"
+      heading="Memorials"
+    >
       <p>
         When a loved one dies, there is a need to commemorate their life and memory — and to find hope and comfort in
         the midst of grief. Our Memorial Team provides support for memorial services held at Pine Lake.
       </p>
-
       <p>
         Our Memorial Coordinator can assist with coordinating the service, scheduling participants, and arranging an
-        after-service reception when appropriate. The coordinator works closely with pastoral staff to offer support and
-        direction in planning a funeral or memorial service.
+        after-service reception when appropriate, working closely with pastoral staff to offer support and direction.
       </p>
-
       <p>
-        For memorial service inquiries, please call
-        <a href="tel:+14253928636">(425) 392-8636</a> or email
+        For memorial service inquiries, call <a href="tel:+14253928636">(425) 392-8636</a> or email
         <a href="mailto:office@plcc.org">office@plcc.org</a>.
       </p>
-    </section>
+    </Split>
 
     <section class="section">
       <h2>Not sure where to start?</h2>
-      <p>
+      <p class="measure">
         If you have questions or aren’t sure what you need, just reach out — we’ll help you find the right next step.
       </p>
-      <p>
-        <a href={`${import.meta.env.BASE_URL}contact/`}>Contact</a>
-      </p>
+      <p><a href={`${base}contact/`}>Contact us →</a></p>
     </section>
-  </article>
+  </div>
 </BaseLayout>
+
+<style>
+  .verse-band .band__inner {
+    max-width: 48rem;
+    text-align: center;
+  }
+
+  .verse {
+    margin: 0;
+  }
+
+  .verse p {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-2xl);
+    line-height: 1.35;
+    color: var(--color-white);
+    text-wrap: balance;
+  }
+
+  .verse footer {
+    margin-top: 1.1rem;
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    font-size: var(--text-sm);
+    color: var(--color-on-dark-soft);
+  }
+</style>
