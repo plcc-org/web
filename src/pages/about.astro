@@ -4,7 +4,6 @@ import Split from '../components/Split.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import type { LinkCardItem } from '../components/LinkCardSection.astro'
-import { featuredPhotos } from '../lib/gallery'
 
 const aboutLinks: LinkCardItem[] = [
   {
@@ -34,7 +33,11 @@ const aboutLinks: LinkCardItem[] = [
   },
 ]
 
-const aboutMoments = await featuredPhotos('about')
+const aboutMoments = [
+  '496764399_18166032214338056_8744828942491316308_n.jpg',
+  '475891141_1037080631793259_4238958896521856436_n.jpg',
+  '624779024_18194108401338056_4396479470413009307_n.jpg',
+]
 ---
 
 <BaseLayout title="About | Pine Lake Covenant Church">
@@ -42,7 +45,6 @@ const aboutMoments = await featuredPhotos('about')
     <Split
       class="to-full"
       filename="688099949_18204342151338056_3539234897453255183_n.jpg"
-      alt="The worship team leading music on a Sunday morning"
       tone="sand"
       reverse
       eyebrow="About"
@@ -59,7 +61,7 @@ const aboutMoments = await featuredPhotos('about')
     <MomentsSection
       heading="A few moments from our community"
       eyebrow="Life together"
-      items={aboutMoments}
+      photos={aboutMoments}
       sectionClass="to-wide"
     />
   </div>

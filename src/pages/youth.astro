@@ -4,10 +4,16 @@ import Split from '../components/Split.astro'
 import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
-import { featuredPhotos } from '../lib/gallery'
 import { withBase } from '../lib/url'
 
-const youthPhotos = await featuredPhotos('youth')
+const youthPhotos = [
+  '515010876_1159769626191025_3703366804227887968_n.jpg',
+  '649105057_18197705947338056_7727010854774354017_n.jpg',
+  '650251601_18198219286338056_7378060351620760269_n.jpg',
+  '587395483_18187772734338056_5738413555925055591_n.jpg',
+  '715970017_18207937117338056_1177766278064408406_n.jpg',
+  '650398531_18198219304338056_7874541032610820038_n.jpg',
+]
 ---
 
 <BaseLayout
@@ -18,7 +24,6 @@ const youthPhotos = await featuredPhotos('youth')
     <Split
       class="to-full"
       filename="657972950_18200889988338056_8294978016122872582_n.jpg"
-      alt="A youth leader and a student together at Pine Lake Youth"
       tone="sand"
       reverse
       eyebrow="Middle & high school"
@@ -70,7 +75,7 @@ const youthPhotos = await featuredPhotos('youth')
     <MomentsSection
       heading="Moments from Pine Lake Youth"
       eyebrow="Life together"
-      items={youthPhotos.slice(0, 3)}
+      photos={youthPhotos.slice(0, 3)}
       sectionClass="to-wide"
     />
 
@@ -159,7 +164,7 @@ const youthPhotos = await featuredPhotos('youth')
       </p>
     </section>
 
-    <MomentsSection heading={null} items={youthPhotos.slice(3, 6)} sectionClass="to-wide" />
+    <MomentsSection heading={null} photos={youthPhotos.slice(3, 6)} sectionClass="to-wide" />
   </div>
 </BaseLayout>
 

@@ -5,11 +5,14 @@ import SectionHeader from '../components/SectionHeader.astro'
 import DoorCard from '../components/DoorCard.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { getCollection } from 'astro:content'
-import { featuredPhotos } from '../lib/gallery'
 
 const doors = (await getCollection('neighborDoors')).sort((a, b) => a.data.order - b.data.order)
 
-const neighborsMoments = await featuredPhotos('neighbors', 3)
+const neighborsMoments = [
+  '587497434_18187772761338056_6575013280016458585_n.jpg',
+  '551447661_18178844206338056_8896943485236580927_n.jpg',
+  '624779024_18194108401338056_4396479470413009307_n.jpg',
+]
 ---
 
 <BaseLayout title="For Our Neighbors | Pine Lake Covenant Church">
@@ -17,7 +20,6 @@ const neighborsMoments = await featuredPhotos('neighbors', 3)
     <Split
       class="to-full"
       filename="551096105_18178844185338056_8945047004848009463_n.jpg"
-      alt="Neighbors talking together over coffee at a community table"
       tone="sand"
       reverse
       eyebrow="For Our Neighbors"
@@ -43,7 +45,7 @@ const neighborsMoments = await featuredPhotos('neighbors', 3)
     <MomentsSection
       heading="Out in the community"
       eyebrow="Where we live"
-      items={neighborsMoments}
+      photos={neighborsMoments}
       sectionClass="to-wide"
     />
   </div>

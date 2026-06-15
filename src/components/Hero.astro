@@ -15,7 +15,8 @@ type Props = {
   subhead?: string
 }
 
-const { video, filename, alt = '', eyebrow, title, subhead } = Astro.props
+// alt is optional: omit for catalogued photos (looked up by filename in <Photo>).
+const { video, filename, alt, eyebrow, title, subhead } = Astro.props
 ---
 
 <section class:list={['hero', { 'hero--has-video': video }]} data-hero>

@@ -1,19 +1,16 @@
 ---
 import Photo from './Photo.astro'
-import type { ImageMetadata } from 'astro'
 
-// Render-ready images from the `gallery` content collection (see
-// src/lib/gallery.ts → featuredPhotos).
-type MomentsItem = { image: ImageMetadata; alt: string }
-
+// The page picks which photos appear here and in what order, by filename;
+// each photo's alt comes from the catalog via <Photo> (src/lib/photos.ts).
 type Props = {
   heading?: string | null
   eyebrow?: string | null
-  items: MomentsItem[]
+  photos: string[]
   sectionClass?: string
 }
 
-const { heading = 'Moments from Pine Lake', eyebrow = null, items, sectionClass = 'section' } = Astro.props
+const { heading = 'Moments from Pine Lake', eyebrow = null, photos, sectionClass = 'section' } = Astro.props
 ---
 
 <section class:list={['moments', sectionClass]}>
@@ -28,11 +25,10 @@ const { heading = 'Moments from Pine Lake', eyebrow = null, items, sectionClass 
 
   <div class="moments-grid">
     {
-      items.map(({ image, alt }, i) => (
+      photos.map((filename, i) => (
         <figure class:list={['moments__tile', i % 2 === 1 && 'moments__tile--offset']}>
           <Photo
-            image={image}
-            alt={alt}
+            filename={filename}
             class="moments__img"
             widths={[400, 700, 1080]}
             sizes="(max-width: 768px) 50vw, 33vw"

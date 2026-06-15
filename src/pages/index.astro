@@ -7,7 +7,6 @@ import QuoteGrid from '../components/QuoteGrid.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { getCollection } from 'astro:content'
-import { featuredPhotos } from '../lib/gallery'
 import { withBase } from '../lib/url'
 
 const homeQuotes = (await getCollection('quotes'))
@@ -19,7 +18,11 @@ const homeLinks = (await getCollection('startHereLinks'))
   .sort((a, b) => a.data.order - b.data.order)
   .map((l) => ({ href: l.data.href, title: l.data.title, meta: l.data.meta }))
 
-const homeMoments = await featuredPhotos('home', 3)
+const homeMoments = [
+  '718553950_18207937192338056_7548100352354445130_n.jpg',
+  '630141203_18195791974338056_6787714522898086321_n.jpg',
+  '500083306_18167175181338056_8168148552855409791_n.jpg',
+]
 ---
 
 <BaseLayout
@@ -29,7 +32,6 @@ const homeMoments = await featuredPhotos('home', 3)
   <Hero
     video={withBase('video/homepage-hero.mp4')}
     filename="pine-lake-exterior-2026.jpg"
-    alt="The Pine Lake Covenant Church building in Sammamish, with its tall wooden cross"
     eyebrow="Pine Lake Covenant Church · Sammamish"
     title="Discovering life with Jesus together"
     subhead="Sundays at 10:00am — for kids, students, and grown-ups."
@@ -41,7 +43,6 @@ const homeMoments = await featuredPhotos('home', 3)
     <Split
       class="to-full"
       filename="672470327_18202547344338056_2701967790999045946_n.jpg"
-      alt="New friends laughing together before a Sunday service"
       tone="paper"
       eyebrow="Welcome"
       heading="Come as you are"
@@ -60,7 +61,7 @@ const homeMoments = await featuredPhotos('home', 3)
     <LinkCardSection links={homeLinks} />
 
     <MomentsSection
-      items={homeMoments}
+      photos={homeMoments}
       eyebrow="Life together"
       heading="Moments from Pine Lake"
       sectionClass="to-wide"

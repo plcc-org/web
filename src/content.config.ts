@@ -9,21 +9,20 @@ import { z } from 'astro/zod'
 //   • Short flat lists → a single YAML file (file), edited as a list.
 // Schemas (Zod) make alt text required and give editor + build-time validation.
 
-// Rotatable photo vignettes. Images stay in src/assets/images (the site's media
-// folder) and are referenced via image() with a relative path, so they're
-// optimized like any other asset and shared cleanly with pages that still
-// reference them directly. Galleries show `featured` entries, ordered by `order`,
-// filtered by a `tags` value (e.g. 'home', 'neighbors').
-const gallery = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/gallery' }),
-  schema: ({ image }) =>
-    z.object({
-      image: image(),
-      alt: z.string().min(1),
-      tags: z.array(z.string()).default([]),
-      featured: z.boolean().default(false),
-      order: z.number().default(0),
-    }),
+// The photo catalog: one JSON file (src/content/photos.json) listing every
+// editorial photo in src/assets/images by filename, with its alt text. This is
+// the single source of truth for photo *metadata* — pages select photos by
+// filename and <Photo> looks up the alt here (see src/lib/photos.ts). The image
+// bytes are resolved and optimized separately, by filename (see src/lib/images.ts),
+// so the catalog stays agnostic of where or how each photo is used. Logos and
+// adornments (Instagram/YouTube marks, ministry logos, the PWA icon) are not
+// photos and pass their own alt directly to <Photo>.
+const photos = defineCollection({
+  loader: file('src/content/photos.json'),
+  schema: z.object({
+    id: z.string(),
+    alt: z.string().min(1),
+  }),
 })
 
 // Pastors and staff. One Markdown file per person, portrait co-located.
@@ -76,4 +75,4 @@ const startHereLinks = defineCollection({
   }),
 })
 
-export const collections = { gallery, leadership, quotes, neighborDoors, startHereLinks }
+export const collections = { photos, leadership, quotes, neighborDoors, startHereLinks }

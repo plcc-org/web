@@ -31,9 +31,11 @@ Even if you don't open the docs, never violate these:
   "plug in." Belief-neutral but not diluted. → [voice.md](./docs/voice.md)
 - **Tokens first.** Reference `var(--color-…)`, `var(--text-…)`, `var(--space-…)`. Never
   hard-code colors, sizes, radii, or shadows. → [design-system.md](./docs/design-system.md)
-- **Portrait-first photos**, rendered through `<Photo>`. Rotating gallery photos live in
-  the `gallery` content collection (`src/content/gallery/`); one-off page images sit in
-  `src/assets/images`. Avoid landscape crops. → [development.md](./docs/development.md)
+- **Portrait-first photos**, rendered through `<Photo>`. Photo bytes live in
+  `src/assets/images`; each photo's `alt` lives once in the catalog (`src/content/photos.json`)
+  and is looked up by filename. Pages select photos by filename and own the ordering; the
+  catalog stays agnostic of usage. Logos/adornments aren't catalogued — pass their `alt`
+  directly. Avoid landscape crops. → [development.md](./docs/development.md)
 - **Internal links use the `withBase()` helper** (`src/lib/url.ts`): `href={withBase('about/')}`.
   → [development.md](./docs/development.md)
 - **Content lives in `src/content/` collections** (defined in `src/content.config.ts`),

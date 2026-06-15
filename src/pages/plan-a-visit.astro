@@ -5,10 +5,13 @@ import Band from '../components/Band.astro'
 import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
-import { featuredPhotos } from '../lib/gallery'
 import { withBase } from '../lib/url'
 
-const visitMoments = await featuredPhotos('visit')
+const visitMoments = [
+  '489054059_18163289533338056_8029010570585607191_n.jpg',
+  '649217566_18197705956338056_8287619439099906475_n.jpg',
+  '659595691_18200889961338056_2843340499663516152_n.jpg',
+]
 ---
 
 <BaseLayout
@@ -19,7 +22,6 @@ const visitMoments = await featuredPhotos('visit')
     <Split
       class="to-full"
       filename="651034879_18198219322338056_9008954644945760140_n.jpg"
-      alt="A volunteer making coffee at the welcome café before the service"
       tone="sand"
       reverse
       eyebrow="Plan a Visit"
@@ -40,11 +42,7 @@ const visitMoments = await featuredPhotos('visit')
       </p>
 
       <figure class="media">
-        <Photo
-          filename="pine-lake-exterior-2026.jpg"
-          alt="The Pine Lake Covenant Church building in Sammamish, with its tall wooden cross"
-          class="media__img media__img--cover"
-        />
+        <Photo filename="pine-lake-exterior-2026.jpg" class="media__img media__img--cover" />
         <figcaption class="media__caption">
           Our building in Sammamish — look for guest parking near the main entrance.
         </figcaption>
@@ -54,7 +52,6 @@ const visitMoments = await featuredPhotos('visit')
     <Split
       class="to-full"
       filename="719135962_18207937108338056_3061581680291060435_n.jpg"
-      alt="The congregation standing in worship on a Sunday morning"
       tone="paper"
       eyebrow="The morning"
       heading="What happens on a Sunday"
@@ -91,7 +88,6 @@ const visitMoments = await featuredPhotos('visit')
     <Split
       class="to-full"
       filename="658026969_18200890024338056_5693344916949832542_n.jpg"
-      alt="A child happily playing in the Pine Lake Kids room"
       tone="sand"
       eyebrow="Bringing kids?"
       heading="We make Sundays smooth for parents"
@@ -121,7 +117,7 @@ const visitMoments = await featuredPhotos('visit')
       </p>
     </section>
 
-    <MomentsSection heading={null} items={visitMoments} sectionClass="to-wide" />
+    <MomentsSection heading={null} photos={visitMoments} sectionClass="to-wide" />
 
     <Band tone="forest" flush narrow eyebrow="No test required" heading="A place to belong">
       <p>

@@ -8,7 +8,8 @@ import Photo from './Photo.astro'
 
 type Props = {
   filename: string
-  alt: string
+  // Omit for catalogued photos (alt is looked up by filename); pass for logos.
+  alt?: string
   reverse?: boolean
   tone?: 'paper' | 'sand' | 'forest'
   eyebrow?: string

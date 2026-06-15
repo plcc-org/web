@@ -27,10 +27,10 @@ src/
   assets/images/    Photo library (source for the <Image> pipeline)
   components/       Astro components (Hero, Split, MomentsSection, cards, …)
   config/site.ts    Environment-aware site/base/index config
-  content/          Editable content collections (gallery, leadership, quotes, …)
+  content/          Editable content collections (photos catalog, leadership, quotes, …)
   content.config.ts Collection definitions + Zod schemas
   layouts/          BaseLayout.astro (head, header, footer, skip link)
-  lib/              Image registry, gallery query, URL helper, events/messages
+  lib/              Image registry, photo catalog, URL helper, events/messages
   pages/            Routes (file-based)
   styles/           Design tokens + global CSS (entry: global.css)
 public/             Static assets served as-is (favicon, video, manifest)
@@ -63,7 +63,7 @@ npm run format:check  # Prettier — verify only
 
 - **Internal linking.** Use the `withBase()` helper (`src/lib/url.ts`) so links work under
   a subpath deploy: `href={withBase('about/')}`. Never hard-code a leading `/`.
-- **Content collections.** Editable content (gallery photos, leadership, quotes, doors,
+- **Content collections.** Editable content (the photo catalog, leadership, quotes, doors,
   start-here links) lives under `src/content/`, defined and validated in
   `src/content.config.ts`. Query with `getCollection(...)` and map over the results — don't
   hand-author lists in markup or add new `src/data/*.ts` arrays. Editing copy shouldn't
@@ -86,11 +86,17 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
   shift). Pass it **either** an `image` (a resolved `ImageMetadata`, e.g. from a collection
   `image()` field) **or** a `filename` from `src/assets/images` (resolved via
   `src/lib/images.ts`). It renders nothing if a filename can't be resolved.
-- **Rotating "Moments" galleries are content:** each photo is a Markdown entry in the
-  `gallery` collection (`src/content/gallery/`) with an `image()`, a required `alt`, plus
-  `tags` / `featured` / `order`. Pages pull them via `featuredPhotos(tag)`
-  (`src/lib/gallery.ts`); rotating imagery is just editing entries — no code change.
-- **Page-specific images** (Split heroes, logos) use `<Photo filename="…">` directly.
+- **The photo catalog is the single source of truth for photo metadata.** Every editorial
+  photo has one entry in `src/content/photos.json` (the `photos` collection): its `id` is
+  the filename and `alt` is its description. The catalog is **agnostic of how photos are
+  used** — it knows nothing about pages, sections, or order.
+- **Pages drive selection.** A page names the photos it wants, by filename: `<Photo>` /
+  `<Split>` / `<Hero>` take a `filename`, and `<MomentsSection photos={[…]}>` takes an
+  ordered list. The `alt` is looked up from the catalog by filename (`src/lib/photos.ts`),
+  so pages don't repeat it. To rotate a Moments gallery, edit the page's filename list.
+- **Logos and adornments are not photos.** Ministry logos (`ecc.png`, the Kids/Youth marks),
+  the Instagram/YouTube icons, and the PWA icon are _not_ in the catalog; pass their `alt`
+  explicitly to `<Photo>` (or `alt=""` for decorative icons that sit beside a text label).
 - **Favor portrait imagery** (see [design-system.md](./design-system.md)).
 
 ---

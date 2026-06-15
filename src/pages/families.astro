@@ -4,10 +4,13 @@ import Split from '../components/Split.astro'
 import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
-import { featuredPhotos } from '../lib/gallery'
 import { withBase } from '../lib/url'
 
-const familiesMoments = await featuredPhotos('families')
+const familiesMoments = [
+  '474778198_18155740735338056_3713170999697187589_n.jpg',
+  '524488764_18173482933338056_6896393400124828554_n.jpg',
+  '528705489_18174174331338056_8249332813782505474_n.jpg',
+]
 ---
 
 <BaseLayout title="Families | Pine Lake Covenant Church">
@@ -15,7 +18,6 @@ const familiesMoments = await featuredPhotos('families')
     <Split
       class="to-full"
       filename="658068289_18200890006338056_950690086570532728_n.jpg"
-      alt="Young children waving ribbons during worship"
       tone="sand"
       reverse
       eyebrow="Families"
@@ -70,7 +72,6 @@ const familiesMoments = await featuredPhotos('families')
       class="to-full"
       id="kids"
       filename="717076557_18207937231338056_670985796948202660_n.jpg"
-      alt="A volunteer reading a story to children during a Sunday morning at Pine Lake"
       tone="paper"
       eyebrow="Sundays"
       heading="Families on Sunday mornings"
@@ -145,7 +146,7 @@ const familiesMoments = await featuredPhotos('families')
       </p>
     </section>
 
-    <MomentsSection items={familiesMoments} eyebrow="Life together" sectionClass="to-wide" />
+    <MomentsSection photos={familiesMoments} eyebrow="Life together" sectionClass="to-wide" />
   </div>
 </BaseLayout>
 

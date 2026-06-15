@@ -3,9 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Split from '../../components/Split.astro'
 import SectionHeader from '../../components/SectionHeader.astro'
 import MomentsSection from '../../components/MomentsSection.astro'
-import { featuredPhotos } from '../../lib/gallery'
 
-const serveMoments = await featuredPhotos('serve')
+const serveMoments = [
+  '587873749_18187772710338056_4306907528259398035_n.jpg',
+  '624779024_18194108401338056_4396479470413009307_n.jpg',
+  '587801958_18187772770338056_8255242398512079168_n.jpg',
+]
 ---
 
 <BaseLayout
@@ -16,7 +19,6 @@ const serveMoments = await featuredPhotos('serve')
     <Split
       class="to-full"
       filename="715550230_18207937264338056_8366812198487572303_n.jpg"
-      alt="A student carrying groceries for the Issaquah & Sammamish food project"
       tone="sand"
       reverse
       eyebrow="In the community"
@@ -66,7 +68,7 @@ const serveMoments = await featuredPhotos('serve')
       </div>
     </section>
 
-    <MomentsSection heading={null} items={serveMoments} sectionClass="to-wide" />
+    <MomentsSection heading={null} photos={serveMoments} sectionClass="to-wide" />
 
     <section class="section">
       <h2>Want to join in?</h2>

@@ -4,10 +4,16 @@ import Split from '../../components/Split.astro'
 import SectionHeader from '../../components/SectionHeader.astro'
 import MomentsSection from '../../components/MomentsSection.astro'
 import Photo from '../../components/Photo.astro'
-import { featuredPhotos } from '../../lib/gallery'
 import { withBase } from '../../lib/url'
 
-const kidsPhotos = await featuredPhotos('kids')
+const kidsPhotos = [
+  '689126575_18204342181338056_3955013236978091516_n.jpg',
+  '689066880_18204342118338056_5079636707719185461_n.jpg',
+  '495938178_18165842899338056_2078248515916983250_n.jpg',
+  '479169157_18157955926338056_118133880266586215_n.jpg',
+  '503632641_18168464443338056_6100866002216681684_n.jpg',
+  '475568922_18156359086338056_4047262209868672150_n.jpg',
+]
 ---
 
 <BaseLayout
@@ -18,7 +24,6 @@ const kidsPhotos = await featuredPhotos('kids')
     <Split
       class="to-full"
       filename="671831314_18202547362338056_8232655850918342196_n.jpg"
-      alt="A child painting rocks during a Pine Lake Kids activity"
       tone="sand"
       reverse
       eyebrow="Babies through 5th grade · Sundays at 10am"
@@ -41,7 +46,7 @@ const kidsPhotos = await featuredPhotos('kids')
     <MomentsSection
       heading="Photos of Pine Lake Kids"
       eyebrow="Life together"
-      items={kidsPhotos.slice(0, 3)}
+      photos={kidsPhotos.slice(0, 3)}
       sectionClass="to-wide"
     />
 
@@ -117,7 +122,7 @@ const kidsPhotos = await featuredPhotos('kids')
       </div>
     </section>
 
-    <MomentsSection heading={null} items={kidsPhotos.slice(3, 6)} sectionClass="to-wide" />
+    <MomentsSection heading={null} photos={kidsPhotos.slice(3, 6)} sectionClass="to-wide" />
 
     <section class="section">
       <h2>Have a question?</h2>
