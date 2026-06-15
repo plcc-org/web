@@ -16,14 +16,14 @@ That isn't cosmetic. Pages are in service of a single question a first-time visi
 is actually asking: **"Could this be a place for me and my family?"**
 
 The primary audience is **people outside the church** — young families and first-time
-guests — not the people already here. For insiders, we have other additional ways to connect, including the "In the Loop" newsletter, the Church Center site, and of course the service and announcements on Sundays; newcomers can't connect in those ways. 
+guests — not the people already here. For insiders, we have other additional ways to connect, including the "In the Loop" newsletter, the Church Center site, and of course the service and announcements on Sundays; newcomers can't connect in those ways.
 So we optimize for the newcomer, on purpose.
 
 ---
 
 ## The core idea: help people see themselves
 
-We're helping **people recognize themselves** at Pine Lake specifically. That includes families, teens, older couples, single moms, people of a variety of background, ethnicity, or dress. Rather than "will you fit with us", we want a newcomer to see "you're not going to be the odd-one out here". 
+We're helping **people recognize themselves** at Pine Lake specifically. That includes families, teens, older couples, single moms, people of a variety of background, ethnicity, or dress. Rather than "will you fit with us", we want a newcomer to see "you're not going to be the odd-one out here".
 
 In addition, this gives us one ruthless test for any sentence:
 
@@ -44,10 +44,10 @@ As mentioned above, we want people to see themselves reflected in the visuals an
 
 ### 2. Avoid "program gravity"
 
-Many church sites expose their structure by collapsing their information into a list of programs. But people come to the site to see what kind of church we are, not to read our org chart. And that means that a page on (say) receiving meals of care shouldn't also talk about how to volunteer for the program to *offer* meals of care.  A newcomer
+Many church sites expose their structure by collapsing their information into a list of programs. But people come to the site to see what kind of church we are, not to read our org chart. And that means that a page on (say) receiving meals of care shouldn't also talk about how to volunteer for the program to _offer_ meals of care. A newcomer
 doesn't search for "the Care Ministry" — they're having a hard week and wondering if
-anyone would help. 
-**Pattern:** group content around **life
+anyone would help.
+**Pattern:** group content around \*\*life
 sections.
 
 ### 3. Strategically incomplete
@@ -58,7 +58,7 @@ complete-but-cluttered one.
 
 ### 4. Photos as vignettes, not decoration
 
-Photos are glimpses of real life, not stock imagery or posed portraits. 
+Photos are glimpses of real life, not stock imagery or posed portraits.
 
 ### 5. Implicit "no pressure"
 
@@ -99,5 +99,5 @@ The site is a funnel of welcome, plus a parallel pathway for the wider community
 1. **I'm New** — the front door; answers the emotional and practical questions a guest has.
 2. **About** — who we are, what we believe, leadership, ethos.
 3. **Families** — kids, youth, and family life.
-4. **For Our Neighbors** — organized around **needs, not departments** 
+4. **For Our Neighbors** — organized around **needs, not departments**
 5. **What's Happening / Messages** — current events and the sermon archive.
