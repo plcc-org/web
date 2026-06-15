@@ -35,7 +35,7 @@ const youthEvents = (await getUpcomingEvents()).filter((e) => e.category === 'Yo
       filename="657972950_18200889988338056_8294978016122872582_n.jpg"
       tone="sand"
       reverse
-      eyebrow="Middle & high school"
+      eyebrow="Middle & high school · 6th–12th grade"
     >
       <Photo
         filename="PineLakeYouth_logo_web.png"
@@ -50,6 +50,11 @@ const youthEvents = (await getUpcomingEvents()).filter((e) => e.category === 'Yo
       <p class="lede">
         Our hope is that Pine Lake Youth would be a place where you can be yourself, belong to something bigger, and
         become part of bringing heaven to earth.
+      </p>
+      <p>
+        <a class="btn btn--ghost" href="https://www.instagram.com/pinelakeyouth/" target="_blank" rel="noopener">
+          Follow @pinelakeyouth
+        </a>
       </p>
     </Split>
 
@@ -70,16 +75,29 @@ const youthEvents = (await getUpcomingEvents()).filter((e) => e.category === 'Yo
             Students sit together in the front three rows and are part of the whole church family.
           </p>
         </div>
-
-        <div class="card">
-          <h2>Who it’s for</h2>
-          <p>
-            <strong>6th–12th grade</strong><br />
-            Middle school and high school students. Bring a friend. Come as you are.
-          </p>
-        </div>
       </div>
     </section>
+
+    <section class="section section-callout">
+      <h2>What a Tuesday night feels like</h2>
+      <p>Tuesday nights are built to feel welcoming and real for both middle school and high school students.</p>
+
+      <ul>
+        <li>Dinner at 6:00pm to start the night together</li>
+        <li>Connection time and worship that is easy to step into</li>
+        <li>Biblically grounded teaching with practical application</li>
+        <li>Age-specific small groups where students can be known</li>
+      </ul>
+    </section>
+
+    <MomentsSection
+      heading="Moments from Pine Lake Youth"
+      eyebrow="Life together"
+      photos={youthPhotos.slice(0, 3)}
+      sectionClass="to-wide"
+    />
+
+    <YouthMoments moments={moments} />
 
     {
       youthEvents.length > 0 && (
@@ -97,41 +115,6 @@ const youthEvents = (await getUpcomingEvents()).filter((e) => e.category === 'Yo
       )
     }
 
-    <MomentsSection
-      heading="Moments from Pine Lake Youth"
-      eyebrow="Life together"
-      photos={youthPhotos.slice(0, 3)}
-      sectionClass="to-wide"
-    />
-
-    <section class="section section-callout">
-      <h2>What a Tuesday night feels like</h2>
-      <p>Tuesday nights are built to feel welcoming and real for both middle school and high school students.</p>
-
-      <ul>
-        <li>Dinner at 6:00pm to start the night together</li>
-        <li>Connection time and worship that is easy to step into</li>
-        <li>Biblically grounded teaching with practical application</li>
-        <li>Age-specific small groups where students can be known</li>
-      </ul>
-    </section>
-
-    <YouthMoments moments={moments} />
-
-    <section class="section youth-connect">
-      <h2>Want to get connected?</h2>
-      <p class="measure">
-        New to youth group? You will not be the only one. Whether church feels familiar or brand new, this is a great
-        place to begin.
-      </p>
-
-      <p class="youth-connect__links">
-        <a href="https://www.instagram.com/pinelakeyouth/" target="_blank" rel="noopener">Instagram</a>
-        <a href="mailto:office@plcc.org">Email</a>
-        <a href={withBase('whats-happening/')}>Current schedule</a>
-      </p>
-    </section>
-
     <MomentsSection heading={null} photos={youthPhotos.slice(3, 6)} sectionClass="to-wide" />
   </div>
 </BaseLayout>
@@ -144,12 +127,6 @@ const youthEvents = (await getUpcomingEvents()).filter((e) => e.category === 'Yo
     height: auto;
     object-fit: contain;
     margin: 0 0 0.75rem;
-  }
-
-  .youth-connect__links {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
   }
 
   .youth-upcoming__head {
