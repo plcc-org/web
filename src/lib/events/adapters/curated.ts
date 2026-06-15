@@ -85,7 +85,7 @@ const WEEKLY_RHYTHMS: WeeklyRhythm[] = [
     durationMins: 75,
     location: '1715 228th Ave SE, Sammamish',
     summary: 'Worship, teaching, and programs for kids and youth.',
-    url: '/plan-a-visit/',
+    url: '/visit/',
     category: 'Everyone',
     tags: ['Weekly', 'Newcomers'],
     featured: true,

@@ -10,7 +10,7 @@
     - 'Support groups, including Alzheimer’s support'
     - 'Care and presence around memorial services and times of loss'
   ctaLabel: 'Care & Support'
-  href: '/for-our-neighbors/care-support/'
+  href: '/neighbors/care/'
 - id: connection
   order: 2
   title: 'Looking for connection or community?'
@@ -21,7 +21,7 @@
     - 'Open events and shared activities'
     - 'Groups and rhythms that help people get to know one another over time'
   ctaLabel: 'What’s Happening'
-  href: '/whats-happening/'
+  href: '/events/'
 - id: families
   order: 3
   title: 'Have kids or teens?'
@@ -43,7 +43,7 @@
     - 'Community groups and nonprofit gatherings'
     - 'Programs that serve the local community'
   ctaLabel: 'Weddings & Memorials'
-  href: '/for-our-neighbors/weddings-memorials/'
+  href: '/neighbors/weddings/'
 - id: serve
   order: 5
   title: 'Curious how we show up locally?'
@@ -55,4 +55,4 @@
     - 'Echo Glen'
     - 'Young Life'
   ctaLabel: 'Serving Locally'
-  href: '/for-our-neighbors/serve-locally/'
+  href: '/neighbors/serve/'

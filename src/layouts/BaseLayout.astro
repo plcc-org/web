@@ -92,14 +92,14 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
           </button>
         </div>
         <ul class="site-nav__list" id="primary-nav-menu">
-          <li><a href={withBase('im-new/')}>I’m New</a></li>
+          <li><a href={withBase('new/')}>I’m New</a></li>
           <li><a href={withBase('about/')}>About</a></li>
           <li><a href={withBase('families/')}>Families</a></li>
-          <li><a href={withBase('for-our-neighbors/')}>For Our Neighbors</a></li>
+          <li><a href={withBase('neighbors/')}>For Our Neighbors</a></li>
           <li><a href={withBase('church-life/')}>Church Life</a></li>
-          <li><a href={withBase('whats-happening/')}>What’s Happening</a></li>
+          <li><a href={withBase('events/')}>What’s Happening</a></li>
           <li><a href={withBase('messages/')}>Messages</a></li>
-          <li><a href={withBase('plan-a-visit/')} class="site-nav__cta">Plan a Visit</a></li>
+          <li><a href={withBase('visit/')} class="site-nav__cta">Plan a Visit</a></li>
         </ul>
       </nav>
     </header>
@@ -123,7 +123,7 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
         </div>
 
         <nav class="site-footer__links" aria-label="Footer">
-          <a href={withBase('plan-a-visit/')}>Plan a Visit</a>
+          <a href={withBase('visit/')}>Plan a Visit</a>
           <span class="site-footer__divider">|</span>
           <a href={withBase('contact/')}>Contact</a>
           <span class="site-footer__divider">|</span>

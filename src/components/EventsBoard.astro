@@ -15,7 +15,7 @@ const { events, selected } = Astro.props
 const categories: EventCategory[] = ['Everyone', 'Families', 'Youth', 'Groups', 'Serve']
 
 const categoryHref = (c: EventCategory) =>
-  c === 'Everyone' ? withBase('whats-happening/') : withBase(`whats-happening/${c.toLowerCase()}/`)
+  c === 'Everyone' ? withBase('events/') : withBase(`events/${c.toLowerCase()}/`)
 
 // Each page is a single category, so filtering happens at build time — no client JS.
 const items = (selected === 'Everyone' ? events : events.filter((e) => e.category === selected)).map((e) => ({
@@ -139,7 +139,7 @@ for (const e of comingUp) {
         <strong>Sundays at 10:00am</strong>
         <div>Worship + teaching, with kids and youth programs.</div>
         <div class="rhythm-card__cta">
-          <a href={withBase('plan-a-visit/')}>Plan a Visit</a>
+          <a href={withBase('visit/')}>Plan a Visit</a>
         </div>
       </div>
 

@@ -45,7 +45,7 @@ tokens → base → nav → layout → components → footer → utilities → p
 | `layout.css`     | The two layout systems, bands, rhythm + typographic utilities, buttons, panels. |
 | `components.css` | Hero, Split, cards, media, chips, events, quotes, prose-link defaults.          |
 | `footer.css`     | Full-bleed site footer.                                                         |
-| `utilities.css`  | Chips/tags, the youth gallery.                                                  |
+| `utilities.css`  | Pills, tags, and utility chips.                                                 |
 | `pages.css`      | Page-specific styling that isn't reusable (Ethos, Leadership).                  |
 
 Component-local styling lives in each `.astro` file's scoped `<style>` block.
@@ -274,7 +274,7 @@ Props below reflect each component's actual `Props` type.
   title="Discovering life with Jesus together"
   subhead="Sundays at 10:00am."
 >
-  <a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a>
+  <a class="btn" href={`${base}visit/`}>Plan a Visit</a>
 </Hero>
 ```
 
@@ -359,7 +359,7 @@ closing CTAs, and the weddings verse band.
 ```astro
 <Band tone="forest" flush centered eyebrow="Visiting" heading="Come this Sunday">
   <p>…</p>
-  <a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a>
+  <a class="btn" href={`${base}visit/`}>Plan a Visit</a>
 </Band>
 ```
 

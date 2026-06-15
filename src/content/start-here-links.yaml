@@ -6,12 +6,12 @@
   title: 'A Welcome from our Pastor'
   meta: 'A personal letter from Austin Bailey.'
   href: 'about/pastors-letter/'
-- id: home-plan-a-visit
+- id: home-visit
   group: home
   order: 2
   title: 'Plan a Visit'
   meta: 'What Sundays are like.'
-  href: 'plan-a-visit/'
+  href: 'visit/'
 - id: home-families
   group: home
   order: 3
@@ -41,7 +41,7 @@
   order: 3
   title: 'What We Believe'
   meta: 'The convictions we hold, if you want the specifics.'
-  href: 'about/beliefs/'
+  href: 'beliefs/'
 - id: im-new-messages
   group: im-new
   order: 4

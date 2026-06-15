@@ -1,10 +1,10 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro'
-import Split from '../../components/Split.astro'
-import SectionHeader from '../../components/SectionHeader.astro'
-import MomentsSection from '../../components/MomentsSection.astro'
-import Photo from '../../components/Photo.astro'
-import { withBase } from '../../lib/url'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Split from '../components/Split.astro'
+import SectionHeader from '../components/SectionHeader.astro'
+import MomentsSection from '../components/MomentsSection.astro'
+import Photo from '../components/Photo.astro'
+import { withBase } from '../lib/url'
 
 const kidsPhotos = [
   '689126575_18204342181338056_3955013236978091516_n.jpg',
@@ -129,7 +129,7 @@ const kidsPhotos = [
       <p class="measure">
         We’d love to help you feel at home. Email the Pine Lake Kids team at
         <a href="mailto:office@plcc.org">office@plcc.org</a>, or check out our
-        <a href={withBase('plan-a-visit/')}>Plan a Visit</a> page for more practical details.
+        <a href={withBase('visit/')}>Plan a Visit</a> page for more practical details.
       </p>
     </section>
   </div>

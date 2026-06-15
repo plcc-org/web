@@ -104,7 +104,7 @@ const youthEvents = (await getUpcomingEvents()).filter((e) => e.category === 'Yo
         <section class="section youth-upcoming">
           <div class="youth-upcoming__head">
             <h2 class="youth-upcoming__heading">Coming up</h2>
-            <a href={withBase('whats-happening/youth/')}>All youth events →</a>
+            <a href={withBase('events/youth/')}>All youth events →</a>
           </div>
           <div class="event-list">
             {youthEvents.map((e) => (
