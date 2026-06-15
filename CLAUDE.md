@@ -31,11 +31,13 @@ Even if you don't open the docs, never violate these:
   "plug in." Belief-neutral but not diluted. → [voice.md](./docs/voice.md)
 - **Tokens first.** Reference `var(--color-…)`, `var(--text-…)`, `var(--space-…)`. Never
   hard-code colors, sizes, radii, or shadows. → [design-system.md](./docs/design-system.md)
-- **Portrait-first photos**, rendered through `<Photo>` and catalogued in
-  `src/data/homePageImages.ts`. Avoid landscape crops. → [development.md](./docs/development.md)
-- **Internal links use the base path:** ``href={`${import.meta.env.BASE_URL}about/`}``.
+- **Portrait-first photos**, rendered through `<Photo>`. Rotating gallery photos live in
+  the `gallery` content collection (`src/content/gallery/`); one-off page images sit in
+  `src/assets/images`. Avoid landscape crops. → [development.md](./docs/development.md)
+- **Internal links use the `withBase()` helper** (`src/lib/url.ts`): `href={withBase('about/')}`.
   → [development.md](./docs/development.md)
-- **Data-driven content.** Repeating items live in `src/data/` and are mapped over — don't
-  hand-author lists in markup. → [development.md](./docs/development.md)
+- **Content lives in `src/content/` collections** (defined in `src/content.config.ts`),
+  queried with `getCollection()` — don't hand-author lists in markup or add `src/data/*.ts`
+  arrays. → [development.md](./docs/development.md)
 - **Run `npm run format` before committing.** CI runs `format:check` and `check`.
   → [development.md](./docs/development.md)

@@ -1,0 +1,34 @@
+# Homepage testimonials (rotated client-side by QuoteGrid). `by` is optional.
+# `order` controls the initial four shown before rotation — real testimonials first.
+- id: recent-attendee
+  order: 1
+  text: 'Pine Lake Covenant Church truly feels like family. From the moment you walk in, people genuinely say hello, start conversations, and make you feel seen. I’ve been to other churches before and never really felt connected — that’s not the case at Pine Lake at all.'
+  by: 'A recent attendee'
+- id: middle-aged-family
+  order: 2
+  text: 'I appreciate the solid, Bible-based preaching with practical applications for everyday life. I also love how welcoming the service is for families — children are included, cared for, and thoughtfully engaged. I felt genuinely welcomed the moment I walked in.'
+  by: 'A middle-aged family'
+- id: congregant
+  order: 3
+  text: 'I love this place. The people are genuinely kind, and the pastor still texts me on my birthday — even when I hadn’t been around for a while. That says a lot about how deeply he cares. If you’re looking for a church that feels like family, give this one a try.'
+  by: 'A Pine Lake congregant'
+- id: retired-couple
+  order: 4
+  text: 'We’ve been at Pine Lake since the 1990s. What we love is that it still feels like a church where people care for each other — and where new people are truly welcomed in.'
+  by: 'A retired couple'
+- id: smaller-community
+  order: 5
+  text: 'We came from a larger church and realized we were starting to feel anonymous. At Pine Lake, people noticed us — and not in a “salesy” way. Just genuinely.'
+  by: 'A couple who found a smaller community'
+- id: single-mom
+  order: 6
+  text: 'I’m a single mom, and showing up somewhere new can feel like a lot. Pine Lake has been a place where my daughter is known and I don’t feel like I have to have it all together.'
+  by: 'A mom and her young daughter'
+- id: new-to-sammamish
+  order: 7
+  text: 'We moved into the area with small kids and didn’t know anyone. Pine Lake helped us find community faster than we expected — especially through the people we met on Sundays.'
+  by: 'A family new to Sammamish'
+- id: putting-down-roots
+  order: 8
+  text: 'Our kids are older now — one is an adult, one is in the late-teen years — and we were looking for a place to settle in for this season. Pine Lake has felt grounded and welcoming from the start.'
+  by: 'A family looking to put down roots'

@@ -6,27 +6,20 @@ import Band from '../components/Band.astro'
 import QuoteGrid from '../components/QuoteGrid.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
-import { homepageQuotes } from '../data/quotes'
-import { startHereLinks } from '../data/startHereLinks'
-import { imageByFilename, imageAlt } from '../data/homePageImages'
+import { getCollection } from 'astro:content'
+import { featuredPhotos } from '../lib/gallery'
 import { withBase } from '../lib/url'
 
-const welcomeImage = imageByFilename('672470327_18202547344338056_2701967790999045946_n.jpg')
+const homeQuotes = (await getCollection('quotes'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((q) => ({ text: q.data.text, by: q.data.by }))
 
-const momentsItems = [
-  {
-    image: imageByFilename('718553950_18207937192338056_7548100352354445130_n.jpg'),
-    fallbackAlt: 'A parent cradling a sleeping newborn during the service',
-  },
-  {
-    image: imageByFilename('630141203_18195791974338056_6787714522898086321_n.jpg'),
-    fallbackAlt: 'A woman worshipping as the band leads on a Sunday morning',
-  },
-  {
-    image: imageByFilename('500083306_18167175181338056_8168148552855409791_n.jpg'),
-    fallbackAlt: 'People sharing a meal and conversation together',
-  },
-]
+const homeLinks = (await getCollection('startHereLinks'))
+  .filter((l) => l.data.group === 'home')
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((l) => ({ href: l.data.href, title: l.data.title, meta: l.data.meta }))
+
+const homeMoments = await featuredPhotos('home', 3)
 ---
 
 <BaseLayout
@@ -47,10 +40,8 @@ const momentsItems = [
   <div class="canvas">
     <Split
       class="to-full"
-      filename={welcomeImage ? welcomeImage.filename : 'plcc-community-family-worship.jpg'}
-      alt={welcomeImage
-        ? imageAlt(welcomeImage, 'Families and adults gathered in worship together')
-        : 'Families and adults gathered in worship together'}
+      filename="672470327_18202547344338056_2701967790999045946_n.jpg"
+      alt="New friends laughing together before a Sunday service"
       tone="paper"
       eyebrow="Welcome"
       heading="Come as you are"
@@ -66,10 +57,10 @@ const momentsItems = [
       <p><a class="btn btn--ghost" href={withBase('im-new/')}>What to expect →</a></p>
     </Split>
 
-    <LinkCardSection links={startHereLinks} />
+    <LinkCardSection links={homeLinks} />
 
     <MomentsSection
-      items={momentsItems}
+      items={homeMoments}
       eyebrow="Life together"
       heading="Moments from Pine Lake"
       sectionClass="to-wide"
@@ -77,7 +68,7 @@ const momentsItems = [
 
     <Band tone="sand" eyebrow="In their words" heading="Why people have made Pine Lake their church">
       <p class="measure">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
-      <QuoteGrid quotes={homepageQuotes} />
+      <QuoteGrid quotes={homeQuotes} />
     </Band>
 
     <Band tone="forest" flush centered eyebrow="Visiting" heading="Come this Sunday">

@@ -1,6 +1,11 @@
 ---
 import { withBase } from '../lib/url'
-import type { LinkCardItem } from '../data/startHereLinks'
+
+export type LinkCardItem = {
+  href: string
+  title: string
+  meta: string
+}
 
 type Props = {
   heading?: string

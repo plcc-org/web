@@ -4,38 +4,10 @@ import Split from '../../components/Split.astro'
 import SectionHeader from '../../components/SectionHeader.astro'
 import MomentsSection from '../../components/MomentsSection.astro'
 import Photo from '../../components/Photo.astro'
-import { imageByFilename } from '../../data/homePageImages'
+import { featuredPhotos } from '../../lib/gallery'
 import { withBase } from '../../lib/url'
 
-const kidsMomentsItems = [
-  {
-    image: imageByFilename('689126575_18204342181338056_3955013236978091516_n.jpg'),
-    fallbackAlt: 'Two young friends coloring together during a service',
-  },
-  {
-    image: imageByFilename('689066880_18204342118338056_5079636707719185461_n.jpg'),
-    fallbackAlt: 'Children singing together on stage during a service',
-  },
-  {
-    image: imageByFilename('495938178_18165842899338056_2078248515916983250_n.jpg'),
-    fallbackAlt: 'Children participating in a Pine Lake Kids activity',
-  },
-]
-
-const kidsMomentsBottomItems = [
-  {
-    image: imageByFilename('479169157_18157955926338056_118133880266586215_n.jpg'),
-    fallbackAlt: 'Kids engaged in learning and play on Sunday morning',
-  },
-  {
-    image: imageByFilename('503632641_18168464443338056_6100866002216681684_n.jpg'),
-    fallbackAlt: 'Kids sharing a fun Sunday moment together',
-  },
-  {
-    image: imageByFilename('475568922_18156359086338056_4047262209868672150_n.jpg'),
-    fallbackAlt: 'Kids engaged in learning and play on Sunday morning',
-  },
-]
+const kidsPhotos = await featuredPhotos('kids')
 ---
 
 <BaseLayout
@@ -69,7 +41,7 @@ const kidsMomentsBottomItems = [
     <MomentsSection
       heading="Photos of Pine Lake Kids"
       eyebrow="Life together"
-      items={kidsMomentsItems}
+      items={kidsPhotos.slice(0, 3)}
       sectionClass="to-wide"
     />
 
@@ -145,7 +117,7 @@ const kidsMomentsBottomItems = [
       </div>
     </section>
 
-    <MomentsSection heading={null} items={kidsMomentsBottomItems} sectionClass="to-wide" />
+    <MomentsSection heading={null} items={kidsPhotos.slice(3, 6)} sectionClass="to-wide" />
 
     <section class="section">
       <h2>Have a question?</h2>

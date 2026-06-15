@@ -3,8 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import Split from '../components/Split.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
-import type { LinkCardItem } from '../data/startHereLinks'
-import { imageByFilename } from '../data/homePageImages'
+import type { LinkCardItem } from '../components/LinkCardSection.astro'
+import { featuredPhotos } from '../lib/gallery'
 
 const aboutLinks: LinkCardItem[] = [
   {
@@ -34,20 +34,7 @@ const aboutLinks: LinkCardItem[] = [
   },
 ]
 
-const aboutMomentsItems = [
-  {
-    image: imageByFilename('496764399_18166032214338056_8744828942491316308_n.jpg'),
-    fallbackAlt: 'People gathered together after a Sunday service',
-  },
-  {
-    image: imageByFilename('475891141_1037080631793259_4238958896521856436_n.jpg'),
-    fallbackAlt: 'People worshiping together in a Sunday gathering',
-  },
-  {
-    image: imageByFilename('624779024_18194108401338056_4396479470413009307_n.jpg'),
-    fallbackAlt: 'A warm community moment at Pine Lake Covenant Church',
-  },
-]
+const aboutMoments = await featuredPhotos('about')
 ---
 
 <BaseLayout title="About | Pine Lake Covenant Church">
@@ -72,7 +59,7 @@ const aboutMomentsItems = [
     <MomentsSection
       heading="A few moments from our community"
       eyebrow="Life together"
-      items={aboutMomentsItems}
+      items={aboutMoments}
       sectionClass="to-wide"
     />
   </div>

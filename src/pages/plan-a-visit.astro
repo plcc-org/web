@@ -5,23 +5,10 @@ import Band from '../components/Band.astro'
 import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
-import { imageByFilename } from '../data/homePageImages'
+import { featuredPhotos } from '../lib/gallery'
 import { withBase } from '../lib/url'
 
-const planVisitMomentsItems = [
-  {
-    image: imageByFilename('489054059_18163289533338056_8029010570585607191_n.jpg'),
-    fallbackAlt: 'People gathered together during worship at Pine Lake',
-  },
-  {
-    image: imageByFilename('649217566_18197705956338056_8287619439099906475_n.jpg'),
-    fallbackAlt: 'A church service moment at Pine Lake',
-  },
-  {
-    image: imageByFilename('659595691_18200889961338056_2843340499663516152_n.jpg'),
-    fallbackAlt: 'Kids and families connecting in community',
-  },
-]
+const visitMoments = await featuredPhotos('visit')
 ---
 
 <BaseLayout
@@ -134,7 +121,7 @@ const planVisitMomentsItems = [
       </p>
     </section>
 
-    <MomentsSection heading={null} items={planVisitMomentsItems} sectionClass="to-wide" />
+    <MomentsSection heading={null} items={visitMoments} sectionClass="to-wide" />
 
     <Band tone="forest" flush narrow eyebrow="No test required" heading="A place to belong">
       <p>

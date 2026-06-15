@@ -3,24 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import Split from '../components/Split.astro'
 import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
-import { imNewStartHereLinks } from '../data/startHereLinks'
-import { imageByFilename } from '../data/homePageImages'
+import { getCollection } from 'astro:content'
+import { featuredPhotos } from '../lib/gallery'
 import { withBase } from '../lib/url'
 
-const imNewMomentsItems = [
-  {
-    image: imageByFilename('473716270_18155064727338056_2658407046026869686_n.jpg'),
-    fallbackAlt: 'Pinning notes of prayer and hope to a wooden cross',
-  },
-  {
-    image: imageByFilename('632596313_18195791983338056_8968669861789057843_n.jpg'),
-    fallbackAlt: 'People worshipping with hands raised during a Sunday service',
-  },
-  {
-    image: imageByFilename('716210270_18207937219338056_973750074017894335_n.jpg'),
-    fallbackAlt: 'Two friends sharing a laugh before the service',
-  },
-]
+const imNewLinks = (await getCollection('startHereLinks'))
+  .filter((l) => l.data.group === 'im-new')
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((l) => l.data)
+
+const imNewMoments = await featuredPhotos('im-new', 3)
 ---
 
 <BaseLayout title="I’m New | Pine Lake Covenant Church">
@@ -42,7 +34,7 @@ const imNewMomentsItems = [
       <p><a class="btn" href={withBase('plan-a-visit/')}>Plan a Visit</a></p>
     </Split>
 
-    <LinkCardSection heading="More about us" links={imNewStartHereLinks} />
+    <LinkCardSection heading="More about us" links={imNewLinks} />
 
     <Split
       class="to-full"
@@ -63,7 +55,7 @@ const imNewMomentsItems = [
     <MomentsSection
       heading="Moments from Pine Lake"
       eyebrow="Life together"
-      items={imNewMomentsItems}
+      items={imNewMoments}
       sectionClass="to-wide"
     />
   </div>

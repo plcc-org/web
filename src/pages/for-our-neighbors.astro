@@ -4,23 +4,12 @@ import Split from '../components/Split.astro'
 import SectionHeader from '../components/SectionHeader.astro'
 import DoorCard from '../components/DoorCard.astro'
 import MomentsSection from '../components/MomentsSection.astro'
-import { neighborsDoors } from '../data/neighborsDoors'
-import { imageByFilename } from '../data/homePageImages'
+import { getCollection } from 'astro:content'
+import { featuredPhotos } from '../lib/gallery'
 
-const neighborsMomentsItems = [
-  {
-    image: imageByFilename('587497434_18187772761338056_6575013280016458585_n.jpg'),
-    fallbackAlt: 'Loading groceries to serve the local community',
-  },
-  {
-    image: imageByFilename('551447661_18178844206338056_8896943485236580927_n.jpg'),
-    fallbackAlt: 'Two neighbors talking together at a community event',
-  },
-  {
-    image: imageByFilename('624779024_18194108401338056_4396479470413009307_n.jpg'),
-    fallbackAlt: 'Handmade valentines collected for the Echo Glen return box',
-  },
-]
+const doors = (await getCollection('neighborDoors')).sort((a, b) => a.data.order - b.data.order)
+
+const neighborsMoments = await featuredPhotos('neighbors', 3)
 ---
 
 <BaseLayout title="For Our Neighbors | Pine Lake Covenant Church">
@@ -47,14 +36,14 @@ const neighborsMomentsItems = [
       <p class="measure">People come through our doors for different reasons. Here are a few of the most common.</p>
 
       <div class="doors" aria-label="Ways to connect with Pine Lake">
-        {neighborsDoors.map((d) => <DoorCard {...d} />)}
+        {doors.map((d) => <DoorCard {...d.data} />)}
       </div>
     </section>
 
     <MomentsSection
       heading="Out in the community"
       eyebrow="Where we live"
-      items={neighborsMomentsItems}
+      items={neighborsMoments}
       sectionClass="to-wide"
     />
   </div>

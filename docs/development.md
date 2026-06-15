@@ -27,9 +27,10 @@ src/
   assets/images/    Photo library (source for the <Image> pipeline)
   components/       Astro components (Hero, Split, MomentsSection, cards, …)
   config/site.ts    Environment-aware site/base/index config
-  data/             Data-driven content (nav links, doors, quotes, image catalogue)
+  content/          Editable content collections (gallery, leadership, quotes, …)
+  content.config.ts Collection definitions + Zod schemas
   layouts/          BaseLayout.astro (head, header, footer, skip link)
-  lib/              Image registry + events/messages helpers
+  lib/              Image registry, gallery query, URL helper, events/messages
   pages/            Routes (file-based)
   styles/           Design tokens + global CSS (entry: global.css)
 public/             Static assets served as-is (favicon, video, manifest)
@@ -60,11 +61,13 @@ npm run format:check  # Prettier — verify only
 
 ## Conventions
 
-- **Internal linking.** Use the base path so links work under a subpath deploy:
-  ``href={`${import.meta.env.BASE_URL}about/`}``. Never hard-code a leading `/`.
-- **Data-driven content.** Repeating content (nav links, doors, quotes, the photo
-  catalogue) lives in typed files under `src/data/` and is mapped over in pages — don't
-  hand-author lists in markup. Editing copy shouldn't mean touching layout.
+- **Internal linking.** Use the `withBase()` helper (`src/lib/url.ts`) so links work under
+  a subpath deploy: `href={withBase('about/')}`. Never hard-code a leading `/`.
+- **Content collections.** Editable content (gallery photos, leadership, quotes, doors,
+  start-here links) lives under `src/content/`, defined and validated in
+  `src/content.config.ts`. Query with `getCollection(...)` and map over the results — don't
+  hand-author lists in markup or add new `src/data/*.ts` arrays. Editing copy shouldn't
+  mean touching layout.
 - **Tokens & components first.** Prefer existing design tokens and components over new
   one-off CSS (see [design-system.md](./design-system.md)). Consistency is a feature.
 - **Scoped styles don't reach child components.** A scoped rule in a parent `.astro`
@@ -77,16 +80,18 @@ npm run format:check  # Prettier — verify only
 
 Photos are the primary visual material, and the pipeline keeps them fast and consistent.
 
-- Files live in `src/assets/images/` and are catalogued in `src/data/homePageImages.ts`
-  as `{ filename, tags[], alt? }` with descriptive alt text.
+- Image files live in `src/assets/images/`.
 - Render through **`<Photo>`** (`src/components/Photo.astro`), a wrapper over Astro's
-  `<Image>` that resolves a filename via `src/lib/images.ts` and emits an optimized,
-  responsive WebP with intrinsic dimensions (no layout shift). It renders nothing if the
-  file is missing.
-- Helpers in `src/lib/images.ts`: `imageByFilename`, `imageAlt`, `getImagesByAnyTag`,
-  `pickImageByAnyTag`.
-- Keep the **filename** as the data-level identifier so the catalogue could later become
-  a CMS response. **Favor portrait imagery** (see [design-system.md](./design-system.md)).
+  `<Image>` that emits an optimized, responsive WebP with intrinsic dimensions (no layout
+  shift). Pass it **either** an `image` (a resolved `ImageMetadata`, e.g. from a collection
+  `image()` field) **or** a `filename` from `src/assets/images` (resolved via
+  `src/lib/images.ts`). It renders nothing if a filename can't be resolved.
+- **Rotating "Moments" galleries are content:** each photo is a Markdown entry in the
+  `gallery` collection (`src/content/gallery/`) with an `image()`, a required `alt`, plus
+  `tags` / `featured` / `order`. Pages pull them via `featuredPhotos(tag)`
+  (`src/lib/gallery.ts`); rotating imagery is just editing entries — no code change.
+- **Page-specific images** (Split heroes, logos) use `<Photo filename="…">` directly.
+- **Favor portrait imagery** (see [design-system.md](./design-system.md)).
 
 ---
 
