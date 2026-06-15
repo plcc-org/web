@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import PageIntro from '../../components/PageIntro.astro'
 import Photo from '../../components/Photo.astro'
+import { withBase } from '../../lib/url'
 ---
 
 <BaseLayout title="Leadership | Pine Lake Covenant Church">
@@ -24,7 +25,7 @@ import Photo from '../../components/Photo.astro'
           <div class="leader-card__name">Austin Bailey</div>
           <div class="leader-card__title">Lead Pastor</div>
           <p class="leader-card__meta">
-            <a href={`${import.meta.env.BASE_URL}about/pastors-letter/`}>Read a letter from Austin</a>
+            <a href={withBase('about/pastors-letter/')}>Read a letter from Austin</a>
           </p>
         </div>
         <div class="leader-card">

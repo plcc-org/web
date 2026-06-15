@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config'
+import { defineConfig, envField, fontProviders } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 import { siteConfig } from './src/config/site.ts'
 
@@ -12,6 +12,68 @@ export default defineConfig({
   site: siteConfig.site,
   base: siteConfig.base,
   integrations: [sitemap()],
+  // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
+  // @fontsource-variable npm packages (durable — no build-time fetch from a URL
+  // that can rot) and emitted as content-hashed, CDN-cacheable static assets.
+  // We point at the *full* variable woff2 so every axis the design uses survives:
+  // Fraunces carries opsz (optical sizing) + SOFT + WONK; Instrument Sans carries
+  // weight. Both include italic. See src/styles/tokens.css for how they're wired.
+  fonts: [
+    {
+      provider: fontProviders.local(),
+      name: 'Fraunces',
+      cssVariable: '--font-fraunces',
+      fallbacks: ['Georgia', 'serif'],
+      options: {
+        variants: [
+          {
+            weight: '100 900',
+            style: 'normal',
+            src: ['@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2'],
+          },
+          {
+            weight: '100 900',
+            style: 'italic',
+            src: ['@fontsource-variable/fraunces/files/fraunces-latin-full-italic.woff2'],
+          },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: 'Instrument Sans',
+      cssVariable: '--font-instrument-sans',
+      fallbacks: ['system-ui', 'sans-serif'],
+      options: {
+        variants: [
+          {
+            weight: '400 700',
+            style: 'normal',
+            src: ['@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2'],
+          },
+          {
+            weight: '400 700',
+            style: 'italic',
+            src: ['@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-italic.woff2'],
+          },
+        ],
+      },
+    },
+  ],
+  // Prefetch internal links on hover/focus for snappier navigation between pages.
+  prefetch: { prefetchAll: true },
+  // Type-safe, validated build-time selection of the events source (see
+  // src/lib/events/provider.ts). Omitted → the provider picks a sensible default.
+  env: {
+    schema: {
+      EVENTS_SOURCE: envField.enum({
+        context: 'server',
+        access: 'public',
+        values: ['curated', 'churchcenter', 'ics', 'pco'],
+        optional: true,
+      }),
+    },
+  },
   vite: {
     server: {
       allowedHosts: ['plcc-dev.internal', 'plcc.internal', 'localhost'],

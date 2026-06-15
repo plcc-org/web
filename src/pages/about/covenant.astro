@@ -4,8 +4,7 @@ import Split from '../../components/Split.astro'
 import SectionHeader from '../../components/SectionHeader.astro'
 import AccentList from '../../components/AccentList.astro'
 import Band from '../../components/Band.astro'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../../lib/url'
 
 const emphases = [
   { title: 'Scripture', body: 'We look to the Bible as our primary guide for faith and life.' },
@@ -54,7 +53,7 @@ const emphases = [
       <SectionHeader eyebrow="What the Covenant emphasizes" heading="A few long-standing convictions" />
       <p class="measure">
         A combination of historic Christian orthodoxy and a warm, lived faith. These are the same convictions we hold at
-        Pine Lake — you can read ours in <a href={`${base}about/beliefs/`}>What We Believe</a>.
+        Pine Lake — you can read ours in <a href={withBase('about/beliefs/')}>What We Believe</a>.
       </p>
       <AccentList items={emphases} columns={3} />
     </section>

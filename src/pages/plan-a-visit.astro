@@ -6,8 +6,7 @@ import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
 import { imageByFilename } from '../data/homePageImages'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../lib/url'
 
 const planVisitMomentsItems = [
   {
@@ -122,7 +121,7 @@ const planVisitMomentsItems = [
       <p>
         For babies and toddlers, there’s a comfortable space where you can
         <strong>watch the service while caring for your child</strong>. You can learn more on our
-        <a href={`${base}families/kids/`}>Kids &amp; Families</a> page.
+        <a href={withBase('families/kids/')}>Kids &amp; Families</a> page.
       </p>
     </Split>
 
@@ -145,7 +144,7 @@ const planVisitMomentsItems = [
       </p>
       <p>
         If you’d like to connect with someone ahead of time, you’re always welcome to —
-        <a href={`${base}contact/`}>say hello</a> — but there’s no expectation that you do.
+        <a href={withBase('contact/')}>say hello</a> — but there’s no expectation that you do.
       </p>
     </Band>
   </div>

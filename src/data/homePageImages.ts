@@ -8,25 +8,6 @@ export interface HomePageImage {
   alt?: string
 }
 
-export function getImagesByAnyTag(tags: string[]): HomePageImage[] {
-  if (tags.length === 0) {
-    return []
-  }
-
-  return homePageImages.filter((image) => image.tags.some((tag) => tags.includes(tag)))
-}
-
-export function pickImageByAnyTag(tags: string[], excludeFilenames: string[] = []): HomePageImage | undefined {
-  const matches = getImagesByAnyTag(tags).filter((image) => !excludeFilenames.includes(image.filename))
-
-  if (matches.length === 0) {
-    return undefined
-  }
-
-  const randomIndex = Math.floor(Math.random() * matches.length)
-  return matches[randomIndex]
-}
-
 export function imageAlt(image: HomePageImage, fallback: string): string {
   if (image.alt && image.alt.trim().length > 0) {
     return image.alt

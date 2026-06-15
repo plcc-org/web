@@ -1,5 +1,6 @@
 ---
-import { getImage } from 'astro:assets'
+import { getImage, Font } from 'astro:assets'
+import { withBase } from '../lib/url'
 import '../styles/global.css'
 import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
 import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
@@ -7,13 +8,18 @@ import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.p
 import socialImageSource from '../assets/images/plcc-community-family-worship.jpg'
 import iconSource from '../assets/images/plcc-logo-icon.jpg'
 
+type Props = {
+  title?: string
+  description?: string
+  noindex?: boolean
+}
+
 const {
   title = 'Pine Lake Covenant Church',
   description = 'A church in Sammamish, discovering life with Jesus together.',
   noindex = false,
-} = Astro.props
+}: Props = Astro.props
 
-const base = import.meta.env.BASE_URL
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
 
 // Social share image (1200x630) and Apple touch icon, generated at build time.
@@ -28,12 +34,12 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
-      rel="stylesheet"
-    />
+
+    <!-- Self-hosted fonts (Astro Fonts API). Preload only the upright styles used
+         above the fold; italics load on demand. -->
+    <Font cssVariable="--font-fraunces" preload={[{ style: 'normal' }]} />
+    <Font cssVariable="--font-instrument-sans" preload={[{ style: 'normal' }]} />
+
     <title>{title}</title>
     <meta name="description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
@@ -42,9 +48,9 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
     <meta name="theme-color" content="#6a9529" />
 
     <!-- Icons + PWA manifest -->
-    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
     <link rel="apple-touch-icon" href={appleTouchIcon.src} />
-    <link rel="manifest" href={`${base}manifest.webmanifest`} />
+    <link rel="manifest" href={withBase('manifest.webmanifest')} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -70,7 +76,7 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
     <header class="site-header">
       <nav class="site-nav" aria-label="Primary">
         <div class="site-nav__bar">
-          <a href={`${import.meta.env.BASE_URL}`} class="site-nav__home" aria-label="Pine Lake Covenant Church — Home">
+          <a href={withBase()} class="site-nav__home" aria-label="Pine Lake Covenant Church — Home">
             <span class="site-nav__home-logo" style={`--logo-wordmark-url: url('${wordmarkUrl}')`} aria-hidden="true"
             ></span>
           </a>
@@ -86,14 +92,14 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
           </button>
         </div>
         <ul class="site-nav__list" id="primary-nav-menu">
-          <li><a href={`${import.meta.env.BASE_URL}im-new/`}>I’m New</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}about/`}>About</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}families/`}>Families</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}for-our-neighbors/`}>For Our Neighbors</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}church-life/`}>Church Life</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}whats-happening/`}>What’s Happening</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}messages/`}>Messages</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}plan-a-visit/`} class="site-nav__cta">Plan a Visit</a></li>
+          <li><a href={withBase('im-new/')}>I’m New</a></li>
+          <li><a href={withBase('about/')}>About</a></li>
+          <li><a href={withBase('families/')}>Families</a></li>
+          <li><a href={withBase('for-our-neighbors/')}>For Our Neighbors</a></li>
+          <li><a href={withBase('church-life/')}>Church Life</a></li>
+          <li><a href={withBase('whats-happening/')}>What’s Happening</a></li>
+          <li><a href={withBase('messages/')}>Messages</a></li>
+          <li><a href={withBase('plan-a-visit/')} class="site-nav__cta">Plan a Visit</a></li>
         </ul>
       </nav>
     </header>
@@ -117,11 +123,11 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
         </div>
 
         <nav class="site-footer__links" aria-label="Footer">
-          <a href={`${import.meta.env.BASE_URL}plan-a-visit/`}>Plan a Visit</a>
+          <a href={withBase('plan-a-visit/')}>Plan a Visit</a>
           <span class="site-footer__divider">|</span>
-          <a href={`${import.meta.env.BASE_URL}contact/`}>Contact</a>
+          <a href={withBase('contact/')}>Contact</a>
           <span class="site-footer__divider">|</span>
-          <a href={`${import.meta.env.BASE_URL}church-life/`}>Church Life</a>
+          <a href={withBase('church-life/')}>Church Life</a>
           <span class="site-footer__divider">|</span>
           <a
             href="https://www.instagram.com/pinelakecov/"

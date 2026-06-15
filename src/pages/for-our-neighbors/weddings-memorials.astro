@@ -2,8 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Split from '../../components/Split.astro'
 import Band from '../../components/Band.astro'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../../lib/url'
 ---
 
 <BaseLayout title="Weddings & Memorials | Pine Lake Covenant Church">
@@ -84,7 +83,7 @@ const base = import.meta.env.BASE_URL
       <p class="measure">
         If you have questions or aren’t sure what you need, just reach out — we’ll help you find the right next step.
       </p>
-      <p><a href={`${base}contact/`}>Contact us →</a></p>
+      <p><a href={withBase('contact/')}>Contact us →</a></p>
     </section>
   </div>
 </BaseLayout>

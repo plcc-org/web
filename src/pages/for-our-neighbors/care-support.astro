@@ -2,8 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Split from '../../components/Split.astro'
 import SectionHeader from '../../components/SectionHeader.astro'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../../lib/url'
 ---
 
 <BaseLayout
@@ -46,17 +45,17 @@ const base = import.meta.env.BASE_URL
       <SectionHeader eyebrow="Specific ways we show up" heading="Where to start" />
 
       <div class="card-grid">
-        <a class="card" href={`${base}for-our-neighbors/meals-of-care/`}>
+        <a class="card" href={withBase('for-our-neighbors/meals-of-care/')}>
           <h3>Meals of Care</h3>
           <p>Short-term meals during illness, recovery, a new baby, or grief.</p>
         </a>
 
-        <a class="card" href={`${base}for-our-neighbors/stephen-ministry/`}>
+        <a class="card" href={withBase('for-our-neighbors/stephen-ministry/')}>
           <h3>One-to-one care</h3>
           <p>A trained caregiver who will listen and walk alongside you, confidentially.</p>
         </a>
 
-        <a class="card" href={`${base}for-our-neighbors/weddings-memorials/`}>
+        <a class="card" href={withBase('for-our-neighbors/weddings-memorials/')}>
           <h3>Memorials &amp; loss</h3>
           <p>Support and presence around memorial services and seasons of grief.</p>
         </a>

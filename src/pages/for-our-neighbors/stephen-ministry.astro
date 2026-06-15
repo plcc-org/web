@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import { withBase } from '../../lib/url'
 ---
 
 <BaseLayout title="Stephen Ministry | Pine Lake Covenant Church">
@@ -78,7 +79,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
     <p>
       If Pine Lake becomes your church home, there are many ways to support others through care and service.
-      <a href={`${import.meta.env.BASE_URL}church-life/`}>Explore life at Pine Lake</a>.
+      <a href={withBase('church-life/')}>Explore life at Pine Lake</a>.
     </p>
   </article>
 </BaseLayout>

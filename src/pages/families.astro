@@ -5,8 +5,7 @@ import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
 import { imageByFilename } from '../data/homePageImages'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../lib/url'
 
 const familiesMomentsItems = [
   {
@@ -58,7 +57,7 @@ const familiesMomentsItems = [
             summer highlights.
           </p>
           <p>
-            <a href={`${base}families/kids/`}>Explore Pine Lake Kids →</a>
+            <a href={withBase('families/kids/')}>Explore Pine Lake Kids →</a>
           </p>
         </div>
 
@@ -74,7 +73,7 @@ const familiesMomentsItems = [
             For <strong>6th–12th grade</strong>. Tuesdays 6:00–8:00pm, plus students sit together on Sundays at 10:00am.
           </p>
           <p>
-            <a href={`${base}youth/`}>Explore Pine Lake Youth →</a>
+            <a href={withBase('youth/')}>Explore Pine Lake Youth →</a>
           </p>
         </div>
       </div>

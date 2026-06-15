@@ -5,8 +5,7 @@ import LinkCardSection from '../components/LinkCardSection.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import { imNewStartHereLinks } from '../data/startHereLinks'
 import { imageByFilename } from '../data/homePageImages'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../lib/url'
 
 const imNewMomentsItems = [
   {
@@ -40,7 +39,7 @@ const imNewMomentsItems = [
         you’re looking for. Whether you’re just curious or thinking about visiting for the first time, we’re glad you’re
         here.
       </p>
-      <p><a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a></p>
+      <p><a class="btn" href={withBase('plan-a-visit/')}>Plan a Visit</a></p>
     </Split>
 
     <LinkCardSection heading="More about us" links={imNewStartHereLinks} />

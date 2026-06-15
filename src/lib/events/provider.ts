@@ -6,6 +6,7 @@
 // headless capture, public ICS feed, PCO API) plug in here behind the same
 // interface — see docs/events-plan.md.
 
+import { EVENTS_SOURCE } from 'astro:env/server'
 import type { CalendarEvent, EventSource } from './types'
 import { curatedEvents } from './adapters/curated'
 import { churchCenterEvents } from './adapters/churchcenter'
@@ -30,7 +31,7 @@ async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
  * reload). Override anytime with EVENTS_SOURCE.
  */
 function defaultSource(): EventSource {
-  return process.env.NODE_ENV === 'production' ? 'churchcenter' : 'curated'
+  return import.meta.env.PROD ? 'churchcenter' : 'curated'
 }
 
 /** Build-time "now" as the start of today (used to drop past events). */
@@ -58,7 +59,7 @@ export function getUpcomingEvents(): Promise<CalendarEvent[]> {
 }
 
 async function loadUpcomingEvents(): Promise<CalendarEvent[]> {
-  const source = (process.env.EVENTS_SOURCE as EventSource | undefined) ?? defaultSource()
+  const source = EVENTS_SOURCE ?? defaultSource()
 
   let raw: CalendarEvent[]
   try {

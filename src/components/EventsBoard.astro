@@ -1,5 +1,6 @@
 ---
 import PageIntro from './PageIntro.astro'
+import { withBase } from '../lib/url'
 import type { CalendarEvent, EventCategory } from '../lib/events/types'
 
 type Props = {
@@ -20,9 +21,8 @@ const fmtDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day
 const fmtTime = (d: Date) => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ })
 const weekLabel = (d: Date) => `Week of ${fmtDate(d)}`
 
-const base = import.meta.env.BASE_URL
 const categoryHref = (c: EventCategory) =>
-  c === 'Everyone' ? `${base}whats-happening/` : `${base}whats-happening/${c.toLowerCase()}/`
+  c === 'Everyone' ? withBase('whats-happening/') : withBase(`whats-happening/${c.toLowerCase()}/`)
 
 // Each page is a single category, so filtering happens at build time — no client JS.
 const items = (selected === 'Everyone' ? events : events.filter((e) => e.category === selected)).map((e) => ({
@@ -172,7 +172,7 @@ for (const e of comingUp) {
         <strong>Sundays at 10:00am</strong>
         <div>Worship + teaching, with kids and youth programs.</div>
         <div class="rhythm-card__cta">
-          <a href={`${base}plan-a-visit/`}>Plan a Visit</a>
+          <a href={withBase('plan-a-visit/')}>Plan a Visit</a>
         </div>
       </div>
 
@@ -180,7 +180,7 @@ for (const e of comingUp) {
         <strong>Families & Youth</strong>
         <div>Kids and youth are a big part of our life together.</div>
         <div class="rhythm-card__cta">
-          <a href={`${base}families/`}>Families</a>
+          <a href={withBase('families/')}>Families</a>
         </div>
       </div>
 
@@ -188,7 +188,7 @@ for (const e of comingUp) {
         <strong>Groups & Serving</strong>
         <div>Small groups and serving teams are simple ways to find community.</div>
         <div class="rhythm-card__cta">
-          <a href={`${base}next-steps/`}>Next Steps</a>
+          <a href={withBase('next-steps/')}>Next Steps</a>
         </div>
       </div>
     </div>

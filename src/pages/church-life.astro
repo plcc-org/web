@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Split from '../components/Split.astro'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../lib/url'
 ---
 
 <BaseLayout title="Church Life | Pine Lake Covenant Church">
@@ -82,7 +81,7 @@ const base = import.meta.env.BASE_URL
         </li>
       </ul>
       <p>
-        <a href={`${base}for-our-neighbors/serve-locally/`}>See how we serve our local community →</a>
+        <a href={withBase('for-our-neighbors/serve-locally/')}>See how we serve our local community →</a>
       </p>
     </Split>
 
@@ -117,7 +116,7 @@ const base = import.meta.env.BASE_URL
         alone.
       </p>
       <p>
-        <a href={`${base}for-our-neighbors/care-support/`}>See how we care for one another →</a>
+        <a href={withBase('for-our-neighbors/care-support/')}>See how we care for one another →</a>
       </p>
     </Split>
 
@@ -125,7 +124,7 @@ const base = import.meta.env.BASE_URL
       <h2>Getting started</h2>
       <p class="measure">
         If you are exploring Pine Lake for the first time,
-        <a href={`${base}next-steps/`}>Next Steps</a> is usually the best place to begin.
+        <a href={withBase('next-steps/')}>Next Steps</a> is usually the best place to begin.
       </p>
     </section>
   </div>

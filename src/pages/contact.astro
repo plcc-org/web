@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageIntro from '../components/PageIntro.astro'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../lib/url'
 ---
 
 <BaseLayout title="Contact | Pine Lake Covenant Church">
@@ -61,7 +60,7 @@ const base = import.meta.env.BASE_URL
           rel="noopener">Directions</a
         >
         ·
-        <a href={`${base}plan-a-visit/`}>Plan a Visit</a>
+        <a href={withBase('plan-a-visit/')}>Plan a Visit</a>
       </p>
     </section>
   </div>

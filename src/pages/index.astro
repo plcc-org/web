@@ -9,6 +9,7 @@ import MomentsSection from '../components/MomentsSection.astro'
 import { homepageQuotes } from '../data/quotes'
 import { startHereLinks } from '../data/startHereLinks'
 import { imageByFilename, imageAlt } from '../data/homePageImages'
+import { withBase } from '../lib/url'
 
 const welcomeImage = imageByFilename('672470327_18202547344338056_2701967790999045946_n.jpg')
 
@@ -26,8 +27,6 @@ const momentsItems = [
     fallbackAlt: 'People sharing a meal and conversation together',
   },
 ]
-
-const base = import.meta.env.BASE_URL
 ---
 
 <BaseLayout
@@ -35,14 +34,14 @@ const base = import.meta.env.BASE_URL
   description="A church in Sammamish where people discover life with Jesus together. Join us Sundays at 10:00am."
 >
   <Hero
-    video={`${base}video/homepage-hero.mp4`}
+    video={withBase('video/homepage-hero.mp4')}
     filename="pine-lake-exterior-2026.jpg"
     alt="The Pine Lake Covenant Church building in Sammamish, with its tall wooden cross"
     eyebrow="Pine Lake Covenant Church · Sammamish"
     title="Discovering life with Jesus together"
     subhead="Sundays at 10:00am — for kids, students, and grown-ups."
   >
-    <a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a>
+    <a class="btn" href={withBase('plan-a-visit/')}>Plan a Visit</a>
   </Hero>
 
   <div class="canvas">
@@ -64,7 +63,7 @@ const base = import.meta.env.BASE_URL
         Whether faith feels like home, a question mark, or a distant memory, there’s a place for you among us. We don’t
         care where you are on the journey — we just want to travel with you.
       </p>
-      <p><a class="btn btn--ghost" href={`${base}im-new/`}>What to expect →</a></p>
+      <p><a class="btn btn--ghost" href={withBase('im-new/')}>What to expect →</a></p>
     </Split>
 
     <LinkCardSection links={startHereLinks} />
@@ -86,7 +85,7 @@ const base = import.meta.env.BASE_URL
         We gather at 10:00am at 1715 228th Ave SE in Sammamish. There’s guest parking by the main entrance — walk in,
         grab a coffee, and sit wherever you like.
       </p>
-      <a class="btn" href={`${base}plan-a-visit/`}>Plan a Visit</a>
+      <a class="btn" href={withBase('plan-a-visit/')}>Plan a Visit</a>
     </Band>
   </div>
 </BaseLayout>

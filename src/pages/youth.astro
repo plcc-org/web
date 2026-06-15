@@ -5,8 +5,7 @@ import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
 import { imageByFilename } from '../data/homePageImages'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../lib/url'
 
 const youthMomentsItems = [
   {
@@ -125,7 +124,7 @@ const youthMomentsBottomItems = [
       <p class="youth-connect__links">
         <a href="https://www.instagram.com/pinelakeyouth/" target="_blank" rel="noopener">Instagram</a>
         <a href="mailto:office@plcc.org">Email</a>
-        <a href={`${base}whats-happening/`}>Current schedule</a>
+        <a href={withBase('whats-happening/')}>Current schedule</a>
       </p>
     </section>
 
@@ -184,7 +183,7 @@ const youthMomentsBottomItems = [
       </ul>
 
       <p>
-        <a href={`${base}whats-happening/`}>See what’s coming up →</a>
+        <a href={withBase('whats-happening/')}>See what’s coming up →</a>
       </p>
     </section>
 

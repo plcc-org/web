@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../lib/url'
+
 type Props = {
   title: string
   intro: string
@@ -25,7 +27,7 @@ const { title, intro, body, bullets, ctaLabel, href } = Astro.props
   </ul>
 
   <p class="door__cta">
-    <a class="door__link" href={`${import.meta.env.BASE_URL}${href.replace(/^\//, '')}`}>
+    <a class="door__link" href={withBase(href)}>
       {ctaLabel}
       <span aria-hidden="true">→</span>
     </a>

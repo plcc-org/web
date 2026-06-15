@@ -3,8 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Split from '../../components/Split.astro'
 import Photo from '../../components/Photo.astro'
 import AccentList from '../../components/AccentList.astro'
-
-const base = import.meta.env.BASE_URL
+import { withBase } from '../../lib/url'
 
 const tenets = [
   {
@@ -61,8 +60,9 @@ const tenets = [
         <div class="creed-note__text">
           <p class="eyebrow">Part of something bigger</p>
           <p>
-            Pine Lake Covenant Church is part of the <a href={`${base}about/covenant/`}>Evangelical Covenant Church</a>,
-            a Christian denomination rooted in historic Christian faith and formed in 1885. To go deeper, visit
+            Pine Lake Covenant Church is part of the <a href={withBase('about/covenant/')}
+              >Evangelical Covenant Church</a
+            >, a Christian denomination rooted in historic Christian faith and formed in 1885. To go deeper, visit
             <a href="https://covchurch.org">covchurch.org</a> or read the
             <a href="https://covchurch.org/resource/covenant-affirmations/">Covenant Affirmations</a>.
           </p>
