@@ -21,9 +21,11 @@ So we optimize for the newcomer, on purpose.
 
 ---
 
-## The core idea: a filter, not a persuasion site
+## The core idea: help people see themselves
 
-We're helping **people recognize themselves** at Pine Lake specifically. This gives us one ruthless test for any sentence:
+We're helping **people recognize themselves** at Pine Lake specifically. That includes families, teens, older couples, single moms, people of a variety of background, ethnicity, or dress. Rather than "will you fit with us", we want a newcomer to see "you're not going to be the odd-one out here". 
+
+In addition, this gives us one ruthless test for any sentence:
 
 > **If it could describe any church, it's too generic to keep.**
 
@@ -31,14 +33,14 @@ Concrete beats warm-and-vague every time.
 
 ---
 
-## The guardrails
+## Site principles
 
-These are the worldview tenets every contributor must hold. (Word-choice rules that
+These are the tenets that guide the content we add to the site. (Word-choice rules that
 flow from them live in [voice.md](./voice.md).)
 
 ### 1. A welcoming site, not a persuasion site
 
-We want people to see themselves reflected in the visuals and content here. **Guardrail:** if a sentence could apply to any church, it's too generic. 
+As mentioned above, we want people to see themselves reflected in the visuals and content here. The content should be human, light on jargon, warm in temperature.
 
 ### 2. Avoid "program gravity"
 
