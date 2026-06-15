@@ -1,29 +1,9 @@
-# Pine Lake Covenant Church – Website Prototype
+# Pine Lake Covenant Church — Website
 
-A fast-iteration prototype for the Pine Lake Covenant Church (PLCC) website, built
-with a photo-rich, editorial visual style and optimized for young families and
-first-time guests.
-
-**Goals**
-
-- Experiment with information architecture for new visitors
-- Explore a photo-rich, editorial visual style
-- Optimize for young families and first-time guests
-- Stay static, fast, and GitHub Pages–friendly
-
-**Non-goals (for now)**
-
-- CMS integration
-- Full Church Center API integration
-- Long-term hosting decisions
-
-## Tech stack
-
-- **[Astro 6](https://astro.build/)** — static site generation (SSG)
-- **TypeScript**
-- **Vanilla CSS** with design tokens (`src/styles/`)
-- Optimized images via Astro's `<Image>` (WebP, responsive)
-- Deployed to **GitHub Pages** (staging) and **plcc.org** (production)
+The website for Pine Lake Covenant Church (PLCC): a photo-rich, editorial site built for
+young families and first-time guests, with a clear information architecture and a
+welcoming, grounded tone. Built with [Astro](https://astro.build/) + TypeScript and
+statically generated — fast, cheap to host, and easy to extend.
 
 ## Quick start
 
@@ -46,109 +26,23 @@ npm run format:check  # Prettier — verify only
 
 > Run `npm run format` before committing. CI runs `format:check` and `check`.
 
-## Project structure
+## Documentation
 
-```
-src/
-  assets/images/    Photo library (source for the <Image> pipeline)
-  components/       Astro components (Hero, Split, MomentsSection, cards, …)
-  config/site.ts    Environment-aware site/base/index config
-  data/             Data-driven content (nav links, doors, quotes, image catalogue)
-  layouts/          BaseLayout.astro (head, header, footer, skip link)
-  lib/              Image registry + events/messages helpers
-  pages/            Routes (file-based)
-  styles/           Design tokens + global CSS (entry: global.css)
-public/             Static assets served as-is (favicon, video, manifest)
-docs/               Project notes
-nginx/, Dockerfile  Container image for serving the built site
-```
+The thinking, voice, design, and engineering behind the site live in **[`docs/`](./docs/)**.
+Start with the [docs index](./docs/README.md), or jump straight in:
 
-## Design system
+- **[Philosophy & guardrails](./docs/philosophy.md)** — why the site exists and what belongs on it.
+- **[Editorial voice](./docs/voice.md)** — tone and word choices.
+- **[Design system](./docs/design-system.md)** — visual language, tokens, layout, components.
+- **[Development & architecture](./docs/development.md)** — stack, structure, conventions, the image system.
+- **[Infrastructure & deployment](./docs/infrastructure.md)** — environments, hosting, and container workflows.
 
-The visual language, tokens, layout system, and components are documented in
-**[`DESIGN.md`](./DESIGN.md)** — start there before making visual changes. Content
-strategy, voice, and the editorial guardrails live in **[`CLAUDE.md`](./CLAUDE.md)**.
-
-A few load-bearing conventions:
-
-- Reference design tokens (`var(--color-…)`, `var(--text-…)`, `var(--space-…)`) —
-  don't hard-code colors, sizes, or shadows.
-- Internal links use the base path: ``href={`${import.meta.env.BASE_URL}about/`}``.
-- Repeating content belongs in `src/data/`, mapped over in pages.
-- Photos render through the `<Photo>` component and are catalogued in
-  `src/data/homePageImages.ts`. Favor **portrait** imagery.
+[`CLAUDE.md`](./CLAUDE.md) is a condensed rule sheet for AI coding agents that points into
+the same docs.
 
 ## Deployment
 
-Hosting target is environment-aware (`src/config/site.ts`, consumed by
-`astro.config.mjs`), selected by `DEPLOY_ENV`:
-
-| Env           | Site                            | Base         | Indexed |
-| ------------- | ------------------------------- | ------------ | ------- |
-| `development` | localhost (root)                | —            | no      |
-| `staging`     | `timsneath.github.io/plcc-web/` | `/plcc-web/` | no      |
-| `production`  | `plcc.org` (root)               | `/`          | yes     |
-
-GitHub Actions builds the **staging** target by default (see
-`.github/workflows/`). The sitemap is only emitted when `site` is set (staging /
-production).
-
----
-
-## Alternative: run with Apple `container` (macOS)
-
-This project includes a `Dockerfile` that works with Apple's `container` CLI, for
-serving the built site or running dev in isolation. The npm workflow above is the
-simplest path; these are optional.
-
-### Prerequisites
-
-- Install and configure Apple's `container` tool
-- Start container services:
-
-```bash
-container system start
-```
-
-Optional, for friendly local DNS names:
-
-```bash
-container system property set dns.domain internal
-```
-
-### Serve the built site
-
-From the repo root:
-
-```bash
-container build --tag plcc-web .
-container run --name plcc --detach --rm plcc-web
-```
-
-The site is served by NGINX on port `8080` inside the container. With
-`dns.domain=internal`, open `http://plcc.internal:8080`; otherwise find the IP with
-`container ls` and open `http://<container-ip>:8080`. Stop with `container stop plcc`
-(auto-removed via `--rm`).
-
-### Develop in a container (no host npm)
-
-Run Astro dev inside a Node container with this repo bind-mounted:
-
-```bash
-npm run dev:container       # start
-npm run dev:container:stop  # stop
-```
-
-Open `http://plcc-dev.internal:4321` (with `dns.domain=internal`) or
-`http://localhost:4321`. Live reload works while editing local files; `node_modules`
-stays inside the container (`tmpfs`), not in your repo.
-
-### Troubleshooting
-
-If a build fails due to Rosetta requirements and you only need ARM builds:
-
-```bash
-container system property set build.rosetta false
-container system stop
-container system start
-```
+Hosting is environment-aware (`DEPLOY_ENV`): `development` (localhost), `staging`
+(GitHub Pages), and `production` (`plcc.org`). GitHub Actions builds the staging target by
+default. Full details — including the Apple `container` workflow — are in
+[infrastructure.md](./docs/infrastructure.md).

@@ -109,9 +109,10 @@ be handed off and extended.
   touching markup.
 - **Performance & accessibility built in.** Responsive, optimized images through a
   single pipeline; portrait-first editorial photography of real moments, not stock.
-- **It's documented.** `DESIGN.md` covers the visual language and every component;
-  `CLAUDE.md` captures the content philosophy and guardrails. The "why" is written
-  down, so future changes can stay coherent.
+- **It's documented.** The [`docs/`](./README.md) set covers the visual language and
+  every component ([`design-system.md`](./design-system.md)), the content philosophy and
+  guardrails ([`philosophy.md`](./philosophy.md)), and the editorial voice
+  ([`voice.md`](./voice.md)). The "why" is written down, so future changes can stay coherent.
 
 Environment-aware deploys (development / staging / production) are a one-line config
 change, and the whole thing builds and previews locally in seconds.

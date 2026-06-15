@@ -1,165 +1,41 @@
-# Pine Lake Covenant Church Website Prototype
+# Pine Lake Covenant Church Website
 
-This project is a fast-iteration prototype for the Pine Lake Covenant Church (PLCC) website, designed with a photo-rich, editorial visual style. It is optimized for young families and first-time guests, focusing on clear information architecture and a welcoming aesthetic.
+A photo-rich, editorial website for Pine Lake Covenant Church (PLCC), optimized for young
+families and first-time guests. Built with Astro 6 + TypeScript, statically generated.
 
----
+This file is the thin entry point. The full reference lives in **[`docs/`](./docs/)** —
+read the doc that matches your change before editing.
 
-# Core Philosophy & Guardrails
+## Documentation map
 
-This site is a **ground-up redesign**, shifting from a "broadcast" model to a "belonging" model. Future contributors must adhere to these tenets to maintain the project's integrity.
+- **[docs/philosophy.md](./docs/philosophy.md)** — why the site exists and the guardrails
+  for what belongs on it. Read before adding or restructuring pages.
+- **[docs/voice.md](./docs/voice.md)** — tone and word choices. Read before writing copy.
+- **[docs/design-system.md](./docs/design-system.md)** — visual language, design tokens,
+  layout, components. Read before any visual change.
+- **[docs/development.md](./docs/development.md)** — stack, project structure, build/run,
+  conventions, the image system, CI.
+- **[docs/infrastructure.md](./docs/infrastructure.md)** — environments, deployment,
+  container workflows.
+- **[docs/website-one-pager.md](./docs/website-one-pager.md)** — a shareable stakeholder
+  brief.
 
-## 1. A Filtering Site, Not a Persuasion Site
+## Non-negotiables
 
-We are not trying to convince everyone; we are helping the **right people recognize themselves**.
+Even if you don't open the docs, never violate these:
 
-- **Guardrail:** If a sentence could apply to any church, it is too generic. Use specific, human signals (e.g., "Dinner at 6pm", "Students sit in the front three rows").
-
-## 2. Avoid "Program Gravity"
-
-Resist the urge to collapse into a list of programs.
-
-- **Pattern:** Group content around **life situations**, not church departments or offerings. Avoid "Other things we offer" sections.
-
-## 3. Intentional Asymmetry
-
-The site is not evenly structured by design.
-
-- **Rule:** Don't "balance" the site for symmetry. Only add pages when there is real content and a clear user need. Quality and readiness trump theoretical completeness.
-
-## 4. Tone: Grounded, Human, Understated
-
-Aim for a tone that is **warm, but not soft**.
-
-- **Avoid "Too Soft":** "We would love to invite you on a journey..."
-- **Avoid "Too Hard":** Overly transactional or instructional language.
-- **Avoid "Churchy":** "Fellowship," "discipleship," "plug in."
-- **Aim for:** Grounded, human, and slightly understated language.
-
-## 5. Implicit "No Pressure"
-
-Low pressure is communicated through **structure and clarity**, not by repeating "no pressure" everywhere.
-
-- **Rule:** Use explicit reassurance only where there is real perceived risk (e.g., care situations).
-
-## 6. Protect "Time" Clarity
-
-Narrative pages should stay evergreen.
-
-- **Rule:** If something requires frequent updating, it belongs in a specific module or component, e.g. the Calendar page, not embedded in narrative copy.
-
-## 7. Photos as Vignettes, Not Decoration
-
-- **Philosophy:** Photos are glimpses of real life, not stock imagery or posed portraits.
-- **Constraint:** Photos are **not mapped 1:1** to stories to avoid tokenism and "forced" representation.
-
-## 8. The "Doors" Model
-
-A worldview shift from "What we do" to **"How we show up in people's lives."**
-
-- **Terminology:** Avoid churchy jargon or in/out language in navigation. Don't make assumptions about people's theology, but equally don't shy from being distinctive and calling out unique values.
-- **Avoid:** "Ministry," "Fellowship," "Discipleship,", "Outreach"
-- **Prefer:** "Support," "Connection," "Learning to follow Jesus," "Be part of," "Find a place.
-
-## 9. Emotional Sequencing
-
-Pages work in a specific order:
-
-1. **Home:** "I might belong here."
-2. **I’m New / Families / Youth:** "I understand what this would feel like."
-3. **For Our Neighbors / Next Steps:** "I can engage at my own pace."
-
-- **Implication:** Don't optimize pages in isolation; consider the user's emotional state upon arrival.
-
-## 10. Strategically Incomplete
-
-The site is a **high-signal front door**, not an exhaustive catalog of everything that might go on in the church. Incompleteness is a strategic choice.
-
-## 11. Belief-Neutral (but not Diluted) Language
-
-- Don't assume the reader is Christian or familiar with church.
-- Don't require agreement to belong.
-- Don't hide faith language or dilute conviction.
-
-## 12. Internal Consistency
-
-Families, Youth, and Care pages must "sound like the same place." Match tone, structure, and pacing across all sections. Design should also be consistent, with shared tokens and language.
-
-## 13. "Situation-First", Low-Key Language
-
-Start with the reader's emotional or practical reality rather than the church's program.
-
-- **Pattern:** Describe a human situation → Offer a specific way we show up.
-- **Example:** _"When life is overwhelming, even simple tasks can feel heavy."_ (Meals of Care) vs _"We have a meals ministry."_
-
----
-
-# Content Strategy & Voice
-
-Our writing is designed to be **grounded, human, and understated**, stripping away "marketing fluff" to build genuine trust.
-
----
-
-# Information Architecture (IA)
-
-The site is structured around a **three-stage funnel**, plus a parallel “neighbors” pathway:
-
-### Primary Navigation Intent
-
-1. **I’m New:** Entry point for visitors; answers emotional + practical questions.
-2. **About:** Who we are, beliefs, leadership, ethos.
-3. **Families:** Kids, youth, and family life.
-4. **For Our Neighbors:** Needs-based "Doors" — how the church shows up in the community.
-5. **What's Happening / Messages:** Current events and sermon archive.
-
-> **Note:** "Next Steps" has been removed from the primary navigation while its content is still being defined. The page exists at `/next-steps/` but is not linked from the header.
-
-### Parallel Structure
-
-- **For Our Neighbors:** Organized around **needs, not departments**, using the "Doors" concept (ways the church shows up).
-
----
-
-# Technical Project Overview
-
-- **Framework:** [Astro 6](https://astro.build/)
-- **Language:** TypeScript
-- **Styling:** Vanilla CSS with design tokens, split into partials under `src/styles/` (entry: `global.css`).
-- **Architecture:** Static Site Generation (SSG)
-- **Images:** Astro's `<Image>` pipeline, via the `<Photo>` wrapper component; photos are catalogued in `src/data/homePageImages.ts`.
-- **Deployment:** Environment-aware via `DEPLOY_ENV` (`src/config/site.ts`):
-  - `development` — localhost, served from root, not indexed
-  - `staging` — GitHub Pages (`https://timsneath.github.io/plcc-web/`), not indexed
-  - `production` — `https://plcc.org`, served from root, indexed
-
-  GitHub Actions builds the **staging** target by default.
-
-## Design System
-
-The visual language, design tokens, layout system, and components are documented in **[`DESIGN.md`](./DESIGN.md)** — read it before making visual changes. Key points:
-
-- **Tokens first.** Reference `var(--color-…)`, `var(--text-…)`, `var(--space-…)`, etc. Never hard-code colors, sizes, radii, or shadows.
-- **Layout:** photo-forward pages use the `.canvas` full-bleed grid with the `Hero`, `Split` (portrait photo + text), and `MomentsSection` components; dense reading pages use the legacy narrow `.page` flow.
-- **Portrait-first photography.** The library is ~90% portrait (4:5 or taller) — avoid landscape crops (the hero video and incidental building shots are the exceptions).
-- **Surfaces & rhythm.** Alternate paper / sand / forest bands; a subtle grain overlay sits above all content.
-
-## Building and Running
-
-```bash
-npm install
-npm run dev      # Local dev server at http://localhost:4321/
-npm run build    # Production build to dist/
-npm run preview  # Preview the production build
-npm run check    # astro check (types + templates)
-npm run format   # Prettier formatting
-```
-
-Optional containerized (Apple `container`) workflows are documented in `README.md`.
-
-## Development Conventions
-
-- **Internal Linking:** Use the `${import.meta.env.BASE_URL}` prefix (e.g., `<a href={`${import.meta.env.BASE_URL}about/`}>`).
-- **Data-Driven:** Define repetitive items in `src/data/` and map over them.
-- **Images:** Render photos through the `<Photo>` component (a wrapper over Astro's `<Image>`); add new photos to the `src/data/homePageImages.ts` catalogue with descriptive alt text. Favor portrait imagery.
-- **Tokens & components:** Prefer existing tokens and components (see `DESIGN.md`) over new one-off CSS.
-- **Scoped styles** don't reach child-component markup — use `:global()` to style a child like `<Photo>`'s `<img>`.
-- Run `npm run format` before committing.
+- **The filter test.** If a sentence could describe any church, rewrite it with a
+  specific, human signal. The site is a filter, not a persuasion site.
+  → [philosophy.md](./docs/philosophy.md), [voice.md](./docs/voice.md)
+- **No churchy jargon.** Avoid "fellowship," "discipleship," "ministry," "outreach,"
+  "plug in." Belief-neutral but not diluted. → [voice.md](./docs/voice.md)
+- **Tokens first.** Reference `var(--color-…)`, `var(--text-…)`, `var(--space-…)`. Never
+  hard-code colors, sizes, radii, or shadows. → [design-system.md](./docs/design-system.md)
+- **Portrait-first photos**, rendered through `<Photo>` and catalogued in
+  `src/data/homePageImages.ts`. Avoid landscape crops. → [development.md](./docs/development.md)
+- **Internal links use the base path:** ``href={`${import.meta.env.BASE_URL}about/`}``.
+  → [development.md](./docs/development.md)
+- **Data-driven content.** Repeating items live in `src/data/` and are mapped over — don't
+  hand-author lists in markup. → [development.md](./docs/development.md)
+- **Run `npm run format` before committing.** CI runs `format:check` and `check`.
+  → [development.md](./docs/development.md)
