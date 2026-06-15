@@ -1,6 +1,8 @@
 ---
 import PageIntro from './PageIntro.astro'
+import EventRow from './EventRow.astro'
 import { withBase } from '../lib/url'
+import { fmtDay, fmtDate, fmtTime, weekLabel } from '../lib/events/format'
 import type { CalendarEvent, EventCategory } from '../lib/events/types'
 
 type Props = {
@@ -11,15 +13,6 @@ type Props = {
 const { events, selected } = Astro.props
 
 const categories: EventCategory[] = ['Everyone', 'Families', 'Youth', 'Groups', 'Serve']
-
-// Event times are absolute instants (often UTC from Church Center); always render
-// them in the church's local timezone so the build server's tz (UTC in CI) can't
-// shift displayed times.
-const TZ = 'America/Los_Angeles'
-const fmtDay = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'short', timeZone: TZ })
-const fmtDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: TZ })
-const fmtTime = (d: Date) => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ })
-const weekLabel = (d: Date) => `Week of ${fmtDate(d)}`
 
 const categoryHref = (c: EventCategory) =>
   c === 'Everyone' ? withBase('whats-happening/') : withBase(`whats-happening/${c.toLowerCase()}/`)
@@ -129,33 +122,7 @@ for (const e of comingUp) {
 
             <div class="event-list">
               {list.map((e) => (
-                <article class="event-row">
-                  <div class="event-row__date-chip" aria-hidden="true">
-                    <span class="event-row__dow">{fmtDay(e._start)}</span>
-                    <span class="event-row__dnum">{fmtDate(e._start)}</span>
-                  </div>
-
-                  <div class="event-row__main">
-                    <div class="event-row__title">{e.title}</div>
-                    <div class="event-row__meta">
-                      <span class="tag event-row__cat">{e.category}</span>
-                      <span>
-                        {fmtTime(e._start)}
-                        {e.location ? ` · ${e.location}` : ''}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="event-row__cta">
-                    <a
-                      href={e.url}
-                      rel={e.url.startsWith('http') ? 'noopener' : undefined}
-                      target={e.url.startsWith('http') ? '_blank' : undefined}
-                    >
-                      Details →
-                    </a>
-                  </div>
-                </article>
+                <EventRow event={e} />
               ))}
             </div>
           </div>

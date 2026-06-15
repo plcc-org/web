@@ -1,0 +1,6 @@
+---
+title: Capernaum Talent Show
+when: 'Annual'
+blurb: 'An annual event with Young Life Capernaum for students with special needs and their families.'
+order: 9
+---

@@ -1,9 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Split from '../components/Split.astro'
-import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
 import Photo from '../components/Photo.astro'
+import YouthMoments from '../components/YouthMoments.astro'
+import EventRow from '../components/EventRow.astro'
+import { getCollection } from 'astro:content'
+import { getUpcomingEvents } from '../lib/events/provider'
 import { withBase } from '../lib/url'
 
 const youthPhotos = [
@@ -14,6 +17,12 @@ const youthPhotos = [
   '715970017_18207937117338056_1177766278064408406_n.jpg',
   '650398531_18198219304338056_7874541032610820038_n.jpg',
 ]
+
+const moments = (await getCollection('youthMoments')).sort((a, b) => a.data.order - b.data.order).map((m) => m.data)
+
+// The next few dated Youth events from the live feed (Church Center in prod,
+// curated fallback). Big annual moments live in `moments` above, not here.
+const youthEvents = (await getUpcomingEvents()).filter((e) => e.category === 'Youth').slice(0, 4)
 ---
 
 <BaseLayout
@@ -72,6 +81,22 @@ const youthPhotos = [
       </div>
     </section>
 
+    {
+      youthEvents.length > 0 && (
+        <section class="section youth-upcoming">
+          <div class="youth-upcoming__head">
+            <h2 class="youth-upcoming__heading">Coming up</h2>
+            <a href={withBase('whats-happening/youth/')}>All youth events →</a>
+          </div>
+          <div class="event-list">
+            {youthEvents.map((e) => (
+              <EventRow event={e} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
     <MomentsSection
       heading="Moments from Pine Lake Youth"
       eyebrow="Life together"
@@ -91,6 +116,8 @@ const youthPhotos = [
       </ul>
     </section>
 
+    <YouthMoments moments={moments} />
+
     <section class="section youth-connect">
       <h2>Want to get connected?</h2>
       <p class="measure">
@@ -102,65 +129,6 @@ const youthPhotos = [
         <a href="https://www.instagram.com/pinelakeyouth/" target="_blank" rel="noopener">Instagram</a>
         <a href="mailto:office@plcc.org">Email</a>
         <a href={withBase('whats-happening/')}>Current schedule</a>
-      </p>
-    </section>
-
-    <section class="section">
-      <SectionHeader eyebrow="Through the year" heading="Highlights through the year" />
-      <p class="measure">
-        Alongside our weekly rhythm, we run a few annual experiences that help students grow in faith and friendship.
-      </p>
-
-      <div class="card-grid">
-        <div class="card">
-          <h3>Confirmation</h3>
-          <p>
-            A 6-month track for students in 8th grade and up to dig into following Jesus — mentor relationships, monthly
-            teaching, and Confirmation Sunday in early June.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Campbell Farm</h3>
-          <p>
-            A 3-day middle school summer trip to Wapato, WA, with teaching, cross-cultural learning, and a lot of fun
-            together.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Retreats</h3>
-          <p>
-            Weekend retreats each year focused on fun, worship, teaching, and deeper friendships, both with Pine Lake
-            and partner churches.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <SectionHeader eyebrow="Faith that moves outward" heading="Service & missions" />
-      <p class="measure">
-        We want students to see faith move outward through practical service, both locally and globally.
-      </p>
-
-      <ul>
-        <li><strong>Global 6K for Water</strong> — a whole-family walk each spring that helps provide clean water.</li>
-        <li>
-          <strong>Capernaum Talent Show</strong> — an annual event with Young Life Capernaum for students with special needs
-          and their families.
-        </li>
-        <li>
-          <strong>Community Meal Packaging</strong> — typically in early December, helping package meals for kids in Sierra
-          Leone.
-        </li>
-        <li>
-          <strong>Unite</strong> — a regional high school gathering held every other summer (next planned: Summer 2027).
-        </li>
-      </ul>
-
-      <p>
-        <a href={withBase('whats-happening/')}>See what’s coming up →</a>
       </p>
     </section>
 
@@ -182,5 +150,18 @@ const youthPhotos = [
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+  }
+
+  .youth-upcoming__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .youth-upcoming__heading {
+    margin: 0;
   }
 </style>

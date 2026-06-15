@@ -91,6 +91,20 @@ const WEEKLY_RHYTHMS: WeeklyRhythm[] = [
     featured: true,
     instances: 6,
   },
+  {
+    idPrefix: 'youth-tuesday',
+    title: 'Pine Lake Youth',
+    weekday: 2,
+    hour: 18,
+    minute: 0,
+    durationMins: 120,
+    location: '1715 228th Ave SE, Sammamish',
+    summary: 'Dinner at 6pm, then connection time, worship, teaching, and small groups for middle & high school.',
+    url: '/youth/',
+    category: 'Youth',
+    tags: ['Weekly'],
+    instances: 4,
+  },
 ]
 
 // --- Confirmed one-off events ---------------------------------------------

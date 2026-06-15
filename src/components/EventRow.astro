@@ -1,0 +1,34 @@
+---
+import type { CalendarEvent } from '../lib/events/types'
+import { fmtDay, fmtDate, fmtTime } from '../lib/events/format'
+
+// One row in an event list: a date chip, the title + category/time/location, and
+// a "Details" link. Shared by the full <EventsBoard> and the compact youth feed.
+type Props = { event: CalendarEvent }
+
+const { event } = Astro.props
+const start = new Date(event.start)
+const external = event.url.startsWith('http')
+---
+
+<article class="event-row">
+  <div class="event-row__date-chip" aria-hidden="true">
+    <span class="event-row__dow">{fmtDay(start)}</span>
+    <span class="event-row__dnum">{fmtDate(start)}</span>
+  </div>
+
+  <div class="event-row__main">
+    <div class="event-row__title">{event.title}</div>
+    <div class="event-row__meta">
+      <span class="tag event-row__cat">{event.category}</span>
+      <span>
+        {fmtTime(start)}
+        {event.location ? ` · ${event.location}` : ''}
+      </span>
+    </div>
+  </div>
+
+  <div class="event-row__cta">
+    <a href={event.url} rel={external ? 'noopener' : undefined} target={external ? '_blank' : undefined}>Details →</a>
+  </div>
+</article>

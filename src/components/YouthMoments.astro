@@ -1,0 +1,196 @@
+---
+import Photo from './Photo.astro'
+
+// The big, recurring tentpoles of the youth program (from the `youthMoments`
+// collection). Featured moments render as large photo cards for special
+// attention; the rest fall into a compact list beneath them.
+type Moment = {
+  title: string
+  when?: string
+  blurb: string
+  photo?: string
+  link?: { label: string; href: string }
+  featured: boolean
+}
+
+type Props = {
+  moments: Moment[]
+  eyebrow?: string
+  heading?: string
+}
+
+const { moments, eyebrow = 'Through the year', heading = 'Big moments worth planning around' } = Astro.props
+
+const featured = moments.filter((m) => m.featured)
+const rest = moments.filter((m) => !m.featured)
+---
+
+<section class="section youth-moments">
+  <div class="youth-moments__head">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    {heading && <h2 class="youth-moments__heading">{heading}</h2>}
+  </div>
+
+  {
+    featured.length > 0 && (
+      <div class="moment-cards">
+        {featured.map((m) => (
+          <article class="moment-card">
+            {m.photo && (
+              <div class="moment-card__media">
+                <Photo
+                  filename={m.photo}
+                  class="moment-card__img"
+                  widths={[400, 700, 1000]}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+              </div>
+            )}
+            <div class="moment-card__body">
+              {m.when && <p class="moment-card__cadence">{m.when}</p>}
+              <h3 class="moment-card__title">{m.title}</h3>
+              <p class="moment-card__blurb">{m.blurb}</p>
+              {m.link && (
+                <p class="moment-card__cta">
+                  <a href={m.link.href}>{m.link.label} →</a>
+                </p>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    rest.length > 0 && (
+      <ul class="moment-list">
+        {rest.map((m) => (
+          <li class="moment-list__item">
+            <div class="moment-list__head">
+              <span class="moment-list__title">{m.title}</span>
+              {m.when && <span class="moment-list__cadence">{m.when}</span>}
+            </div>
+            <p class="moment-list__blurb">{m.blurb}</p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>
+
+<style>
+  .youth-moments__head {
+    margin-bottom: var(--space-md);
+  }
+
+  .youth-moments__heading {
+    margin: 0;
+  }
+
+  .moment-cards {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .moment-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-paper);
+    border: 1px solid var(--color-mist);
+    box-shadow: var(--shadow-md);
+  }
+
+  .moment-card__media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-mist);
+  }
+
+  /* The <img> is rendered by the child <Photo>, so it must be reached globally. */
+  :global(.moment-card__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .moment-card__body {
+    padding: clamp(1.1rem, 2vw, 1.5rem);
+  }
+
+  .moment-card__cadence {
+    margin: 0 0 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-moss);
+  }
+
+  .moment-card__title {
+    margin: 0 0 0.5rem;
+  }
+
+  .moment-card__blurb {
+    margin: 0;
+    color: var(--color-clay);
+  }
+
+  .moment-card__cta {
+    margin: 0.85rem 0 0;
+  }
+
+  .moment-list {
+    list-style: none;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .moment-list__item {
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-soft);
+    background: var(--color-stone);
+    border: 1px solid var(--color-mist);
+  }
+
+  .moment-list__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .moment-list__title {
+    font-weight: 700;
+  }
+
+  .moment-list__cadence {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-moss);
+  }
+
+  .moment-list__blurb {
+    margin: 0;
+    color: var(--color-clay);
+  }
+
+  @media (max-width: 860px) {
+    .moment-cards {
+      grid-template-columns: 1fr;
+    }
+    .moment-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
