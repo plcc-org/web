@@ -31,6 +31,33 @@ const tenets = [
     body: 'The Good News of the Gospel brings freedom from shame and fear, and offers grace for our failings. United in Christ, we focus on what unites us rather than what divides us — extending generosity where faithful Christians may differ.',
   },
 ]
+
+const focus = [
+  {
+    title: 'A shared vision',
+    body: 'We hold one aim together, in three simple movements: to be with Jesus, become like Jesus, and do what Jesus did.',
+  },
+  {
+    title: 'An open invitation',
+    body: 'We invite freely: friends into the life of the community, and one another further along in following Jesus.',
+  },
+  {
+    title: 'A habit of generosity',
+    body: 'We give our time, skill, and money freely — less because something needs funding, more because it’s how grace travels.',
+  },
+  {
+    title: 'Growing together',
+    body: 'We’re committed to growing in faith together, and to helping one another grow — no one left to figure it out alone.',
+  },
+  {
+    title: 'Love of neighbor',
+    body: 'We pray for, serve, and stay present to the people right around us — on our streets and across the Sammamish plateau.',
+  },
+  {
+    title: 'Everyone has a part',
+    body: 'The work of the church belongs to all of us, not only the staff. Ordinary members lead, serve, and carry it.',
+  },
+]
 ---
 
 <BaseLayout title="What We Believe | Pine Lake Covenant Church">
@@ -64,6 +91,11 @@ const tenets = [
           hard to picture: <em>in Sammamish, as it is in Heaven</em>.
         </p>
       </div>
+      <p class="focus-lead">
+        We haven’t arrived at any of this. These are six shifts we’re learning to live — the shape we hope the vision
+        takes in us:
+      </p>
+      <AccentList items={focus} numbered columns={3} />
     </section>
 
     <section class="section">
@@ -103,6 +135,12 @@ const tenets = [
 
   .vision p + p {
     margin-top: 1rem;
+  }
+
+  .focus-lead {
+    max-width: var(--measure);
+    margin: 2rem 0 0;
+    color: var(--color-ink-soft);
   }
 
   .vision-lead {
