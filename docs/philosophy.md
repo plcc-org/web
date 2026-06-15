@@ -47,8 +47,7 @@ As mentioned above, we want people to see themselves reflected in the visuals an
 Many church sites expose their structure by collapsing their information into a list of programs. But people come to the site to see what kind of church we are, not to read our org chart. And that means that a page on (say) receiving meals of care shouldn't also talk about how to volunteer for the program to _offer_ meals of care. A newcomer
 doesn't search for "the Care Ministry" — they're having a hard week and wondering if
 anyone would help.
-**Pattern:** group content around \*\*life
-sections.
+**Pattern:** group content around **life sections and needs**, not programs or departments.
 
 ### 3. Strategically incomplete
 

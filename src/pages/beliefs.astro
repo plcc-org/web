@@ -44,13 +44,31 @@ const tenets = [
     >
       <h1 class="display">What We Believe</h1>
       <p class="lede">
-        If you’d like the specifics, here they are. These are the core convictions that shape Pine Lake Covenant Church
+        Two things shape this page: what Pine Lake Covenant is trying to become, and the core convictions underneath it
         — the historic Christian faith we hold in common with the wider Evangelical Covenant Church.
       </p>
     </Split>
 
     <section class="section">
+      <p class="eyebrow">Our vision</p>
+      <div class="vision">
+        <p>
+          Underneath these convictions is a shared sense of who we’re trying to become. We say it plainly: Pine Lake
+          Covenant isn’t here to be the church the world expects us to be, but the community God is calling us to be.
+          The vision is short — <em>to find and follow Jesus, together</em> — and it takes a lifetime to live.
+        </p>
+        <p>
+          That happens in two directions. We gather — to worship, to learn, and to be known by name rather than lost in
+          a crowd. And we’re sent — back into the neighborhoods, schools, and workplaces of the Sammamish plateau,
+          carrying the good news of Jesus into ordinary weeks. What we’re praying toward, in the end, is easy to say and
+          hard to picture: <em>in Sammamish, as it is in Heaven</em>.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
       <p class="eyebrow">Six core tenets</p>
+      <p class="vision-lead">If you’d like the specifics, here they are.</p>
       <AccentList items={tenets} numbered columns={2} />
     </section>
 
@@ -79,6 +97,20 @@ const tenets = [
 </BaseLayout>
 
 <style>
+  .vision {
+    max-width: var(--measure);
+  }
+
+  .vision p + p {
+    margin-top: 1rem;
+  }
+
+  .vision-lead {
+    max-width: var(--measure);
+    margin: 0 0 1.5rem;
+    color: var(--color-ink-soft);
+  }
+
   .creed-note {
     display: grid;
     grid-template-columns: 1fr auto;
