@@ -33,29 +33,3 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
-
-/* Youth page gallery */
-.youth-gallery {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  margin: var(--space-m) 0;
-}
-
-.youth-gallery__tile {
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius-organic);
-  overflow: hidden;
-  box-shadow: var(--shadow-diffuse);
-  transition: transform 0.3s ease;
-}
-
-.youth-gallery__tile:hover {
-  transform: translateY(-8px) rotate(1deg);
-}
-
-.youth-gallery__tile img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}

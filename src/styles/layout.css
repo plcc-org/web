@@ -248,10 +248,9 @@ body:has(.band--flush) .site-footer {
 }
 
 /* ----------------------------------------------------------------------
- * Buttons (reusable; .page__lede a kept below for legacy pages)
+ * Buttons (reusable)
  * -------------------------------------------------------------------- */
-.btn,
-.page__lede a {
+.btn {
   display: inline-block;
   padding: 0.85rem 1.75rem;
   background: var(--color-moss);
@@ -267,8 +266,7 @@ body:has(.band--flush) .site-footer {
   box-shadow: var(--shadow-md);
 }
 
-.btn:hover,
-.page__lede a:hover {
+.btn:hover {
   background: var(--color-forest);
   color: var(--color-white);
   transform: translateY(-2px);

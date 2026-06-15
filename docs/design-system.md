@@ -432,10 +432,9 @@ Props: `items: { title, body }[]`, `numbered?` (adds the `01–06` serif numeral
   `.belief-statement` cards (paper, moss left accent; `.belief-lead` italic,
   `.belief-key` moss-2).
 
-> **Legacy / sparingly-used:** `.tile`, `.tile-grid`, `.vignette*`, `.story-grid`'s
-> wide min-track, and the older `.event-card`/`.event-date` styles predate the
-> current card system. Prefer `Split`, `MomentsSection`, `.card`, and `.link-card`
-> for new work.
+> **Legacy / sparingly-used:** `.story-grid`'s wide min-track and the older
+> `.event-card`/`.event-date` styles predate the current card system. Prefer
+> `Split`, `MomentsSection`, `.card`, and `.link-card` for new work.
 
 ---
 
