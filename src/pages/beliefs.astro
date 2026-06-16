@@ -16,7 +16,7 @@ const tenets = [
   },
   {
     title: 'The mission of the Church',
-    body: 'The Church exists not for itself, but to participate in God’s work of restoring the world: sharing the good news of Jesus, forming disciples, and practicing compassion, mercy, and justice in our communities and beyond.',
+    body: 'The Church exists to participate in God’s work of restoring the world: sharing the good news of Jesus, forming disciples, and practicing compassion, mercy, and justice in our communities and beyond.',
   },
   {
     title: 'Life together',
@@ -29,33 +29,6 @@ const tenets = [
   {
     title: 'Freedom in Christ',
     body: 'The Good News of the Gospel brings freedom from shame and fear, and offers grace for our failings. United in Christ, we focus on what unites us rather than what divides us — extending generosity where faithful Christians may differ.',
-  },
-]
-
-const focus = [
-  {
-    title: 'A shared vision',
-    body: 'We hold one aim together, in three simple movements: to be with Jesus, become like Jesus, and do what Jesus did.',
-  },
-  {
-    title: 'An open invitation',
-    body: 'We invite freely: friends into the life of the community, and one another further along in following Jesus.',
-  },
-  {
-    title: 'A habit of generosity',
-    body: 'We give our time, skill, and money freely — less because something needs funding, more because it’s how grace travels.',
-  },
-  {
-    title: 'Growing together',
-    body: 'We’re committed to growing in faith together, and to helping one another grow — no one left to figure it out alone.',
-  },
-  {
-    title: 'Love of neighbor',
-    body: 'We pray for, serve, and stay present to the people right around us — on our streets and across the Sammamish plateau.',
-  },
-  {
-    title: 'Everyone has a part',
-    body: 'The work of the church belongs to all of us, not only the staff. Ordinary members lead, serve, and carry it.',
   },
 ]
 ---
@@ -71,36 +44,14 @@ const focus = [
     >
       <h1 class="display">What We Believe</h1>
       <p class="lede">
-        Two things shape this page: what Pine Lake Covenant is trying to become, and the core convictions underneath it
-        — the historic Christian faith we hold in common with the wider Evangelical Covenant Church.
+        The core convictions underneath everything we do — the historic Christian faith we hold in common with the wider
+        Evangelical Covenant Church. Where we’re headed and how we get there lives on our
+        <a href={withBase('vision/')}>Mission &amp; Vision</a> page.
       </p>
     </Split>
 
     <section class="section">
-      <p class="eyebrow">Our vision</p>
-      <div class="vision">
-        <p>
-          Underneath these convictions is a shared sense of who we’re trying to become. We say it plainly: Pine Lake
-          Covenant isn’t here to be the church the world expects us to be, but the community God is calling us to be.
-          The vision is short — <em>to find and follow Jesus, together</em> — and it takes a lifetime to live.
-        </p>
-        <p>
-          That happens in two directions. We gather — to worship, to learn, and to be known by name rather than lost in
-          a crowd. And we’re sent — back into the neighborhoods, schools, and workplaces of the Sammamish plateau,
-          carrying the good news of Jesus into ordinary weeks. What we’re praying toward, in the end, is easy to say and
-          hard to picture: <em>in Sammamish, as it is in Heaven</em>.
-        </p>
-      </div>
-      <p class="focus-lead">
-        We haven’t arrived at any of this. These are six shifts we’re learning to live — the shape we hope the vision
-        takes in us:
-      </p>
-      <AccentList items={focus} numbered columns={3} />
-    </section>
-
-    <section class="section">
       <p class="eyebrow">Six core tenets</p>
-      <p class="vision-lead">If you’d like the specifics, here they are.</p>
       <AccentList items={tenets} numbered columns={2} />
     </section>
 
@@ -129,26 +80,6 @@ const focus = [
 </BaseLayout>
 
 <style>
-  .vision {
-    max-width: var(--measure);
-  }
-
-  .vision p + p {
-    margin-top: 1rem;
-  }
-
-  .focus-lead {
-    max-width: var(--measure);
-    margin: 2rem 0 0;
-    color: var(--color-ink-soft);
-  }
-
-  .vision-lead {
-    max-width: var(--measure);
-    margin: 0 0 1.5rem;
-    color: var(--color-ink-soft);
-  }
-
   .creed-note {
     display: grid;
     grid-template-columns: 1fr auto;

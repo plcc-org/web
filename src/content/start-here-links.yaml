@@ -24,12 +24,12 @@
   title: 'Messages'
   meta: 'Watch a recent service.'
   href: 'messages/'
-- id: im-new-what-were-about
+- id: im-new-mission-vision
   group: im-new
   order: 1
-  title: 'What We’re About'
-  meta: 'What shapes our life together, in plain language.'
-  href: 'about/what-were-about/'
+  title: 'Mission & Vision'
+  meta: 'Where we’re headed and how we get there.'
+  href: 'vision/'
 - id: im-new-pastors-letter
   group: im-new
   order: 2
