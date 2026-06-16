@@ -10,6 +10,7 @@ import { EVENTS_SOURCE } from 'astro:env/server'
 import type { CalendarEvent, EventSource } from './types'
 import { curatedEvents } from './adapters/curated'
 import { churchCenterEvents } from './adapters/churchcenter'
+import { normalizeUpcoming } from './logic'
 
 async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
   switch (source) {
@@ -32,21 +33,6 @@ async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
  */
 function defaultSource(): EventSource {
   return import.meta.env.PROD ? 'churchcenter' : 'curated'
-}
-
-/** Build-time "now" as the start of today (used to drop past events). */
-function startOfToday(): Date {
-  const now = new Date()
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate())
-}
-
-function normalizeUpcoming(events: CalendarEvent[]): CalendarEvent[] {
-  const floor = startOfToday()
-  const seen = new Set<string>()
-  return events
-    .filter((e) => new Date(e.start) >= floor)
-    .filter((e) => (seen.has(e.id) ? false : (seen.add(e.id), true)))
-    .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
 }
 
 // Memoized for the lifetime of the build process so the multiple "What's

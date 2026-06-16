@@ -13,7 +13,8 @@
 // sibling adapters behind the same interface. If anything here fails, the
 // provider falls back to the curated source, so the page is never empty.
 
-import type { CalendarEvent, EventCategory, EventTag } from '../types'
+import type { CalendarEvent, EventTag } from '../types'
+import { mapCategory } from '../logic'
 
 const ORIGIN = 'https://plcc.churchcenter.com'
 const API = 'https://api.churchcenter.com/calendar/v2/events'
@@ -76,15 +77,6 @@ function stripHtml(html: string | undefined | null): string {
     .replace(/&amp;/g, '&')
     .replace(/\s+/g, ' ')
     .trim()
-}
-
-function mapCategory(catNames: string[], title: string): EventCategory {
-  const hay = `${catNames.join(' ')} ${title}`.toLowerCase()
-  if (/youth|club 45|confirmation|middle school|high school/.test(hay)) return 'Youth'
-  if (/support group|grief|alzheimer|dementia|recovery|care\b/.test(hay)) return 'Groups'
-  if (/serve|serving|volunteer|food bank|mission|blood drive|packaging/.test(hay)) return 'Serve'
-  if (/kid|child|family|families|playgroup|momco|mom community|sports camp|vbs|nursery/.test(hay)) return 'Families'
-  return 'Everyone'
 }
 
 export async function churchCenterEvents(): Promise<CalendarEvent[]> {

@@ -10,6 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
+    "test": "vitest run",
+    "test:site": "node scripts/check-site.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -24,6 +26,7 @@
     "@types/node": "^25.9.3",
     "prettier": "^3.8.4",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   }
 }

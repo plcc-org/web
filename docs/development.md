@@ -105,7 +105,15 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
 
 - **Performance & accessibility are built in:** responsive, optimized images through a
   single pipeline; a skip link and semantic structure in `BaseLayout.astro`.
-- **CI** (`.github/workflows/`) runs `format:check` and `check` on every push, and builds
-  the staging target (see [infrastructure.md](./infrastructure.md)).
-- There is no unit-test suite today; correctness is enforced by TypeScript (`astro
-check`) and the build. Add tests alongside any non-trivial logic in `src/lib/`.
+- **CI** (`.github/workflows/`) runs `format:check`, `check`, `test`, `build`, and
+  `test:site` on every push, and builds the staging target (see
+  [infrastructure.md](./infrastructure.md)).
+- **Tests** come in two layers:
+  - `npm test` — Vitest unit tests (`test/*.test.ts`) for pure logic: `withBase()`, the
+    events helpers in `src/lib/events/logic.ts` (`mapCategory`, `normalizeUpcoming`), and a
+    check that every image referenced in source / the photo catalog exists in
+    `src/assets/images`. Keep pure logic in dependency-free modules (no `astro:` imports) so
+    it stays unit-testable.
+  - `npm run test:site` — a post-build crawl of `dist/` (`scripts/check-site.mjs`) that
+    fails on broken internal links, content images missing `alt`, or missing key routes.
+    Run it after `npm run build`.

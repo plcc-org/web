@@ -32,7 +32,9 @@ jobs:
       - run: npm ci
       - run: npm run format:check
       - run: npm run check
+      - run: npm run test
       - run: npm run build
+      - run: npm run test:site
 
       - uses: actions/upload-pages-artifact@v5
         with:
