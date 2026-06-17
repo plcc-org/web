@@ -1,5 +1,5 @@
-# Homepage testimonials (rotated client-side by QuoteGrid). `by` is optional.
-# `order` controls the initial four shown before rotation — real testimonials first.
+# Homepage testimonials (shown one at a time by QuoteCarousel). `by` is optional.
+# `order` controls the sequence — the first quote shows on load, then it rotates.
 - id: recent-attendee
   order: 1
   text: 'Pine Lake Covenant Church truly feels like family. From the moment you walk in, people genuinely say hello, start conversations, and make you feel seen. I’ve been to other churches before and never really felt connected — that’s not the case at Pine Lake at all.'
