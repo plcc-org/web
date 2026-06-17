@@ -491,9 +491,7 @@ a.card:hover {
 }
 
 .event-card {
-  display: grid;
-  grid-template-columns: 100px 1fr;
-  gap: 1.5rem;
+  display: flow-root;
   padding: 2rem;
   border-radius: var(--radius-soft);
   background: var(--color-white);
@@ -502,6 +500,9 @@ a.card:hover {
 }
 
 .event-date {
+  float: left;
+  width: 100px;
+  margin: 0 1.5rem 1rem 0;
   text-align: center;
   border-radius: 10px;
   background: var(--color-stone);
