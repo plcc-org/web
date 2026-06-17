@@ -53,7 +53,7 @@ const { quotes } = Astro.props
 
 <style>
   .quote-carousel {
-    margin-top: var(--space-lg);
+    margin-top: var(--space-md);
   }
 
   /* All slides share one grid cell, so the viewport is as tall as the
@@ -62,10 +62,17 @@ const { quotes } = Astro.props
     display: grid;
   }
 
+  /* Out of the card: let the quote sit in open space. Drop the paper panel,
+     border, and shadow inherited from .story-quote; keep the centered serif
+     type and the moss accent rule. */
   .quote-slide {
     grid-area: 1 / 1;
     max-width: 48rem;
     margin-inline: auto;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
     text-align: center;
     align-items: center;
     opacity: 0;
@@ -100,7 +107,7 @@ const { quotes } = Astro.props
     align-items: center;
     justify-content: center;
     gap: var(--space-md);
-    margin-top: var(--space-lg);
+    margin-top: var(--space-md);
   }
 
   .quote-nav {
