@@ -14,9 +14,10 @@ type Props = {
 
 const { heading = 'Start here', links } = Astro.props
 
-// Pick a tidy column count from the item count so rows stay balanced
-// (5 → 3+2, never 4+1; 4 → 2×2; ≤3 → one row). Small counts only, so cap at 3.
-const cols = links.length <= 3 ? links.length : links.length === 4 ? 2 : 3
+// Pick a column count from the item count: as many columns as cards (capped at
+// 4 so cards don't get too narrow), except 5 splits 3+2 to avoid a lone 4+1
+// orphan. The 860px/560px overrides below step everything down to 2 then 1.
+const cols = links.length === 5 ? 3 : Math.min(links.length, 4)
 ---
 
 <section class="section">
