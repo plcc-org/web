@@ -13,12 +13,16 @@ type Props = {
 }
 
 const { heading = 'Start here', links } = Astro.props
+
+// Pick a tidy column count from the item count so rows stay balanced
+// (5 → 3+2, never 4+1; 4 → 2×2; ≤3 → one row). Small counts only, so cap at 3.
+const cols = links.length <= 3 ? links.length : links.length === 4 ? 2 : 3
 ---
 
 <section class="section">
   <h2>{heading}</h2>
 
-  <div class="link-grid">
+  <div class="link-grid" style={`--link-cols:${cols}`}>
     {
       links.map((link) => (
         <a href={withBase(link.href)} class="link-card">

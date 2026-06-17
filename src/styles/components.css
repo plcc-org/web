@@ -316,9 +316,26 @@ a.card:hover {
 }
 
 .link-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  --gap: 1.5rem;
+  /* Column count comes from LinkCardSection (set by item count); the fallback
+     covers the hand-authored grid in kids.astro. */
+  --cols: var(--link-cols, 2);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+}
+
+@media (max-width: 860px) {
+  .link-grid {
+    --cols: 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .link-grid {
+    --cols: 1;
+  }
 }
 
 @media (max-width: 640px) {
@@ -328,6 +345,11 @@ a.card:hover {
 }
 .link-card {
   display: block;
+  /* Width for exactly --cols per row; max-width = basis so cards don't grow to
+     fill, keeping any orphan card-sized and centered by justify-content. */
+  flex: 1 1 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  max-width: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  min-width: 0;
   padding: clamp(1.5rem, 2.4vw, 2rem);
   border-radius: var(--radius-lg);
   background: var(--color-paper);
