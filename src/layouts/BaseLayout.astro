@@ -7,6 +7,7 @@ import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
 import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
 import socialImageSource from '../assets/images/plcc-social-card.png'
 import iconSource from '../assets/images/plcc-logo-icon.jpg'
+import faviconSource from '../assets/images/plcc-logo.png'
 
 type Props = {
   title?: string
@@ -22,9 +23,12 @@ const {
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
 
-// Social share image (1200x630) and Apple touch icon, generated at build time.
+// Social share image (1200x630), Apple touch icon, and favicons, generated at build time.
 const socialImage = await getImage({ src: socialImageSource, width: 1200, height: 630, fit: 'cover', format: 'png' })
 const appleTouchIcon = await getImage({ src: iconSource, width: 180, height: 180, fit: 'cover', format: 'png' })
+// Favicon uses the transparent logo so it sits cleanly on any tab background.
+const favicon16 = await getImage({ src: faviconSource, width: 16, height: 16, format: 'png' })
+const favicon32 = await getImage({ src: faviconSource, width: 32, height: 32, format: 'png' })
 // Open Graph images must be absolute URLs.
 const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toString() : socialImage.src
 ---
@@ -48,7 +52,8 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
     <meta name="theme-color" content="#6a9529" />
 
     <!-- Icons + PWA manifest -->
-    <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={favicon32.src} type="image/png" sizes="32x32" />
+    <link rel="icon" href={favicon16.src} type="image/png" sizes="16x16" />
     <link rel="apple-touch-icon" href={appleTouchIcon.src} />
     <link rel="manifest" href={withBase('manifest.webmanifest')} />
 
