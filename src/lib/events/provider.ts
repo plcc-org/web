@@ -2,7 +2,7 @@
 //
 // Selects an adapter by the EVENTS_SOURCE env var (default 'curated'), normalizes
 // the result to an upcoming, sorted list, and falls back to the curated source on
-// any failure so "What's Happening" is never empty. New sources (Church Center
+// any failure so "What's On" is never empty. New sources (Church Center
 // headless capture, public ICS feed, PCO API) plug in here behind the same
 // interface — see docs/events-plan.md.
 

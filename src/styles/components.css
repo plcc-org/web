@@ -525,7 +525,7 @@ a.card:hover {
   color: var(--color-clay);
 }
 
-/* What's Happening: featured grid, coming-up list, rhythms */
+/* What's On: featured grid, coming-up list, rhythms */
 .event-grid {
   display: grid;
   gap: 1.5rem;

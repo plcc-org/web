@@ -25,7 +25,7 @@ const USER_AGENT = 'Mozilla/5.0 (compatible; plcc-web/1.0; +https://plcc.org)'
 const WINDOW_DAYS = 56
 
 // Third-party facility rentals and the like that shouldn't read as PLCC
-// programs on "What's Happening". Curation list — adjust as needed.
+// programs on "What's On". Curation list — adjust as needed.
 const EXCLUDE_TITLE = /pedalheads/i
 
 function isoUtc(d: Date): string {
