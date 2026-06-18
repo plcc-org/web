@@ -313,13 +313,14 @@ and put an `<h1 class="display">` in the slot. Stacks to a single column ≤ 860
 tiles with a gentle editorial stagger and hover zoom.
 
 ```astro
-<MomentsSection eyebrow="Life together" heading="Moments from Pine Lake" items={items} sectionClass="to-wide" />
+<MomentsSection eyebrow="Life together" heading="Moments from Pine Lake" photos={moments} sectionClass="to-wide" />
 ```
 
-Props: `heading?` (`null` to hide), `eyebrow?`, `items: { image?, fallbackAlt }[]`
-(entries without an `image` are skipped), `sectionClass?` (default `'section'`; pass
-`'to-wide'` in a canvas). Image styles are `:global()` because the `<img>` is
-rendered by the child `<Photo>` (see §9).
+Props: `heading?` (`null` to hide; defaults to "Moments from Pine Lake"), `eyebrow?`,
+`photos: string[]` (filenames — the page owns the selection and order; each photo's
+`alt` is looked up from the catalog by the child `<Photo>`), `sectionClass?` (default
+`'section'`; pass `'to-wide'` in a canvas). Image styles are `:global()` because the
+`<img>` is rendered by the child `<Photo>` (see §9).
 
 ### `SectionHeader` — eyebrow + heading pair
 
@@ -375,11 +376,13 @@ Covenant emphases: paper cards with a 4px moss left accent. Two-across cards are
 roomier; three-across are tighter (smaller padding and body copy).
 
 ```astro
-<AccentList items={tenets} numbered columns={2} />
+<AccentList items={tenets} columns={2} />
 ```
 
-Props: `items: { title, body }[]`, `numbered?` (adds the `01–06` serif numerals),
-`columns?` (`2` default | `3`). Collapses to one column on small screens.
+Props: `items: { title, body }[]`, `columns?` (`2` default | `3`). Renders an
+unordered set (`<ul>`, no marker — the moss left-border carries the accent), so use
+it for sets of points, not ordered sequences. Collapses to one column on small
+screens.
 
 ### Other components
 
@@ -462,18 +465,24 @@ Props: `items: { title, body }[]`, `numbered?` (adds the `01–06` serif numeral
 Photos are the primary visual material. **Favor portrait (4:5 or taller); avoid
 landscape crops.**
 
-- Files live in `src/assets/images/` and are catalogued in
-  `src/data/homePageImages.ts` as `{ filename, tags[], alt? }`.
+- Photo **bytes** live in `src/assets/images/`. Photo **metadata** lives once in the
+  `photos` content collection — `src/content/photos.json`, a list of `{ id, alt }`
+  where `id` is the filename. The catalog is the single source of truth for `alt`;
+  it stays agnostic of where each photo is used.
 - Render through **`<Photo>`** (`src/components/Photo.astro`), a wrapper over Astro's
-  `<Image>` that resolves a filename via `src/lib/images.ts` and emits an optimized,
-  responsive WebP with intrinsic dimensions (no layout shift). Props: `filename`,
-  `alt`, `class?`, `widths?` (default `[480, 960, 1440]`), `sizes?`, `loading?`
-  (default `'lazy'`), `fetchpriority?`, `format?` (default `'webp'`). Renders nothing
-  if the file is missing.
-- Helpers: `imageByFilename(name)`, `imageAlt(image, fallback)`,
-  `getImagesByAnyTag(tags)`, `pickImageByAnyTag(tags, exclude?)`.
-- Keep the filename as the data-level identifier so the catalogue could later be a
-  CMS response. Write descriptive `alt` text in the catalogue.
+  `<Image>` that resolves a filename to its bytes via `imageLoader()`
+  (`src/lib/images.ts`) and looks up its `alt` via `photoAlt()` (`src/lib/photos.ts`),
+  emitting an optimized, responsive WebP with intrinsic dimensions (no layout shift).
+  Props: `filename` (or a pre-resolved `image`), `alt?`, `class?`, `widths?` (default
+  `[480, 960, 1440]`), `sizes?`, `loading?` (default `'lazy'`), `fetchpriority?`,
+  `format?` (default `'webp'`). Renders nothing if the filename can't be resolved, so
+  callers don't need their own fallback.
+- **Alt text:** for catalogued photos, **omit `alt`** — it's looked up by filename.
+  Pass `alt` explicitly only for logos and adornments (not in the catalog) or to
+  override.
+- Pages **select photos by filename and own the ordering** (e.g. the `photos` array a
+  page passes to `MomentsSection`); the catalog never encodes usage. Keeping the
+  filename as the identifier means the catalog could later be a CMS response.
 - Photos are **not mapped 1:1** to stories — reuse across pages is fine; avoid
   repeating the same image twice on one page.
 
@@ -481,7 +490,8 @@ landscape crops.**
 
 ## 9. Conventions & gotchas
 
-- **Internal links** use the base path: ``href={`${import.meta.env.BASE_URL}about/`}``.
+- **Internal links** use the `withBase()` helper (`src/lib/url.ts`):
+  `href={withBase('about/')}`.
 - **Scoped styles don't reach child components.** A scoped rule in a parent `.astro`
   will not style markup rendered by a child component (e.g. the `<img>` inside
   `<Photo>`). Use `:global(.class)` for those, as `MomentsSection` and the logo
@@ -494,8 +504,10 @@ landscape crops.**
   the `:where()`.
 - **Full-bleed math.** `width: 100vw; margin-inline: calc(50% - 50vw)` breaks an
   element out of the shell; `html { overflow-x: clip }` absorbs the scrollbar delta.
-- **Data-driven content.** Repeating content (nav links, doors, quotes, start-here
-  links) lives in `src/data/` and is mapped over — don't hand-author lists in pages.
+- **Data-driven content.** Repeating content (quotes, neighbor doors, start-here
+  links, leadership, youth moments) lives in `src/content/` collections (defined in
+  `src/content.config.ts`), queried with `getCollection()` and mapped over — don't
+  hand-author lists in markup or add `src/data/*.ts` arrays.
 - **Reference tokens, not literals.** New CSS should use `var(--…)` for color, size,
   spacing, radius, and shadow.
 
@@ -529,7 +541,7 @@ A photo-led section page:
     <Split class="to-full" filename="…" alt="…" tone="paper" heading="…">…</Split>
 
     <!-- A gallery -->
-    <MomentsSection eyebrow="Life together" items={items} sectionClass="to-wide" />
+    <MomentsSection eyebrow="Life together" photos={moments} sectionClass="to-wide" />
 
     <!-- Optional closing CTA -->
     <section class="band band--forest to-full">

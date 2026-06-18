@@ -58,10 +58,18 @@
   --tracking-tight: -0.02em;
   --tracking-wide: 0.06em;
 
-  /* Organic axes for Fraunces display headings. SOFT (0–100) rounds the
-     terminals — at 100 it reads noticeably heavier; keep it gentle. WONK (0/1)
-     toggles Fraunces' quirky alternates. Tune to taste. */
-  --serif-display: 'SOFT' 30, 'WONK' 0;
+  /* Organic axes for Fraunces headings. Fraunces is variable on optical size
+     (opsz 9–144), SOFT (terminal rounding, 0–100), and WONK (its quirky
+     alternates, 0/1). Tie opsz to the rendered size — large type gets the
+     high-contrast display cut, small headings stay calm — the way a metal type
+     family was drawn fresh at each size. WONK is spent only on the largest
+     display type so the personality lands once, loudly, rather than on every
+     heading. SOFT stays gentle at 30 throughout (100 reads noticeably heavier). */
+  --serif-display: 'opsz' 84, 'SOFT' 30, 'WONK' 1; /* hero / .display */
+  --serif-h1: 'opsz' 72, 'SOFT' 30, 'WONK' 1;
+  --serif-h2: 'opsz' 72, 'SOFT' 30, 'WONK' 0;
+  --serif-h3: 'opsz' 48, 'SOFT' 30, 'WONK' 0;
+  --serif-h4: 'opsz' 36, 'SOFT' 30, 'WONK' 0;
 
   /* ----------------------------------------------------------------------
    * Spacing & rhythm

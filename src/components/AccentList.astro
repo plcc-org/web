@@ -1,38 +1,29 @@
 ---
 // A grid of titled "point" cards with a moss accent — the shared treatment
-// behind the Beliefs tenets and the Covenant emphases. Pass `numbered` for the
-// 01–06 style; `columns` controls the grid. Unnumbered lists render as an
-// unordered set (no marker — the moss left-border carries the accent).
+// behind the Beliefs tenets and the Covenant emphases. These are unordered
+// sets, so the list is a <ul> with no marker; the moss left-border carries the
+// accent. `columns` controls the grid.
 
 type Item = { title: string; body: string }
 
 type Props = {
   items: Item[]
-  numbered?: boolean
   columns?: 2 | 3
 }
 
-const { items, numbered = false, columns = 2 } = Astro.props
-
-// Numbered lists are a sequence (<ol>); everything else is an unordered set.
-const Tag = numbered ? 'ol' : 'ul'
+const { items, columns = 2 } = Astro.props
 ---
 
-<Tag class:list={['accent-list', `accent-list--${columns}`]}>
+<ul class:list={['accent-list', `accent-list--${columns}`]}>
   {
-    items.map((item, i) => (
+    items.map((item) => (
       <li class="accent-card">
-        {numbered && (
-          <span class="accent-card__num" aria-hidden="true">
-            {String(i + 1).padStart(2, '0')}
-          </span>
-        )}
         <h3 class="accent-card__title">{item.title}</h3>
         <p>{item.body}</p>
       </li>
     ))
   }
-</Tag>
+</ul>
 
 <style>
   .accent-list {
@@ -67,17 +58,6 @@ const Tag = numbered ? 'ol' : 'ul'
 
   .accent-list--3 .accent-card {
     padding: clamp(1.25rem, 2vw, 1.6rem);
-  }
-
-  .accent-card__num {
-    display: block;
-    font-family: var(--font-serif);
-    font-variation-settings: var(--serif-display);
-    font-weight: 800;
-    font-size: var(--text-xl);
-    line-height: 1;
-    color: var(--color-moss-2);
-    margin-bottom: 0.6rem;
   }
 
   .accent-card__title {

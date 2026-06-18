@@ -57,24 +57,28 @@ h4 {
   text-wrap: balance;
   margin: 0 0 0.5em;
   color: var(--color-forest);
-  font-variation-settings: var(--serif-display);
 }
 
+/* Optical size tracks each level's rendered size (see --serif-* in tokens.css). */
 h1 {
   font-size: var(--text-3xl);
   letter-spacing: var(--tracking-tight);
+  font-variation-settings: var(--serif-h1);
 }
 
 h2 {
   font-size: var(--text-2xl);
+  font-variation-settings: var(--serif-h2);
 }
 
 h3 {
   font-size: var(--text-xl);
+  font-variation-settings: var(--serif-h3);
 }
 
 h4 {
   font-size: var(--text-lg);
+  font-variation-settings: var(--serif-h4);
 }
 
 p {

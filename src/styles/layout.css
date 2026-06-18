@@ -206,6 +206,7 @@ body:has(.band--flush) .site-footer {
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
   margin: 0;
+  font-variation-settings: var(--serif-display);
 }
 
 .lede,

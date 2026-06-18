@@ -125,6 +125,7 @@
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
   margin: 0;
+  font-variation-settings: var(--serif-display);
   text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35);
 }
 
