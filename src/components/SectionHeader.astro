@@ -10,7 +10,7 @@ type Props = {
   id?: string
 }
 
-const { eyebrow, heading, as: Heading = 'h2', id } = Astro.props
+const { eyebrow, heading, as: Heading = 'h2', id }: Props = Astro.props
 ---
 
 {eyebrow && <p class="eyebrow">{eyebrow}</p>}
