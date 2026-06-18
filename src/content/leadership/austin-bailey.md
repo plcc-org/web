@@ -9,10 +9,14 @@ link:
   href: about/pastors-letter/
 ---
 
-<!-- PLACEHOLDER PROFILE — replace with Austin's real bio. Keep it a single
-     short paragraph, specific and human; see docs/voice.md. -->
+Austin grew up in Texas and studied at North Park University, where he earned
+degrees in both theology and accounting — an unusual pairing — before a Master
+of Divinity at the seminary there. He served as a pastor at Covenant churches
+in Texas and Connecticut for a decade, and the church called him to Pine Lake
+as lead pastor in 2021. He also coaches within the Covenant, helping people
+discover their own voice and natural strengths — how to speak with confidence
+and connect with any audience.
 
-Austin leads our Sunday gatherings and helps set the direction of our life
-together. He cares about plain-spoken teaching, long lunches that run too long,
-and the slow work of getting to know a neighborhood. He and his family have
-made Sammamish home.
+He and his wife, Ashley, were married in her home state of Connecticut, and they
+have three kids — Ellie, Gwen, and Stephen. Austin is quick to laugh and never
+happier than when he's surrounded by people.
