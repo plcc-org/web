@@ -91,5 +91,12 @@ const { heading = 'Moments from Pine Lake', eyebrow = null, photos, sectionClass
     .moments__tile--offset {
       transform: none;
     }
+
+    /* On the 2-up mobile grid, an odd count leaves a lone trailing tile.
+       Drop that orphan so the grid always ends in a clean pair.
+       :not(:first-child) guards against hiding a lone single photo. */
+    .moments__tile:last-child:nth-child(odd):not(:first-child) {
+      display: none;
+    }
   }
 </style>
