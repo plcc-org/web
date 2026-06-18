@@ -2,21 +2,32 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import PageIntro from '../../components/PageIntro.astro'
 import Photo from '../../components/Photo.astro'
-import { getCollection } from 'astro:content'
+import { getCollection, render } from 'astro:content'
 import { withBase } from '../../lib/url'
 
 const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order)
+
+// Render each entry's markdown body (the paragraph profile) alongside its data.
+const withBody = await Promise.all(
+  leaders.map(async (leader) => ({ ...leader, Content: (await render(leader)).Content }))
+)
 ---
 
 <BaseLayout title="Leadership | Pine Lake Covenant Church">
   <div class="canvas">
     <PageIntro eyebrow="About" title="Leadership" subhead="Our pastors and staff" />
-    <section class="section">
+    <section class="section leader-section">
       <div class="leader-grid">
         {
-          leaders.map((leader) => (
-            <div class="leader-card">
-              <div class="leader-card__photo">
+          withBody.map((leader) => (
+            <button
+              type="button"
+              class="leader-card"
+              data-leader={leader.id}
+              aria-expanded="false"
+              aria-controls={`detail-${leader.id}`}
+            >
+              <div class="leader-card__photo" data-portrait>
                 <div class="media__frame ratio-4x5">
                   <Photo
                     image={leader.data.portrait}
@@ -27,17 +38,143 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
                   />
                 </div>
               </div>
-              <div class="leader-card__name">{leader.data.name}</div>
-              <div class="leader-card__title">{leader.data.title}</div>
-              {leader.data.link && (
-                <p class="leader-card__meta">
-                  <a href={withBase(leader.data.link.href)}>{leader.data.link.label}</a>
-                </p>
-              )}
-            </div>
+              <span class="leader-card__name">{leader.data.name}</span>
+              <span class="leader-card__title">{leader.data.title}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="leader-focus">
+        {
+          withBody.map((leader) => (
+            <article
+              class="leader-detail"
+              id={`detail-${leader.id}`}
+              data-leader={leader.id}
+              aria-labelledby={`detail-${leader.id}-name`}
+              hidden
+            >
+              <div class="leader-detail__photo" data-portrait>
+                <div class="media__frame ratio-4x5">
+                  <Photo
+                    image={leader.data.portrait}
+                    alt={leader.data.portraitAlt}
+                    class="media__img media__img--cover"
+                    widths={[480, 960]}
+                    sizes="(max-width: 600px) 100vw, 420px"
+                  />
+                </div>
+              </div>
+              <div class="leader-detail__body">
+                <h2 id={`detail-${leader.id}-name`} class="leader-card__name leader-detail__name">
+                  {leader.data.name}
+                </h2>
+                <p class="leader-card__title leader-detail__title">{leader.data.title}</p>
+                <div class="leader-detail__prose measure">
+                  <leader.Content />
+                </div>
+                {leader.data.link && (
+                  <p class="leader-detail__meta">
+                    <a href={withBase(leader.data.link.href)}>{leader.data.link.label}</a>
+                  </p>
+                )}
+                <button type="button" class="leader-detail__close" aria-label="Back to all staff">
+                  ← All staff
+                </button>
+              </div>
+            </article>
           ))
         }
       </div>
     </section>
   </div>
 </BaseLayout>
+
+<script>
+  const section = document.querySelector<HTMLElement>('.leader-section')
+  if (section) {
+    const cards = Array.from(section.querySelectorAll<HTMLButtonElement>('.leader-card'))
+    const details = Array.from(section.querySelectorAll<HTMLElement>('.leader-detail'))
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    const cardFor = (slug: string) => cards.find((c) => c.dataset.leader === slug) ?? null
+    const detailFor = (slug: string) => details.find((d) => d.dataset.leader === slug) ?? null
+    const portraitOf = (el: Element | null) => el?.querySelector<HTMLElement>('[data-portrait]') ?? null
+
+    let activeSlug: string | null = null
+
+    // The actual DOM swap — wrapped in a view transition by run() below.
+    const applyState = (slug: string | null) => {
+      activeSlug = slug
+      section.classList.toggle('is-focused', slug !== null)
+      for (const card of cards) card.setAttribute('aria-expanded', String(card.dataset.leader === slug))
+      for (const detail of details) detail.hidden = detail.dataset.leader !== slug
+    }
+
+    // Tag the outgoing card portrait and incoming detail portrait with a shared
+    // name so the browser morphs one into the other; clear it afterwards so the
+    // name stays unique to a single transition.
+    const run = (slug: string | null, fromSlug: string | null) => {
+      const supportsVT = typeof document.startViewTransition === 'function'
+      if (!supportsVT || prefersReduced.matches) {
+        applyState(slug)
+        return
+      }
+      // Opening: morph card → detail. Closing: morph detail → card.
+      const opening = slug !== null
+      const morphSlug = opening ? slug : fromSlug
+      const fromPortrait = portraitOf(opening ? cardFor(morphSlug!) : detailFor(morphSlug!))
+      const toPortrait = portraitOf(opening ? detailFor(morphSlug!) : cardFor(morphSlug!))
+      if (fromPortrait) fromPortrait.style.viewTransitionName = 'leader-portrait'
+      if (toPortrait) toPortrait.style.viewTransitionName = 'leader-portrait'
+      const transition = document.startViewTransition(() => applyState(slug))
+      transition.finished.finally(() => {
+        if (fromPortrait) fromPortrait.style.viewTransitionName = ''
+        if (toPortrait) toPortrait.style.viewTransitionName = ''
+      })
+    }
+
+    const open = (slug: string, push = true) => {
+      if (!detailFor(slug) || slug === activeSlug) return
+      const from = activeSlug
+      run(slug, from)
+      if (push) history.pushState(null, '', `#${slug}`)
+      // Move focus into the panel once it's visible.
+      const focusClose = () => detailFor(slug)?.querySelector<HTMLButtonElement>('.leader-detail__close')?.focus()
+      requestAnimationFrame(focusClose)
+    }
+
+    const close = (push = true) => {
+      if (activeSlug === null) return
+      const from = activeSlug
+      run(null, from)
+      if (push) history.pushState(null, '', window.location.pathname + window.location.search)
+      requestAnimationFrame(() => cardFor(from)?.focus())
+    }
+
+    for (const card of cards) {
+      card.addEventListener('click', () => open(card.dataset.leader!))
+    }
+    for (const detail of details) {
+      detail.querySelector<HTMLButtonElement>('.leader-detail__close')?.addEventListener('click', () => close())
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && activeSlug !== null) close()
+    })
+
+    // Sync to the URL hash: deep links on load, plus Back/Forward navigation.
+    const syncToHash = (push = false) => {
+      const slug = window.location.hash.replace(/^#/, '')
+      if (slug && detailFor(slug)) open(slug, push)
+      else close(push)
+    }
+    window.addEventListener('popstate', () => syncToHash(false))
+    // Initial load: open without animating, no extra history entry.
+    if (window.location.hash) {
+      const slug = window.location.hash.replace(/^#/, '')
+      if (detailFor(slug)) applyState(slug)
+    }
+  }
+</script>

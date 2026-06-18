@@ -102,23 +102,34 @@
   margin: var(--space-m) 0;
 }
 
+/* Cards are buttons that open an in-place profile — strip the native chrome. */
 .leader-card {
   display: flex;
   flex-direction: column;
-  text-decoration: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: left;
   color: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .leader-card__photo {
   margin-bottom: 1.75rem;
-  transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+  transition: transform 0.4s var(--ease-out);
 }
 
 .leader-card:hover .leader-card__photo {
   transform: translateY(-10px) rotate(1deg);
 }
 
-.leader-card__photo .media__frame {
+.leader-card__photo .media__frame,
+.leader-detail__photo .media__frame {
   box-shadow: var(--shadow-diffuse);
   background-color: var(--color-white);
   padding: 0.65rem;
@@ -126,6 +137,7 @@
 }
 
 .leader-card__name {
+  display: block;
   font-family: var(--font-serif);
   font-size: 1.65rem;
   font-weight: 700;
@@ -136,6 +148,7 @@
 }
 
 .leader-card__title {
+  display: block;
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 1.1rem;
@@ -144,13 +157,63 @@
   margin: 0;
 }
 
-.leader-card__meta {
-  margin-top: 1.15rem;
+/* ------------------------------------------------------------------ *
+ * In-place profile ("focus") view
+ * ------------------------------------------------------------------ */
+
+/* The focus stack and grid trade places; only one is visible at a time. */
+.leader-focus {
+  display: none;
+}
+
+.leader-section.is-focused .leader-grid {
+  display: none;
+}
+
+.leader-section.is-focused .leader-focus {
+  display: block;
+}
+
+/* `hidden` must win over the panel's own `display`. */
+.leader-detail[hidden] {
+  display: none;
+}
+
+.leader-detail {
+  display: grid;
+  grid-template-columns: minmax(15rem, 21rem) 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+  margin: var(--space-m) 0;
+}
+
+.leader-detail__body {
+  align-self: center;
+}
+
+.leader-detail__name {
+  font-size: 2rem;
+}
+
+.leader-detail__title {
+  margin-bottom: 1.5rem;
+}
+
+.leader-detail__prose {
+  font-family: var(--font-sans);
+}
+
+.leader-detail__prose > * + * {
+  margin-top: 1rem;
+}
+
+.leader-detail__meta {
+  margin-top: 1.5rem;
   font-size: 0.95rem;
   font-family: var(--font-sans);
 }
 
-.leader-card__meta a {
+.leader-detail__meta a {
   color: var(--color-moss);
   font-weight: 700;
   text-decoration: none;
@@ -158,9 +221,39 @@
   transition: all 0.2s ease;
 }
 
-.leader-card__meta a:hover {
+.leader-detail__meta a:hover {
   color: var(--color-forest);
   border-bottom-color: var(--color-moss);
+}
+
+.leader-detail__close {
+  margin-top: 2rem;
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-moss);
+  background: none;
+  border: 2px solid var(--color-mist);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    background 0.2s var(--ease-out);
+}
+
+.leader-detail__close:hover {
+  color: var(--color-forest);
+  border-color: var(--color-moss);
+}
+
+/* Let the shared portrait morph between grid and detail without a cross-fade
+   over the move; unchanged cards still cross-fade via the default root. */
+::view-transition-old(leader-portrait),
+::view-transition-new(leader-portrait) {
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 600px) {
@@ -170,6 +263,16 @@
   }
 
   .leader-card__photo {
+    max-width: 320px;
+  }
+
+  /* Stack the profile: portrait on top, prose below. */
+  .leader-detail {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .leader-detail__photo {
     max-width: 320px;
   }
 }
