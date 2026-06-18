@@ -6,9 +6,12 @@ portraitAlt: Kim Witherbee, Director, Facilities and Ministries
 order: 4
 ---
 
-<!-- PLACEHOLDER PROFILE — replace with Kim's real bio. Keep it a single
-     short paragraph, specific and human; see docs/voice.md. -->
-
-Kim keeps the building running and the week's many moving parts in order — the
-unglamorous, behind-the-scenes work that lets everything else happen. If the
-lights are on and the coffee's hot, that's usually her.
+Kim has been part of Pine Lake about as long as she can remember — her family
+started coming when she was two. Over the years she's been up front in worship,
+in both the music and the drama, and she joined the staff in 2007. Much of her
+work now is planning the events that bring people together — the seasonal
+celebrations and gatherings for the congregation, and the occasions that
+welcome neighbors who've never set foot here before. She also looks after the
+property and the groups who rent it, keeping the space well cared for so the
+church can go on sharing and using it. And she helps oversee the Sunday programs
+for kids, from preschool through fifth grade.
