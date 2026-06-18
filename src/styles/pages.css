@@ -99,7 +99,6 @@
   display: grid;
   gap: 4.5rem 2.5rem;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  margin: var(--space-m) 0;
 }
 
 /* Cards are buttons that open an in-place profile — strip the native chrome. */
@@ -184,7 +183,6 @@
   grid-template-columns: minmax(15rem, 21rem) 1fr;
   gap: clamp(2rem, 5vw, 4rem);
   align-items: start;
-  margin: var(--space-m) 0;
 }
 
 .leader-detail__body {
