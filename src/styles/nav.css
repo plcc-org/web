@@ -175,8 +175,11 @@
   outline-offset: 3px;
 }
 
-/* Hamburger menu for mobile and narrower desktops (the full row needs ~1120px) */
-@media (max-width: 1180px) {
+/* Hamburger menu for mobile and narrower desktops. The nav is capped at the
+   1120px shell, so the full row renders at a constant width above that; below
+   it the row no longer fits. Switching here keeps the full bar on tablets at
+   the shell width and up (e.g. iPad Mini landscape at 1133px). */
+@media (max-width: 1119px) {
   .site-header {
     padding-top: calc(1rem + var(--safe-top));
     padding-bottom: 1rem;
