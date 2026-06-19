@@ -1,7 +1,7 @@
 // Post-build integrity check: crawls the built dist/ and fails (exit 1) on
 //   1. internal <a href> links that don't resolve to a generated page,
 //   2. content <img> with missing/empty alt (decorative icons are allow-listed),
-//   3. missing key routes.
+//   3. missing public permalinks (URLs promised to the outside world).
 // Run after `npm run build`:  node scripts/check-site.mjs
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
@@ -62,26 +62,16 @@ for (const file of htmlFiles) {
   }
 }
 
-const mustExist = [
-  '',
-  'new',
-  'about',
-  'beliefs',
-  'vision',
-  'families',
-  'kids',
-  'youth',
-  'neighbors',
-  'neighbors/serve',
-  'church-life',
-  'events',
-  'events/youth',
-  'messages',
-  'visit',
-  'contact',
+// URLs we've promised the outside world, each annotated with where it's used.
+// Off-site references point at the bare URL, so the broken-link crawler above
+// can't catch a silent rename — assert them here. Add an entry ONLY when a URL
+// is referenced somewhere outside this site (and say where); ordinary internal
+// pages are already guarded by the crawler and must not be listed here.
+const externalPermalinks = [
+  { route: '', used: 'yard sign + building signage, printed bulletin, social profiles, Google Business listing' },
 ]
-for (const r of mustExist) {
-  if (!existsSync(`${DIST}/${r ? `${r}/` : ''}index.html`)) errors.push(`missing key route  /${r}`)
+for (const { route } of externalPermalinks) {
+  if (!existsSync(`${DIST}/${route ? `${route}/` : ''}index.html`)) errors.push(`missing public permalink  /${route}`)
 }
 
 console.log(`Checked ${htmlFiles.length} pages, ${linkCount} internal links, ${imgCount} images (base "${base}").`)
@@ -90,4 +80,4 @@ if (errors.length) {
   for (const e of errors) console.error(`  ${e}`)
   process.exit(1)
 }
-console.log('✓ All internal links resolve, all content images have alt text, all key routes present.')
+console.log('✓ All internal links resolve, all content images have alt text, all public permalinks present.')
