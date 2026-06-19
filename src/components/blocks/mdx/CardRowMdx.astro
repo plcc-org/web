@@ -1,0 +1,11 @@
+---
+import CardRow from '../../CardRow.astro'
+
+// MDX wrapper for the Card row block — a row of titled cards (Markdown bodies).
+type Props = { cards?: { title: string; body: string; href?: string }[] }
+const { cards = [] } = Astro.props
+---
+
+<section class="section">
+  <CardRow items={cards} />
+</section>

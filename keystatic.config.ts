@@ -1,5 +1,63 @@
-import { config, collection, singleton, fields } from '@keystatic/core'
+import { createElement as h, type ReactNode } from 'react'
+import { config, collection, singleton, fields, NotEditable } from '@keystatic/core'
 import { wrapper, block } from '@keystatic/core/content-components'
+
+// In-editor previews for page blocks: render each inserted block as a labelled
+// card with a photo thumbnail, so editors see what a block is (and which photo
+// it uses) at a glance. ContentView runs only in the browser admin; the helpers
+// degrade gracefully (no thumbnail rather than an error) if a value is empty.
+const ACCENT = '#6a9529'
+type ImgValue = { data?: Uint8Array; extension?: string } | null | undefined
+function thumb(image: ImgValue, size = 72): ReactNode {
+  if (!image || !image.data) return null
+  let src: string
+  try {
+    src = URL.createObjectURL(new Blob([image.data as BlobPart], { type: `image/${image.extension || 'jpeg'}` }))
+  } catch {
+    return null
+  }
+  return h('img', { src, style: { width: size, height: size, objectFit: 'cover', borderRadius: 4, display: 'block' } })
+}
+function preview(label: string, info: ReactNode, media: ReactNode, children?: ReactNode): ReactNode {
+  return h(
+    'div',
+    {
+      style: {
+        display: 'flex',
+        gap: 12,
+        alignItems: 'flex-start',
+        borderLeft: `3px solid ${ACCENT}`,
+        padding: '10px 12px',
+        background: '#faf9f7',
+        borderRadius: 6,
+      },
+    },
+    media ? h(NotEditable, { key: 'm' }, media) : null,
+    h(
+      'div',
+      { key: 'b', style: { flex: 1, minWidth: 0 } },
+      h(
+        NotEditable,
+        { key: 'l' },
+        h(
+          'div',
+          {
+            style: {
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em',
+              color: ACCENT,
+            },
+          },
+          label
+        ),
+        info ? h('div', { style: { fontWeight: 600, marginTop: 2 } }, info) : null
+      ),
+      children ?? null
+    )
+  )
+}
 
 // Keystatic CMS configuration. In dev we use `local` storage (reads/writes the
 // repo on disk); in production (Cloudflare Pages) we use `github` storage, where
@@ -130,6 +188,8 @@ export default config({
           components: {
             Split: wrapper({
               label: 'Split (photo + text)',
+              ContentView: ({ value, children }) =>
+                preview('Split', value.heading || value.eyebrow || '', thumb(value.image), children),
               schema: {
                 image: fields.image({
                   label: 'Photo',
@@ -154,12 +214,15 @@ export default config({
             }),
             Callout: wrapper({
               label: 'Callout',
+              ContentView: ({ value, children }) => preview('Callout', value.heading || '', null, children),
               schema: {
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
               },
             }),
             CaptionedPhoto: block({
               label: 'Captioned photo',
+              ContentView: ({ value }) =>
+                preview('Captioned photo', value.caption || value.alt || '', thumb(value.image)),
               schema: {
                 image: fields.image({
                   label: 'Photo',
@@ -173,6 +236,7 @@ export default config({
             }),
             Cta: wrapper({
               label: 'Call to action',
+              ContentView: ({ value, children }) => preview('Call to action', value.heading || '', null, children),
               schema: {
                 tone: fields.select({
                   label: 'Background',
@@ -187,6 +251,64 @@ export default config({
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
                 buttonLabel: fields.text({ label: 'Button label', validation: { isRequired: false } }),
                 buttonHref: fields.text({ label: 'Button link', validation: { isRequired: false } }),
+              },
+            }),
+            PhotoBand: block({
+              label: 'Photo band',
+              ContentView: ({ value }) =>
+                preview(
+                  'Photo band',
+                  `${(value.photos || []).length} photo(s)`,
+                  h(
+                    'div',
+                    { style: { display: 'flex', gap: 4 } },
+                    ...(value.photos || []).slice(0, 5).map((p, i) => h('div', { key: i }, thumb(p.image, 40)))
+                  )
+                ),
+              schema: {
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                photos: fields.array(
+                  fields.object({
+                    image: fields.image({
+                      label: 'Photo',
+                      directory: 'src/assets/images',
+                      publicPath: '../../assets/images/',
+                      validation: { isRequired: true },
+                    }),
+                    alt: fields.text({ label: 'Photo description (alt text)' }),
+                  }),
+                  { label: 'Photos', itemLabel: (p) => p.fields.alt.value || 'Photo' }
+                ),
+              },
+            }),
+            CardRow: block({
+              label: 'Card row',
+              ContentView: ({ value }) => preview('Card row', `${(value.cards || []).length} card(s)`, null),
+              schema: {
+                cards: fields.array(
+                  fields.object({
+                    title: fields.text({ label: 'Title' }),
+                    body: fields.text({ label: 'Text', multiline: true }),
+                    href: fields.text({ label: 'Link (optional)', validation: { isRequired: false } }),
+                  }),
+                  { label: 'Cards', itemLabel: (p) => p.fields.title.value || 'Card' }
+                ),
+              },
+            }),
+            LinkCards: block({
+              label: 'Link cards',
+              ContentView: ({ value }) => preview('Link cards', `${(value.links || []).length} link(s)`, null),
+              schema: {
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                links: fields.array(
+                  fields.object({
+                    title: fields.text({ label: 'Title' }),
+                    meta: fields.text({ label: 'Description' }),
+                    href: fields.text({ label: 'Link' }),
+                  }),
+                  { label: 'Links', itemLabel: (p) => p.fields.title.value || 'Link' }
+                ),
               },
             }),
           },
