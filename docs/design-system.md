@@ -235,6 +235,13 @@ pull-quotes), `band--flush` (closes a page flush against the dark footer).
 `:has()` rules in `layout.css` zero the canvas/main/footer margins whenever a
 `.band--flush` is present. Use it only on a page's **last** band.
 
+The same `:has()` rules also fire on the generic `.is-flush` marker, so a page
+that closes on a full-bleed `<Split>` (rather than a `<Band>`) opts in the same
+way — add `is-flush` to its `class` (e.g. `class="to-full is-flush"`). Any page
+whose final element is a tinted full-bleed band **must** close flush; pages that
+end on a content-width gallery or plain text section already meet the page
+background and need nothing.
+
 ### Rhythm utilities
 
 `.flow > * + *` (= `--space-section`), `.flow-tight > * + *` (`--space-lg`),
