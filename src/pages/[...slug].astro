@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Blocks from '../components/blocks/Blocks.astro'
+import { getCollection } from 'astro:content'
+
+// Renders CMS-built pages from the `pages` collection. The entry filename is the
+// URL slug (e.g. src/content/pages/momco.yaml → /momco/). Drafts are visible in
+// dev and excluded from production builds.
+export async function getStaticPaths() {
+  const all = await getCollection('pages')
+  const pages = all.filter((page) => (import.meta.env.PROD ? !page.data.draft : true))
+  return pages.map((page) => ({ params: { slug: page.id }, props: { page } }))
+}
+
+const { page } = Astro.props
+---
+
+<BaseLayout title={`${page.data.title} | Pine Lake Covenant Church`} description={page.data.seoDescription}>
+  <div class="canvas">
+    <Blocks blocks={page.data.blocks} />
+  </div>
+</BaseLayout>

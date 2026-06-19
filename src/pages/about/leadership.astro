@@ -68,7 +68,7 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
                 </h2>
                 <p class="leader-card__title leader-detail__title">{leader.data.title}</p>
                 <div class="leader-detail__prose measure" set:html={renderMarkdown(leader.data.bio)} />
-                {leader.data.link && (
+                {leader.data.link?.href && (
                   <p class="leader-detail__meta">
                     <a href={withBase(leader.data.link.href)}>{leader.data.link.label}</a>
                   </p>

@@ -9,7 +9,7 @@ type Moment = {
   when?: string
   blurb: string
   photo?: string
-  link?: { label: string; href: string }
+  link?: { label?: string; href?: string }
   featured: boolean
 }
 
@@ -50,7 +50,7 @@ const rest = moments.filter((m) => !m.featured)
               {m.when && <p class="moment-card__cadence">{m.when}</p>}
               <h3 class="moment-card__title">{m.title}</h3>
               <p class="moment-card__blurb">{m.blurb}</p>
-              {m.link && (
+              {m.link?.href && (
                 <p class="moment-card__cta">
                   <a href={m.link.href}>{m.link.label} →</a>
                 </p>

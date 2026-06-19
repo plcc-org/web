@@ -71,7 +71,7 @@ const leadership = defineCollection({
       portraitAlt: z.string().min(1),
       bio: z.string().min(1),
       order: z.number().default(0),
-      link: z.object({ label: z.string(), href: z.string() }).optional(),
+      link: z.object({ label: z.string().optional(), href: z.string().optional() }).optional(),
     }),
 })
 
@@ -111,4 +111,77 @@ const startHereLinks = defineCollection({
   }),
 })
 
-export const collections = { photos, youthMoments, leadership, quotes, neighborDoors, startHereLinks }
+// CMS-built pages: an ordered list of typed "blocks", each rendered 1:1 by an
+// existing component (see src/components/blocks/Blocks.astro and the dynamic
+// route src/pages/[...slug].astro). Editors stack blocks to compose a page.
+//
+// Keystatic serializes its block array (a `fields.conditional`) as
+// `{ discriminant, value }` per item — this discriminated union mirrors that
+// shape exactly. Block images use image() so CMS-uploaded photos are optimized.
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/pages' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      seoDescription: z.string().optional(),
+      draft: z.boolean().default(false),
+      blocks: z
+        .array(
+          z.discriminatedUnion('discriminant', [
+            z.object({
+              discriminant: z.literal('richText'),
+              value: z.object({ body: z.string() }),
+            }),
+            z.object({
+              discriminant: z.literal('split'),
+              value: z.object({
+                image: image(),
+                alt: z.string(),
+                body: z.string(),
+                reverse: z.boolean().default(false),
+                tone: z.enum(['paper', 'sand', 'forest']).default('sand'),
+                eyebrow: z.string().optional(),
+              }),
+            }),
+            z.object({
+              discriminant: z.literal('cardRow'),
+              value: z.object({
+                cards: z.array(z.object({ title: z.string(), body: z.string(), href: z.string().optional() })),
+              }),
+            }),
+            z.object({
+              discriminant: z.literal('callout'),
+              value: z.object({ heading: z.string().optional(), body: z.string() }),
+            }),
+            z.object({
+              discriminant: z.literal('photoBand'),
+              value: z.object({
+                heading: z.string().optional(),
+                eyebrow: z.string().optional(),
+                photos: z.array(z.object({ image: image(), alt: z.string() })),
+              }),
+            }),
+            z.object({
+              discriminant: z.literal('linkCards'),
+              value: z.object({
+                heading: z.string().optional(),
+                links: z.array(z.object({ title: z.string(), meta: z.string(), href: z.string() })),
+              }),
+            }),
+            z.object({
+              discriminant: z.literal('ctaBand'),
+              value: z.object({
+                tone: z.enum(['forest', 'sand', 'paper']).default('forest'),
+                eyebrow: z.string().optional(),
+                heading: z.string().optional(),
+                body: z.string(),
+                button: z.object({ label: z.string().optional(), href: z.string().optional() }).optional(),
+              }),
+            }),
+          ])
+        )
+        .default([]),
+    }),
+})
+
+export const collections = { photos, youthMoments, leadership, quotes, neighborDoors, startHereLinks, pages }

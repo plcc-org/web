@@ -1,0 +1,95 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import Split from '../Split.astro'
+import CardRow from '../CardRow.astro'
+import Callout from '../Callout.astro'
+import MomentsSection from '../MomentsSection.astro'
+import LinkCardSection from '../LinkCardSection.astro'
+import Band from '../Band.astro'
+import { renderMarkdown } from '../../lib/markdown'
+import { withBase } from '../../lib/url'
+
+// Renders a CMS page's ordered block list. Each block maps 1:1 to an existing
+// site component; the design system keeps every block on-brand by construction.
+// The block shape ({ discriminant, value }) mirrors Keystatic's serialization
+// (see the `pages` collection in src/content.config.ts).
+type Block = CollectionEntry<'pages'>['data']['blocks'][number]
+type Props = { blocks: Block[] }
+const { blocks } = Astro.props
+
+const resolveHref = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : withBase(href))
+---
+
+{
+  blocks.map((block) => {
+    if (block.discriminant === 'richText') {
+      return (
+        <section class="section">
+          <div class="measure" set:html={renderMarkdown(block.value.body)} />
+        </section>
+      )
+    }
+
+    if (block.discriminant === 'split') {
+      const v = block.value
+      return (
+        <Split
+          class="to-full"
+          image={v.image}
+          alt={v.alt}
+          reverse={v.reverse}
+          tone={v.tone}
+          eyebrow={v.eyebrow || undefined}
+        >
+          <div set:html={renderMarkdown(v.body)} />
+        </Split>
+      )
+    }
+
+    if (block.discriminant === 'cardRow') {
+      return (
+        <section class="section">
+          <CardRow items={block.value.cards} />
+        </section>
+      )
+    }
+
+    if (block.discriminant === 'callout') {
+      return <Callout heading={block.value.heading || undefined} body={block.value.body} />
+    }
+
+    if (block.discriminant === 'photoBand') {
+      const v = block.value
+      return (
+        <MomentsSection
+          images={v.photos}
+          heading={v.heading || null}
+          eyebrow={v.eyebrow || null}
+          sectionClass="to-wide"
+        />
+      )
+    }
+
+    if (block.discriminant === 'linkCards') {
+      return <LinkCardSection heading={block.value.heading || undefined} links={block.value.links} />
+    }
+
+    if (block.discriminant === 'ctaBand') {
+      const v = block.value
+      return (
+        <Band tone={v.tone} eyebrow={v.eyebrow || undefined} heading={v.heading || undefined}>
+          <div set:html={renderMarkdown(v.body)} />
+          {v.button?.href && (
+            <p>
+              <a class="btn btn--ghost" href={resolveHref(v.button.href)}>
+                {v.button.label || 'Learn more'}
+              </a>
+            </p>
+          )}
+        </Band>
+      )
+    }
+
+    return null
+  })
+}

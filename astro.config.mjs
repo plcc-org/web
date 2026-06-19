@@ -18,7 +18,11 @@ export default defineConfig({
   // page is prerendered to HTML at build time. Keystatic injects two routes
   // (`/keystatic`, `/api/keystatic/*`) that self-mark `prerender: false`; the
   // adapter ships only those as functions. React powers Keystatic's admin UI.
-  adapter: cloudflare(),
+  // `imageService: 'compile'` keeps Astro's build-time (sharp) image
+  // optimization for our prerendered pages — emitting static, content-hashed
+  // _astro/*.webp — instead of the adapter's default runtime Cloudflare Images
+  // service (which would defer every image to a paid runtime endpoint).
+  adapter: cloudflare({ imageService: 'compile' }),
   integrations: [react(), keystatic(), sitemap()],
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL

@@ -42,13 +42,13 @@ export default config({
           defaultValue: false,
         }),
         order: fields.integer({ label: 'Order', defaultValue: 0 }),
-        link: fields.conditional(fields.checkbox({ label: 'Include a link' }), {
-          false: fields.empty(),
-          true: fields.object({
-            label: fields.text({ label: 'Link label' }),
-            href: fields.text({ label: 'Link URL' }),
-          }),
-        }),
+        link: fields.object(
+          {
+            label: fields.text({ label: 'Link label', validation: { isRequired: false } }),
+            href: fields.text({ label: 'Link URL', validation: { isRequired: false } }),
+          },
+          { label: 'Link (optional)' }
+        ),
       },
     }),
 
@@ -72,13 +72,147 @@ export default config({
         portraitAlt: fields.text({ label: 'Portrait alt text' }),
         bio: fields.text({ label: 'Bio', multiline: true }),
         order: fields.integer({ label: 'Order', defaultValue: 0 }),
-        link: fields.conditional(fields.checkbox({ label: 'Include a link' }), {
-          false: fields.empty(),
-          true: fields.object({
-            label: fields.text({ label: 'Link label' }),
-            href: fields.text({ label: 'Link URL' }),
-          }),
+        link: fields.object(
+          {
+            label: fields.text({ label: 'Link label', validation: { isRequired: false } }),
+            href: fields.text({ label: 'Link URL', validation: { isRequired: false } }),
+          },
+          { label: 'Link (optional)' }
+        ),
+      },
+    }),
+
+    // CMS-built pages: stack styled blocks to compose a page. Each entry is a
+    // single YAML file; the filename is the URL slug. Rendered by the dynamic
+    // route src/pages/[...slug].astro. Photos here are uploaded inline (with
+    // their own alt text) and optimized at build time.
+    pages: collection({
+      label: 'Pages',
+      slugField: 'title',
+      path: 'src/content/pages/*',
+      format: { data: 'yaml' },
+      columns: ['title'],
+      schema: {
+        title: fields.slug({
+          name: { label: 'Title' },
+          slug: { label: 'URL slug', description: 'The page address, e.g. "momco" → /momco/.' },
         }),
+        seoDescription: fields.text({
+          label: 'SEO description',
+          description: 'A one-sentence summary for search results and link previews.',
+          validation: { isRequired: false },
+        }),
+        draft: fields.checkbox({
+          label: 'Draft',
+          description: "Drafts are visible in preview but won't be published.",
+          defaultValue: false,
+        }),
+        blocks: fields.array(
+          fields.conditional(
+            fields.select({
+              label: 'Block type',
+              options: [
+                { label: 'Text', value: 'richText' },
+                { label: 'Split (photo + text)', value: 'split' },
+                { label: 'Card row', value: 'cardRow' },
+                { label: 'Callout', value: 'callout' },
+                { label: 'Photo band', value: 'photoBand' },
+                { label: 'Link cards', value: 'linkCards' },
+                { label: 'Call to action', value: 'ctaBand' },
+              ],
+              defaultValue: 'richText',
+            }),
+            {
+              richText: fields.object({
+                body: fields.text({ label: 'Text', multiline: true }),
+              }),
+              split: fields.object({
+                image: fields.image({
+                  label: 'Photo',
+                  directory: 'src/assets/images',
+                  publicPath: '../../assets/images/',
+                  validation: { isRequired: true },
+                }),
+                alt: fields.text({ label: 'Photo description (alt text)' }),
+                body: fields.text({ label: 'Text', multiline: true }),
+                reverse: fields.checkbox({ label: 'Photo on the right', defaultValue: false }),
+                tone: fields.select({
+                  label: 'Background',
+                  options: [
+                    { label: 'Sand', value: 'sand' },
+                    { label: 'Paper (white)', value: 'paper' },
+                    { label: 'Forest (dark)', value: 'forest' },
+                  ],
+                  defaultValue: 'sand',
+                }),
+                eyebrow: fields.text({ label: 'Eyebrow (small label above)', validation: { isRequired: false } }),
+              }),
+              cardRow: fields.object({
+                cards: fields.array(
+                  fields.object({
+                    title: fields.text({ label: 'Title' }),
+                    body: fields.text({ label: 'Text', multiline: true }),
+                    href: fields.text({ label: 'Link (optional)', validation: { isRequired: false } }),
+                  }),
+                  { label: 'Cards', itemLabel: (p) => p.fields.title.value || 'Card' }
+                ),
+              }),
+              callout: fields.object({
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                body: fields.text({ label: 'Text', multiline: true }),
+              }),
+              photoBand: fields.object({
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                photos: fields.array(
+                  fields.object({
+                    image: fields.image({
+                      label: 'Photo',
+                      directory: 'src/assets/images',
+                      publicPath: '../../assets/images/',
+                      validation: { isRequired: true },
+                    }),
+                    alt: fields.text({ label: 'Photo description (alt text)' }),
+                  }),
+                  { label: 'Photos', itemLabel: (p) => p.fields.alt.value || 'Photo' }
+                ),
+              }),
+              linkCards: fields.object({
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                links: fields.array(
+                  fields.object({
+                    title: fields.text({ label: 'Title' }),
+                    meta: fields.text({ label: 'Description' }),
+                    href: fields.text({ label: 'Link' }),
+                  }),
+                  { label: 'Links', itemLabel: (p) => p.fields.title.value || 'Link' }
+                ),
+              }),
+              ctaBand: fields.object({
+                tone: fields.select({
+                  label: 'Background',
+                  options: [
+                    { label: 'Forest (dark)', value: 'forest' },
+                    { label: 'Sand', value: 'sand' },
+                    { label: 'Paper (white)', value: 'paper' },
+                  ],
+                  defaultValue: 'forest',
+                }),
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                body: fields.text({ label: 'Text', multiline: true }),
+                button: fields.object(
+                  {
+                    label: fields.text({ label: 'Button label', validation: { isRequired: false } }),
+                    href: fields.text({ label: 'Button link', validation: { isRequired: false } }),
+                  },
+                  { label: 'Button (optional)' }
+                ),
+              }),
+            }
+          ),
+          { label: 'Blocks', itemLabel: (p) => p.discriminant }
+        ),
       },
     }),
   },
