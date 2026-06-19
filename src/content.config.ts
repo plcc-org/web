@@ -129,8 +129,18 @@ const pages = defineCollection({
         .array(
           z.discriminatedUnion('discriminant', [
             z.object({
+              discriminant: z.literal('pageHeader'),
+              value: z.object({
+                image: image(),
+                alt: z.string(),
+                eyebrow: z.string().optional(),
+                title: z.string(),
+                lede: z.string(),
+              }),
+            }),
+            z.object({
               discriminant: z.literal('richText'),
-              value: z.object({ body: z.string() }),
+              value: z.object({ eyebrow: z.string().optional(), body: z.string() }),
             }),
             z.object({
               discriminant: z.literal('split'),
@@ -141,6 +151,15 @@ const pages = defineCollection({
                 reverse: z.boolean().default(false),
                 tone: z.enum(['paper', 'sand', 'forest']).default('sand'),
                 eyebrow: z.string().optional(),
+                heading: z.string().optional(),
+              }),
+            }),
+            z.object({
+              discriminant: z.literal('captionedPhoto'),
+              value: z.object({
+                image: image(),
+                alt: z.string(),
+                caption: z.string().optional(),
               }),
             }),
             z.object({

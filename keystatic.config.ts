@@ -112,10 +112,12 @@ export default config({
             fields.select({
               label: 'Block type',
               options: [
+                { label: 'Page header', value: 'pageHeader' },
                 { label: 'Text', value: 'richText' },
                 { label: 'Split (photo + text)', value: 'split' },
                 { label: 'Card row', value: 'cardRow' },
                 { label: 'Callout', value: 'callout' },
+                { label: 'Captioned photo', value: 'captionedPhoto' },
                 { label: 'Photo band', value: 'photoBand' },
                 { label: 'Link cards', value: 'linkCards' },
                 { label: 'Call to action', value: 'ctaBand' },
@@ -123,7 +125,23 @@ export default config({
               defaultValue: 'richText',
             }),
             {
+              pageHeader: fields.object({
+                image: fields.image({
+                  label: 'Photo',
+                  directory: 'src/assets/images',
+                  publicPath: '../../assets/images/',
+                  validation: { isRequired: true },
+                }),
+                alt: fields.text({ label: 'Photo description (alt text)' }),
+                eyebrow: fields.text({
+                  label: 'Eyebrow (small label above the title)',
+                  validation: { isRequired: false },
+                }),
+                title: fields.text({ label: 'Page title' }),
+                lede: fields.text({ label: 'Intro sentence', multiline: true }),
+              }),
               richText: fields.object({
+                eyebrow: fields.text({ label: 'Eyebrow (small label)', validation: { isRequired: false } }),
                 body: fields.text({ label: 'Text', multiline: true }),
               }),
               split: fields.object({
@@ -146,6 +164,17 @@ export default config({
                   defaultValue: 'sand',
                 }),
                 eyebrow: fields.text({ label: 'Eyebrow (small label above)', validation: { isRequired: false } }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+              }),
+              captionedPhoto: fields.object({
+                image: fields.image({
+                  label: 'Photo',
+                  directory: 'src/assets/images',
+                  publicPath: '../../assets/images/',
+                  validation: { isRequired: true },
+                }),
+                alt: fields.text({ label: 'Photo description (alt text)' }),
+                caption: fields.text({ label: 'Caption', validation: { isRequired: false } }),
               }),
               cardRow: fields.object({
                 cards: fields.array(

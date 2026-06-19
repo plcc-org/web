@@ -6,7 +6,8 @@ import Callout from '../Callout.astro'
 import MomentsSection from '../MomentsSection.astro'
 import LinkCardSection from '../LinkCardSection.astro'
 import Band from '../Band.astro'
-import { renderMarkdown } from '../../lib/markdown'
+import Photo from '../Photo.astro'
+import { renderMarkdown, renderInline } from '../../lib/markdown'
 import { withBase } from '../../lib/url'
 
 // Renders a CMS page's ordered block list. Each block maps 1:1 to an existing
@@ -18,14 +19,40 @@ type Props = { blocks: Block[] }
 const { blocks } = Astro.props
 
 const resolveHref = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : withBase(href))
+
+// A full-bleed block that ends the page sits flush against the footer (the
+// site's documented closing convention).
+const FULL_BLEED = new Set(['pageHeader', 'split'])
 ---
 
 {
-  blocks.map((block) => {
+  blocks.map((block, i) => {
+    const isLast = i === blocks.length - 1
+    const flush = isLast && FULL_BLEED.has(block.discriminant) ? 'is-flush' : undefined
+
+    if (block.discriminant === 'pageHeader') {
+      const v = block.value
+      return (
+        <Split
+          class:list={['to-full', flush]}
+          image={v.image}
+          alt={v.alt}
+          reverse
+          tone="sand"
+          eyebrow={v.eyebrow || undefined}
+        >
+          <h1 class="display">{v.title}</h1>
+          <p class="lede" set:html={renderInline(v.lede)} />
+        </Split>
+      )
+    }
+
     if (block.discriminant === 'richText') {
+      const v = block.value
       return (
         <section class="section">
-          <div class="measure" set:html={renderMarkdown(block.value.body)} />
+          {v.eyebrow && <p class="eyebrow">{v.eyebrow}</p>}
+          <div class="measure" set:html={renderMarkdown(v.body)} />
         </section>
       )
     }
@@ -34,15 +61,28 @@ const resolveHref = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href 
       const v = block.value
       return (
         <Split
-          class="to-full"
+          class:list={['to-full', flush]}
           image={v.image}
           alt={v.alt}
           reverse={v.reverse}
           tone={v.tone}
           eyebrow={v.eyebrow || undefined}
+          heading={v.heading || undefined}
         >
           <div set:html={renderMarkdown(v.body)} />
         </Split>
+      )
+    }
+
+    if (block.discriminant === 'captionedPhoto') {
+      const v = block.value
+      return (
+        <section class="section">
+          <figure class="media">
+            <Photo image={v.image} alt={v.alt} class="media__img media__img--cover" />
+            {v.caption && <figcaption class="media__caption">{v.caption}</figcaption>}
+          </figure>
+        </section>
       )
     }
 
@@ -77,7 +117,7 @@ const resolveHref = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href 
     if (block.discriminant === 'ctaBand') {
       const v = block.value
       return (
-        <Band tone={v.tone} eyebrow={v.eyebrow || undefined} heading={v.heading || undefined}>
+        <Band tone={v.tone} narrow flush={isLast} eyebrow={v.eyebrow || undefined} heading={v.heading || undefined}>
           <div set:html={renderMarkdown(v.body)} />
           {v.button?.href && (
             <p>
