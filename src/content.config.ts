@@ -1,6 +1,19 @@
 import { defineCollection } from 'astro:content'
 import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
+import { parse as parseYaml } from 'yaml'
+
+// quotes / neighbor-doors / start-here-links each live as a single YAML file,
+// but the Git CMS (Keystatic) edits them as an array field, which serializes to
+// `{ <key>: [...] }`. Parse tolerantly so both the hand-authored bare-array form
+// and the CMS-wrapped form load, and give every item a stable `id` for the store.
+const yamlList =
+  (key: string) =>
+  (text: string): Array<Record<string, unknown>> => {
+    const data = parseYaml(text)
+    const items: Array<Record<string, unknown>> = Array.isArray(data) ? data : (data?.[key] ?? [])
+    return items.map((item, i) => ({ id: item.id ?? `${key}-${i + 1}`, ...item }))
+  }
 
 // Content lives under src/content/. Two shapes, by a simple rule:
 //   • Things you add / remove / reorder, or that own an image → a folder of
@@ -45,7 +58,9 @@ const youthMoments = defineCollection({
   }),
 })
 
-// Pastors and staff. One Markdown file per person, portrait co-located.
+// Pastors and staff. One Markdown file per person, portrait co-located. The
+// profile `bio` lives in frontmatter (rendered as Markdown) rather than the body,
+// so the Git CMS manages each entry as a predictable frontmatter-only document.
 const leadership = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/leadership' }),
   schema: ({ image }) =>
@@ -54,13 +69,14 @@ const leadership = defineCollection({
       title: z.string(),
       portrait: image(),
       portraitAlt: z.string().min(1),
+      bio: z.string().min(1),
       order: z.number().default(0),
       link: z.object({ label: z.string(), href: z.string() }).optional(),
     }),
 })
 
 const quotes = defineCollection({
-  loader: file('src/content/quotes.yaml'),
+  loader: file('src/content/quotes.yaml', { parser: yamlList('quotes') }),
   schema: z.object({
     id: z.string(),
     order: z.number().default(0),
@@ -70,7 +86,7 @@ const quotes = defineCollection({
 })
 
 const neighborDoors = defineCollection({
-  loader: file('src/content/neighbor-doors.yaml'),
+  loader: file('src/content/neighbor-doors.yaml', { parser: yamlList('doors') }),
   schema: z.object({
     id: z.string(),
     title: z.string(),
@@ -84,7 +100,7 @@ const neighborDoors = defineCollection({
 })
 
 const startHereLinks = defineCollection({
-  loader: file('src/content/start-here-links.yaml'),
+  loader: file('src/content/start-here-links.yaml', { parser: yamlList('links') }),
   schema: z.object({
     id: z.string(),
     group: z.enum(['home', 'im-new']),

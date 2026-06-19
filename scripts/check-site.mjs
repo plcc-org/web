@@ -6,7 +6,10 @@
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
 
-const DIST = 'dist'
+// The Cloudflare adapter emits prerendered public pages under dist/client (with
+// the server bundle in dist/server). Fall back to plain dist/ for adapterless
+// static builds.
+const DIST = existsSync('dist/client') ? 'dist/client' : 'dist'
 if (!existsSync(DIST)) {
   console.error('✗ dist/ not found — run `npm run build` first.')
   process.exit(1)
