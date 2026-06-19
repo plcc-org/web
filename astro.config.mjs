@@ -22,7 +22,12 @@ export default defineConfig({
   // optimization for our prerendered pages — emitting static, content-hashed
   // _astro/*.webp — instead of the adapter's default runtime Cloudflare Images
   // service (which would defer every image to a paid runtime endpoint).
-  adapter: cloudflare({ imageService: 'compile' }),
+  //
+  // Build/preview only. In `astro dev` (ASTRO_DEV=1, set by `npm run dev`) we
+  // skip the adapter so SSR routes run on Node: the Cloudflare workerd dev
+  // runtime can't supply the Node globals Keystatic's admin needs ("module is
+  // not defined"). Dev serves every route fine without an adapter.
+  adapter: process.env.ASTRO_DEV ? undefined : cloudflare({ imageService: 'compile' }),
   integrations: [react(), keystatic(), sitemap()],
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL
