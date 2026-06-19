@@ -1,15 +1,16 @@
 ---
 import Photo from '../../Photo.astro'
+import { imageFromRef } from '../../../lib/images'
 
 // MDX wrapper for a single framed, captioned photo.
-type Props = { image: string; alt: string; caption?: string }
+type Props = { image?: string; alt: string; caption?: string }
 const { image, alt, caption } = Astro.props
-const filename = String(image).split('/').pop()
+const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
 ---
 
 <section class="section">
   <figure class="media">
-    <Photo filename={filename} alt={alt} class="media__img media__img--cover" />
+    <Photo image={resolved} alt={alt} class="media__img media__img--cover" />
     {caption && <figcaption class="media__caption">{caption}</figcaption>}
   </figure>
 </section>
