@@ -125,7 +125,7 @@ const pages = defineCollection({
       draft: z.boolean().default(false),
       hero: z.object({
         image: image(),
-        alt: z.string(),
+        alt: z.string().min(1),
         eyebrow: z.string().optional(),
         title: z.string(),
         lede: z.string(),

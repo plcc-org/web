@@ -128,7 +128,7 @@ export default config({
           publicPath: '../../assets/images/',
           validation: { isRequired: true },
         }),
-        portraitAlt: fields.text({ label: 'Portrait alt text' }),
+        portraitAlt: fields.text({ label: 'Portrait alt text', validation: { isRequired: true } }),
         bio: fields.text({ label: 'Bio', multiline: true }),
         order: fields.integer({ label: 'Order', defaultValue: 0 }),
         link: fields.object(
@@ -186,6 +186,18 @@ export default config({
           label: 'Body',
           description: 'Type prose; use the “+” / insert menu to add styled blocks.',
           components: {
+            Section: wrapper({
+              label: 'Text section',
+              ContentView: ({ value, children }) =>
+                preview('Text section', value.heading || value.eyebrow || '', null, children),
+              schema: {
+                eyebrow: fields.text({
+                  label: 'Eyebrow (small label above the heading)',
+                  validation: { isRequired: false },
+                }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+              },
+            }),
             Split: wrapper({
               label: 'Split (photo + text)',
               ContentView: ({ value, children }) =>
@@ -197,7 +209,7 @@ export default config({
                   publicPath: '../../assets/images/',
                   validation: { isRequired: true },
                 }),
-                alt: fields.text({ label: 'Photo description (alt text)' }),
+                alt: fields.text({ label: 'Photo description (alt text)', validation: { isRequired: true } }),
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
                 eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
                 reverse: fields.checkbox({ label: 'Photo on the right', defaultValue: false }),
@@ -230,7 +242,7 @@ export default config({
                   publicPath: '../../assets/images/',
                   validation: { isRequired: true },
                 }),
-                alt: fields.text({ label: 'Photo description (alt text)' }),
+                alt: fields.text({ label: 'Photo description (alt text)', validation: { isRequired: true } }),
                 caption: fields.text({ label: 'Caption', validation: { isRequired: false } }),
               },
             }),
@@ -276,7 +288,7 @@ export default config({
                       publicPath: '../../assets/images/',
                       validation: { isRequired: true },
                     }),
-                    alt: fields.text({ label: 'Photo description (alt text)' }),
+                    alt: fields.text({ label: 'Photo description (alt text)', validation: { isRequired: true } }),
                   }),
                   { label: 'Photos', itemLabel: (p) => p.fields.alt.value || 'Photo' }
                 ),
