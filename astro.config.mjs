@@ -1,6 +1,9 @@
 // @ts-check
 import { defineConfig, envField, fontProviders } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
+import react from '@astrojs/react'
+import keystatic from '@keystatic/astro'
+import cloudflare from '@astrojs/cloudflare'
 import { siteConfig } from './src/config/site.ts'
 
 // https://astro.build/config
@@ -11,7 +14,12 @@ import { siteConfig } from './src/config/site.ts'
 export default defineConfig({
   site: siteConfig.site,
   base: siteConfig.base,
-  integrations: [sitemap()],
+  // Cloudflare Pages host. `output` stays static (the default): every public
+  // page is prerendered to HTML at build time. Keystatic injects two routes
+  // (`/keystatic`, `/api/keystatic/*`) that self-mark `prerender: false`; the
+  // adapter ships only those as functions. React powers Keystatic's admin UI.
+  adapter: cloudflare(),
+  integrations: [react(), keystatic(), sitemap()],
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL
   // that can rot) and emitted as content-hashed, CDN-cacheable static assets.
