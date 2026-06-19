@@ -1,0 +1,21 @@
+---
+import Split from '../../Split.astro'
+
+// MDX wrapper for the Split block. The editor uploads a photo (the `image` prop
+// arrives as a path); we reduce it to a filename so it flows through <Photo>'s
+// build-time optimization. Body prose is the component's MDX children.
+type Props = {
+  image: string
+  alt: string
+  reverse?: boolean
+  tone?: 'paper' | 'sand' | 'forest'
+  eyebrow?: string
+  heading?: string
+}
+const { image, alt, reverse = false, tone = 'sand', eyebrow, heading } = Astro.props
+const filename = String(image).split('/').pop()
+---
+
+<Split class="to-full" filename={filename} alt={alt} reverse={reverse} tone={tone} eyebrow={eyebrow} heading={heading}>
+  <slot />
+</Split>

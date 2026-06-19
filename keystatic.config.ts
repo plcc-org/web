@@ -1,4 +1,5 @@
 import { config, collection, singleton, fields } from '@keystatic/core'
+import { wrapper, block } from '@keystatic/core/content-components'
 
 // Keystatic CMS configuration. In dev we use `local` storage (reads/writes the
 // repo on disk); in production (Cloudflare Pages) we use `github` storage, where
@@ -8,7 +9,7 @@ import { config, collection, singleton, fields } from '@keystatic/core'
 //
 // Photos are deliberately NOT a CMS collection: the 442-entry catalog
 // (src/content/photos.json) is build-time infrastructure. Editors add and pick
-// photos through image fields on page blocks (see the `pages` collection).
+// photos through image fields (on page blocks and the hero).
 export default config({
   storage: import.meta.env.DEV ? { kind: 'local' } : { kind: 'github', repo: 'timsneath/plcc-web' },
 
@@ -82,15 +83,16 @@ export default config({
       },
     }),
 
-    // CMS-built pages: stack styled blocks to compose a page. Each entry is a
-    // single YAML file; the filename is the URL slug. Rendered by the dynamic
-    // route src/pages/[...slug].astro. Photos here are uploaded inline (with
-    // their own alt text) and optimized at build time.
+    // CMS-built pages. A structured hero in frontmatter plus a rich-text (MDX)
+    // body the editor composes in Keystatic's WYSIWYG editor — typing prose and
+    // inserting the styled components below. Each component maps to a thin Astro
+    // wrapper at render time (src/pages/[...slug].astro). The filename is the URL
+    // slug. Photos are uploaded inline with their own alt text.
     pages: collection({
       label: 'Pages',
       slugField: 'title',
       path: 'src/content/pages/*',
-      format: { data: 'yaml' },
+      format: { contentField: 'content' },
       columns: ['title'],
       schema: {
         title: fields.slug({
@@ -107,25 +109,28 @@ export default config({
           description: "Drafts are visible in preview but won't be published.",
           defaultValue: false,
         }),
-        blocks: fields.array(
-          fields.conditional(
-            fields.select({
-              label: 'Block type',
-              options: [
-                { label: 'Page header', value: 'pageHeader' },
-                { label: 'Text', value: 'richText' },
-                { label: 'Split (photo + text)', value: 'split' },
-                { label: 'Card row', value: 'cardRow' },
-                { label: 'Callout', value: 'callout' },
-                { label: 'Captioned photo', value: 'captionedPhoto' },
-                { label: 'Photo band', value: 'photoBand' },
-                { label: 'Link cards', value: 'linkCards' },
-                { label: 'Call to action', value: 'ctaBand' },
-              ],
-              defaultValue: 'richText',
+        hero: fields.object(
+          {
+            image: fields.image({
+              label: 'Hero photo',
+              directory: 'src/assets/images',
+              publicPath: '../../assets/images/',
+              validation: { isRequired: true },
             }),
-            {
-              pageHeader: fields.object({
+            alt: fields.text({ label: 'Photo description (alt text)' }),
+            eyebrow: fields.text({ label: 'Eyebrow (small label above the title)', validation: { isRequired: false } }),
+            title: fields.text({ label: 'Page heading' }),
+            lede: fields.text({ label: 'Intro line', multiline: true }),
+          },
+          { label: 'Hero' }
+        ),
+        content: fields.mdx({
+          label: 'Body',
+          description: 'Type prose; use the “+” / insert menu to add styled blocks.',
+          components: {
+            Split: wrapper({
+              label: 'Split (photo + text)',
+              schema: {
                 image: fields.image({
                   label: 'Photo',
                   directory: 'src/assets/images',
@@ -133,26 +138,8 @@ export default config({
                   validation: { isRequired: true },
                 }),
                 alt: fields.text({ label: 'Photo description (alt text)' }),
-                eyebrow: fields.text({
-                  label: 'Eyebrow (small label above the title)',
-                  validation: { isRequired: false },
-                }),
-                title: fields.text({ label: 'Page title' }),
-                lede: fields.text({ label: 'Intro sentence', multiline: true }),
-              }),
-              richText: fields.object({
-                eyebrow: fields.text({ label: 'Eyebrow (small label)', validation: { isRequired: false } }),
-                body: fields.text({ label: 'Text', multiline: true }),
-              }),
-              split: fields.object({
-                image: fields.image({
-                  label: 'Photo',
-                  directory: 'src/assets/images',
-                  publicPath: '../../assets/images/',
-                  validation: { isRequired: true },
-                }),
-                alt: fields.text({ label: 'Photo description (alt text)' }),
-                body: fields.text({ label: 'Text', multiline: true }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
                 reverse: fields.checkbox({ label: 'Photo on the right', defaultValue: false }),
                 tone: fields.select({
                   label: 'Background',
@@ -163,10 +150,17 @@ export default config({
                   ],
                   defaultValue: 'sand',
                 }),
-                eyebrow: fields.text({ label: 'Eyebrow (small label above)', validation: { isRequired: false } }),
+              },
+            }),
+            Callout: wrapper({
+              label: 'Callout',
+              schema: {
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
-              }),
-              captionedPhoto: fields.object({
+              },
+            }),
+            CaptionedPhoto: block({
+              label: 'Captioned photo',
+              schema: {
                 image: fields.image({
                   label: 'Photo',
                   directory: 'src/assets/images',
@@ -175,49 +169,11 @@ export default config({
                 }),
                 alt: fields.text({ label: 'Photo description (alt text)' }),
                 caption: fields.text({ label: 'Caption', validation: { isRequired: false } }),
-              }),
-              cardRow: fields.object({
-                cards: fields.array(
-                  fields.object({
-                    title: fields.text({ label: 'Title' }),
-                    body: fields.text({ label: 'Text', multiline: true }),
-                    href: fields.text({ label: 'Link (optional)', validation: { isRequired: false } }),
-                  }),
-                  { label: 'Cards', itemLabel: (p) => p.fields.title.value || 'Card' }
-                ),
-              }),
-              callout: fields.object({
-                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
-                body: fields.text({ label: 'Text', multiline: true }),
-              }),
-              photoBand: fields.object({
-                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
-                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
-                photos: fields.array(
-                  fields.object({
-                    image: fields.image({
-                      label: 'Photo',
-                      directory: 'src/assets/images',
-                      publicPath: '../../assets/images/',
-                      validation: { isRequired: true },
-                    }),
-                    alt: fields.text({ label: 'Photo description (alt text)' }),
-                  }),
-                  { label: 'Photos', itemLabel: (p) => p.fields.alt.value || 'Photo' }
-                ),
-              }),
-              linkCards: fields.object({
-                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
-                links: fields.array(
-                  fields.object({
-                    title: fields.text({ label: 'Title' }),
-                    meta: fields.text({ label: 'Description' }),
-                    href: fields.text({ label: 'Link' }),
-                  }),
-                  { label: 'Links', itemLabel: (p) => p.fields.title.value || 'Link' }
-                ),
-              }),
-              ctaBand: fields.object({
+              },
+            }),
+            Cta: wrapper({
+              label: 'Call to action',
+              schema: {
                 tone: fields.select({
                   label: 'Background',
                   options: [
@@ -229,19 +185,12 @@ export default config({
                 }),
                 eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
-                body: fields.text({ label: 'Text', multiline: true }),
-                button: fields.object(
-                  {
-                    label: fields.text({ label: 'Button label', validation: { isRequired: false } }),
-                    href: fields.text({ label: 'Button link', validation: { isRequired: false } }),
-                  },
-                  { label: 'Button (optional)' }
-                ),
-              }),
-            }
-          ),
-          { label: 'Blocks', itemLabel: (p) => p.discriminant }
-        ),
+                buttonLabel: fields.text({ label: 'Button label', validation: { isRequired: false } }),
+                buttonHref: fields.text({ label: 'Button link', validation: { isRequired: false } }),
+              },
+            }),
+          },
+        }),
       },
     }),
   },

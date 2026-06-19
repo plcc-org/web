@@ -111,95 +111,25 @@ const startHereLinks = defineCollection({
   }),
 })
 
-// CMS-built pages: an ordered list of typed "blocks", each rendered 1:1 by an
-// existing component (see src/components/blocks/Blocks.astro and the dynamic
-// route src/pages/[...slug].astro). Editors stack blocks to compose a page.
-//
-// Keystatic serializes its block array (a `fields.conditional`) as
-// `{ discriminant, value }` per item — this discriminated union mirrors that
-// shape exactly. Block images use image() so CMS-uploaded photos are optimized.
+// CMS-built pages. Each is an MDX file: a structured hero in frontmatter plus an
+// MDX body the editor composes in Keystatic's rich-text editor, inserting styled
+// components (Split, Callout, Photo band, …). The body's component tags map to
+// thin Astro wrappers at render time (see src/pages/[...slug].astro and
+// src/components/blocks/mdx/), so everything reuses the real site components.
 const pages = defineCollection({
-  loader: glob({ pattern: '**/*.yaml', base: './src/content/pages' }),
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
       seoDescription: z.string().optional(),
       draft: z.boolean().default(false),
-      blocks: z
-        .array(
-          z.discriminatedUnion('discriminant', [
-            z.object({
-              discriminant: z.literal('pageHeader'),
-              value: z.object({
-                image: image(),
-                alt: z.string(),
-                eyebrow: z.string().optional(),
-                title: z.string(),
-                lede: z.string(),
-              }),
-            }),
-            z.object({
-              discriminant: z.literal('richText'),
-              value: z.object({ eyebrow: z.string().optional(), body: z.string() }),
-            }),
-            z.object({
-              discriminant: z.literal('split'),
-              value: z.object({
-                image: image(),
-                alt: z.string(),
-                body: z.string(),
-                reverse: z.boolean().default(false),
-                tone: z.enum(['paper', 'sand', 'forest']).default('sand'),
-                eyebrow: z.string().optional(),
-                heading: z.string().optional(),
-              }),
-            }),
-            z.object({
-              discriminant: z.literal('captionedPhoto'),
-              value: z.object({
-                image: image(),
-                alt: z.string(),
-                caption: z.string().optional(),
-              }),
-            }),
-            z.object({
-              discriminant: z.literal('cardRow'),
-              value: z.object({
-                cards: z.array(z.object({ title: z.string(), body: z.string(), href: z.string().optional() })),
-              }),
-            }),
-            z.object({
-              discriminant: z.literal('callout'),
-              value: z.object({ heading: z.string().optional(), body: z.string() }),
-            }),
-            z.object({
-              discriminant: z.literal('photoBand'),
-              value: z.object({
-                heading: z.string().optional(),
-                eyebrow: z.string().optional(),
-                photos: z.array(z.object({ image: image(), alt: z.string() })),
-              }),
-            }),
-            z.object({
-              discriminant: z.literal('linkCards'),
-              value: z.object({
-                heading: z.string().optional(),
-                links: z.array(z.object({ title: z.string(), meta: z.string(), href: z.string() })),
-              }),
-            }),
-            z.object({
-              discriminant: z.literal('ctaBand'),
-              value: z.object({
-                tone: z.enum(['forest', 'sand', 'paper']).default('forest'),
-                eyebrow: z.string().optional(),
-                heading: z.string().optional(),
-                body: z.string(),
-                button: z.object({ label: z.string().optional(), href: z.string().optional() }).optional(),
-              }),
-            }),
-          ])
-        )
-        .default([]),
+      hero: z.object({
+        image: image(),
+        alt: z.string(),
+        eyebrow: z.string().optional(),
+        title: z.string(),
+        lede: z.string(),
+      }),
     }),
 })
 

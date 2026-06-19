@@ -1,0 +1,23 @@
+---
+import type { ImageMetadata } from 'astro'
+import Split from '../../Split.astro'
+import { renderInline } from '../../../lib/markdown'
+
+// The page hero, from a CMS page's frontmatter `hero`. Renders the site's
+// reversed sand Split with the page H1 + lede — guaranteeing every CMS page has
+// a single, real <h1>.
+type Props = {
+  image: ImageMetadata
+  alt: string
+  eyebrow?: string
+  title: string
+  lede: string
+  flush?: boolean
+}
+const { image, alt, eyebrow, title, lede, flush } = Astro.props
+---
+
+<Split class:list={['to-full', flush && 'is-flush']} image={image} alt={alt} reverse tone="sand" eyebrow={eyebrow}>
+  <h1 class="display">{title}</h1>
+  <p class="lede" set:html={renderInline(lede)} />
+</Split>

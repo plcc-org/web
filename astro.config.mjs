@@ -3,6 +3,7 @@ import { defineConfig, envField, fontProviders } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 import react from '@astrojs/react'
 import keystatic from '@keystatic/astro'
+import mdx from '@astrojs/mdx'
 import cloudflare from '@astrojs/cloudflare'
 import { siteConfig } from './src/config/site.ts'
 
@@ -28,7 +29,7 @@ export default defineConfig({
   // runtime can't supply the Node globals Keystatic's admin needs ("module is
   // not defined"). Dev serves every route fine without an adapter.
   adapter: process.env.ASTRO_DEV ? undefined : cloudflare({ imageService: 'compile' }),
-  integrations: [react(), keystatic(), sitemap()],
+  integrations: [react(), keystatic(), mdx(), sitemap()],
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL
   // that can rot) and emitted as content-hashed, CDN-cacheable static assets.
