@@ -1,0 +1,42 @@
+---
+import { renderMarkdown } from '../lib/markdown'
+import { withBase } from '../lib/url'
+
+// A responsive row of content cards (the global `.card-grid` / `.card`
+// treatment). Each card is a title plus a short Markdown body; an optional
+// `href` turns the whole card into a link that lifts on hover. Backs the
+// hand-authored card grids on Kids/Youth and is offered as a CMS block.
+
+export type CardItem = {
+  title: string
+  body: string
+  href?: string
+}
+
+type Props = {
+  items: CardItem[]
+  headingAs?: 'h2' | 'h3'
+  class?: string
+}
+
+const { items, headingAs = 'h3', class: className } = Astro.props
+const Heading = headingAs
+
+// External links (http, mailto, #anchors) pass through untouched; internal
+// paths get the deploy base prefix, matching the rest of the site.
+const resolve = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : withBase(href))
+---
+
+<div class:list={['card-grid', className]}>
+  {
+    items.map((item) => {
+      const Tag = item.href ? 'a' : 'div'
+      return (
+        <Tag class="card" {...(item.href ? { href: resolve(item.href) } : {})}>
+          <Heading>{item.title}</Heading>
+          <div set:html={renderMarkdown(item.body)} />
+        </Tag>
+      )
+    })
+  }
+</div>

@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import Split from '../components/Split.astro'
 import SectionHeader from '../components/SectionHeader.astro'
 import MomentsSection from '../components/MomentsSection.astro'
+import CardRow from '../components/CardRow.astro'
+import Callout from '../components/Callout.astro'
 import Photo from '../components/Photo.astro'
 import { withBase } from '../lib/url'
 
@@ -13,6 +15,21 @@ const kidsPhotos = [
   '479169157_18157955926338056_118133880266586215_n.jpg',
   '503632641_18168464443338056_6100866002216681684_n.jpg',
   '475568922_18156359086338056_4047262209868672150_n.jpg',
+]
+
+const startingPoints = [
+  {
+    title: 'Nursery & Toddlers',
+    body: 'A gentle, play-based environment where our littlest ones are cared for by consistent, loving volunteers.',
+  },
+  {
+    title: 'Preschool & Kindergarten',
+    body: 'Storytelling, music, and hands-on activities that introduce foundational Bible truths in an age-appropriate way.',
+  },
+  {
+    title: 'Elementary (1st–5th)',
+    body: 'A high-energy mix of games, small group discussion, and teaching that helps kids connect faith to their everyday lives.',
+  },
 ]
 ---
 
@@ -57,32 +74,10 @@ const kidsPhotos = [
         will help you register your children and show you to their classrooms.
       </p>
 
-      <div class="card-grid">
-        <div class="card">
-          <h3>Nursery &amp; Toddlers</h3>
-          <p>
-            A gentle, play-based environment where our littlest ones are cared for by consistent, loving volunteers.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Preschool &amp; Kindergarten</h3>
-          <p>
-            Storytelling, music, and hands-on activities that introduce foundational Bible truths in an age-appropriate
-            way.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Elementary (1st–5th)</h3>
-          <p>
-            A high-energy mix of games, small group discussion, and teaching that helps kids connect faith to their
-            everyday lives.
-          </p>
-        </div>
-      </div>
+      <CardRow items={startingPoints} />
     </section>
 
-    <section class="section section-callout">
-      <h2>Safety is our priority</h2>
+    <Callout heading="Safety is our priority">
       <p>
         We know that trust is earned. To ensure your child’s safety and your peace of mind, we follow strict protocols:
       </p>
@@ -94,7 +89,7 @@ const kidsPhotos = [
           child.
         </li>
       </ul>
-    </section>
+    </Callout>
 
     <section class="section">
       <SectionHeader eyebrow="Worshipping together" heading="Special Sundays" />

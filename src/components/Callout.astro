@@ -1,0 +1,24 @@
+---
+import { renderMarkdown } from '../lib/markdown'
+
+// A bordered "aside" panel — sand background, moss left-accent — for a single
+// emphasized point (safety note, a reassurance, an FYI). Backs the repeated
+// `.section-callout` pattern on Kids/Youth/Visit, and is offered as a CMS block.
+//
+// Pass `body` (Markdown) when CMS-driven; otherwise use the default slot so the
+// hand-authored pages keep their inline markup (lists, <strong>, links).
+
+type Props = {
+  heading?: string
+  body?: string
+  class?: string
+}
+
+const { heading, body, class: className } = Astro.props
+const hasBody = typeof body === 'string' && body.trim().length > 0
+---
+
+<section class:list={['section', 'section-callout', className]}>
+  {heading && <h2>{heading}</h2>}
+  {hasBody ? <div set:html={renderMarkdown(body)} /> : <slot />}
+</section>
