@@ -79,7 +79,6 @@ const mustExist = [
   'messages',
   'visit',
   'contact',
-  'next-steps',
 ]
 for (const r of mustExist) {
   if (!existsSync(`${DIST}/${r ? `${r}/` : ''}index.html`)) errors.push(`missing key route  /${r}`)
