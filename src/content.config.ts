@@ -135,7 +135,7 @@ const pages = defineCollection({
       eyebrow: z.string().optional(),
       title: z.string(),
       subhead: z.string().optional(),
-      lede: z.string(),
+      lede: z.string().optional(),
       logo: z.string().optional(),
       logoAlt: z.string().optional(),
       buttonLabel: z.string().optional(),

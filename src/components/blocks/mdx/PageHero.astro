@@ -19,7 +19,7 @@ type Props = {
   eyebrow?: string
   title: string
   subhead?: string
-  lede: string
+  lede?: string
   logo?: string
   logoAlt?: string
   buttonLabel?: string
@@ -59,7 +59,7 @@ const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href
         <h1 class="display">{title}</h1>
       )}
       {subhead && <p class="subhead">{subhead}</p>}
-      <p class="lede" set:html={renderInline(lede)} />
+      {lede && <p class="lede" set:html={renderInline(lede)} />}
       {buttonHref && (
         <p>
           <a class="btn" href={resolve(buttonHref)}>
@@ -73,7 +73,7 @@ const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
       <h1 class="display">{title}</h1>
       {subhead && <p class="subhead">{subhead}</p>}
-      <p class="lede" set:html={renderInline(lede)} />
+      {lede && <p class="lede" set:html={renderInline(lede)} />}
       {buttonHref && (
         <p>
           <a class="btn" href={resolve(buttonHref)}>

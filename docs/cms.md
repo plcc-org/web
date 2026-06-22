@@ -88,6 +88,7 @@ site while you work.
 | **Youth moments**        | The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.                           |
 | **Quotes carousel**      | A rotating band of testimonials, pulled live from the Homepage quotes list.                                         |
 | **Roadmap**              | A numbered timeline — steps as nodes on a connecting line (e.g. "in three movements").                              |
+| **Letter**               | A personal letter — flowing prose beside a portrait, closing with a signature (a welcome or note).                  |
 
 Notes for editors:
 
@@ -119,7 +120,8 @@ come from the catalog via `<Photo filename>`.
   "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote",
   `FeaturedEvents` = "Featured events", `KeyPoints` = "Key points", `LogoCards` =
   "Logo cards", `Aside` = "Aside", `Doors` = "Neighbor doors", `YouthMomentsBlock` =
-  "Youth moments", `QuoteCarousel` = "Quotes carousel", `Roadmap` = "Roadmap".
+  "Youth moments", `QuoteCarousel` = "Quotes carousel", `Roadmap` = "Roadmap",
+  `Letter` = "Letter".
 - Data blocks (Neighbor doors, Youth moments, Quotes carousel, Featured events) pull from a
   shared collection/singleton rather than inline content — they take only display options.
 - Hero/block image references are resolved by `imageFromRef`, a nesting-agnostic registry,
@@ -145,8 +147,9 @@ different decisions:
 
 By this rule, these stay **hand-built `.astro`**, not CMS pages: `index` (home — a bespoke
 full-bleed video hero), `events/*` (the `EventsBoard` _is_ the page), `messages` (live
-video archive), `about/leadership` (modal + view-transition morph), `about/pastors-letter`
-(bespoke letter layout). They're already components; they just aren't editor surface.
+video archive), and `about/leadership` (modal + view-transition morph). They're already
+components; they just aren't editor surface. (The pastor's letter _was_ here until its
+layout became the reusable **Letter** block.)
 
 ---
 

@@ -541,6 +541,23 @@ export default config({
                 ),
               },
             }),
+            Letter: wrapper({
+              label: 'Letter',
+              description: 'A personal letter — flowing prose beside a portrait, closing with a signature.',
+              ContentView: ({ value, children }) =>
+                preview('Letter', value.signoffName || '', thumb(value.image), children),
+              schema: {
+                image: fields.image({
+                  label: 'Portrait (optional)',
+                  directory: 'src/assets/images',
+                  publicPath: '../../assets/images/',
+                  validation: { isRequired: false },
+                }),
+                alt: fields.text({ label: 'Portrait description (alt text)', validation: { isRequired: false } }),
+                signoffName: fields.text({ label: 'Signature — name', validation: { isRequired: false } }),
+                signoffRole: fields.text({ label: 'Signature — role/title', validation: { isRequired: false } }),
+              },
+            }),
           },
         }),
       },
