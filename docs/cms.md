@@ -208,6 +208,12 @@ Point `plcc.org` DNS at Cloudflare Pages, and remove/disable `.github/workflows/
   `src/content.config.ts` (or vice versa) will be invisible to the build or fail validation.
 - **CMS pages are Prettier-ignored** (`src/content/pages/` in `.prettierignore`) — Prettier's
   MDX reflow breaks block-component children. Keystatic owns their formatting.
+- **No raw HTML in page bodies** — an MDX body must be **Markdown plus the registered block
+  components only** (the capitalized components listed above). A raw HTML tag like `<br>`,
+  `<span>`, or `<div>` is treated by Keystatic's editor as a content-component that must be
+  registered, so the page fails to load with `Missing component definition`. For a line break,
+  use a **Markdown hard break** (two trailing spaces at the end of a line); Astro still renders
+  it as `<br>`.
 - **`alt` is required** on every image field, so an image can't be saved without a
   description.
 - **The `pages` directory must exist** even when empty (kept via `.gitkeep`).
