@@ -372,6 +372,11 @@ export default config({
                   ],
                   defaultValue: 'auto',
                 }),
+                large: fields.checkbox({
+                  label: 'Large cards',
+                  description: 'A roomier, more editorial card with a prominent serif title.',
+                  defaultValue: false,
+                }),
                 cards: fields.array(
                   fields.object({
                     title: fields.text({ label: 'Title' }),

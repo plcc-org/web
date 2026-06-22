@@ -24,9 +24,11 @@ type Props = {
   // auto-fit grid — as many as fit. A number forces that many columns (so e.g.
   // four cards wrap 2×2), collapsing to one on narrow screens.
   columns?: number | string
+  // Use the roomier, editorial "large" card treatment.
+  large?: boolean
 }
 
-const { items, headingAs = 'h3', class: className, columns } = Astro.props
+const { items, headingAs = 'h3', class: className, columns, large } = Astro.props
 const Heading = headingAs
 const cols = columns && Number(columns) >= 2 ? Number(columns) : undefined
 
@@ -40,7 +42,10 @@ const resolve = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : wi
     items.map((item) => {
       const Tag = item.href ? 'a' : 'div'
       return (
-        <Tag class:list={['card', item.linkLabel && 'card--cta']} {...(item.href ? { href: resolve(item.href) } : {})}>
+        <Tag
+          class:list={['card', large && 'card--large', item.linkLabel && 'card--cta']}
+          {...(item.href ? { href: resolve(item.href) } : {})}
+        >
           <Heading>{item.title}</Heading>
           <div set:html={renderMarkdown(item.body)} />
           {item.linkLabel && (
