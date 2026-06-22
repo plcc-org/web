@@ -57,9 +57,12 @@ const components = {
 }
 ---
 
-<BaseLayout title={`${page.data.title} | Pine Lake Covenant Church`} description={page.data.seoDescription}>
+<BaseLayout
+  title={`${page.data.title} | Pine Lake Covenant Church`}
+  description={page.data.seoDescription ?? page.data.hero.lede}
+>
   <div class="canvas">
-    <PageHero {...page.data.hero} />
+    <PageHero {...page.data.hero} title={page.data.title} />
     <Content components={components} />
   </div>
 </BaseLayout>

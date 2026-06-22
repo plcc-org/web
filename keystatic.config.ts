@@ -164,41 +164,62 @@ export default config({
         }),
         draft: fields.checkbox({
           label: 'Draft',
-          description: "Drafts are visible in preview but won't be published.",
-          defaultValue: false,
+          description:
+            "New pages start as drafts — they're visible in preview but not published. Uncheck to publish when ready.",
+          defaultValue: true,
         }),
         hero: fields.object(
           {
             image: fields.image({
               label: 'Hero photo',
-              description: 'Leave blank for a calm, text-only header (no photo).',
+              description: 'Optional — leave blank for a calm, text-only header (no photo).',
               directory: 'src/assets/images',
               publicPath: '../../assets/images/',
               validation: { isRequired: false },
             }),
             alt: fields.text({
               label: 'Photo description (alt text)',
-              description: 'Required when a hero photo is set.',
+              description: 'Required only when a hero photo is set.',
               validation: { isRequired: false },
             }),
-            eyebrow: fields.text({ label: 'Eyebrow (small label above the title)', validation: { isRequired: false } }),
-            title: fields.text({ label: 'Page heading' }),
+            eyebrow: fields.text({
+              label: 'Eyebrow',
+              description: 'Optional — a small label shown above the heading.',
+              validation: { isRequired: false },
+            }),
+            lede: fields.text({
+              label: 'Intro line',
+              description: 'A one- or two-sentence opening. The heading comes from the page title.',
+              multiline: true,
+              validation: { isRequired: false },
+            }),
             subhead: fields.text({
               label: 'Subhead',
-              description: 'An optional line between the heading and the intro.',
+              description: 'Optional — a line between the heading and the intro.',
               validation: { isRequired: false },
             }),
-            lede: fields.text({ label: 'Intro line', multiline: true }),
             logo: fields.image({
-              label: 'Wordmark logo (optional)',
-              description: 'A program wordmark shown in place of the text heading (e.g. Pine Lake Kids).',
+              label: 'Wordmark logo',
+              description: 'Optional — a wordmark shown instead of the heading (e.g. Pine Lake Kids).',
               directory: 'src/assets/images',
               publicPath: '../../assets/images/',
               validation: { isRequired: false },
             }),
-            logoAlt: fields.text({ label: 'Logo description (alt text)', validation: { isRequired: false } }),
-            buttonLabel: fields.text({ label: 'Hero button label', validation: { isRequired: false } }),
-            buttonHref: fields.text({ label: 'Hero button link', validation: { isRequired: false } }),
+            logoAlt: fields.text({
+              label: 'Logo description (alt text)',
+              description: 'Required only when a wordmark logo is set.',
+              validation: { isRequired: false },
+            }),
+            buttonLabel: fields.text({
+              label: 'Hero button label',
+              description: 'Optional.',
+              validation: { isRequired: false },
+            }),
+            buttonHref: fields.text({
+              label: 'Hero button link',
+              description: 'Optional.',
+              validation: { isRequired: false },
+            }),
           },
           { label: 'Hero' }
         ),

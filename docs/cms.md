@@ -64,8 +64,8 @@ A page has two parts:
    relevant), and you edit a block's text right on the card.
 
 To make a new page: add a **Pages** entry, give it a title and a URL slug (`momco` →
-`/momco/`), fill the hero, and stack blocks. Set **Draft** to keep it out of the published
-site while you work.
+`/momco/`), fill the hero, and stack blocks. New pages start as **drafts** — visible in
+preview but not on the published site — so uncheck **Draft** to publish when it's ready.
 
 ### The block palette
 
