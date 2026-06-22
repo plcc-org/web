@@ -355,6 +355,12 @@ export default config({
               schema: {
                 eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                intro: fields.text({
+                  label: 'Intro',
+                  description: 'An optional lead line shown above the cards.',
+                  multiline: true,
+                  validation: { isRequired: false },
+                }),
                 columns: fields.select({
                   label: 'Cards per row',
                   description: 'Auto fits as many as will fit; a fixed count wraps the rest (e.g. four cards 2×2).',
