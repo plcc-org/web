@@ -171,11 +171,16 @@ export default config({
           {
             image: fields.image({
               label: 'Hero photo',
+              description: 'Leave blank for a calm, text-only header (no photo).',
               directory: 'src/assets/images',
               publicPath: '../../assets/images/',
-              validation: { isRequired: true },
+              validation: { isRequired: false },
             }),
-            alt: fields.text({ label: 'Photo description (alt text)', validation: { isRequired: true } }),
+            alt: fields.text({
+              label: 'Photo description (alt text)',
+              description: 'Required when a hero photo is set.',
+              validation: { isRequired: false },
+            }),
             eyebrow: fields.text({ label: 'Eyebrow (small label above the title)', validation: { isRequired: false } }),
             title: fields.text({ label: 'Page heading' }),
             subhead: fields.text({

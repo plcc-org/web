@@ -52,8 +52,10 @@ into a page block**, where the photo and its (required) description live togethe
 
 A page has two parts:
 
-1. **A hero** (in the page's form): a photo, an eyebrow, the page title (its `<h1>`), and an
-   intro line. Every page gets one.
+1. **A hero** (in the page's form): an eyebrow, the page title (its `<h1>`), an optional
+   subhead, an intro line, and optionally a photo. Leave the photo blank for a calm,
+   text-only header (used by reading pages like Contact). A wordmark **logo** and a hero
+   **button** are also available. Every page gets a hero.
 2. **A body** — a **rich-text editor** where you type formatted prose and insert **blocks**
    from the "+" / insert menu. Each block is a pre-styled section, so anything you build
    stays on-brand. Blocks show inline as labelled cards (with a photo thumbnail where

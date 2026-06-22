@@ -127,8 +127,11 @@ const pages = defineCollection({
     seoDescription: z.string().optional(),
     draft: z.boolean().default(false),
     hero: z.object({
-      image: z.string().min(1),
-      alt: z.string().min(1),
+      // Image (+ alt) are optional: a page with no hero photo renders a calm,
+      // text-only header instead (PageHero). When an image is present its alt is
+      // enforced at build time by the site crawl (scripts/check-site.mjs).
+      image: z.string().optional(),
+      alt: z.string().optional(),
       eyebrow: z.string().optional(),
       title: z.string(),
       subhead: z.string().optional(),

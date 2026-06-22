@@ -14,8 +14,8 @@ import { withBase } from '../../../lib/url'
 // is flat or nested. When a logo is present it stands in for the visible title
 // (a wordmark); the <h1> text is kept for the document outline but hidden.
 type Props = {
-  image: string
-  alt: string
+  image?: string
+  alt?: string
   eyebrow?: string
   title: string
   subhead?: string
@@ -27,42 +27,63 @@ type Props = {
   flush?: boolean
 }
 const { image, alt, eyebrow, title, subhead, lede, logo, logoAlt, buttonLabel, buttonHref, flush } = Astro.props
-const heroImg = (await imageFromRef(image)?.())?.default as ImageMetadata | undefined
+const heroImg = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined
 const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined
 const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href : withBase(href))
 ---
 
-<Split class:list={['to-full', flush && 'is-flush']} image={heroImg} alt={alt} reverse tone="sand" eyebrow={eyebrow}>
-  {
-    logoImg ? (
-      <Fragment>
-        <Photo
-          image={logoImg}
-          alt={logoAlt || ''}
-          class="page-hero__logo"
-          loading="eager"
-          fetchpriority="high"
-          widths={[340, 680]}
-          sizes="(max-width: 600px) 70vw, 340px"
-        />
-        <h1 class="page-hero__sr-title">{title}</h1>
-      </Fragment>
-    ) : (
+{
+  heroImg ? (
+    <Split
+      class:list={['to-full', flush && 'is-flush']}
+      image={heroImg}
+      alt={alt}
+      reverse
+      tone="sand"
+      eyebrow={eyebrow}
+    >
+      {logoImg ? (
+        <Fragment>
+          <Photo
+            image={logoImg}
+            alt={logoAlt || ''}
+            class="page-hero__logo"
+            loading="eager"
+            fetchpriority="high"
+            widths={[340, 680]}
+            sizes="(max-width: 600px) 70vw, 340px"
+          />
+          <h1 class="page-hero__sr-title">{title}</h1>
+        </Fragment>
+      ) : (
+        <h1 class="display">{title}</h1>
+      )}
+      {subhead && <p class="subhead">{subhead}</p>}
+      <p class="lede" set:html={renderInline(lede)} />
+      {buttonHref && (
+        <p>
+          <a class="btn" href={resolve(buttonHref)}>
+            {buttonLabel || 'Learn more'}
+          </a>
+        </p>
+      )}
+    </Split>
+  ) : (
+    <header class="section page-intro">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
       <h1 class="display">{title}</h1>
-    )
-  }
-  {subhead && <p class="subhead">{subhead}</p>}
-  <p class="lede" set:html={renderInline(lede)} />
-  {
-    buttonHref && (
-      <p>
-        <a class="btn" href={resolve(buttonHref)}>
-          {buttonLabel || 'Learn more'}
-        </a>
-      </p>
-    )
-  }
-</Split>
+      {subhead && <p class="subhead">{subhead}</p>}
+      <p class="lede" set:html={renderInline(lede)} />
+      {buttonHref && (
+        <p>
+          <a class="btn" href={resolve(buttonHref)}>
+            {buttonLabel || 'Learn more'}
+          </a>
+        </p>
+      )}
+    </header>
+  )
+}
 
 <style>
   /* Rendered by <Photo>, so the <img> must be styled globally. */
