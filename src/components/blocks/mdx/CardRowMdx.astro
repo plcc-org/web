@@ -4,7 +4,11 @@ import SectionHeader from '../../SectionHeader.astro'
 
 // MDX wrapper for the Card row block — a row of titled cards (Markdown bodies),
 // with an optional eyebrow + heading above them.
-type Props = { eyebrow?: string; heading?: string; cards?: { title: string; body: string; href?: string }[] }
+type Props = {
+  eyebrow?: string
+  heading?: string
+  cards?: { title: string; body: string; href?: string; linkLabel?: string }[]
+}
 const { eyebrow, heading, cards = [] } = Astro.props
 ---
 

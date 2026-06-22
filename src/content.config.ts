@@ -85,20 +85,6 @@ const quotes = defineCollection({
   }),
 })
 
-const neighborDoors = defineCollection({
-  loader: file('src/content/neighbor-doors.yaml', { parser: yamlList('doors') }),
-  schema: z.object({
-    id: z.string(),
-    title: z.string(),
-    intro: z.string(),
-    body: z.string(),
-    bullets: z.array(z.string()),
-    ctaLabel: z.string(),
-    href: z.string(),
-    order: z.number().default(0),
-  }),
-})
-
 const startHereLinks = defineCollection({
   loader: file('src/content/start-here-links.yaml', { parser: yamlList('links') }),
   schema: z.object({
@@ -144,4 +130,4 @@ const pages = defineCollection({
   }),
 })
 
-export const collections = { photos, youthMoments, leadership, quotes, neighborDoors, startHereLinks, pages }
+export const collections = { photos, youthMoments, leadership, quotes, startHereLinks, pages }

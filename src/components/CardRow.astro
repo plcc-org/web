@@ -11,6 +11,9 @@ export type CardItem = {
   title: string
   body: string
   href?: string
+  // An optional labelled call-to-action shown at the foot of the card (e.g.
+  // "Serving Locally →"). Pairs with `href` to signpost where the card leads.
+  linkLabel?: string
 }
 
 type Props = {
@@ -32,11 +35,32 @@ const resolve = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : wi
     items.map((item) => {
       const Tag = item.href ? 'a' : 'div'
       return (
-        <Tag class="card" {...(item.href ? { href: resolve(item.href) } : {})}>
+        <Tag class:list={['card', item.linkLabel && 'card--cta']} {...(item.href ? { href: resolve(item.href) } : {})}>
           <Heading>{item.title}</Heading>
           <div set:html={renderMarkdown(item.body)} />
+          {item.linkLabel && (
+            <span class="card__cta">
+              {item.linkLabel} <span aria-hidden="true">→</span>
+            </span>
+          )}
         </Tag>
       )
     })
   }
 </div>
+
+<style>
+  /* When a card carries a labelled CTA, lay it out as a column so the CTA can
+     sit at the foot regardless of body length, keeping a row of cards aligned. */
+  .card--cta {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card__cta {
+    margin-top: auto;
+    padding-top: 1rem;
+    color: var(--color-moss);
+    font-weight: 700;
+  }
+</style>

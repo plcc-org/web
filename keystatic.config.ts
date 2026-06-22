@@ -339,6 +339,11 @@ export default config({
                     title: fields.text({ label: 'Title' }),
                     body: fields.text({ label: 'Text', multiline: true }),
                     href: fields.text({ label: 'Link (optional)', validation: { isRequired: false } }),
+                    linkLabel: fields.text({
+                      label: 'Link label (optional)',
+                      description: 'Shows a “label →” call-to-action at the foot of the card.',
+                      validation: { isRequired: false },
+                    }),
                   }),
                   { label: 'Cards', itemLabel: (p) => p.fields.title.value || 'Card' }
                 ),
@@ -482,21 +487,6 @@ export default config({
                 logoAlt: fields.text({ label: 'Logo description (alt text)', validation: { isRequired: false } }),
               },
             }),
-            Doors: block({
-              label: 'Neighbor doors',
-              description: 'The “common starting points” cards, pulled live from the Neighbor doors list.',
-              ContentView: ({ value }) => preview('Neighbor doors', value.heading || 'All doors', null),
-              schema: {
-                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
-                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
-                intro: fields.text({ label: 'Intro', multiline: true, validation: { isRequired: false } }),
-                count: fields.integer({
-                  label: 'How many to show',
-                  description: 'Leave blank to show every door.',
-                  validation: { isRequired: false },
-                }),
-              },
-            }),
             YouthMomentsBlock: block({
               label: 'Youth moments',
               description: 'The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.',
@@ -581,27 +571,6 @@ export default config({
             by: fields.text({ label: 'Attribution', validation: { isRequired: false } }),
           }),
           { label: 'Quotes', itemLabel: (p) => p.fields.by.value || p.fields.id.value }
-        ),
-      },
-    }),
-
-    neighborDoors: singleton({
-      label: 'Neighbor doors',
-      path: 'src/content/neighbor-doors',
-      format: { data: 'yaml' },
-      schema: {
-        doors: fields.array(
-          fields.object({
-            id: fields.text({ label: 'ID' }),
-            order: fields.integer({ label: 'Order', defaultValue: 0 }),
-            title: fields.text({ label: 'Title' }),
-            intro: fields.text({ label: 'Intro', multiline: true }),
-            body: fields.text({ label: 'Body', multiline: true }),
-            bullets: fields.array(fields.text({ label: 'Bullet' }), { label: 'Bullets' }),
-            ctaLabel: fields.text({ label: 'Button label' }),
-            href: fields.text({ label: 'Button URL' }),
-          }),
-          { label: 'Doors', itemLabel: (p) => p.fields.title.value || p.fields.id.value }
         ),
       },
     }),

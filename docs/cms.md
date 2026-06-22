@@ -35,14 +35,14 @@ just a page's content and belongs in that page's editor.
 | **Leadership**       | Pastors & staff — reusable people entities    | shared    |
 | **Youth moments**    | Signature youth trips/retreats (curated)      | shared    |
 | **Homepage quotes**  | Rotating testimonials (reusable social proof) | shared    |
-| **Neighbor doors**   | The "common starting points" cards            | shared    |
 | **Start-here links** | Homepage link cards                           | page data |
 
-> **Neighbor doors** is referenced from content now — the `neighbors` page inserts the
-> **Neighbor doors** block, which reads this list — so it earns its place as shared data.
 > **Start-here links** remains because the homepage (still hand-built; see below) renders its
-> `home` group. The `new` page, now a CMS page, folded its links straight into a **Link
-> cards** block instead.
+> `home` group. Page-specific cards that used to be stored as data now live inline in the
+> page that shows them: the `new` page folded its links into a **Link cards** block, and the
+> `neighbors` "common starting points" doors are now **Text cards** (with a labelled link)
+> in the page itself — they were only ever used on that one page, so they're content, not
+> shared data.
 
 **Photos are deliberately not a collection.** The 442-entry catalog (`src/content/photos.json`)
 is build-time infrastructure for the hand-built pages. Editors add photos by **uploading them
@@ -84,7 +84,6 @@ site while you work.
 | **Key points**           | A moss-accented grid of titled points — core tenets, emphases, principles.                                          |
 | **Logo cards**           | A row of cards each topped by a program or partner logo, with an optional link.                                     |
 | **Aside**                | A tinted note set apart from the page — text beside an optional small logo.                                         |
-| **Neighbor doors**       | The "common starting points" cards, pulled live from the Neighbor doors list.                                       |
 | **Youth moments**        | The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.                           |
 | **Quotes carousel**      | A rotating band of testimonials, pulled live from the Homepage quotes list.                                         |
 | **Roadmap**              | A numbered timeline — steps as nodes on a connecting line (e.g. "in three movements").                              |
@@ -119,11 +118,10 @@ come from the catalog via `<Photo filename>`.
   "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `PhotoBand` =
   "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote",
   `FeaturedEvents` = "Featured events", `KeyPoints` = "Key points", `LogoCards` =
-  "Logo cards", `Aside` = "Aside", `Doors` = "Neighbor doors", `YouthMomentsBlock` =
-  "Youth moments", `QuoteCarousel` = "Quotes carousel", `Roadmap` = "Roadmap",
-  `Letter` = "Letter".
-- Data blocks (Neighbor doors, Youth moments, Quotes carousel, Featured events) pull from a
-  shared collection/singleton rather than inline content — they take only display options.
+  "Logo cards", `Aside` = "Aside", `YouthMomentsBlock` = "Youth moments", `QuoteCarousel` =
+  "Quotes carousel", `Roadmap` = "Roadmap", `Letter` = "Letter".
+- Data blocks (Youth moments, Quotes carousel, Featured events) pull from a shared
+  collection/singleton rather than inline content — they take only display options.
 - Hero/block image references are resolved by `imageFromRef`, a nesting-agnostic registry,
   so a page works whether it's flat (`church-life.mdx`) or nested (`about/covenant.mdx`).
 - Block images arrive as path strings; the wrappers resolve them through `imageFromRef`
