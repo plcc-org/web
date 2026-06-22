@@ -65,18 +65,24 @@ site while you work.
 
 ### The block palette
 
-| Block                    | Use it for                                                                 |
-| ------------------------ | -------------------------------------------------------------------------- |
-| **Rich text**            | A heading and formatted paragraphs — the default for written content.      |
-| **Photo & text (split)** | A photo beside text (left or right, tinted background) — show-and-tell.    |
-| **Photo**                | A single framed photo with an optional caption.                            |
-| **Photo gallery**        | Several photos shown together as a visual break.                           |
-| **Text cards**           | A row of small cards (title + a line) — a few parallel points.             |
-| **Link cards**           | A grid of cards that link elsewhere — signposting to other pages.          |
-| **Callout**              | A boxed aside that sets one point apart — a reassurance, a key fact.       |
-| **Banner**               | A full-width colored band that makes a statement, with an optional button. |
-| **Quote**                | A single featured pull-quote — a testimonial or short quotation set apart. |
-| **Featured events**      | A short list of upcoming events, pulled live from the events feed.         |
+| Block                    | Use it for                                                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| **Rich text**            | A heading and formatted paragraphs — the default for written content.                                               |
+| **Photo & text (split)** | A photo beside text (left or right, tinted background) — show-and-tell.                                             |
+| **Photo**                | A single framed photo with an optional caption.                                                                     |
+| **Photo gallery**        | Several photos shown together as a visual break.                                                                    |
+| **Text cards**           | A row of small cards (title + a line) — a few parallel points.                                                      |
+| **Link cards**           | A grid of cards that link elsewhere — signposting to other pages.                                                   |
+| **Callout**              | A boxed aside that sets one point apart — a reassurance, a key fact.                                                |
+| **Banner**               | A full-width colored band that makes a statement, with an optional button.                                          |
+| **Quote**                | A single featured pull-quote — a testimonial, quotation, or verse. A background color renders it as a "verse band." |
+| **Featured events**      | A short list of upcoming events, pulled live from the events feed.                                                  |
+| **Key points**           | A moss-accented grid of titled points — core tenets, emphases, principles.                                          |
+| **Logo cards**           | A row of cards each topped by a program or partner logo, with an optional link.                                     |
+| **Aside**                | A tinted note set apart from the page — text beside an optional small logo.                                         |
+| **Neighbor doors**       | The "common starting points" cards, pulled live from the Neighbor doors list.                                       |
+| **Youth moments**        | The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.                           |
+| **Quotes carousel**      | A rotating band of testimonials, pulled live from the Homepage quotes list.                                         |
 
 Notes for editors:
 
@@ -106,7 +112,13 @@ come from the catalog via `<Photo filename>`.
 - Internal code names differ from editor labels (the label is what editors see): `Section` =
   "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `PhotoBand` =
   "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote",
-  `FeaturedEvents` = "Featured events".
+  `FeaturedEvents` = "Featured events", `KeyPoints` = "Key points", `LogoCards` =
+  "Logo cards", `Aside` = "Aside", `Doors` = "Neighbor doors", `YouthMomentsBlock` =
+  "Youth moments", `QuoteCarousel` = "Quotes carousel".
+- Data blocks (Neighbor doors, Youth moments, Quotes carousel, Featured events) pull from a
+  shared collection/singleton rather than inline content — they take only display options.
+- Hero/block image references are resolved by `imageFromRef`, a nesting-agnostic registry,
+  so a page works whether it's flat (`church-life.mdx`) or nested (`about/covenant.mdx`).
 - Block images arrive as path strings; the wrappers resolve them through `imageFromRef`
   (`src/lib/images.ts`), a recursive registry that handles the nested `<slug>/` uploads, and
   hand them to `<Photo>` for build-time optimization.

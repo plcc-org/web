@@ -149,7 +149,7 @@ export default config({
     pages: collection({
       label: 'Pages',
       slugField: 'title',
-      path: 'src/content/pages/*',
+      path: 'src/content/pages/**',
       format: { contentField: 'content' },
       columns: ['title'],
       schema: {
@@ -178,7 +178,20 @@ export default config({
             alt: fields.text({ label: 'Photo description (alt text)', validation: { isRequired: true } }),
             eyebrow: fields.text({ label: 'Eyebrow (small label above the title)', validation: { isRequired: false } }),
             title: fields.text({ label: 'Page heading' }),
+            subhead: fields.text({
+              label: 'Subhead',
+              description: 'An optional line between the heading and the intro.',
+              validation: { isRequired: false },
+            }),
             lede: fields.text({ label: 'Intro line', multiline: true }),
+            logo: fields.image({
+              label: 'Wordmark logo (optional)',
+              description: 'A program wordmark shown in place of the text heading (e.g. Pine Lake Kids).',
+              directory: 'src/assets/images',
+              publicPath: '../../assets/images/',
+              validation: { isRequired: false },
+            }),
+            logoAlt: fields.text({ label: 'Logo description (alt text)', validation: { isRequired: false } }),
           },
           { label: 'Hero' }
         ),
@@ -269,6 +282,11 @@ export default config({
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
                 buttonLabel: fields.text({ label: 'Button label', validation: { isRequired: false } }),
                 buttonHref: fields.text({ label: 'Button link', validation: { isRequired: false } }),
+                flush: fields.checkbox({
+                  label: 'Sit flush against the footer',
+                  description: 'Use only when this banner is the last block on the page.',
+                  defaultValue: false,
+                }),
               },
             }),
             PhotoBand: block({
@@ -340,8 +358,19 @@ export default config({
                 quote: fields.text({ label: 'Quote', multiline: true, validation: { isRequired: true } }),
                 attribution: fields.text({
                   label: 'Attribution',
-                  description: 'Who said it — e.g. "A recent attendee". Optional.',
+                  description: 'Who said it — e.g. "A recent attendee", or a scripture reference. Optional.',
                   validation: { isRequired: false },
+                }),
+                tone: fields.select({
+                  label: 'Background',
+                  description: 'Plain sets the quote in open space; a color renders it inside a band (a "verse band").',
+                  options: [
+                    { label: 'Plain (no band)', value: 'none' },
+                    { label: 'Forest (dark)', value: 'forest' },
+                    { label: 'Sand', value: 'sand' },
+                    { label: 'Paper (white)', value: 'paper' },
+                  ],
+                  defaultValue: 'none',
                 }),
               },
             }),
@@ -369,6 +398,121 @@ export default config({
                   defaultValue: 'all',
                 }),
                 count: fields.integer({ label: 'How many to show', defaultValue: 3 }),
+              },
+            }),
+            KeyPoints: block({
+              label: 'Key points',
+              description: 'A moss-accented grid of titled points — the core-tenets / emphases treatment.',
+              ContentView: ({ value }) => preview('Key points', `${(value.items || []).length} point(s)`, null),
+              schema: {
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                columns: fields.select({
+                  label: 'Columns',
+                  options: [
+                    { label: 'Two across', value: '2' },
+                    { label: 'Three across', value: '3' },
+                  ],
+                  defaultValue: '2',
+                }),
+                items: fields.array(
+                  fields.object({
+                    title: fields.text({ label: 'Title' }),
+                    body: fields.text({ label: 'Text', multiline: true }),
+                  }),
+                  { label: 'Points', itemLabel: (p) => p.fields.title.value || 'Point' }
+                ),
+              },
+            }),
+            LogoCards: block({
+              label: 'Logo cards',
+              description: 'A row of cards, each topped by a program or partner logo, with text and an optional link.',
+              ContentView: ({ value }) =>
+                preview(
+                  'Logo cards',
+                  `${(value.cards || []).length} card(s)`,
+                  h(
+                    'div',
+                    { style: { display: 'flex', gap: 4 } },
+                    ...(value.cards || []).slice(0, 5).map((c, i) => h('div', { key: i }, thumb(c.image, 40)))
+                  )
+                ),
+              schema: {
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                cards: fields.array(
+                  fields.object({
+                    image: fields.image({
+                      label: 'Logo',
+                      directory: 'src/assets/images',
+                      publicPath: '../../assets/images/',
+                      validation: { isRequired: true },
+                    }),
+                    alt: fields.text({ label: 'Logo description (alt text)', validation: { isRequired: true } }),
+                    body: fields.text({ label: 'Text', multiline: true }),
+                    linkLabel: fields.text({ label: 'Link label', validation: { isRequired: false } }),
+                    href: fields.text({ label: 'Link URL', validation: { isRequired: false } }),
+                  }),
+                  { label: 'Cards', itemLabel: (p) => p.fields.alt.value || 'Card' }
+                ),
+              },
+            }),
+            Aside: wrapper({
+              label: 'Aside',
+              description: 'A tinted note set apart from the page — formatted text beside an optional small logo.',
+              ContentView: ({ value, children }) => preview('Aside', value.eyebrow || '', thumb(value.logo), children),
+              schema: {
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                logo: fields.image({
+                  label: 'Logo (optional)',
+                  directory: 'src/assets/images',
+                  publicPath: '../../assets/images/',
+                  validation: { isRequired: false },
+                }),
+                logoAlt: fields.text({ label: 'Logo description (alt text)', validation: { isRequired: false } }),
+              },
+            }),
+            Doors: block({
+              label: 'Neighbor doors',
+              description: 'The “common starting points” cards, pulled live from the Neighbor doors list.',
+              ContentView: ({ value }) => preview('Neighbor doors', value.heading || 'All doors', null),
+              schema: {
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                intro: fields.text({ label: 'Intro', multiline: true, validation: { isRequired: false } }),
+                count: fields.integer({
+                  label: 'How many to show',
+                  description: 'Leave blank to show every door.',
+                  validation: { isRequired: false },
+                }),
+              },
+            }),
+            YouthMomentsBlock: block({
+              label: 'Youth moments',
+              description: 'The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.',
+              ContentView: ({ value }) => preview('Youth moments', value.heading || '', null),
+              schema: {
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+              },
+            }),
+            QuoteCarousel: block({
+              label: 'Quotes carousel',
+              description: 'A rotating band of testimonials, pulled live from the Homepage quotes list.',
+              ContentView: ({ value }) => preview('Quotes carousel', value.heading || '', null),
+              schema: {
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                intro: fields.text({ label: 'Intro line', multiline: true, validation: { isRequired: false } }),
+                tone: fields.select({
+                  label: 'Background',
+                  options: [
+                    { label: 'Sand', value: 'sand' },
+                    { label: 'Paper (white)', value: 'paper' },
+                    { label: 'Forest (dark)', value: 'forest' },
+                  ],
+                  defaultValue: 'sand',
+                }),
               },
             }),
           },

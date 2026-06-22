@@ -1,18 +1,32 @@
 ---
+import Band from '../../Band.astro'
+
 // MDX wrapper for a single featured pull-quote — a testimonial or short
 // quotation set apart from the prose. (For the rotating home band, see
-// QuoteCarousel.) Matches the site's quote aesthetic: a moss accent rule and
-// centered serif type.
-type Props = { quote: string; attribution?: string }
-const { quote, attribution } = Astro.props
+// QuoteCarousel.) With no tone it sits in open space with a moss accent and
+// centered serif type; with a tone it renders inside a colored Band — the
+// "verse band" treatment for a scripture line or epigraph.
+type Props = { quote: string; attribution?: string; tone?: 'none' | 'sand' | 'forest' | 'paper' }
+const { quote, attribution, tone = 'none' } = Astro.props
 ---
 
-<section class="section">
-  <blockquote class="story-quote pull-quote">
-    <p>{quote}</p>
-    {attribution && <footer>— {attribution}</footer>}
-  </blockquote>
-</section>
+{
+  tone === 'none' ? (
+    <section class="section">
+      <blockquote class="story-quote pull-quote">
+        <p>{quote}</p>
+        {attribution && <footer>— {attribution}</footer>}
+      </blockquote>
+    </section>
+  ) : (
+    <Band tone={tone} centered class="verse-band">
+      <blockquote class="verse">
+        <p>{quote}</p>
+        {attribution && <footer>{attribution}</footer>}
+      </blockquote>
+    </Band>
+  )
+}
 
 <style>
   /* Out of the card: let the quote sit in open space like the carousel's solo
@@ -34,5 +48,36 @@ const { quote, attribution } = Astro.props
 
   .pull-quote :global(p) {
     font-size: var(--text-lg);
+  }
+
+  /* Toned variant: a centered serif "verse" set inside the colored band. Colors
+     inherit from the band tone so it reads on dark or light. */
+  :global(.verse-band .band__inner) {
+    max-width: 48rem;
+    text-align: center;
+  }
+
+  .verse {
+    margin: 0;
+  }
+
+  .verse p {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-2xl);
+    line-height: 1.35;
+    color: inherit;
+    text-wrap: balance;
+  }
+
+  .verse footer {
+    margin-top: 1.1rem;
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    font-size: var(--text-sm);
+    color: inherit;
+    opacity: 0.75;
   }
 </style>

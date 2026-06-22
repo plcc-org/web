@@ -1,0 +1,80 @@
+---
+import type { ImageMetadata } from 'astro'
+import Photo from '../../Photo.astro'
+import { imageFromRef } from '../../../lib/images'
+
+// MDX wrapper for the Aside block — a tinted two-column note: formatted prose
+// (the MDX children) beside an optional small logo. Generalizes the Beliefs
+// "creed-note"; stacks on mobile.
+type Props = { eyebrow?: string; logo?: string; logoAlt?: string }
+const { eyebrow, logo, logoAlt } = Astro.props
+const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined
+---
+
+<section class="section">
+  <div class:list={['aside-note', !logoImg && 'aside-note--solo']}>
+    <div class="aside-note__text">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <slot />
+    </div>
+    {
+      logoImg && (
+        <Photo
+          image={logoImg}
+          alt={logoAlt || ''}
+          class="aside-note__logo"
+          widths={[260, 520]}
+          sizes="(max-width: 640px) 60vw, 220px"
+        />
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .aside-note {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding: clamp(1.5rem, 2.4vw, 2rem);
+    background: var(--color-sand);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-line);
+  }
+
+  .aside-note--solo {
+    grid-template-columns: 1fr;
+  }
+
+  .aside-note__text {
+    max-width: var(--measure);
+  }
+
+  .aside-note__text .eyebrow {
+    margin-bottom: 0.5rem;
+  }
+
+  .aside-note__text :global(p:last-child) {
+    margin: 0;
+  }
+
+  /* Rendered by <Photo>, so the <img> must be styled globally. */
+  :global(.aside-note__logo) {
+    width: clamp(9rem, 16vw, 13rem);
+    height: auto;
+    justify-self: end;
+  }
+
+  @media (max-width: 640px) {
+    .aside-note {
+      grid-template-columns: 1fr;
+      justify-items: start;
+      gap: 1.5rem;
+    }
+
+    :global(.aside-note__logo) {
+      justify-self: start;
+    }
+  }
+</style>

@@ -1,0 +1,15 @@
+---
+import YouthMoments from '../../YouthMoments.astro'
+import { getCollection } from 'astro:content'
+
+// MDX wrapper for the Youth moments block — the signature youth tentpoles,
+// pulled from the shared `youthMoments` collection (sorted by order). Optional
+// eyebrow/heading fall back to the component's defaults. Renders nothing if the
+// collection is empty.
+type Props = { eyebrow?: string; heading?: string }
+const { eyebrow, heading } = Astro.props
+
+const moments = (await getCollection('youthMoments')).sort((a, b) => a.data.order - b.data.order).map((m) => m.data)
+---
+
+{moments.length > 0 && <YouthMoments moments={moments} eyebrow={eyebrow || undefined} heading={heading || undefined} />}

@@ -118,19 +118,25 @@ const startHereLinks = defineCollection({
 // src/components/blocks/mdx/), so everything reuses the real site components.
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
-  schema: ({ image }) =>
-    z.object({
+  // Hero/block images are stored as path strings and resolved at render time via
+  // imageFromRef (src/lib/images.ts) — a nesting-agnostic registry — rather than
+  // Astro's image() helper, so a fixed "../../assets/images/…" reference works
+  // from both flat (church-life.mdx) and nested (about/covenant.mdx) pages.
+  schema: z.object({
+    title: z.string(),
+    seoDescription: z.string().optional(),
+    draft: z.boolean().default(false),
+    hero: z.object({
+      image: z.string().min(1),
+      alt: z.string().min(1),
+      eyebrow: z.string().optional(),
       title: z.string(),
-      seoDescription: z.string().optional(),
-      draft: z.boolean().default(false),
-      hero: z.object({
-        image: image(),
-        alt: z.string().min(1),
-        eyebrow: z.string().optional(),
-        title: z.string(),
-        lede: z.string(),
-      }),
+      subhead: z.string().optional(),
+      lede: z.string(),
+      logo: z.string().optional(),
+      logoAlt: z.string().optional(),
     }),
+  }),
 })
 
 export const collections = { photos, youthMoments, leadership, quotes, neighborDoors, startHereLinks, pages }
