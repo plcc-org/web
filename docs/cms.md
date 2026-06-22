@@ -1,9 +1,9 @@
 # Editing the site (Keystatic CMS)
 
 The site has a built-in content editor so non-technical people can change copy, swap photos,
-and build new pages without touching code. It's [Keystatic](https://keystatic.com) — a
-free, Git-based CMS: every change an editor makes is committed to the GitHub repo, and the
-site rebuilds and deploys automatically.
+and build new pages without touching code. It's [Keystatic](https://keystatic.com) — a free,
+Git-based CMS: every change an editor makes is committed to the GitHub repo, and the site
+rebuilds and deploys automatically.
 
 For the stack and conventions, see [development.md](./development.md); for hosting, see
 [infrastructure.md](./infrastructure.md).
@@ -13,79 +13,103 @@ For the stack and conventions, see [development.md](./development.md); for hosti
 ## The big picture
 
 - The editor lives at **`/keystatic`**. In local development it reads and writes the files
-  in your working copy directly. In production it signs in with GitHub and commits changes
-  to the repo.
-- **Nothing about the public site is dynamic.** Editing produces a Git commit; the commit
-  triggers a build; the build ships static HTML. Visitors never hit a server.
-- The config is **`keystatic.config.ts`** at the repo root. Its collection/field shapes are
-  kept in step with the Astro content schemas in `src/content.config.ts` (which validate the
-  same files at build time). **If you change one, change the other.**
+  in your working copy directly. In production it signs in with GitHub and commits changes.
+- **The public site stays static.** Editing produces a Git commit; the commit triggers a
+  build; the build ships static HTML. Visitors never hit a server — only the two `/keystatic`
+  admin routes run on demand.
+- The config is **`keystatic.config.ts`** at the repo root. Its schemas must stay aligned
+  with the Astro content schemas in `src/content.config.ts` (Astro validates the same files
+  at build time). **Change one, change the other.**
 
 ---
 
-## What's editable
+## What's editable, and why
 
-| In the CMS           | What it is                                  | Stored as                           |
-| -------------------- | ------------------------------------------- | ----------------------------------- |
-| **Pages**            | Stack-of-blocks pages (see below)           | `src/content/pages/*.yaml`          |
-| **Leadership**       | Pastors & staff (name, role, portrait, bio) | `src/content/leadership/*.md`       |
-| **Youth moments**    | Signature youth trips/retreats              | `src/content/youth-moments/*.md`    |
-| **Homepage quotes**  | The rotating testimonials                   | `src/content/quotes.yaml`           |
-| **Neighbor doors**   | The "For Our Neighbors" cards               | `src/content/neighbor-doors.yaml`   |
-| **Start-here links** | Homepage / "I'm New" link cards             | `src/content/start-here-links.yaml` |
+A guiding principle keeps editing simple: **a collection or singleton earns its place only
+when its data is reused across the site, or referenced from inside content.** Otherwise it's
+just a page's content and belongs in that page's editor.
 
-**Photos are deliberately not a CMS collection.** The 442-entry catalog
-(`src/content/photos.json`) is build-time infrastructure that backs the hand-built pages.
-Editors add photos by **uploading them into a page block** (below), where the photo and its
-alt text live together — no catalog to maintain.
+| In the CMS           | What it is                                    | Kind      |
+| -------------------- | --------------------------------------------- | --------- |
+| **Pages**            | CMS-built pages (hero + a body of blocks)     | content   |
+| **Leadership**       | Pastors & staff — reusable people entities    | shared    |
+| **Youth moments**    | Signature youth trips/retreats (curated)      | shared    |
+| **Homepage quotes**  | Rotating testimonials (reusable social proof) | shared    |
+| **Neighbor doors**   | The "For Our Neighbors" cards                 | page data |
+| **Start-here links** | Homepage / "I'm New" link cards               | page data |
+
+> The two **page-data** singletons exist because their pages aren't in the CMS yet. When
+> `neighbors` and `home`/`new` migrate to CMS pages, those should fold into the pages'
+> own blocks (Link/Text cards) rather than stay separate forms.
+
+**Photos are deliberately not a collection.** The 442-entry catalog (`src/content/photos.json`)
+is build-time infrastructure for the hand-built pages. Editors add photos by **uploading them
+into a page block**, where the photo and its (required) description live together.
 
 ---
 
-## Pages: building from blocks
+## Pages: hero + a body of blocks
 
-A page is an ordered list of **blocks**. Each block is a pre-styled section that maps 1:1 to
-a site component, so anything an editor builds stays on-brand. To make a new page, an editor
-adds a Pages entry, gives it a title and URL slug (`momco` → `/momco/`), and stacks blocks.
-Drafts are visible in preview but excluded from the published site.
+A page has two parts:
 
-The block palette:
+1. **A hero** (in the page's form): a photo, an eyebrow, the page title (its `<h1>`), and an
+   intro line. Every page gets one.
+2. **A body** — a **rich-text editor** where you type formatted prose and insert **blocks**
+   from the "+" / insert menu. Each block is a pre-styled section, so anything you build
+   stays on-brand. Blocks show inline as labelled cards (with a photo thumbnail where
+   relevant), and you edit a block's text right on the card.
 
-| Block               | What it renders                                                          |
-| ------------------- | ------------------------------------------------------------------------ |
-| **Page header**     | The page hero: a photo, eyebrow, big title, and intro line               |
-| **Text**            | A column of prose (Markdown), with an optional eyebrow                   |
-| **Split**           | A photo beside Markdown text — forward or reversed, on sand/paper/forest |
-| **Card row**        | A row of titled cards (each with optional link)                          |
-| **Callout**         | A bordered "aside" panel for one emphasized point                        |
-| **Captioned photo** | A single framed photo with a caption                                     |
-| **Photo band**      | A staggered band of photos                                               |
-| **Link cards**      | A grid of link cards (title + description + link)                        |
-| **Call to action**  | A full-bleed closing band with an optional button                        |
+To make a new page: add a **Pages** entry, give it a title and a URL slug (`momco` →
+`/momco/`), fill the hero, and stack blocks. Set **Draft** to keep it out of the published
+site while you work.
+
+### The block palette
+
+| Block                    | Use it for                                                                 |
+| ------------------------ | -------------------------------------------------------------------------- |
+| **Rich text**            | A heading and formatted paragraphs — the default for written content.      |
+| **Photo & text (split)** | A photo beside text (left or right, tinted background) — show-and-tell.    |
+| **Photo**                | A single framed photo with an optional caption.                            |
+| **Photo gallery**        | Several photos shown together as a visual break.                           |
+| **Text cards**           | A row of small cards (title + a line) — a few parallel points.             |
+| **Link cards**           | A grid of cards that link elsewhere — signposting to other pages.          |
+| **Callout**              | A boxed aside that sets one point apart — a reassurance, a key fact.       |
+| **Banner**               | A full-width colored band that makes a statement, with an optional button. |
 
 Notes for editors:
 
-- **Photos** (in Split, Photo band, Captioned photo, Page header) are **drag-and-drop
-  uploads**. Always fill in the "Photo description" — it's the alt text that makes the site
-  accessible (the build fails without it).
-- **Text fields accept Markdown:** `**bold**`, `_italic_`, `[links](https://…)`, and
-  `- bullet` lists. Straight quotes and `--` become curly quotes and em-dashes automatically.
+- **Photos** are drag-and-drop. Always fill the **photo description (alt text)** — it's
+  required (the site won't build without it) and it's what makes the site accessible.
+- **Text** accepts Markdown: `**bold**`, `_italic_`, `[links](…)`, and `- bullet` lists.
+  Straight quotes and dashes become curly typographic forms automatically.
 - Internal links should be root-relative: `/visit/`, `/kids/`.
 
-### How it renders (for developers)
+### Where uploaded photos go
 
-`src/pages/[...slug].astro` loads each Pages entry and hands its blocks to
-`src/components/blocks/Blocks.astro`, which switches on the block type and renders the
-matching component (`Split`, `CardRow`, `Callout`, `MomentsSection`, `LinkCardSection`,
-`Band`, …). The block array is a Zod discriminated union in `src/content.config.ts` whose
-`{ discriminant, value }` shape mirrors how Keystatic serializes a conditional field — keep
-the two definitions aligned. Block prose is rendered through `src/lib/markdown.ts`.
+When you upload a photo into a block, Keystatic stores it under
+`src/assets/images/<page-slug>/…` and the build optimizes it (responsive WebP) like every
+other image — there's nothing to manage. Existing curated photos elsewhere on the site still
+come from the catalog via `<Photo filename>`.
 
-**Which pages use blocks:** new content pages, plus `church-life` and `visit`. The rest stay
-hand-built `.astro` files — either because they're dynamic (`youth` pulls the events feed;
-`neighbors` and `about` render collections) or because they have bespoke layouts
-(`pastors-letter`) or elements the palette doesn't cover (logos inside cards on `kids` /
-`families`). Add new block types if a recurring need appears; don't force a page into blocks
-if it degrades it.
+---
+
+## For developers: how a page renders
+
+- `src/pages/[...slug].astro` loads each `pages` entry, renders the hero with `PageHero`,
+  then renders the MDX body with `<Content components={…} />`.
+- The MDX body is authored via Keystatic's `fields.mdx` (`keystatic.config.ts`), whose
+  `components` are content-components (`block`/`wrapper`). Each maps by name to a thin Astro
+  wrapper in **`src/components/blocks/mdx/`** (e.g. `Split` → `SplitMdx.astro`), which calls
+  the real site component. So everything reuses the existing components and their styles.
+- Internal code names differ from editor labels (the label is what editors see): `Section` =
+  "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `PhotoBand` =
+  "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner".
+- Block images arrive as path strings; the wrappers resolve them through `imageFromRef`
+  (`src/lib/images.ts`), a recursive registry that handles the nested `<slug>/` uploads, and
+  hand them to `<Photo>` for build-time optimization.
+- Adding a block = a content-component in `keystatic.config.ts` (with a `ContentView`
+  preview) **and** a matching wrapper in `src/components/blocks/mdx/` registered in the
+  `[...slug].astro` components map. Keep the two in step.
 
 ---
 
@@ -95,69 +119,57 @@ if it degrades it.
 npm run dev      # then open http://localhost:4321/keystatic
 ```
 
-Local mode (`storage: { kind: 'local' }` in `keystatic.config.ts`) writes straight to your
-working copy — edit, save, and you'll see the files change and the site hot-reload. No login,
-no GitHub, no Cloudflare needed. This is the fastest way to try the editor or add content.
+Local mode writes straight to your working copy — edit, save, and the files change and the
+site hot-reloads. No login or cloud needed. (Dev intentionally runs without the Cloudflare
+adapter so the admin works on Node; see `astro.config.mjs`.)
 
 ---
 
 ## Production setup (one-time)
 
-Editors log in with GitHub and commit to the repo. This needs two things: a host that can run
-Keystatic's two server routes (`/keystatic`, `/api/keystatic/*`), and a GitHub App for auth.
-The public pages stay static either way — only those two routes run as functions.
+Editors log in with GitHub and commit to the repo. This needs a host that can run Keystatic's
+two server routes, plus a GitHub App for auth. Public pages stay static either way.
 
 ### 1. Cloudflare Pages
 
-1. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**, and
-   pick the `timsneath/plcc-web` repo.
-2. Build settings: **build command** `npm run build`, **output directory** `dist`. (The
-   `@astrojs/cloudflare` adapter emits the static site to `dist/client` and the function
-   bundle to `dist/server`; Cloudflare wires them up from `dist`.)
-3. Under **Settings → Functions → Compatibility flags**, add **`nodejs_compat`**, and set a
-   recent compatibility date.
-4. **Environment variables:** set `DEPLOY_ENV=production` on the production environment so the
-   build targets `plcc.org` and is indexable. Preview/branch deploys can leave it unset (they
-   build as the unindexed, root-served "development" target — fine for previews).
-5. Node version: set `NODE_VERSION` to a current LTS (e.g. `22`) if Cloudflare's default lags.
+1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**, pick the
+   `timsneath/plcc-web` repo.
+2. Build settings: **build command** `npm run build`, **output directory** `dist`.
+3. **Settings → Functions → Compatibility flags**: add **`nodejs_compat`**, recent date.
+4. **Environment variables**: set `DEPLOY_ENV=production` on the production environment
+   (targets `plcc.org`, indexable). Preview/branch deploys can leave it unset.
+5. Set `NODE_VERSION` to a current LTS if Cloudflare's default lags.
 
-A push to the connected branch now builds and deploys automatically. Branch/PR pushes get
-preview URLs; the production branch publishes to the live domain.
+A push to the connected branch builds and deploys; branches get preview URLs.
 
 ### 2. GitHub App (auth for the live editor)
 
-Keystatic has a guided flow: deploy with `storage` set to `github` (already the case in
-production — see `keystatic.config.ts`), visit `/keystatic` on the deployed site, and follow
-the prompt to **create a GitHub App**. It generates the app and hands you the credentials.
-Put them in Cloudflare's environment variables:
+Deploy with `storage` set to `github` (already the case in production — see
+`keystatic.config.ts`), visit `/keystatic` on the deployed site, and follow the prompt to
+**create a GitHub App**. Put the generated credentials in Cloudflare's env vars:
 
 - `KEYSTATIC_GITHUB_CLIENT_ID`
 - `KEYSTATIC_GITHUB_CLIENT_SECRET`
 - `KEYSTATIC_SECRET` (any long random string)
 - `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` (the app's slug)
 
-Install the app on the `timsneath/plcc-web` repo and grant the people who should edit access
-to the repo. After that, an editor visits `/keystatic`, signs in with GitHub, and their saves
-become commits.
+Install the app on the repo and grant edit access to the right people. They then sign in at
+`/keystatic` and their saves become commits.
 
 ### 3. Cutover from GitHub Pages
 
-The site previously deployed to GitHub Pages via `.github/workflows/deploy.yml`. That path
-can't serve Keystatic's function routes, so at cutover:
-
-- Point the `plcc.org` DNS at Cloudflare Pages.
-- Remove or disable `deploy.yml` (the GitHub Pages deploy) so merges don't publish a broken
-  static-only build. Keep `ci.yml` — it still validates every push.
+Point `plcc.org` DNS at Cloudflare Pages, and remove/disable `.github/workflows/deploy.yml`
+(the old GitHub Pages deploy) so merges don't publish a broken static-only build. Keep
+`ci.yml` — it still validates every push.
 
 ---
 
 ## Gotchas
 
-- **Keep the two schemas in sync.** A field in `keystatic.config.ts` with no counterpart in
-  `src/content.config.ts` (or vice versa) will either be invisible to the build or fail
-  validation. Add to both.
-- **The `pages` directory must exist.** It's kept in Git via `.gitkeep` so the collection
-  loads even when empty.
-- **Single-file lists are arrays in the CMS.** Quotes, neighbor-doors, and start-here-links
-  are each one YAML file edited as an array; the loader in `src/content.config.ts`
-  (`yamlList`) reads both the hand-authored and CMS-written shapes.
+- **Keep the two schemas in sync** — a field in `keystatic.config.ts` with no counterpart in
+  `src/content.config.ts` (or vice versa) will be invisible to the build or fail validation.
+- **CMS pages are Prettier-ignored** (`src/content/pages/` in `.prettierignore`) — Prettier's
+  MDX reflow breaks block-component children. Keystatic owns their formatting.
+- **`alt` is required** on every image field, so an image can't be saved without a
+  description.
+- **The `pages` directory must exist** even when empty (kept via `.gitkeep`).
