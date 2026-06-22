@@ -35,12 +35,14 @@ just a page's content and belongs in that page's editor.
 | **Leadership**       | Pastors & staff — reusable people entities    | shared    |
 | **Youth moments**    | Signature youth trips/retreats (curated)      | shared    |
 | **Homepage quotes**  | Rotating testimonials (reusable social proof) | shared    |
-| **Neighbor doors**   | The "For Our Neighbors" cards                 | page data |
-| **Start-here links** | Homepage / "I'm New" link cards               | page data |
+| **Neighbor doors**   | The "common starting points" cards            | shared    |
+| **Start-here links** | Homepage link cards                           | page data |
 
-> The two **page-data** singletons exist because their pages aren't in the CMS yet. When
-> `neighbors` and `home`/`new` migrate to CMS pages, those should fold into the pages'
-> own blocks (Link/Text cards) rather than stay separate forms.
+> **Neighbor doors** is referenced from content now — the `neighbors` page inserts the
+> **Neighbor doors** block, which reads this list — so it earns its place as shared data.
+> **Start-here links** remains because the homepage (still hand-built; see below) renders its
+> `home` group. The `new` page, now a CMS page, folded its links straight into a **Link
+> cards** block instead.
 
 **Photos are deliberately not a collection.** The 442-entry catalog (`src/content/photos.json`)
 is build-time infrastructure for the hand-built pages. Editors add photos by **uploading them
@@ -127,6 +129,23 @@ come from the catalog via `<Photo filename>`.
 - Adding a block = a content-component in `keystatic.config.ts` (with a `ContentView`
   preview) **and** a matching wrapper in `src/components/blocks/mdx/` registered in the
   `[...slug].astro` components map. Keep the two in step.
+
+### What becomes a CMS page or block (and what stays as code)
+
+Three tiers, narrowing — componentization (Astro's way) and editor surface (the CMS) are
+different decisions:
+
+1. **Component — always.** Every element is an Astro component, single-use included.
+2. **CMS page** (an MDX entry: hero + blocks) — when the whole page is editor-territory and
+   fits the hero-plus-blocks model.
+3. **CMS block** (a palette entry) — only when its content repeats and an editor can safely
+   compose it anywhere. Every block in the "+" menu is a promise it's safe to insert on any
+   page, so a one-off block makes the editor worse for the pages that aren't it.
+
+By this rule, these stay **hand-built `.astro`**, not CMS pages: `index` (home — a bespoke
+full-bleed video hero), `events/*` (the `EventsBoard` _is_ the page), `messages` (live
+video archive), `about/leadership` (modal + view-transition morph), `about/pastors-letter`
+(bespoke letter layout). They're already components; they just aren't editor surface.
 
 ---
 
