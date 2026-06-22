@@ -175,7 +175,7 @@ export default config({
               publicPath: '../../assets/images/',
               validation: { isRequired: true },
             }),
-            alt: fields.text({ label: 'Photo description (alt text)' }),
+            alt: fields.text({ label: 'Photo description (alt text)', validation: { isRequired: true } }),
             eyebrow: fields.text({ label: 'Eyebrow (small label above the title)', validation: { isRequired: false } }),
             title: fields.text({ label: 'Page heading' }),
             lede: fields.text({ label: 'Intro line', multiline: true }),
@@ -187,9 +187,10 @@ export default config({
           description: 'Type prose; use the “+” / insert menu to add styled blocks.',
           components: {
             Section: wrapper({
-              label: 'Text section',
+              label: 'Rich text',
+              description: 'A heading and formatted paragraphs — bold, links, lists. The default for written content.',
               ContentView: ({ value, children }) =>
-                preview('Text section', value.heading || value.eyebrow || '', null, children),
+                preview('Rich text', value.heading || value.eyebrow || '', null, children),
               schema: {
                 eyebrow: fields.text({
                   label: 'Eyebrow (small label above the heading)',
@@ -199,9 +200,11 @@ export default config({
               },
             }),
             Split: wrapper({
-              label: 'Split (photo + text)',
+              label: 'Photo & text (split)',
+              description:
+                'A photo beside formatted text — left or right, on a tinted background. The main show-and-tell layout.',
               ContentView: ({ value, children }) =>
-                preview('Split', value.heading || value.eyebrow || '', thumb(value.image), children),
+                preview('Photo & text', value.heading || value.eyebrow || '', thumb(value.image), children),
               schema: {
                 image: fields.image({
                   label: 'Photo',
@@ -226,15 +229,16 @@ export default config({
             }),
             Callout: wrapper({
               label: 'Callout',
+              description: 'A small boxed aside that sets one point apart — a reassurance, a key fact, a heads-up.',
               ContentView: ({ value, children }) => preview('Callout', value.heading || '', null, children),
               schema: {
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
               },
             }),
             CaptionedPhoto: block({
-              label: 'Captioned photo',
-              ContentView: ({ value }) =>
-                preview('Captioned photo', value.caption || value.alt || '', thumb(value.image)),
+              label: 'Photo',
+              description: 'A single framed photo with an optional caption.',
+              ContentView: ({ value }) => preview('Photo', value.caption || value.alt || '', thumb(value.image)),
               schema: {
                 image: fields.image({
                   label: 'Photo',
@@ -247,8 +251,10 @@ export default config({
               },
             }),
             Cta: wrapper({
-              label: 'Call to action',
-              ContentView: ({ value, children }) => preview('Call to action', value.heading || '', null, children),
+              label: 'Banner',
+              description:
+                'A full-width colored band that interrupts the page to make a statement, with an optional button — a welcome, an invitation, a closing message.',
+              ContentView: ({ value, children }) => preview('Banner', value.heading || '', null, children),
               schema: {
                 tone: fields.select({
                   label: 'Background',
@@ -266,10 +272,11 @@ export default config({
               },
             }),
             PhotoBand: block({
-              label: 'Photo band',
+              label: 'Photo gallery',
+              description: 'Several photos shown together as a staggered band — a visual break.',
               ContentView: ({ value }) =>
                 preview(
-                  'Photo band',
+                  'Photo gallery',
                   `${(value.photos || []).length} photo(s)`,
                   h(
                     'div',
@@ -295,8 +302,9 @@ export default config({
               },
             }),
             CardRow: block({
-              label: 'Card row',
-              ContentView: ({ value }) => preview('Card row', `${(value.cards || []).length} card(s)`, null),
+              label: 'Text cards',
+              description: 'A row of small cards, each a short title and a line or two — for a few parallel points.',
+              ContentView: ({ value }) => preview('Text cards', `${(value.cards || []).length} card(s)`, null),
               schema: {
                 cards: fields.array(
                   fields.object({
@@ -310,6 +318,7 @@ export default config({
             }),
             LinkCards: block({
               label: 'Link cards',
+              description: 'A grid of cards that each link to another page — for signposting to related content.',
               ContentView: ({ value }) => preview('Link cards', `${(value.links || []).length} link(s)`, null),
               schema: {
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
