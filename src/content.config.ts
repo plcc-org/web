@@ -135,6 +135,8 @@ const pages = defineCollection({
       lede: z.string(),
       logo: z.string().optional(),
       logoAlt: z.string().optional(),
+      buttonLabel: z.string().optional(),
+      buttonHref: z.string().optional(),
     }),
   }),
 })

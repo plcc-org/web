@@ -192,6 +192,8 @@ export default config({
               validation: { isRequired: false },
             }),
             logoAlt: fields.text({ label: 'Logo description (alt text)', validation: { isRequired: false } }),
+            buttonLabel: fields.text({ label: 'Hero button label', validation: { isRequired: false } }),
+            buttonHref: fields.text({ label: 'Hero button link', validation: { isRequired: false } }),
           },
           { label: 'Hero' }
         ),
@@ -322,8 +324,11 @@ export default config({
             CardRow: block({
               label: 'Text cards',
               description: 'A row of small cards, each a short title and a line or two — for a few parallel points.',
-              ContentView: ({ value }) => preview('Text cards', `${(value.cards || []).length} card(s)`, null),
+              ContentView: ({ value }) =>
+                preview('Text cards', value.heading || `${(value.cards || []).length} card(s)`, null),
               schema: {
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
                 cards: fields.array(
                   fields.object({
                     title: fields.text({ label: 'Title' }),
