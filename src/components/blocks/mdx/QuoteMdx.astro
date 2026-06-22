@@ -1,0 +1,38 @@
+---
+// MDX wrapper for a single featured pull-quote — a testimonial or short
+// quotation set apart from the prose. (For the rotating home band, see
+// QuoteCarousel.) Matches the site's quote aesthetic: a moss accent rule and
+// centered serif type.
+type Props = { quote: string; attribution?: string }
+const { quote, attribution } = Astro.props
+---
+
+<section class="section">
+  <blockquote class="story-quote pull-quote">
+    <p>{quote}</p>
+    {attribution && <footer>— {attribution}</footer>}
+  </blockquote>
+</section>
+
+<style>
+  /* Out of the card: let the quote sit in open space like the carousel's solo
+     slide — drop the paper panel, keep the centered serif and moss accent. */
+  .pull-quote {
+    max-width: 48rem;
+    margin-inline: auto;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    text-align: center;
+    align-items: center;
+  }
+
+  .pull-quote::before {
+    margin-inline: auto;
+  }
+
+  .pull-quote :global(p) {
+    font-size: var(--text-lg);
+  }
+</style>

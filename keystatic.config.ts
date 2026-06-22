@@ -332,6 +332,19 @@ export default config({
                 ),
               },
             }),
+            Quote: block({
+              label: 'Quote',
+              description: 'A single featured pull-quote — a testimonial or short quotation set apart from the prose.',
+              ContentView: ({ value }) => preview('Quote', value.quote || '', null),
+              schema: {
+                quote: fields.text({ label: 'Quote', multiline: true, validation: { isRequired: true } }),
+                attribution: fields.text({
+                  label: 'Attribution',
+                  description: 'Who said it — e.g. "A recent attendee". Optional.',
+                  validation: { isRequired: false },
+                }),
+              },
+            }),
           },
         }),
       },
