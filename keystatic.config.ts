@@ -345,6 +345,32 @@ export default config({
                 }),
               },
             }),
+            FeaturedEvents: block({
+              label: 'Featured events',
+              description: 'A short list of upcoming events, pulled live from the events feed.',
+              ContentView: ({ value }) =>
+                preview(
+                  'Featured events',
+                  `Up to ${value.count} · ${value.category === 'all' ? 'All categories' : value.category}`,
+                  null
+                ),
+              schema: {
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                category: fields.select({
+                  label: 'Category',
+                  options: [
+                    { label: 'All categories', value: 'all' },
+                    { label: 'Everyone', value: 'Everyone' },
+                    { label: 'Families', value: 'Families' },
+                    { label: 'Youth', value: 'Youth' },
+                    { label: 'Groups', value: 'Groups' },
+                    { label: 'Serve', value: 'Serve' },
+                  ],
+                  defaultValue: 'all',
+                }),
+                count: fields.integer({ label: 'How many to show', defaultValue: 3 }),
+              },
+            }),
           },
         }),
       },

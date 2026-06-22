@@ -76,6 +76,7 @@ site while you work.
 | **Callout**              | A boxed aside that sets one point apart — a reassurance, a key fact.       |
 | **Banner**               | A full-width colored band that makes a statement, with an optional button. |
 | **Quote**                | A single featured pull-quote — a testimonial or short quotation set apart. |
+| **Featured events**      | A short list of upcoming events, pulled live from the events feed.         |
 
 Notes for editors:
 
@@ -104,7 +105,8 @@ come from the catalog via `<Photo filename>`.
   the real site component. So everything reuses the existing components and their styles.
 - Internal code names differ from editor labels (the label is what editors see): `Section` =
   "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `PhotoBand` =
-  "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote".
+  "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote",
+  `FeaturedEvents` = "Featured events".
 - Block images arrive as path strings; the wrappers resolve them through `imageFromRef`
   (`src/lib/images.ts`), a recursive registry that handles the nested `<slug>/` uploads, and
   hand them to `<Photo>` for build-time optimization.

@@ -1,0 +1,27 @@
+---
+import EventRow from '../../EventRow.astro'
+import { getUpcomingEvents } from '../../../lib/events/provider'
+import type { EventCategory } from '../../../lib/events/types'
+
+// MDX wrapper for the Featured events block — a short list of upcoming events
+// pulled from the live events feed (Church Center in prod, curated fallback).
+// `category` is an EventCategory or 'all'; the block renders nothing if no
+// matching events are upcoming.
+type Props = { heading?: string; category?: EventCategory | 'all'; count?: number }
+const { heading, category = 'all', count = 3 } = Astro.props
+
+const events = (await getUpcomingEvents()).filter((e) => category === 'all' || e.category === category).slice(0, count)
+---
+
+{
+  events.length > 0 && (
+    <section class="section">
+      {heading && <h2>{heading}</h2>}
+      <div class="event-list">
+        {events.map((e) => (
+          <EventRow event={e} />
+        ))}
+      </div>
+    </section>
+  )
+}
