@@ -334,6 +334,17 @@ export default config({
               schema: {
                 eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
                 heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                columns: fields.select({
+                  label: 'Cards per row',
+                  description: 'Auto fits as many as will fit; a fixed count wraps the rest (e.g. four cards 2×2).',
+                  options: [
+                    { label: 'Auto', value: 'auto' },
+                    { label: 'Two', value: '2' },
+                    { label: 'Three', value: '3' },
+                    { label: 'Four', value: '4' },
+                  ],
+                  defaultValue: 'auto',
+                }),
                 cards: fields.array(
                   fields.object({
                     title: fields.text({ label: 'Title' }),

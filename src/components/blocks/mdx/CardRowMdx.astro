@@ -3,16 +3,18 @@ import CardRow from '../../CardRow.astro'
 import SectionHeader from '../../SectionHeader.astro'
 
 // MDX wrapper for the Card row block — a row of titled cards (Markdown bodies),
-// with an optional eyebrow + heading above them.
+// with an optional eyebrow + heading above them and an optional cap on how many
+// cards sit on a row.
 type Props = {
   eyebrow?: string
   heading?: string
+  columns?: number | string
   cards?: { title: string; body: string; href?: string; linkLabel?: string }[]
 }
-const { eyebrow, heading, cards = [] } = Astro.props
+const { eyebrow, heading, columns, cards = [] } = Astro.props
 ---
 
 <section class="section">
   {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
-  <CardRow items={cards} />
+  <CardRow items={cards} columns={columns} />
 </section>

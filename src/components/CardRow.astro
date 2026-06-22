@@ -20,17 +20,22 @@ type Props = {
   items: CardItem[]
   headingAs?: 'h2' | 'h3'
   class?: string
+  // Cap how many cards sit on a row. Default (undefined) keeps the responsive
+  // auto-fit grid — as many as fit. A number forces that many columns (so e.g.
+  // four cards wrap 2×2), collapsing to one on narrow screens.
+  columns?: number | string
 }
 
-const { items, headingAs = 'h3', class: className } = Astro.props
+const { items, headingAs = 'h3', class: className, columns } = Astro.props
 const Heading = headingAs
+const cols = columns && Number(columns) >= 2 ? Number(columns) : undefined
 
 // External links (http, mailto, #anchors) pass through untouched; internal
 // paths get the deploy base prefix, matching the rest of the site.
 const resolve = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : withBase(href))
 ---
 
-<div class:list={['card-grid', className]}>
+<div class:list={['card-grid', cols && 'card-grid--cols', className]} style={cols ? `--card-cols:${cols}` : undefined}>
   {
     items.map((item) => {
       const Tag = item.href ? 'a' : 'div'
@@ -50,6 +55,19 @@ const resolve = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : wi
 </div>
 
 <style>
+  /* A capped column count (vs the default auto-fit) — e.g. four richer cards
+     wrapping 2×2. Scoped, so it overrides the global .card-grid here only.
+     Collapses to a single column on narrow screens. */
+  .card-grid--cols {
+    grid-template-columns: repeat(var(--card-cols), minmax(0, 1fr));
+  }
+
+  @media (max-width: 720px) {
+    .card-grid--cols {
+      grid-template-columns: 1fr;
+    }
+  }
+
   /* When a card carries a labelled CTA, lay it out as a column so the CTA can
      sit at the foot regardless of body length, keeping a row of cards aligned. */
   .card--cta {
