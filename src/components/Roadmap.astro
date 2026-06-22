@@ -1,0 +1,123 @@
+---
+import SectionHeader from './SectionHeader.astro'
+
+// A numbered "roadmap": steps as nodes on a connecting line, each with a title
+// and a short description. Backs the Mission & Vision "three movements" timeline
+// and is offered as a CMS block. The connecting line + centered nodes assume a
+// single row (one column per step); it collapses to a vertical list on narrow
+// screens.
+type Step = { title: string; body: string }
+type Props = { eyebrow?: string; heading?: string; steps: Step[] }
+const { eyebrow, heading, steps } = Astro.props
+---
+
+<section class="section roadmap-section">
+  {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
+  <ol class="roadmap" role="list" style={`--roadmap-cols:${Math.max(steps.length, 1)}`}>
+    {
+      steps.map((s) => (
+        <li>
+          <strong>{s.title}</strong>
+          <span class="roadmap__desc">{s.body}</span>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .roadmap-section {
+    max-width: 100%;
+  }
+
+  .roadmap {
+    position: relative;
+    counter-reset: roadmap-step;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(var(--roadmap-cols, 3), minmax(0, 1fr));
+    margin: var(--space-md) 0 0;
+    padding: 0.25rem 0;
+    list-style: none;
+  }
+
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    top: 1.1rem;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      rgba(106, 149, 41, 0.3) 0%,
+      rgba(106, 149, 41, 0.75) 50%,
+      rgba(26, 46, 12, 0.45) 100%
+    );
+  }
+
+  .roadmap li {
+    position: relative;
+    padding-top: 2.25rem;
+    text-align: center;
+  }
+
+  .roadmap li::before {
+    content: counter(roadmap-step);
+    counter-increment: roadmap-step;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--color-white);
+    background: var(--color-moss);
+    box-shadow: 0 6px 16px rgba(26, 46, 12, 0.2);
+  }
+
+  .roadmap strong {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+    color: var(--color-forest);
+    line-height: 1.25;
+  }
+
+  .roadmap__desc {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+  }
+
+  @media (max-width: 900px) {
+    .roadmap {
+      grid-template-columns: 1fr;
+      gap: 1.15rem;
+      padding-left: 2rem;
+    }
+
+    .roadmap::before {
+      display: none;
+    }
+
+    .roadmap li {
+      padding-top: 0;
+      padding-left: 1.9rem;
+      text-align: left;
+    }
+
+    .roadmap li::before {
+      left: -1.15rem;
+      transform: none;
+    }
+  }
+</style>

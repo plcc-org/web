@@ -525,6 +525,22 @@ export default config({
                 }),
               },
             }),
+            Roadmap: block({
+              label: 'Roadmap',
+              description: 'A numbered timeline — steps as nodes on a connecting line, each with a title and a line.',
+              ContentView: ({ value }) => preview('Roadmap', `${(value.steps || []).length} step(s)`, null),
+              schema: {
+                eyebrow: fields.text({ label: 'Eyebrow', validation: { isRequired: false } }),
+                heading: fields.text({ label: 'Heading', validation: { isRequired: false } }),
+                steps: fields.array(
+                  fields.object({
+                    title: fields.text({ label: 'Title' }),
+                    body: fields.text({ label: 'Text', multiline: true }),
+                  }),
+                  { label: 'Steps', itemLabel: (p) => p.fields.title.value || 'Step' }
+                ),
+              },
+            }),
           },
         }),
       },

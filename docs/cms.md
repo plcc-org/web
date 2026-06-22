@@ -87,6 +87,7 @@ site while you work.
 | **Neighbor doors**       | The "common starting points" cards, pulled live from the Neighbor doors list.                                       |
 | **Youth moments**        | The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.                           |
 | **Quotes carousel**      | A rotating band of testimonials, pulled live from the Homepage quotes list.                                         |
+| **Roadmap**              | A numbered timeline — steps as nodes on a connecting line (e.g. "in three movements").                              |
 
 Notes for editors:
 
@@ -118,7 +119,7 @@ come from the catalog via `<Photo filename>`.
   "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote",
   `FeaturedEvents` = "Featured events", `KeyPoints` = "Key points", `LogoCards` =
   "Logo cards", `Aside` = "Aside", `Doors` = "Neighbor doors", `YouthMomentsBlock` =
-  "Youth moments", `QuoteCarousel` = "Quotes carousel".
+  "Youth moments", `QuoteCarousel` = "Quotes carousel", `Roadmap` = "Roadmap".
 - Data blocks (Neighbor doors, Youth moments, Quotes carousel, Featured events) pull from a
   shared collection/singleton rather than inline content — they take only display options.
 - Hero/block image references are resolved by `imageFromRef`, a nesting-agnostic registry,
