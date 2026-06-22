@@ -12,6 +12,29 @@ editors can edit them, building the new blocks each page needs. Two pages are al
 migrated and are your reference templates: `src/content/pages/church-life.mdx` and
 `src/content/pages/visit.mdx`. Keep every page's URL identical.
 
+## Guiding principle — three tiers, narrowing
+
+Not everything that _can_ be a CMS block _should_ be. Componentization (Astro's way) and
+editor-surface (the CMS) are different decisions. Apply this rule before migrating anything:
+
+1. **Component — always.** Every element is an Astro component, single-use included. This is
+   the default at the code layer regardless of CMS; it's never the question.
+2. **CMS page — when the whole page is editor-territory.** An MDX entry (hero + a body of
+   blocks) only when an editor will realistically need to change the page _and_ it fits the
+   photo-hero-plus-blocks model.
+3. **CMS block (a palette entry) — only when content repeats and a volunteer can safely
+   compose it anywhere.** Every block in the "+" palette is a promise it's safe to insert on
+   any page. A single-use block (e.g. a leadership grid) still shows on every other page's
+   insert menu, where dropping it produces nonsense — so single-use blocks make the editor
+   _worse_ for the pages that aren't them.
+
+Astro's own guidance agrees: collections (and our block model) earn their place when you have
+"multiple pieces of content that must share the same properties"; for "a small number of
+different content pages," it recommends individual page components instead. So: **promote a
+component to a block only when its content repeats across pages and an editor can safely
+compose it. One-off, interaction-heavy, or live-data pages stay as code — they're already
+components; they just aren't editor surface.**
+
 ---
 
 ## How the page-block system works (read before building)
@@ -146,7 +169,7 @@ delete the `.astro` (`git rm`), parity-check, verify gates.
 | `neighbors/weddings` | Quote (with `tone`)                                              |
 | `home` (`index`)     | Quotes carousel (+ video-hero decision, below)                   |
 
-### Keep as code — do NOT migrate (recommended)
+### Keep as code — do NOT migrate (settled)
 
 | Page                                | Why                                                                                                                                                        |
 | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -155,19 +178,22 @@ delete the `.astro` (`git rm`), parity-check, verify gates.
 | `about/leadership`                  | Click-to-expand modal with view-transition morphing — complex single-use JS. (Already reads the `leadership` collection.)                                  |
 | `about/pastors-letter`              | Bespoke two-column sticky-sidebar letter layout.                                                                                                           |
 
-**Open decisions (confirm before starting):**
+**Resolved decisions (settled — don't reopen):**
 
-1. The four "keep as code" pages — leave them, or invest in heavy single-use blocks
-   (Leadership grid+modal, a Letter block, a video/embed + archive block)? Recommended:
-   leave them.
-2. `contact` — it's **text-only with no photo hero**. To migrate it you'd add a
-   **text-only hero** option to the page model (eyebrow + title + lede, no image) plus a
-   contact-details card block. Worth it only if you want a no-photo page type; otherwise
-   keep `contact.astro`.
-3. **Home video hero** — `index.astro` opens with a background **video** hero, which the
-   photo-only frontmatter doesn't model. Options: use a poster frame as the hero photo
-   (simplest), or add a video option to the hero. Decide before migrating home; home is the
-   most visible page, so verify it carefully.
+1. **The four "keep as code" pages stay as code.** Don't build single-use blocks
+   (Leadership grid+modal, a Letter block, a video/embed + archive block) for them. Each
+   fails the "content repeats" test and is live-data or bespoke-interaction (see the table
+   above). They're already components; they just aren't editor surface. The editable _data_
+   inside them (people, messages) already lives in collections — that's the right seam.
+2. **`contact` stays as code.** It's text-only with no photo hero. Migrating it means
+   inventing a text-only-hero page type plus a contact-details block — net-new model surface
+   for one page that barely changes. Only build a no-photo page type if a _second_ such page
+   appears; until then, don't migrate `contact`.
+3. **Home migrates with a poster-frame hero** (do home **last**, verify by eye). `index.astro`
+   opens with a background **video** hero, which the photo-only frontmatter doesn't model.
+   Use a still poster frame as the hero photo (fits the existing model) rather than adding a
+   single-use video option to the hero schema. The rest of home is the existing blocks plus
+   the new **Quotes carousel**.
 
 ---
 
