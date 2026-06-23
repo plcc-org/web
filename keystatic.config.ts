@@ -81,7 +81,7 @@ export default config({
       label: 'Youth moments',
       slugField: 'title',
       path: 'src/content/youth-moments/*',
-      format: { contentField: undefined },
+      format: { data: 'yaml' },
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
         when: fields.text({
@@ -118,7 +118,7 @@ export default config({
       label: 'Leadership',
       slugField: 'name',
       path: 'src/content/leadership/*',
-      format: { contentField: undefined },
+      format: { data: 'yaml' },
       schema: {
         name: fields.slug({ name: { label: 'Name' } }),
         title: fields.text({ label: 'Role / title' }),

@@ -17,8 +17,8 @@ const yamlList =
 
 // Content lives under src/content/. Two shapes, by a simple rule:
 //   • Things you add / remove / reorder, or that own an image → a folder of
-//     Markdown entries (glob), so a future Git CMS can manage them as a
-//     "folder collection" with a media library.
+//     entries (glob), one YAML file each, so the Git CMS (Keystatic) manages
+//     them as a "folder collection" with a media library.
 //   • Short flat lists → a single YAML file (file), edited as a list.
 // Schemas (Zod) make alt text required and give editor + build-time validation.
 
@@ -46,7 +46,7 @@ const photos = defineCollection({
 // the photo catalog (alt resolved by <Photo>). `featured` gives the biggest
 // moments large cards; the rest fall into a compact list.
 const youthMoments = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/youth-moments' }),
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/youth-moments' }),
   schema: z.object({
     title: z.string(),
     when: z.string().optional(),
@@ -58,11 +58,11 @@ const youthMoments = defineCollection({
   }),
 })
 
-// Pastors and staff. One Markdown file per person, portrait co-located. The
-// profile `bio` lives in frontmatter (rendered as Markdown) rather than the body,
-// so the Git CMS manages each entry as a predictable frontmatter-only document.
+// Pastors and staff. One YAML data file per person (Keystatic stores data-only
+// collections as flat `<slug>.yaml`). The `bio` is a Markdown string field
+// rendered to HTML at build time; the portrait is co-located in src/assets/images.
 const leadership = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/leadership' }),
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/leadership' }),
   schema: ({ image }) =>
     z.object({
       name: z.string(),
