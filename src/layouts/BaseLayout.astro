@@ -45,6 +45,9 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
     <Font cssVariable="--font-instrument-sans" preload={[{ style: 'normal' }]} />
 
     <title>{title}</title>
+    <style is:global>
+      /* Styles moved to src/styles/animations.css */
+    </style>
     <meta name="description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
@@ -203,4 +206,17 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
       toggle?.setAttribute('aria-label', 'Open navigation menu')
     })
   })
+
+  // Intersection Observer for scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const element = entry.target as HTMLElement
+        element.classList.add('is-visible')
+        observer.unobserve(element)
+      }
+    })
+  }, { threshold: 0.1 })
+
+  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el))
 </script>
