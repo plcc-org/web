@@ -17,13 +17,13 @@
 
 /* Staggered children for lists or grids */
 .reveal-staggered > * {
-  opacity: 0;
+  opacity: 1;
   transform: translateY(1rem);
   transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
               transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.reveal-staggered.is-visible > * {
+.is-visible > * {
   opacity: 1;
   transform: translateY(0);
 }
