@@ -8,12 +8,19 @@ type Props = {
   eyebrow?: string | null
   photos: string[]
   sectionClass?: string
+  reveal?: boolean
 }
 
-const { heading = 'Moments from Pine Lake', eyebrow = null, photos, sectionClass = 'section' } = Astro.props
+const {
+  heading = 'Moments from Pine Lake',
+  eyebrow = null,
+  photos,
+  sectionClass = 'section',
+  reveal = false,
+} = Astro.props
 ---
 
-<section data-reveal class:list={['moments', sectionClass]}>
+<section {...reveal && { 'data-reveal': true }} class:list={['moments', sectionClass]}>
   {
     (eyebrow || heading) && (
       <div class="moments__head">
@@ -23,7 +30,7 @@ const { heading = 'Moments from Pine Lake', eyebrow = null, photos, sectionClass
     )
   }
 
-  <div class="moments-grid reveal-staggered">
+  <div class:list={['moments-grid', reveal && 'reveal-staggered']}>
     {
       photos.map((filename, i) => (
         <figure class:list={['moments__tile', i % 2 === 1 && 'moments__tile--offset']}>

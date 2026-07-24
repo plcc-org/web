@@ -18,6 +18,7 @@ type Props = {
   eyebrow?: string
   heading?: string
   class?: string
+  reveal?: boolean
 }
 
 const {
@@ -28,11 +29,12 @@ const {
   eyebrow,
   heading,
   class: className,
+  reveal = false,
 } = Astro.props
 ---
 
 <section
-  data-reveal
+  {...reveal && { 'data-reveal': true }}
   class:list={[
     'band',
     `band--${tone}`,
