@@ -87,7 +87,7 @@ export default defineConfig({
       EVENTS_SOURCE: envField.enum({
         context: 'server',
         access: 'public',
-        values: ['curated', 'churchcenter', 'ics', 'pco'],
+        values: ['curated', 'churchcenter', 'snapshot', 'ics', 'pco'],
         optional: true,
       }),
     },

@@ -13,7 +13,7 @@
 // sibling adapters behind the same interface. If anything here fails, the
 // provider falls back to the curated source, so the page is never empty.
 
-import type { CalendarEvent, EventTag } from '../types'
+import type { CalendarEvent, EventSource, EventTag } from '../types'
 import { mapCategory } from '../logic'
 
 const ORIGIN = 'https://plcc.churchcenter.com'
@@ -106,7 +106,16 @@ export async function churchCenterEvents(): Promise<CalendarEvent[]> {
   })
   if (!res.ok) throw new Error(`calendar/v2/events ${res.status}`)
   const body = await res.json()
+  return mapChurchCenterBody(body, 'churchcenter')
+}
 
+/**
+ * Map a Church Center Calendar JSON:API body ({ data, included }) to our
+ * CalendarEvent[]. Shared by the live adapter above and the snapshot adapter —
+ * the browser-captured payload (scripts/scrape-events.mjs) has the identical
+ * shape, so the mapping is reused verbatim. `source` records the data origin.
+ */
+export function mapChurchCenterBody(body: any, source: EventSource): CalendarEvent[] {
   const included = new Map<string, JsonApiResource>()
   for (const r of (body.included ?? []) as JsonApiResource[]) included.set(`${r.type}:${r.id}`, r)
   const resolve = (ref?: { type: string; id: string } | null) =>
@@ -140,7 +149,7 @@ export async function churchCenterEvents(): Promise<CalendarEvent[]> {
       category: mapCategory(catNames, title),
       tags: tags.length ? tags : undefined,
       featured: Boolean(a.featured),
-      source: 'churchcenter',
+      source,
     })
   }
 

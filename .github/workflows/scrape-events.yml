@@ -1,0 +1,60 @@
+name: Scrape events snapshot
+
+# Church Center moved its public calendar to a client-rendered SPA, so events
+# can't be fetched during the (workerd) site build anymore. This job runs a real
+# headless browser to capture the calendar into src/content/events-snapshot.json
+# and commits it. The commit pushes to `main`, which triggers Cloudflare Workers
+# Builds to redeploy with fresh events — and, because it rebuilds daily, also
+# prunes events that have become past. See scripts/scrape-events.mjs and
+# src/lib/events/adapters/snapshot.ts.
+#
+# This replaces the old timer-based rebuild (the retired scheduled-deploy.yml):
+# the snapshot commit is what makes the deploy happen, so there's one mechanism,
+# not two. STOPGAP until an official Planning Center API key (the `pco` source).
+#
+# Not triggered on push — only daily and manually.
+on:
+  schedule:
+    - cron: '0 12 * * *' # 12:00 UTC ≈ 5am PDT
+  workflow_dispatch:
+
+# Needed so the job can push the refreshed snapshot back to the repo.
+permissions:
+  contents: write
+
+concurrency:
+  group: scrape-events
+  cancel-in-progress: true
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      # Capture the calendar → writes src/content/events-snapshot.json.
+      - run: npm run scrape:events
+
+      # Build + verify with the fresh snapshot so a bad capture never lands on main.
+      - run: DEPLOY_ENV=staging npm run build
+      - run: npm run test:site
+
+      - name: Commit refreshed snapshot
+        run: |
+          if git diff --quiet -- src/content/events-snapshot.json; then
+            echo "Snapshot unchanged — nothing to commit."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/content/events-snapshot.json
+            git commit -m "chore(events): refresh calendar snapshot"
+            git push
+          fi

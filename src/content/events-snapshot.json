@@ -1,0 +1,2074 @@
+{
+  "capturedAt": "2026-07-24T16:30:43.079Z",
+  "links": {
+    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-07-23T23%3A00%3A00.000Z&where[starts_at][lte]=2026-09-18T16%3A30%3A41.000Z"
+  },
+  "data": [
+    {
+      "type": "Event",
+      "id": "161849472",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "ends_at": "2026-07-26T18:00:00Z",
+        "featured": false,
+        "name": "Sunday Service",
+        "recurring": true,
+        "show_page_path": "/calendar/event/161849472",
+        "starts_at": "2026-07-26T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/161849472"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+          },
+          "data": {
+            "type": "Location",
+            "id": "3960177"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/161849472/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241928"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241940"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228130649",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
+        "ends_at": "2026-07-26T19:45:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228130649",
+        "starts_at": "2026-07-26T18:45:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228130649"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175186"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175186"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228130649/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "200873107",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>&nbsp;Join us for FIVE days of energizing fun!<br>&nbsp;<br>Children entering <strong>kindergarten through 5th grade in the fall</strong>--as well as <strong>4- &amp; 5-year-olds</strong>--are invited to participate in PLCC’s Sports Camp July 29-August 2. We’ll meet each day from 9:00am-12:00pm for energetic music, Bible lessons, and sports instruction from college athletes. Students can choose which sport they want to learn or improve their skills in: <strong><em>basketball</em></strong>, <strong><em>soccer </em></strong>or <strong><em>cheerleading</em></strong>. We will also have an <strong><em>art </em></strong>option (space is limited)!<br><br></div><ul><li>For <strong>4- and 5-year-olds</strong>, we have a special Kickstart program, which is an intro to sport skills and movement!</li><li>Every participant receives small-group instruction and encouragement as well as a cool SWAG bag!</li><li>Spaces are limited, so we encourage you to register early to save your child’s place.</li></ul><div><strong>Registration includes:</strong> Professional leadership from Base Sports; instruction from highly trained college athletes; healthy snacks; SWAG bag including t-shirt, water bottle, and fun treats!<br><br></div><div><strong>Cost</strong>:<br>Early Bird Price (through April 30) - $110 for first child<br>Starting May 1 - $125 for first child<br><em>$10 discount for each additional child</em></div>\n</div>\n",
+        "ends_at": "2026-07-27T20:00:00Z",
+        "featured": false,
+        "name": "Sports Camp",
+        "recurring": true,
+        "show_page_path": "/calendar/event/200873107",
+        "starts_at": "2026-07-27T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/200873107"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/11592248"
+          },
+          "data": {
+            "type": "Location",
+            "id": "11592248"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/200873107/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "200873108",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>&nbsp;Join us for FIVE days of energizing fun!<br>&nbsp;<br>Children entering <strong>kindergarten through 5th grade in the fall</strong>--as well as <strong>4- &amp; 5-year-olds</strong>--are invited to participate in PLCC’s Sports Camp July 29-August 2. We’ll meet each day from 9:00am-12:00pm for energetic music, Bible lessons, and sports instruction from college athletes. Students can choose which sport they want to learn or improve their skills in: <strong><em>basketball</em></strong>, <strong><em>soccer </em></strong>or <strong><em>cheerleading</em></strong>. We will also have an <strong><em>art </em></strong>option (space is limited)!<br><br></div><ul><li>For <strong>4- and 5-year-olds</strong>, we have a special Kickstart program, which is an intro to sport skills and movement!</li><li>Every participant receives small-group instruction and encouragement as well as a cool SWAG bag!</li><li>Spaces are limited, so we encourage you to register early to save your child’s place.</li></ul><div><strong>Registration includes:</strong> Professional leadership from Base Sports; instruction from highly trained college athletes; healthy snacks; SWAG bag including t-shirt, water bottle, and fun treats!<br><br></div><div><strong>Cost</strong>:<br>Early Bird Price (through April 30) - $110 for first child<br>Starting May 1 - $125 for first child<br><em>$10 discount for each additional child</em></div>\n</div>\n",
+        "ends_at": "2026-07-28T20:00:00Z",
+        "featured": false,
+        "name": "Sports Camp",
+        "recurring": true,
+        "show_page_path": "/calendar/event/200873108",
+        "starts_at": "2026-07-28T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/200873108"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/11592248"
+          },
+          "data": {
+            "type": "Location",
+            "id": "11592248"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/200873108/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "200873109",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>&nbsp;Join us for FIVE days of energizing fun!<br>&nbsp;<br>Children entering <strong>kindergarten through 5th grade in the fall</strong>--as well as <strong>4- &amp; 5-year-olds</strong>--are invited to participate in PLCC’s Sports Camp July 29-August 2. We’ll meet each day from 9:00am-12:00pm for energetic music, Bible lessons, and sports instruction from college athletes. Students can choose which sport they want to learn or improve their skills in: <strong><em>basketball</em></strong>, <strong><em>soccer </em></strong>or <strong><em>cheerleading</em></strong>. We will also have an <strong><em>art </em></strong>option (space is limited)!<br><br></div><ul><li>For <strong>4- and 5-year-olds</strong>, we have a special Kickstart program, which is an intro to sport skills and movement!</li><li>Every participant receives small-group instruction and encouragement as well as a cool SWAG bag!</li><li>Spaces are limited, so we encourage you to register early to save your child’s place.</li></ul><div><strong>Registration includes:</strong> Professional leadership from Base Sports; instruction from highly trained college athletes; healthy snacks; SWAG bag including t-shirt, water bottle, and fun treats!<br><br></div><div><strong>Cost</strong>:<br>Early Bird Price (through April 30) - $110 for first child<br>Starting May 1 - $125 for first child<br><em>$10 discount for each additional child</em></div>\n</div>\n",
+        "ends_at": "2026-07-29T20:00:00Z",
+        "featured": false,
+        "name": "Sports Camp",
+        "recurring": true,
+        "show_page_path": "/calendar/event/200873109",
+        "starts_at": "2026-07-29T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/200873109"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/11592248"
+          },
+          "data": {
+            "type": "Location",
+            "id": "11592248"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/200873109/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228134731",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
+        "ends_at": "2026-07-30T02:00:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228134731",
+        "starts_at": "2026-07-30T00:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228134731"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175406"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175406"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228134731/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "200873110",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>&nbsp;Join us for FIVE days of energizing fun!<br>&nbsp;<br>Children entering <strong>kindergarten through 5th grade in the fall</strong>--as well as <strong>4- &amp; 5-year-olds</strong>--are invited to participate in PLCC’s Sports Camp July 29-August 2. We’ll meet each day from 9:00am-12:00pm for energetic music, Bible lessons, and sports instruction from college athletes. Students can choose which sport they want to learn or improve their skills in: <strong><em>basketball</em></strong>, <strong><em>soccer </em></strong>or <strong><em>cheerleading</em></strong>. We will also have an <strong><em>art </em></strong>option (space is limited)!<br><br></div><ul><li>For <strong>4- and 5-year-olds</strong>, we have a special Kickstart program, which is an intro to sport skills and movement!</li><li>Every participant receives small-group instruction and encouragement as well as a cool SWAG bag!</li><li>Spaces are limited, so we encourage you to register early to save your child’s place.</li></ul><div><strong>Registration includes:</strong> Professional leadership from Base Sports; instruction from highly trained college athletes; healthy snacks; SWAG bag including t-shirt, water bottle, and fun treats!<br><br></div><div><strong>Cost</strong>:<br>Early Bird Price (through April 30) - $110 for first child<br>Starting May 1 - $125 for first child<br><em>$10 discount for each additional child</em></div>\n</div>\n",
+        "ends_at": "2026-07-30T20:00:00Z",
+        "featured": false,
+        "name": "Sports Camp",
+        "recurring": true,
+        "show_page_path": "/calendar/event/200873110",
+        "starts_at": "2026-07-30T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/200873110"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/11592248"
+          },
+          "data": {
+            "type": "Location",
+            "id": "11592248"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/200873110/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "200873111",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>&nbsp;Join us for FIVE days of energizing fun!<br>&nbsp;<br>Children entering <strong>kindergarten through 5th grade in the fall</strong>--as well as <strong>4- &amp; 5-year-olds</strong>--are invited to participate in PLCC’s Sports Camp July 29-August 2. We’ll meet each day from 9:00am-12:00pm for energetic music, Bible lessons, and sports instruction from college athletes. Students can choose which sport they want to learn or improve their skills in: <strong><em>basketball</em></strong>, <strong><em>soccer </em></strong>or <strong><em>cheerleading</em></strong>. We will also have an <strong><em>art </em></strong>option (space is limited)!<br><br></div><ul><li>For <strong>4- and 5-year-olds</strong>, we have a special Kickstart program, which is an intro to sport skills and movement!</li><li>Every participant receives small-group instruction and encouragement as well as a cool SWAG bag!</li><li>Spaces are limited, so we encourage you to register early to save your child’s place.</li></ul><div><strong>Registration includes:</strong> Professional leadership from Base Sports; instruction from highly trained college athletes; healthy snacks; SWAG bag including t-shirt, water bottle, and fun treats!<br><br></div><div><strong>Cost</strong>:<br>Early Bird Price (through April 30) - $110 for first child<br>Starting May 1 - $125 for first child<br><em>$10 discount for each additional child</em></div>\n</div>\n",
+        "ends_at": "2026-07-31T20:00:00Z",
+        "featured": false,
+        "name": "Sports Camp",
+        "recurring": true,
+        "show_page_path": "/calendar/event/200873111",
+        "starts_at": "2026-07-31T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/200873111"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/11592248"
+          },
+          "data": {
+            "type": "Location",
+            "id": "11592248"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/200873111/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "162443277",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "ends_at": "2026-08-02T18:00:00Z",
+        "featured": false,
+        "name": "Sunday Service",
+        "recurring": true,
+        "show_page_path": "/calendar/event/162443277",
+        "starts_at": "2026-08-02T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/162443277"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+          },
+          "data": {
+            "type": "Location",
+            "id": "3960177"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/162443277/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241928"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241940"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228130650",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
+        "ends_at": "2026-08-02T19:45:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228130650",
+        "starts_at": "2026-08-02T18:45:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228130650"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175186"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175186"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228130650/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "162496417",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "ends_at": "2026-08-03T18:30:00Z",
+        "featured": false,
+        "name": "Community Playgroup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/162496417",
+        "starts_at": "2026-08-03T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/162496417"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+          },
+          "data": {
+            "type": "Location",
+            "id": "6158728"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/162496417/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419299"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228134732",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
+        "ends_at": "2026-08-06T02:00:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228134732",
+        "starts_at": "2026-08-06T00:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228134732"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175406"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175406"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228134732/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "163127329",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "ends_at": "2026-08-09T18:00:00Z",
+        "featured": false,
+        "name": "Sunday Service",
+        "recurring": true,
+        "show_page_path": "/calendar/event/163127329",
+        "starts_at": "2026-08-09T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/163127329"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+          },
+          "data": {
+            "type": "Location",
+            "id": "3960177"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/163127329/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241928"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241940"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228130651",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
+        "ends_at": "2026-08-09T19:45:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228130651",
+        "starts_at": "2026-08-09T18:45:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228130651"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175186"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175186"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228130651/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "203425508",
+      "attributes": {
+        "all_day_event": true,
+        "description": "<div class=\"trix-content\">\n  More details to come!\n</div>\n",
+        "ends_at": "2026-08-19T06:59:59Z",
+        "featured": false,
+        "name": " High School Mission Trip ",
+        "recurring": false,
+        "show_page_path": "/calendar/event/203425508",
+        "starts_at": "2026-08-10T07:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/203425508"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/11747072"
+          },
+          "data": {
+            "type": "Location",
+            "id": "11747072"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/203425508/category_tags"
+          },
+          "data": []
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "163209899",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "ends_at": "2026-08-10T18:30:00Z",
+        "featured": false,
+        "name": "Community Playgroup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/163209899",
+        "starts_at": "2026-08-10T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/163209899"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+          },
+          "data": {
+            "type": "Location",
+            "id": "6158728"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/163209899/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419299"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "169359183",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>This is a support group for people who have loved ones with Dementia or Alzheimer's. Led by Linda Crossgrove, the group will gather in the HUB at church monthly to share resources, pray for and support one another.</div>\n</div>\n",
+        "ends_at": "2026-08-12T23:00:00Z",
+        "featured": false,
+        "name": "Dementia/Alzheimer's Family Support Group",
+        "recurring": true,
+        "show_page_path": "/calendar/event/169359183",
+        "starts_at": "2026-08-12T21:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/169359183"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/9654054"
+          },
+          "data": {
+            "type": "Location",
+            "id": "9654054"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/169359183/category_tags"
+          },
+          "data": []
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228134733",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
+        "ends_at": "2026-08-13T02:00:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228134733",
+        "starts_at": "2026-08-13T00:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228134733"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175406"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175406"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228134733/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "163876694",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "ends_at": "2026-08-16T18:00:00Z",
+        "featured": false,
+        "name": "Sunday Service",
+        "recurring": true,
+        "show_page_path": "/calendar/event/163876694",
+        "starts_at": "2026-08-16T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/163876694"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+          },
+          "data": {
+            "type": "Location",
+            "id": "3960177"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/163876694/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241928"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241940"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228130652",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
+        "ends_at": "2026-08-16T19:45:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228130652",
+        "starts_at": "2026-08-16T18:45:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228130652"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175186"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175186"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228130652/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "163956005",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "ends_at": "2026-08-17T18:30:00Z",
+        "featured": false,
+        "name": "Community Playgroup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/163956005",
+        "starts_at": "2026-08-17T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/163956005"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+          },
+          "data": {
+            "type": "Location",
+            "id": "6158728"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/163956005/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419299"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228134734",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
+        "ends_at": "2026-08-20T02:00:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228134734",
+        "starts_at": "2026-08-20T00:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228134734"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175406"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175406"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228134734/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "164633430",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "ends_at": "2026-08-23T18:00:00Z",
+        "featured": false,
+        "name": "Sunday Service",
+        "recurring": true,
+        "show_page_path": "/calendar/event/164633430",
+        "starts_at": "2026-08-23T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/164633430"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+          },
+          "data": {
+            "type": "Location",
+            "id": "3960177"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/164633430/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241928"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241940"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228130653",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
+        "ends_at": "2026-08-23T19:45:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228130653",
+        "starts_at": "2026-08-23T18:45:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228130653"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175186"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175186"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228130653/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "164767250",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "ends_at": "2026-08-24T18:30:00Z",
+        "featured": false,
+        "name": "Community Playgroup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/164767250",
+        "starts_at": "2026-08-24T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/164767250"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+          },
+          "data": {
+            "type": "Location",
+            "id": "6158728"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/164767250/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419299"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228134735",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
+        "ends_at": "2026-08-27T02:00:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228134735",
+        "starts_at": "2026-08-27T00:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228134735"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175406"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175406"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228134735/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "165502681",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "ends_at": "2026-08-30T18:00:00Z",
+        "featured": false,
+        "name": "Sunday Service",
+        "recurring": true,
+        "show_page_path": "/calendar/event/165502681",
+        "starts_at": "2026-08-30T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/165502681"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+          },
+          "data": {
+            "type": "Location",
+            "id": "3960177"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/165502681/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241928"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241940"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "228130654",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
+        "ends_at": "2026-08-30T19:45:00Z",
+        "featured": false,
+        "name": "Summer Meetup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/228130654",
+        "starts_at": "2026-08-30T18:45:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/228130654"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13175186"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13175186"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/228130654/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419298"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "165610302",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "ends_at": "2026-08-31T18:30:00Z",
+        "featured": false,
+        "name": "Community Playgroup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/165610302",
+        "starts_at": "2026-08-31T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/165610302"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+          },
+          "data": {
+            "type": "Location",
+            "id": "6158728"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/165610302/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419299"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "227518176",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>Join us for a meal together every 1st and 3rd Tuesdays of each month!&nbsp;</div>\n</div>\n",
+        "ends_at": "2026-09-02T02:00:00Z",
+        "featured": false,
+        "name": "Tuesdays Together",
+        "recurring": true,
+        "show_page_path": "/calendar/event/227518176",
+        "starts_at": "2026-09-02T01:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/227518176"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13143544"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13143544"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/227518176/category_tags"
+          },
+          "data": []
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "212260698",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>Make an appointment to donate at plcc.org/blood</div>\n</div>\n",
+        "ends_at": "2026-09-02T20:00:00Z",
+        "featured": false,
+        "name": "Blood Drive  ",
+        "recurring": false,
+        "show_page_path": "/calendar/event/212260698",
+        "starts_at": "2026-09-02T15:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/212260698"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/12261086"
+          },
+          "data": {
+            "type": "Location",
+            "id": "12261086"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/212260698/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "166276664",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "ends_at": "2026-09-06T18:00:00Z",
+        "featured": false,
+        "name": "Sunday Service",
+        "recurring": true,
+        "show_page_path": "/calendar/event/166276664",
+        "starts_at": "2026-09-06T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/166276664"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+          },
+          "data": {
+            "type": "Location",
+            "id": "3960177"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/166276664/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241928"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241940"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "166359684",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "ends_at": "2026-09-07T18:30:00Z",
+        "featured": false,
+        "name": "Community Playgroup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/166359684",
+        "starts_at": "2026-09-07T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/166359684"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+          },
+          "data": {
+            "type": "Location",
+            "id": "6158728"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/166359684/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419299"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "169359184",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>This is a support group for people who have loved ones with Dementia or Alzheimer's. Led by Linda Crossgrove, the group will gather in the HUB at church monthly to share resources, pray for and support one another.</div>\n</div>\n",
+        "ends_at": "2026-09-09T23:00:00Z",
+        "featured": false,
+        "name": "Dementia/Alzheimer's Family Support Group",
+        "recurring": true,
+        "show_page_path": "/calendar/event/169359184",
+        "starts_at": "2026-09-09T21:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/169359184"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/9654054"
+          },
+          "data": {
+            "type": "Location",
+            "id": "9654054"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/169359184/category_tags"
+          },
+          "data": []
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "167083809",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "ends_at": "2026-09-13T18:00:00Z",
+        "featured": false,
+        "name": "Sunday Service",
+        "recurring": true,
+        "show_page_path": "/calendar/event/167083809",
+        "starts_at": "2026-09-13T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/167083809"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+          },
+          "data": {
+            "type": "Location",
+            "id": "3960177"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/167083809/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241928"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241940"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "226271449",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div><strong>TWO WAYS TO PARTICIPATE!</strong></div><ol><li><strong>MomCo Monday Meetups (full membership)</strong></li><li><strong>MomCo Social Meetups only</strong></li></ol><div>Here at MomCo at Pine Lake, we gather and support moms. The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together. We believe in the simple but revolutionary idea that remarkable things happen when moms come together. If you are a mom with a child at home, of any age, we have a place for you!<br><br><a href=\"https://plcc.churchcenter.com/calendar?category=MomCo%2520%28The%2520Mom%2520Community%29&amp;view=list\"><strong>See upcoming dates</strong></a></div>\n</div>\n",
+        "ends_at": "2026-09-14T18:30:00Z",
+        "featured": false,
+        "name": "MomCo Meetup ",
+        "recurring": true,
+        "show_page_path": "/registrations/events/3743770",
+        "starts_at": "2026-09-14T16:45:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/226271449"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13062787"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13062787"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/226271449/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241931"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/226271449/event_registration_url"
+          },
+          "data": {
+            "type": "EventRegistrationUrl",
+            "id": "4031995"
+          }
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "167153589",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "ends_at": "2026-09-14T18:30:00Z",
+        "featured": false,
+        "name": "Community Playgroup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/167153589",
+        "starts_at": "2026-09-14T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/167153589"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+          },
+          "data": {
+            "type": "Location",
+            "id": "6158728"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/167153589/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419299"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "220992309",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>BSF offers free, in-depth Bible studies in community for people of all ages around the world. <a href=\"https://www.bsfinternational.org/\">Learn more about BSF</a></div>\n</div>\n",
+        "ends_at": "2026-09-15T04:00:00Z",
+        "featured": false,
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "recurring": true,
+        "show_page_path": "/calendar/event/220992309",
+        "starts_at": "2026-09-15T01:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/220992309"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/12765808"
+          },
+          "data": {
+            "type": "Location",
+            "id": "12765808"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/220992309/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241935"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "227553476",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>Join us for a meal together every 1st and 3rd Tuesdays of each month!&nbsp;</div>\n</div>\n",
+        "ends_at": "2026-09-16T02:00:00Z",
+        "featured": false,
+        "name": "Tuesdays Together",
+        "recurring": true,
+        "show_page_path": "/calendar/event/227553476",
+        "starts_at": "2026-09-16T01:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/227553476"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13143544"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13143544"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/227553476/category_tags"
+          },
+          "data": []
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "type": "Location",
+      "id": "3960177",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241928",
+      "attributes": {
+        "name": "Worship Service"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241928"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241940",
+      "attributes": {
+        "name": "Worship"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241940"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "13175186",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "301 228th Ave SE\nSammamish, WA 98074",
+        "latitude": 47.6058149,
+        "longitude": -122.0359255,
+        "name": "Met Market",
+        "type": "Custom",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/13175186"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241923",
+      "attributes": {
+        "name": "Community Event"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241923"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "419298",
+      "attributes": {
+        "name": "Summer Meetups"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419298"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "11592248",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/11592248"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241936",
+      "attributes": {
+        "name": "Children & Families"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241936"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "13175406",
+      "attributes": {
+        "additional_address_info": "Meet at restroom pavilion between Library and City Hall",
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "801 228th Ave SE\nMeet at restroom pavilion between Library and City Hall\nSammamish, WA 98074",
+        "latitude": 47.60107360000001,
+        "longitude": -122.0365113,
+        "name": "Sammamish Farmers Market, Upper Sammamish Commons",
+        "type": "Custom",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/13175406"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "6158728",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "419299",
+      "attributes": {
+        "name": "Community Playgroup"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419299"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "11747072",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/11747072"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "9654054",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/9654054"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "13143544",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/13143544"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "12261086",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/12261086"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "13062787",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/13062787"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241931",
+      "attributes": {
+        "name": "MomCo (The Mom Community)"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241931"
+      }
+    },
+    {
+      "type": "EventRegistrationUrl",
+      "id": "4031995",
+      "attributes": {
+        "announcement_only": false,
+        "can_register": true,
+        "name": "MomCo Registration 2026-2027",
+        "registrations_event": true,
+        "url": "https://plcc.churchcenter.com/registrations/events/3743770"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/226271449/event_registration_url/4031995"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "12765808",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/12765808"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241935",
+      "attributes": {
+        "name": "Adults"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241935"
+      }
+    }
+  ],
+  "meta": {
+    "total_count": 39,
+    "count": 39,
+    "can_order_by": [
+      "featured",
+      "visible_starts_at"
+    ],
+    "can_query_by": [
+      "starts_at",
+      "ends_at"
+    ],
+    "can_filter": [
+      "upcoming_first_occurrence",
+      "upcoming",
+      "first_occurrence"
+    ],
+    "parent": {
+      "id": "65711",
+      "type": "Organization"
+    }
+  }
+}
