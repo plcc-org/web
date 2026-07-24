@@ -213,6 +213,12 @@ push). The `plcc.org` production cutover is future work: add a Worker environmen
 
 ## Gotchas
 
+- **Astro 6 patch (`patch-package`).** `@keystatic/astro@5.2.0`'s server route reads
+  `Astro.locals.runtime.env`, which Astro 6 removed — under Cloudflare's workerd that throws
+  and makes every `/api/keystatic/*` request 500. `patches/@keystatic+astro+5.2.0.patch` wraps
+  that read so it falls back safely (verified under `wrangler dev`). It's re-applied on install
+  by the `postinstall: patch-package` script — don't remove that script, and re-generate the
+  patch (`npx patch-package @keystatic/astro`) if you bump `@keystatic/astro`.
 - **Keep the two schemas in sync** — a field in `keystatic.config.ts` with no counterpart in
   `src/content.config.ts` (or vice versa) will be invisible to the build or fail validation.
 - **CMS pages are Prettier-ignored** (`src/content/pages/` in `.prettierignore`) — Prettier's
