@@ -25,7 +25,7 @@ const featured = moments.filter((m) => m.featured)
 const rest = moments.filter((m) => !m.featured)
 ---
 
-<section class="section youth-moments">
+<section class="section youth-moments" data-reveal>
   <div class="youth-moments__head">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     {heading && <h2 class="youth-moments__heading">{heading}</h2>}

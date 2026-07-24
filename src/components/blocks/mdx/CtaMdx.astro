@@ -16,7 +16,7 @@ const { tone = 'forest', eyebrow, heading, buttonLabel, buttonHref, flush } = As
 const resolve = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : withBase(href))
 ---
 
-<Band tone={tone} narrow flush={flush} eyebrow={eyebrow} heading={heading}>
+<Band tone={tone} narrow flush={flush} eyebrow={eyebrow} heading={heading} reveal>
   <slot />
   {
     buttonHref && (

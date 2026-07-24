@@ -17,7 +17,7 @@ const quotes = (await getCollection('quotes'))
 
 {
   quotes.length > 0 && (
-    <Band tone={tone} eyebrow={eyebrow || undefined} heading={heading || undefined}>
+    <Band tone={tone} eyebrow={eyebrow || undefined} heading={heading || undefined} reveal>
       {intro && <p class="measure">{intro}</p>}
       <QuoteCarousel quotes={quotes} />
     </Band>

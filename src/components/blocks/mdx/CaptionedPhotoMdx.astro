@@ -8,7 +8,7 @@ const { image, alt, caption } = Astro.props
 const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
 ---
 
-<section class="section">
+<section class="section" data-reveal>
   <figure class="media">
     <Photo image={resolved} alt={alt} class="media__img media__img--cover" />
     {caption && <figcaption class="media__caption">{caption}</figcaption>}

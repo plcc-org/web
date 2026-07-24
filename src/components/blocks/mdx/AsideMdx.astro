@@ -11,7 +11,7 @@ const { eyebrow, logo, logoAlt } = Astro.props
 const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined
 ---
 
-<section class="section">
+<section class="section" data-reveal>
   <div class:list={['aside-note', !logoImg && 'aside-note--solo']}>
     <div class="aside-note__text">
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}

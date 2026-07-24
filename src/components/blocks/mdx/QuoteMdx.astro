@@ -12,14 +12,14 @@ const { quote, attribution, tone = 'none' } = Astro.props
 
 {
   tone === 'none' ? (
-    <section class="section">
+    <section class="section" data-reveal>
       <blockquote class="story-quote pull-quote">
         <p>{quote}</p>
         {attribution && <footer>— {attribution}</footer>}
       </blockquote>
     </section>
   ) : (
-    <Band tone={tone} centered class="verse-band">
+    <Band tone={tone} centered class="verse-band" reveal>
       <blockquote class="verse">
         <p>{quote}</p>
         {attribution && <footer>{attribution}</footer>}

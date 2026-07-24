@@ -15,7 +15,7 @@ const { eyebrow, heading, columns, items = [] } = Astro.props
 const cols = Number(columns) === 3 ? 3 : 2
 ---
 
-<section class="section">
+<section class="section" data-reveal>
   {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
   <AccentList items={items} columns={cols} />
 </section>

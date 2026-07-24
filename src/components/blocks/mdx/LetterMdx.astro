@@ -11,7 +11,7 @@ const { image, alt, signoffName, signoffRole } = Astro.props
 const img = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined
 ---
 
-<section class="to-wide">
+<section class="to-wide" data-reveal>
   <Letter image={img} alt={alt} signoffName={signoffName} signoffRole={signoffRole}>
     <slot />
   </Letter>

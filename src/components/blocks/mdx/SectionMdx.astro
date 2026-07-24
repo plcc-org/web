@@ -9,7 +9,7 @@ type Props = { eyebrow?: string; heading?: string }
 const { eyebrow, heading } = Astro.props
 ---
 
-<section class="section">
+<section class="section" data-reveal>
   {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
   <div class="measure"><slot /></div>
 </section>

@@ -6,4 +6,4 @@ type Props = { links?: { title: string; meta: string; href: string }[]; heading?
 const { links = [], heading } = Astro.props
 ---
 
-<LinkCardSection heading={heading || undefined} links={links} />
+<LinkCardSection heading={heading || undefined} links={links} reveal />

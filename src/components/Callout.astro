@@ -18,7 +18,7 @@ const { heading, body, class: className } = Astro.props
 const hasBody = typeof body === 'string' && body.trim().length > 0
 ---
 
-<section class:list={['section', 'section-callout', className]}>
+<section class:list={['section', 'section-callout', className]} data-reveal>
   {heading && <h2>{heading}</h2>}
   {hasBody ? <div set:html={renderMarkdown(body)} /> : <slot />}
 </section>
