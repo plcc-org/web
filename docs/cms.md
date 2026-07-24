@@ -168,9 +168,17 @@ adapter so the admin works on Node; see `astro.config.mjs`.)
 
 Editors sign in through **Keystatic Cloud** and their saves are committed to the repo. This
 needs a host that can run Keystatic's two server routes; the `@astrojs/cloudflare` adapter
-ships them as a Cloudflare **Worker** while the public pages stay static. We use Keystatic
-Cloud rather than a self-hosted GitHub App because the self-hosted GitHub OAuth flow has a
-documented failure on the Cloudflare adapter ([Thinkmill/keystatic#1497](https://github.com/Thinkmill/keystatic/issues/1497)).
+ships them as a Cloudflare **Worker** while the public pages stay static.
+
+> **⚠️ Keystatic Cloud is a temporary workaround, not the long-term choice.** We'd prefer
+> self-hosted **GitHub mode** (`storage: { kind: 'github' }`) — fully free, no third-party
+> service — but it's currently broken on Astro 6 + Cloudflare Workers: the OAuth login sets
+> no state cookie, so the callback 401s ([Thinkmill/keystatic#1497](https://github.com/Thinkmill/keystatic/issues/1497),
+> open/unfixed as of 2026-07). Cloud sidesteps it and is **free for our usage** — the free
+> tier covers up to **3 editors** with GitHub auth, and our images live in the repo (so we
+> never touch paid Cloud Images). **Revisit when #1497 is fixed, or if editors exceed 3**
+> (Cloud Pro is $10/mo + $5/user beyond 3). The switch is a one-line change in
+> `keystatic.config.ts`.
 
 ### 1. Cloudflare (staging → `plcc.dev`)
 

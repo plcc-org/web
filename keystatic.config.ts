@@ -60,12 +60,20 @@ function preview(label: string, info: ReactNode, media: ReactNode, children?: Re
 }
 
 // Keystatic CMS configuration. In dev we use `local` storage (reads/writes the
-// repo on disk); in production (Cloudflare Pages) we use Keystatic `cloud`
-// storage, where editors sign in through Keystatic Cloud and edits still commit
-// to the GitHub repo. Cloud auth avoids the self-hosted GitHub OAuth flow, which
-// has a documented failure on the Cloudflare adapter (Thinkmill/keystatic#1497).
-// The schemas below must stay aligned with the Astro content schemas in
+// repo on disk); on the deployed site we use Keystatic `cloud` storage, where
+// editors sign in through Keystatic Cloud and edits still commit to the GitHub
+// repo. The schemas below must stay aligned with the Astro content schemas in
 // src/content.config.ts — Astro validates these same files at build time.
+//
+// ⚠️ TEMPORARY WORKAROUND — Keystatic Cloud is not our preferred long-term auth.
+// We'd rather use self-hosted `github` mode (fully free, no third-party service),
+// but it's currently broken on our stack (Astro 6 + Cloudflare Workers): the OAuth
+// login sets no state cookie, so the callback 401s — Thinkmill/keystatic#1497,
+// open and unfixed as of 2026-07. Cloud sidesteps it and is free on our usage
+// (≤ 3 editors; images live in the repo, so we never touch paid Cloud Images).
+// REVISIT and switch to `{ kind: 'github', repo: 'timsneath/plcc-web' }` when
+// #1497 is fixed, or if we ever exceed 3 editors (Cloud Pro would start costing).
+// See docs/cms.md → "Deployed setup".
 //
 // NOTE: `cloud.project` must match the project created at https://keystatic.cloud
 // (format: <team>/<project>). Update the slug if the Keystatic Cloud project uses
