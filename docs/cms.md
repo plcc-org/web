@@ -176,18 +176,27 @@ documented failure on the Cloudflare adapter ([Thinkmill/keystatic#1497](https:/
 
 1. Cloudflare dashboard → **Workers & Pages → Create** → **Import a repository** (Workers
    Builds), pick `timsneath/plcc-web` and the deploy branch.
-2. Build settings: **build command** `npm run build`. The adapter emits the Worker config at
-   `dist/server/wrangler.json` (assets served from `dist/client`).
-3. **Compatibility flags**: add **`nodejs_compat`** with a recent compatibility date.
-4. **KV namespace**: create one and bind it as **`SESSION`** — the adapter enables Astro's
-   session API against a `SESSION` KV binding, so the Worker needs it to deploy/run.
-5. **Environment variables**: set `DEPLOY_ENV=staging` (targets `plcc.dev`, `noindex`).
+2. Build settings: **build command** `npx astro build`, **deploy command** `npx wrangler
+deploy`. The adapter emits the Worker config (`main`, `assets` from `dist/client`, and the
+   `SESSION` KV binding) — `wrangler deploy` picks it up from the repo root automatically.
+   **Do not add a root `wrangler.jsonc`** — the `@cloudflare/vite-plugin` treats it as
+   authoritative and Keystatic's `virtual:keystatic-config` fails to build.
+3. **KV namespace (`SESSION`)**: the adapter enables Astro's session API against a `SESSION`
+   KV binding. Wrangler auto-provisions it on first deploy; if your CI can't do interactive
+   provisioning, create a KV namespace named `SESSION` in the dashboard first.
+4. **Environment variables**: set `DEPLOY_ENV=staging` (targets `plcc.dev`, `noindex`).
    Set `NODE_VERSION` to a current LTS if Cloudflare's default lags.
-6. **Custom domain**: add `plcc.dev` to the Worker (the domain is already in the Cloudflare
+5. **Custom domain**: add `plcc.dev` to the Worker (the domain is already in the Cloudflare
    account).
 
 A push to the connected branch builds and deploys; other branches get preview URLs. To
-deploy by hand instead: `npm run build` then `wrangler deploy -c dist/server/wrangler.json`.
+deploy by hand instead: `npx astro build && npx wrangler deploy` from the repo root.
+
+> **`nodejs_compat`:** the adapter emits `compatibility_flags: []`, and a local `wrangler dev`
+> run served both `/keystatic` and `/api/keystatic/*` without it. If the _live_ editor hits a
+> Node-API error during sign-in or save, add `nodejs_compat` — but because a root
+> `wrangler.jsonc` breaks the build (above), inject it into `dist/server/wrangler.json` as a
+> post-build step in the deploy command rather than via a root config file.
 
 ### 2. Keystatic Cloud (auth for the live editor)
 
