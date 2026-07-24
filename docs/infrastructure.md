@@ -7,14 +7,19 @@ How the site is hosted and shipped. For the codebase and build scripts, see
 
 ## Environments
 
-Hosting is on **Cloudflare Pages**, which builds from the GitHub repo on every push. The
-target is selected by the `DEPLOY_ENV` variable, resolved in `src/config/site.ts` (consumed
-by `astro.config.mjs`):
+Hosting is on **Cloudflare**, which builds from the GitHub repo on every push. The adapter
+(`@astrojs/cloudflare`) targets the **Workers** platform (static assets + the two Keystatic
+function routes); it emits a `wrangler.json` under `dist/server/` at build time. The target
+is selected by the `DEPLOY_ENV` variable, resolved in `src/config/site.ts` (consumed by
+`astro.config.mjs`):
 
 | Env           | Where                                  | Base | Indexed |
 | ------------- | -------------------------------------- | ---- | ------- |
 | `development` | localhost + Cloudflare preview deploys | `/`  | no      |
+| `staging`     | `plcc.dev` (`DEPLOY_ENV=staging`)      | `/`  | no      |
 | `production`  | `plcc.org` (`DEPLOY_ENV=production`)   | `/`  | yes     |
+
+`plcc.dev` is the current live staging target; `plcc.org` (production) is a future cutover.
 
 Everything is served from the root, so `base` is `/`. Internal links still go through the
 `withBase()` helper (harmless at root, and it keeps the subpath option open) — see
@@ -22,7 +27,7 @@ Everything is served from the root, so `base` is `/`. Internal links still go th
 
 The site is **static** except for Keystatic's two admin routes (`/keystatic`,
 `/api/keystatic/*`), which run as Cloudflare functions. See [cms.md](./cms.md) for the CMS
-and its one-time Cloudflare + GitHub App setup.
+and its one-time Cloudflare + Keystatic Cloud setup.
 
 ---
 
@@ -31,24 +36,26 @@ and its one-time Cloudflare + GitHub App setup.
 - **Indexing.** `robots.txt` switches to `Allow` + sitemap only in `production`; everything
   else stays `noindex`.
 - **Canonical / social URLs.** OG and canonical URLs use the real domain in `production`.
-- **Sitemap.** Emitted only when `site` is set (i.e. `production`).
+- **Sitemap.** Emitted only when `site` is set (i.e. `staging` and `production`).
 
 ---
 
 ## CI / build
 
-**Cloudflare Pages** builds and deploys on every push: the production branch publishes to the
-live domain, other branches get preview URLs. The build command is `npm run build`; the
-adapter needs the `nodejs_compat` compatibility flag (see [cms.md](./cms.md)).
+**Cloudflare** builds and deploys on every push (via Cloudflare's Git integration / Workers
+Builds): the connected branch publishes to `plcc.dev`, other branches get preview URLs. The
+build command is `npm run build`; the adapter needs the `nodejs_compat` compatibility flag
+(see [cms.md](./cms.md)).
 
 `.github/workflows/ci.yml` still runs the checks on every push — `format:check`, `check`,
 `test`, `build`, `test:site` (see [development.md](./development.md)).
 
-### Cutover from GitHub Pages
+### GitHub Pages runs in parallel (for now)
 
-The site previously deployed to GitHub Pages via `.github/workflows/deploy.yml`. Because that
-can't serve Keystatic's function routes, the cutover (point `plcc.org` DNS at Cloudflare,
-retire `deploy.yml`) is covered in [cms.md](./cms.md#3-cutover-from-github-pages).
+The site still deploys to GitHub Pages via `.github/workflows/deploy.yml`. During the
+Cloudflare staging bring-up it's left running as a fallback — it just can't serve Keystatic's
+function routes. Retiring `deploy.yml` and the eventual `plcc.org` production cutover (point
+DNS at Cloudflare) are covered in [cms.md](./cms.md#3-cutover-and-production).
 
 ---
 

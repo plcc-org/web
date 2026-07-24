@@ -16,7 +16,7 @@ deploys, see [infrastructure.md](./infrastructure.md).
 - **Images:** Astro's `<Image>` pipeline via the `<Photo>` wrapper component.
 - **CMS:** [Keystatic](https://keystatic.com), a Git-based editor at `/keystatic`. See
   [cms.md](./cms.md).
-- **Host:** Cloudflare Pages via `@astrojs/cloudflare` (`imageService: 'compile'` keeps
+- **Host:** Cloudflare (Workers) via `@astrojs/cloudflare` (`imageService: 'compile'` keeps
   images optimized at build time). See [infrastructure.md](./infrastructure.md).
 
 This is a clean, maintainable codebase designed to be handed off and extended — not a

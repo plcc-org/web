@@ -13,7 +13,8 @@ For the stack and conventions, see [development.md](./development.md); for hosti
 ## The big picture
 
 - The editor lives at **`/keystatic`**. In local development it reads and writes the files
-  in your working copy directly. In production it signs in with GitHub and commits changes.
+  in your working copy directly. On the deployed site editors sign in through **Keystatic
+  Cloud**, and their saves are committed to the GitHub repo.
 - **The public site stays static.** Editing produces a Git commit; the commit triggers a
   build; the build ships static HTML. Visitors never hit a server — only the two `/keystatic`
   admin routes run on demand.
@@ -163,42 +164,50 @@ adapter so the admin works on Node; see `astro.config.mjs`.)
 
 ---
 
-## Production setup (one-time)
+## Deployed setup (one-time)
 
-Editors log in with GitHub and commit to the repo. This needs a host that can run Keystatic's
-two server routes, plus a GitHub App for auth. Public pages stay static either way.
+Editors sign in through **Keystatic Cloud** and their saves are committed to the repo. This
+needs a host that can run Keystatic's two server routes; the `@astrojs/cloudflare` adapter
+ships them as a Cloudflare **Worker** while the public pages stay static. We use Keystatic
+Cloud rather than a self-hosted GitHub App because the self-hosted GitHub OAuth flow has a
+documented failure on the Cloudflare adapter ([Thinkmill/keystatic#1497](https://github.com/Thinkmill/keystatic/issues/1497)).
 
-### 1. Cloudflare Pages
+### 1. Cloudflare (staging → `plcc.dev`)
 
-1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**, pick the
-   `timsneath/plcc-web` repo.
-2. Build settings: **build command** `npm run build`, **output directory** `dist`.
-3. **Settings → Functions → Compatibility flags**: add **`nodejs_compat`**, recent date.
-4. **Environment variables**: set `DEPLOY_ENV=production` on the production environment
-   (targets `plcc.org`, indexable). Preview/branch deploys can leave it unset.
-5. Set `NODE_VERSION` to a current LTS if Cloudflare's default lags.
+1. Cloudflare dashboard → **Workers & Pages → Create** → **Import a repository** (Workers
+   Builds), pick `timsneath/plcc-web` and the deploy branch.
+2. Build settings: **build command** `npm run build`. The adapter emits the Worker config at
+   `dist/server/wrangler.json` (assets served from `dist/client`).
+3. **Compatibility flags**: add **`nodejs_compat`** with a recent compatibility date.
+4. **KV namespace**: create one and bind it as **`SESSION`** — the adapter enables Astro's
+   session API against a `SESSION` KV binding, so the Worker needs it to deploy/run.
+5. **Environment variables**: set `DEPLOY_ENV=staging` (targets `plcc.dev`, `noindex`).
+   Set `NODE_VERSION` to a current LTS if Cloudflare's default lags.
+6. **Custom domain**: add `plcc.dev` to the Worker (the domain is already in the Cloudflare
+   account).
 
-A push to the connected branch builds and deploys; branches get preview URLs.
+A push to the connected branch builds and deploys; other branches get preview URLs. To
+deploy by hand instead: `npm run build` then `wrangler deploy -c dist/server/wrangler.json`.
 
-### 2. GitHub App (auth for the live editor)
+### 2. Keystatic Cloud (auth for the live editor)
 
-Deploy with `storage` set to `github` (already the case in production — see
-`keystatic.config.ts`), visit `/keystatic` on the deployed site, and follow the prompt to
-**create a GitHub App**. Put the generated credentials in Cloudflare's env vars:
+`keystatic.config.ts` uses `storage: { kind: 'cloud' }` with `cloud.project` in production.
 
-- `KEYSTATIC_GITHUB_CLIENT_ID`
-- `KEYSTATIC_GITHUB_CLIENT_SECRET`
-- `KEYSTATIC_SECRET` (any long random string)
-- `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` (the app's slug)
+1. Create the project at **[keystatic.cloud](https://keystatic.cloud)** and connect it to the
+   `timsneath/plcc-web` GitHub repo.
+2. Make sure `cloud.project` in `keystatic.config.ts` matches the project slug
+   (`<team>/<project>`).
+3. Invite editors to the Keystatic Cloud project. They then sign in at `/keystatic` on the
+   deployed site and their saves become commits. No GitHub App or `KEYSTATIC_GITHUB_*` secrets
+   are needed.
 
-Install the app on the repo and grant edit access to the right people. They then sign in at
-`/keystatic` and their saves become commits.
+### 3. Cutover and production
 
-### 3. Cutover from GitHub Pages
-
-Point `plcc.org` DNS at Cloudflare Pages, and remove/disable `.github/workflows/deploy.yml`
-(the old GitHub Pages deploy) so merges don't publish a broken static-only build. Keep
-`ci.yml` — it still validates every push.
+GitHub Pages (`.github/workflows/deploy.yml`) is left running in parallel during the
+Cloudflare staging bring-up as a fallback. Once `plcc.dev` is confirmed, retire `deploy.yml`
+so merges don't publish a broken static-only build (keep `ci.yml` — it still validates every
+push). The `plcc.org` production cutover is future work: add a Worker environment with
+`DEPLOY_ENV=production`, bind `plcc.org`, and point its DNS at Cloudflare.
 
 ---
 
