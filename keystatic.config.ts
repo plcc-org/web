@@ -84,7 +84,7 @@ function preview(label: string, info: ReactNode, media: ReactNode, children?: Re
 // photos through image fields (on page blocks and the hero).
 export default config({
   storage: import.meta.env.DEV ? { kind: 'local' } : { kind: 'cloud' },
-  cloud: { project: 'pine-lake-covenant-church/plcc-web' },
+  cloud: { project: 'plcc/plcc-web' },
 
   ui: {
     brand: { name: 'Pine Lake Covenant Church' },
