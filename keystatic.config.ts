@@ -60,16 +60,23 @@ function preview(label: string, info: ReactNode, media: ReactNode, children?: Re
 }
 
 // Keystatic CMS configuration. In dev we use `local` storage (reads/writes the
-// repo on disk); in production (Cloudflare Pages) we use `github` storage, where
-// edits commit to the repo through a GitHub App. The schemas below must stay
-// aligned with the Astro content schemas in src/content.config.ts — Astro
-// validates these same files at build time.
+// repo on disk); in production (Cloudflare Pages) we use Keystatic `cloud`
+// storage, where editors sign in through Keystatic Cloud and edits still commit
+// to the GitHub repo. Cloud auth avoids the self-hosted GitHub OAuth flow, which
+// has a documented failure on the Cloudflare adapter (Thinkmill/keystatic#1497).
+// The schemas below must stay aligned with the Astro content schemas in
+// src/content.config.ts — Astro validates these same files at build time.
+//
+// NOTE: `cloud.project` must match the project created at https://keystatic.cloud
+// (format: <team>/<project>). Update the slug if the Keystatic Cloud project uses
+// a different name.
 //
 // Photos are deliberately NOT a CMS collection: the 442-entry catalog
 // (src/content/photos.json) is build-time infrastructure. Editors add and pick
 // photos through image fields (on page blocks and the hero).
 export default config({
-  storage: import.meta.env.DEV ? { kind: 'local' } : { kind: 'github', repo: 'timsneath/plcc-web' },
+  storage: import.meta.env.DEV ? { kind: 'local' } : { kind: 'cloud' },
+  cloud: { project: 'pine-lake-covenant-church/plcc-web' },
 
   ui: {
     brand: { name: 'Pine Lake Covenant Church' },
