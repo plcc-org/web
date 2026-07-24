@@ -19,6 +19,18 @@ type Props = {
 const { video, filename, alt, eyebrow, title, subhead } = Astro.props
 ---
 
+{
+  /* Arm the staggered entrance pre-paint (only when motion is welcome), so the
+   content never flashes visible-then-hidden and stays fully visible without JS
+   or under reduced motion. is:inline runs synchronously, before the hero paints;
+   a normal hoisted <script> would run too late. */
+}
+<script is:inline>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('hero-enter')
+  }
+</script>
+
 <section class:list={['hero', { 'hero--has-video': video }]} data-hero>
   <div class="hero__media">
     {

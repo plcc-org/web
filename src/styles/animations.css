@@ -70,3 +70,49 @@
     transition: none;
   }
 }
+
+/*
+ * Hero entrance — the one orchestrated page-load moment. Armed pre-paint by an
+ * inline script (adds `hero-enter` to <html>) only when motion is welcome, so
+ * without JS or under reduced motion the hero renders normally. The eyebrow,
+ * title, subhead, and CTA rise and fade in sequence.
+ */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-enter .hero__content > * {
+  opacity: 0;
+  animation: hero-rise 0.7s var(--ease-out) forwards;
+}
+.hero-enter .hero__content > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.hero-enter .hero__content > *:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.hero-enter .hero__content > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.hero-enter .hero__content > *:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+/* Land the personality once — a gentle spring settle on the primary action. */
+.hero-enter .hero__content :where(.btn) {
+  animation-timing-function: var(--ease-spring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter .hero__content > * {
+    opacity: 1;
+    animation: none;
+  }
+}
