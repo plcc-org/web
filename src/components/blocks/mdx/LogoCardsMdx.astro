@@ -1,0 +1,61 @@
+---
+import type { ImageMetadata } from 'astro'
+import SectionHeader from '../../SectionHeader.astro'
+import Photo from '../../Photo.astro'
+import { imageFromRef } from '../../../lib/images'
+import { renderMarkdown } from '../../../lib/markdown'
+import { withBase } from '../../../lib/url'
+
+// MDX wrapper for the Logo cards block — a row of cards, each topped by a
+// program/partner logo, with a short Markdown body and an optional link (the
+// "Pine Lake Kids / Youth" card grid). Each logo resolves through imageFromRef.
+type Card = { image?: string; alt: string; body?: string; linkLabel?: string; href?: string }
+type Props = { eyebrow?: string; heading?: string; cards?: Card[] }
+const { eyebrow, heading, cards = [] } = Astro.props
+
+const resolve = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : withBase(href))
+
+const items: { image?: ImageMetadata; alt: string; body?: string; linkLabel?: string; href?: string }[] = []
+for (const c of cards) {
+  const mod = c.image ? await imageFromRef(c.image)?.() : undefined
+  items.push({ image: mod?.default, alt: c.alt, body: c.body, linkLabel: c.linkLabel, href: c.href })
+}
+---
+
+<section class="section" data-reveal>
+  {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
+  <div class="card-grid">
+    {
+      items.map((c) => (
+        <div class="card">
+          {c.image && (
+            <Photo
+              image={c.image}
+              alt={c.alt}
+              class="logo-card__logo"
+              widths={[240, 480, 720]}
+              sizes="(max-width: 768px) 80vw, 240px"
+            />
+          )}
+          {c.body && <Fragment set:html={renderMarkdown(c.body)} />}
+          {c.href && c.linkLabel && (
+            <p>
+              <a href={resolve(c.href)}>{c.linkLabel} →</a>
+            </p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  /* Rendered by <Photo>, so the <img> must be reached globally. */
+  :global(.logo-card__logo) {
+    display: block;
+    width: clamp(11.25rem, 37.5vw, 15rem);
+    height: auto;
+    object-fit: contain;
+    margin: 0 0 1rem;
+  }
+</style>

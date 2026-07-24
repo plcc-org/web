@@ -1,0 +1,18 @@
+---
+import type { ImageMetadata } from 'astro'
+import Letter from '../../Letter.astro'
+import { imageFromRef } from '../../../lib/images'
+
+// MDX wrapper for the Letter block — a personal letter (the MDX children) beside
+// an optional portrait, with a signature. Placed in the wider canvas column so
+// the two-column layout has room.
+type Props = { image?: string; alt?: string; signoffName?: string; signoffRole?: string }
+const { image, alt, signoffName, signoffRole } = Astro.props
+const img = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined
+---
+
+<section class="to-wide" data-reveal>
+  <Letter image={img} alt={alt} signoffName={signoffName} signoffRole={signoffRole}>
+    <slot />
+  </Letter>
+</section>

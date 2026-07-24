@@ -1,0 +1,68 @@
+---
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/blocks/mdx/PageHero.astro'
+import SplitMdx from '../components/blocks/mdx/SplitMdx.astro'
+import CalloutMdx from '../components/blocks/mdx/CalloutMdx.astro'
+import CtaMdx from '../components/blocks/mdx/CtaMdx.astro'
+import CaptionedPhotoMdx from '../components/blocks/mdx/CaptionedPhotoMdx.astro'
+import SectionMdx from '../components/blocks/mdx/SectionMdx.astro'
+import PhotoBandMdx from '../components/blocks/mdx/PhotoBandMdx.astro'
+import CardRowMdx from '../components/blocks/mdx/CardRowMdx.astro'
+import LinkCardsMdx from '../components/blocks/mdx/LinkCardsMdx.astro'
+import QuoteMdx from '../components/blocks/mdx/QuoteMdx.astro'
+import FeaturedEventsMdx from '../components/blocks/mdx/FeaturedEventsMdx.astro'
+import KeyPointsMdx from '../components/blocks/mdx/KeyPointsMdx.astro'
+import LogoCardsMdx from '../components/blocks/mdx/LogoCardsMdx.astro'
+import AsideMdx from '../components/blocks/mdx/AsideMdx.astro'
+import YouthMomentsMdx from '../components/blocks/mdx/YouthMomentsMdx.astro'
+import QuoteCarouselMdx from '../components/blocks/mdx/QuoteCarouselMdx.astro'
+import RoadmapMdx from '../components/blocks/mdx/RoadmapMdx.astro'
+import LetterMdx from '../components/blocks/mdx/LetterMdx.astro'
+
+// Renders CMS-built pages from the `pages` collection. Each entry is an MDX file:
+// a structured hero in frontmatter plus an MDX body the editor composes in
+// Keystatic, inserting the components mapped below. The filename is the URL slug
+// (src/content/pages/church-life.mdx → /church-life/). Drafts show in dev and are
+// excluded from production builds.
+export async function getStaticPaths() {
+  const all = await getCollection('pages')
+  const pages = all.filter((page) => (import.meta.env.PROD ? !page.data.draft : true))
+  return pages.map((page) => ({ params: { slug: page.id }, props: { page } }))
+}
+
+const { page } = Astro.props
+const { Content } = await render(page)
+
+// MDX component tags ↔ site components. Keys must match the component names in
+// the Keystatic `fields.mdx` config.
+const components = {
+  Split: SplitMdx,
+  Callout: CalloutMdx,
+  Cta: CtaMdx,
+  CaptionedPhoto: CaptionedPhotoMdx,
+  Section: SectionMdx,
+  PhotoBand: PhotoBandMdx,
+  CardRow: CardRowMdx,
+  LinkCards: LinkCardsMdx,
+  Quote: QuoteMdx,
+  FeaturedEvents: FeaturedEventsMdx,
+  KeyPoints: KeyPointsMdx,
+  LogoCards: LogoCardsMdx,
+  Aside: AsideMdx,
+  YouthMomentsBlock: YouthMomentsMdx,
+  QuoteCarousel: QuoteCarouselMdx,
+  Roadmap: RoadmapMdx,
+  Letter: LetterMdx,
+}
+---
+
+<BaseLayout
+  title={`${page.data.title} | Pine Lake Covenant Church`}
+  description={page.data.seoDescription ?? page.data.hero.lede}
+>
+  <div class="canvas">
+    <PageHero {...page.data.hero} title={page.data.title} />
+    <Content components={components} />
+  </div>
+</BaseLayout>

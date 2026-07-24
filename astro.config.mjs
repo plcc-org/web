@@ -1,6 +1,10 @@
 // @ts-check
 import { defineConfig, envField, fontProviders } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
+import react from '@astrojs/react'
+import keystatic from '@keystatic/astro'
+import mdx from '@astrojs/mdx'
+import cloudflare from '@astrojs/cloudflare'
 import { siteConfig } from './src/config/site.ts'
 
 // https://astro.build/config
@@ -11,7 +15,21 @@ import { siteConfig } from './src/config/site.ts'
 export default defineConfig({
   site: siteConfig.site,
   base: siteConfig.base,
-  integrations: [sitemap()],
+  // Cloudflare Pages host. `output` stays static (the default): every public
+  // page is prerendered to HTML at build time. Keystatic injects two routes
+  // (`/keystatic`, `/api/keystatic/*`) that self-mark `prerender: false`; the
+  // adapter ships only those as functions. React powers Keystatic's admin UI.
+  // `imageService: 'compile'` keeps Astro's build-time (sharp) image
+  // optimization for our prerendered pages — emitting static, content-hashed
+  // _astro/*.webp — instead of the adapter's default runtime Cloudflare Images
+  // service (which would defer every image to a paid runtime endpoint).
+  //
+  // Build/preview only. In `astro dev` (ASTRO_DEV=1, set by `npm run dev`) we
+  // skip the adapter so SSR routes run on Node: the Cloudflare workerd dev
+  // runtime can't supply the Node globals Keystatic's admin needs ("module is
+  // not defined"). Dev serves every route fine without an adapter.
+  adapter: process.env.ASTRO_DEV ? undefined : cloudflare({ imageService: 'compile' }),
+  integrations: [react(), keystatic(), mdx(), sitemap()],
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL
   // that can rot) and emitted as content-hashed, CDN-cacheable static assets.

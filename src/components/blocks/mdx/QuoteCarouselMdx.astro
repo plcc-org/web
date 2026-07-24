@@ -1,0 +1,25 @@
+---
+import Band from '../../Band.astro'
+import QuoteCarousel from '../../QuoteCarousel.astro'
+import { getCollection } from 'astro:content'
+
+// MDX wrapper for the Quotes carousel block — the rotating "voices" band, pulled
+// from the shared `quotes` collection (sorted by order). Distinct from the
+// single Quote block. Renders inside a tonal Band with an optional lead line;
+// renders nothing if there are no quotes.
+type Props = { eyebrow?: string; heading?: string; intro?: string; tone?: 'forest' | 'sand' | 'paper' }
+const { eyebrow, heading, intro, tone = 'sand' } = Astro.props
+
+const quotes = (await getCollection('quotes'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((q) => ({ text: q.data.text, by: q.data.by }))
+---
+
+{
+  quotes.length > 0 && (
+    <Band tone={tone} eyebrow={eyebrow || undefined} heading={heading || undefined} reveal>
+      {intro && <p class="measure">{intro}</p>}
+      <QuoteCarousel quotes={quotes} />
+    </Band>
+  )
+}

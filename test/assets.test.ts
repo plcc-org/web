@@ -6,7 +6,11 @@ import { readdirSync, readFileSync } from 'node:fs'
 // src/assets/images. (A missing <Photo filename> renders nothing silently, so
 // this is our guard against typos / deleted assets.)
 const ASSET_DIR = 'src/assets/images'
-const assets = new Set(readdirSync(ASSET_DIR))
+// Index by basename, recursively — CMS page images are nested under
+// src/assets/images/<page-slug>/… (see imageFromRef in src/lib/images.ts).
+const assets = new Set(
+  (readdirSync(ASSET_DIR, { recursive: true }) as string[]).map((f) => f.split('/').pop() as string)
+)
 
 function sources(): string[] {
   const out: string[] = []

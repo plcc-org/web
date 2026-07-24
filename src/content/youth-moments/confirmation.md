@@ -1,6 +1,0 @@
----
-title: Confirmation
-when: '8th grade & up · wraps in June'
-blurb: 'A 6-month track for students in 8th grade and up to dig into following Jesus — mentor relationships, monthly teaching, and Confirmation Sunday in early June.'
-order: 7
----

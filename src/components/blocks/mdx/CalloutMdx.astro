@@ -1,0 +1,9 @@
+---
+import Callout from '../../Callout.astro'
+
+// MDX wrapper for the Callout block — a heading plus the component's MDX children.
+type Props = { heading?: string }
+const { heading } = Astro.props
+---
+
+<Callout heading={heading}><slot /></Callout>

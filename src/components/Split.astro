@@ -1,14 +1,19 @@
 ---
+import type { ImageMetadata } from 'astro'
 import Photo from './Photo.astro'
 
 // Asymmetric photo + text section. The portrait photo fills its half and
 // bleeds to the viewport edge (when placed as a `.to-full` child of `.canvas`);
 // the text column aligns to the page's content column. Reversible and tonal.
 // Body content is passed as a default slot so callers control the copy/markup.
+//
+// The photo is either a catalog `filename` (alt looked up automatically) or a
+// resolved `image` + `alt` (e.g. a CMS-uploaded image from a page block).
 
 type Props = {
-  filename: string
-  // Omit for catalogued photos (alt is looked up by filename); pass for logos.
+  filename?: string
+  image?: ImageMetadata
+  // Omit for catalogued photos (alt is looked up by filename); pass otherwise.
   alt?: string
   reverse?: boolean
   tone?: 'paper' | 'sand' | 'forest'
@@ -22,6 +27,7 @@ type Props = {
 
 const {
   filename,
+  image,
   alt,
   reverse = false,
   tone = 'paper',
@@ -42,6 +48,7 @@ const {
   <div class="split__media">
     <Photo
       filename={filename}
+      image={image}
       alt={alt}
       class:list={['split__img', imgClass]}
       widths={[480, 720, 1000, 1280]}

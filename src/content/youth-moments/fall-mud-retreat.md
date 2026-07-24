@@ -1,7 +1,0 @@
----
-title: Fall MUD Retreat
-when: 'High school · November 13–15, 2026'
-blurb: 'Our high schoolers head to Cascades Camp near Yelm, WA, gathering with students from across the Pacific Northwest Conference for a powerful weekend of fun, moving worship, and challenging teaching — built to grow faith and lasting friendships.'
-featured: true
-order: 4
----

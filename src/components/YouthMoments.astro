@@ -9,7 +9,7 @@ type Moment = {
   when?: string
   blurb: string
   photo?: string
-  link?: { label: string; href: string }
+  link?: { label?: string; href?: string }
   featured: boolean
 }
 
@@ -25,7 +25,7 @@ const featured = moments.filter((m) => m.featured)
 const rest = moments.filter((m) => !m.featured)
 ---
 
-<section class="section youth-moments">
+<section class="section youth-moments" data-reveal>
   <div class="youth-moments__head">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     {heading && <h2 class="youth-moments__heading">{heading}</h2>}
@@ -50,7 +50,7 @@ const rest = moments.filter((m) => !m.featured)
               {m.when && <p class="moment-card__cadence">{m.when}</p>}
               <h3 class="moment-card__title">{m.title}</h3>
               <p class="moment-card__blurb">{m.blurb}</p>
-              {m.link && (
+              {m.link?.href && (
                 <p class="moment-card__cta">
                   <a href={m.link.href}>{m.link.label} →</a>
                 </p>

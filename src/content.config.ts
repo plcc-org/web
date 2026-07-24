@@ -1,11 +1,24 @@
 import { defineCollection } from 'astro:content'
 import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
+import { parse as parseYaml } from 'yaml'
+
+// quotes / neighbor-doors / start-here-links each live as a single YAML file,
+// but the Git CMS (Keystatic) edits them as an array field, which serializes to
+// `{ <key>: [...] }`. Parse tolerantly so both the hand-authored bare-array form
+// and the CMS-wrapped form load, and give every item a stable `id` for the store.
+const yamlList =
+  (key: string) =>
+  (text: string): Array<Record<string, unknown>> => {
+    const data = parseYaml(text)
+    const items: Array<Record<string, unknown>> = Array.isArray(data) ? data : (data?.[key] ?? [])
+    return items.map((item, i) => ({ id: item.id ?? `${key}-${i + 1}`, ...item }))
+  }
 
 // Content lives under src/content/. Two shapes, by a simple rule:
 //   • Things you add / remove / reorder, or that own an image → a folder of
-//     Markdown entries (glob), so a future Git CMS can manage them as a
-//     "folder collection" with a media library.
+//     entries (glob), one YAML file each, so the Git CMS (Keystatic) manages
+//     them as a "folder collection" with a media library.
 //   • Short flat lists → a single YAML file (file), edited as a list.
 // Schemas (Zod) make alt text required and give editor + build-time validation.
 
@@ -33,7 +46,7 @@ const photos = defineCollection({
 // the photo catalog (alt resolved by <Photo>). `featured` gives the biggest
 // moments large cards; the rest fall into a compact list.
 const youthMoments = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/youth-moments' }),
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/youth-moments' }),
   schema: z.object({
     title: z.string(),
     when: z.string().optional(),
@@ -45,22 +58,25 @@ const youthMoments = defineCollection({
   }),
 })
 
-// Pastors and staff. One Markdown file per person, portrait co-located.
+// Pastors and staff. One YAML data file per person (Keystatic stores data-only
+// collections as flat `<slug>.yaml`). The `bio` is a Markdown string field
+// rendered to HTML at build time; the portrait is co-located in src/assets/images.
 const leadership = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/leadership' }),
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/leadership' }),
   schema: ({ image }) =>
     z.object({
       name: z.string(),
       title: z.string(),
       portrait: image(),
       portraitAlt: z.string().min(1),
+      bio: z.string().min(1),
       order: z.number().default(0),
-      link: z.object({ label: z.string(), href: z.string() }).optional(),
+      link: z.object({ label: z.string().optional(), href: z.string().optional() }).optional(),
     }),
 })
 
 const quotes = defineCollection({
-  loader: file('src/content/quotes.yaml'),
+  loader: file('src/content/quotes.yaml', { parser: yamlList('quotes') }),
   schema: z.object({
     id: z.string(),
     order: z.number().default(0),
@@ -69,22 +85,8 @@ const quotes = defineCollection({
   }),
 })
 
-const neighborDoors = defineCollection({
-  loader: file('src/content/neighbor-doors.yaml'),
-  schema: z.object({
-    id: z.string(),
-    title: z.string(),
-    intro: z.string(),
-    body: z.string(),
-    bullets: z.array(z.string()),
-    ctaLabel: z.string(),
-    href: z.string(),
-    order: z.number().default(0),
-  }),
-})
-
 const startHereLinks = defineCollection({
-  loader: file('src/content/start-here-links.yaml'),
+  loader: file('src/content/start-here-links.yaml', { parser: yamlList('links') }),
   schema: z.object({
     id: z.string(),
     group: z.enum(['home', 'im-new']),
@@ -95,4 +97,36 @@ const startHereLinks = defineCollection({
   }),
 })
 
-export const collections = { photos, youthMoments, leadership, quotes, neighborDoors, startHereLinks }
+// CMS-built pages. Each is an MDX file: a structured hero in frontmatter plus an
+// MDX body the editor composes in Keystatic's rich-text editor, inserting styled
+// components (Split, Callout, Photo band, …). The body's component tags map to
+// thin Astro wrappers at render time (see src/pages/[...slug].astro and
+// src/components/blocks/mdx/), so everything reuses the real site components.
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
+  // Hero/block images are stored as path strings and resolved at render time via
+  // imageFromRef (src/lib/images.ts) — a nesting-agnostic registry — rather than
+  // Astro's image() helper, so a fixed "../../assets/images/…" reference works
+  // from both flat (church-life.mdx) and nested (about/covenant.mdx) pages.
+  schema: z.object({
+    title: z.string(),
+    seoDescription: z.string().optional(),
+    draft: z.boolean().default(false),
+    hero: z.object({
+      // Image (+ alt) are optional: a page with no hero photo renders a calm,
+      // text-only header instead (PageHero). When an image is present its alt is
+      // enforced at build time by the site crawl (scripts/check-site.mjs).
+      image: z.string().optional(),
+      alt: z.string().optional(),
+      eyebrow: z.string().optional(),
+      subhead: z.string().optional(),
+      lede: z.string().optional(),
+      logo: z.string().optional(),
+      logoAlt: z.string().optional(),
+      buttonLabel: z.string().optional(),
+      buttonHref: z.string().optional(),
+    }),
+  }),
+})
+
+export const collections = { photos, youthMoments, leadership, quotes, startHereLinks, pages }

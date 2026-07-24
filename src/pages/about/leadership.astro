@@ -2,15 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import PageIntro from '../../components/PageIntro.astro'
 import Photo from '../../components/Photo.astro'
-import { getCollection, render } from 'astro:content'
+import { getCollection } from 'astro:content'
+import { renderMarkdown } from '../../lib/markdown'
 import { withBase } from '../../lib/url'
 
 const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order)
-
-// Render each entry's markdown body (the paragraph profile) alongside its data.
-const withBody = await Promise.all(
-  leaders.map(async (leader) => ({ ...leader, Content: (await render(leader)).Content }))
-)
 ---
 
 <BaseLayout title="Leadership | Pine Lake Covenant Church">
@@ -19,7 +15,7 @@ const withBody = await Promise.all(
     <section class="section leader-section">
       <div class="leader-grid">
         {
-          withBody.map((leader) => (
+          leaders.map((leader) => (
             <button
               type="button"
               class="leader-card"
@@ -47,7 +43,7 @@ const withBody = await Promise.all(
 
       <div class="leader-focus">
         {
-          withBody.map((leader) => (
+          leaders.map((leader) => (
             <article
               class="leader-detail"
               id={`detail-${leader.id}`}
@@ -71,10 +67,8 @@ const withBody = await Promise.all(
                   {leader.data.name}
                 </h2>
                 <p class="leader-card__title leader-detail__title">{leader.data.title}</p>
-                <div class="leader-detail__prose measure">
-                  <leader.Content />
-                </div>
-                {leader.data.link && (
+                <div class="leader-detail__prose measure" set:html={renderMarkdown(leader.data.bio)} />
+                {leader.data.link?.href && (
                   <p class="leader-detail__meta">
                     <a href={withBase(leader.data.link.href)}>{leader.data.link.label}</a>
                   </p>

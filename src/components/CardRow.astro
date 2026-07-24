@@ -1,0 +1,89 @@
+---
+import { renderMarkdown } from '../lib/markdown'
+import { withBase } from '../lib/url'
+
+// A responsive row of content cards (the global `.card-grid` / `.card`
+// treatment). Each card is a title plus a short Markdown body; an optional
+// `href` turns the whole card into a link that lifts on hover. Backs the
+// hand-authored card grids on Kids/Youth and is offered as a CMS block.
+
+export type CardItem = {
+  title: string
+  body: string
+  href?: string
+  // An optional labelled call-to-action shown at the foot of the card (e.g.
+  // "Serving Locally →"). Pairs with `href` to signpost where the card leads.
+  linkLabel?: string
+}
+
+type Props = {
+  items: CardItem[]
+  headingAs?: 'h2' | 'h3'
+  class?: string
+  // Cap how many cards sit on a row. Default (undefined) keeps the responsive
+  // auto-fit grid — as many as fit. A number forces that many columns (so e.g.
+  // four cards wrap 2×2), collapsing to one on narrow screens.
+  columns?: number | string
+  // Use the roomier, editorial "large" card treatment.
+  large?: boolean
+}
+
+const { items, headingAs = 'h3', class: className, columns, large } = Astro.props
+const Heading = headingAs
+const cols = columns && Number(columns) >= 2 ? Number(columns) : undefined
+
+// External links (http, mailto, #anchors) pass through untouched; internal
+// paths get the deploy base prefix, matching the rest of the site.
+const resolve = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : withBase(href))
+---
+
+<div class:list={['card-grid', cols && 'card-grid--cols', className]} style={cols ? `--card-cols:${cols}` : undefined}>
+  {
+    items.map((item) => {
+      const Tag = item.href ? 'a' : 'div'
+      return (
+        <Tag
+          class:list={['card', large && 'card--large', item.linkLabel && 'card--cta']}
+          {...(item.href ? { href: resolve(item.href) } : {})}
+        >
+          <Heading>{item.title}</Heading>
+          <div set:html={renderMarkdown(item.body)} />
+          {item.linkLabel && (
+            <span class="card__cta">
+              {item.linkLabel} <span aria-hidden="true">→</span>
+            </span>
+          )}
+        </Tag>
+      )
+    })
+  }
+</div>
+
+<style>
+  /* A capped column count (vs the default auto-fit) — e.g. four richer cards
+     wrapping 2×2. Scoped, so it overrides the global .card-grid here only.
+     Collapses to a single column on narrow screens. */
+  .card-grid--cols {
+    grid-template-columns: repeat(var(--card-cols), minmax(0, 1fr));
+  }
+
+  @media (max-width: 720px) {
+    .card-grid--cols {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* When a card carries a labelled CTA, lay it out as a column so the CTA can
+     sit at the foot regardless of body length, keeping a row of cards aligned. */
+  .card--cta {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card__cta {
+    margin-top: auto;
+    padding-top: 1rem;
+    color: var(--color-moss);
+    font-weight: 700;
+  }
+</style>

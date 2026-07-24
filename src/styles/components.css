@@ -302,6 +302,25 @@
   color: var(--color-moss);
 }
 
+/* "Large" variant — a roomier, more editorial card with a prominent serif
+   title and a softer body. The treatment the Kids "more ways to connect" cards
+   use; opt in per Text-cards block. */
+.card--large {
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.card--large h2,
+.card--large h3 {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+
+.card--large p {
+  color: var(--color-clay);
+}
+
 /* Card links lift on hover; static card divs stay put */
 a.card {
   transition:

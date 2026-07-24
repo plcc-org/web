@@ -1,7 +1,0 @@
----
-title: Fall Thunder Retreat
-when: 'Middle school · October 9–11, 2026'
-blurb: 'PLY middle schoolers head to Cascades Camp on Elbow Lake in the foothills of Mt. Rainier, joining students from across the Pacific Northwest Conference for a weekend of adventure, worship, teaching, and free-time fun — built to grow faith and lasting friendships.'
-featured: true
-order: 3
----

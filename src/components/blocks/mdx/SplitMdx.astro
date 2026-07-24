@@ -1,0 +1,31 @@
+---
+import Split from '../../Split.astro'
+import { imageFromRef } from '../../../lib/images'
+
+// MDX wrapper for the Split block. The editor uploads a photo; its stored
+// reference (a path under assets/images) resolves through imageFromRef to
+// optimized ImageMetadata. Body prose is the MDX children.
+type Props = {
+  image?: string
+  alt: string
+  reverse?: boolean
+  tone?: 'paper' | 'sand' | 'forest'
+  eyebrow?: string
+  heading?: string
+}
+const { image, alt, reverse = false, tone = 'sand', eyebrow, heading } = Astro.props
+const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
+---
+
+<Split
+  class="to-full"
+  image={resolved}
+  alt={alt}
+  reverse={reverse}
+  tone={tone}
+  eyebrow={eyebrow}
+  heading={heading}
+  reveal
+>
+  <slot />
+</Split>

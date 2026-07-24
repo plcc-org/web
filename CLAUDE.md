@@ -15,6 +15,9 @@ read the doc that matches your change before editing.
   layout, components. Read before any visual change.
 - **[docs/development.md](./docs/development.md)** — stack, project structure, build/run,
   conventions, the image system, CI.
+- **[docs/cms.md](./docs/cms.md)** — the Keystatic CMS: what's editable, the page block
+  palette, the photo model, and the Cloudflare + GitHub App setup. Read before changing
+  content collections, blocks, or `keystatic.config.ts`.
 - **[docs/infrastructure.md](./docs/infrastructure.md)** — environments, deployment,
   container workflows.
 - **[docs/website-one-pager.md](./docs/website-one-pager.md)** — a shareable stakeholder

@@ -1,0 +1,9 @@
+---
+import LinkCardSection from '../../LinkCardSection.astro'
+
+// MDX wrapper for the Link cards block — a grid of link cards.
+type Props = { links?: { title: string; meta: string; href: string }[]; heading?: string }
+const { links = [], heading } = Astro.props
+---
+
+<LinkCardSection heading={heading || undefined} links={links} reveal />

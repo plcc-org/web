@@ -1,3 +1,6 @@
 dist/
 node_modules/
 public/
+# CMS-authored MDX pages — Keystatic owns their formatting; Prettier's MDX
+# reflow breaks block-component children (e.g. <Split> wrapping a list).
+src/content/pages/

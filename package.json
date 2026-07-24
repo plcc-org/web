@@ -3,9 +3,11 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "postinstall": "patch-package",
+    "dev": "ASTRO_DEV=1 astro dev",
     "dev:container": "container run --name plcc-dev --detach --rm --env ASTRO_CONTAINER_DEV=1 --publish 4321:4321 --mount type=bind,source=\"$PWD\",target=/workspace --tmpfs /workspace/node_modules --workdir /workspace docker.io/library/node:lts sh -lc \"npm ci && npm run dev -- --host 0.0.0.0 --port 4321\"",
     "dev:container:stop": "container stop plcc-dev",
+    "prebuild": "rm -rf node_modules/.vite",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -16,17 +18,32 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@astrojs/mdx": "^6.0.3",
+    "@astrojs/react": "^5.0.7",
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/fraunces": "5.2.9",
     "@fontsource-variable/instrument-sans": "5.2.8",
-    "astro": "^6.4.6"
+    "@keystatic/astro": "^5.2.0",
+    "@keystatic/core": "^0.6.2",
+    "astro": "^6.4.6",
+    "marked": "^18.0.5",
+    "marked-smartypants": "^1.1.12",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@astrojs/cloudflare": "^13.7.0",
     "@types/node": "^25.9.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.8.4",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.9",
+    "wrangler": "^4.102.0"
   }
 }

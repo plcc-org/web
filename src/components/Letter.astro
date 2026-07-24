@@ -1,0 +1,99 @@
+---
+import type { ImageMetadata } from 'astro'
+import Photo from './Photo.astro'
+
+// A personal letter: flowing, slightly larger prose beside a sticky framed
+// portrait, closing with an italic signature. Backs the pastor's welcome and is
+// offered as a CMS block (e.g. a youth-director's welcome). The portrait is
+// optional — without it the letter runs full width. On narrow screens the
+// portrait moves above the text. The letter body is the default slot.
+type Props = { image?: ImageMetadata; alt?: string; signoffName?: string; signoffRole?: string }
+const { image, alt, signoffName, signoffRole } = Astro.props
+---
+
+<div class:list={['letter-layout', !image && 'letter-layout--solo']}>
+  <div class="letter text-body-large">
+    <slot />
+    {
+      (signoffName || signoffRole) && (
+        <footer class="letter__footer">
+          <p>
+            {signoffName && <strong>{signoffName}</strong>}
+            {signoffName && signoffRole && <br />}
+            {signoffRole}
+          </p>
+        </footer>
+      )
+    }
+  </div>
+
+  {
+    image && (
+      <aside class="letter-sidebar">
+        <div class="letter-portrait">
+          <Photo
+            image={image}
+            alt={alt}
+            class="media__img"
+            widths={[320, 640]}
+            sizes="(max-width: 900px) 100vw, 320px"
+          />
+        </div>
+      </aside>
+    )
+  }
+</div>
+
+<style>
+  .letter-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--space-m);
+    align-items: start;
+  }
+
+  /* No portrait: a single reading column. */
+  .letter-layout--solo {
+    grid-template-columns: 1fr;
+  }
+
+  .letter {
+    max-width: 60ch;
+  }
+
+  .letter :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .letter__footer {
+    margin-top: 3rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  .letter-sidebar {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .letter-portrait {
+    background: var(--color-white);
+    padding: 1rem;
+    border-radius: var(--radius-soft);
+    box-shadow: var(--shadow-diffuse);
+    border: 1px solid var(--color-mist);
+  }
+
+  @media (max-width: 900px) {
+    .letter-layout {
+      grid-template-columns: 1fr;
+      gap: var(--space-s);
+    }
+
+    .letter-sidebar {
+      position: static;
+      order: -1;
+      max-width: 400px;
+    }
+  }
+</style>
