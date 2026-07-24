@@ -16,7 +16,7 @@ export type EventTag =
   | 'Families'
   | 'Support'
 
-export type EventSource = 'curated' | 'churchcenter' | 'ics' | 'pco'
+export type EventSource = 'curated' | 'churchcenter' | 'snapshot' | 'ics' | 'pco'
 
 export type CalendarEvent = {
   /** Stable id from the source — used for dedupe and as a render key. */

@@ -10,11 +10,17 @@ import { EVENTS_SOURCE } from 'astro:env/server'
 import type { CalendarEvent, EventSource } from './types'
 import { curatedEvents } from './adapters/curated'
 import { churchCenterEvents } from './adapters/churchcenter'
+import { snapshotEvents } from './adapters/snapshot'
 import { normalizeUpcoming } from './logic'
 
 async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
   switch (source) {
+    case 'snapshot':
+      // Church Center data captured daily by a headless browser (see snapshot.ts).
+      return snapshotEvents()
     case 'churchcenter':
+      // Live build-time handshake — dead since Church Center went client-rendered;
+      // kept for reference. Use 'snapshot' instead.
       return churchCenterEvents()
     case 'ics':
     case 'pco':
@@ -27,12 +33,12 @@ async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
 }
 
 /**
- * Default source: live Church Center data for production builds, curated for
- * local dev (fast, offline-friendly, and avoids hitting their API on every
- * reload). Override anytime with EVENTS_SOURCE.
+ * Default source: the daily Church Center snapshot for production builds (see
+ * snapshot.ts), curated for local dev (fast, offline-friendly, and no snapshot
+ * needed in the working copy). Override anytime with EVENTS_SOURCE.
  */
 function defaultSource(): EventSource {
-  return import.meta.env.PROD ? 'churchcenter' : 'curated'
+  return import.meta.env.PROD ? 'snapshot' : 'curated'
 }
 
 // Memoized for the lifetime of the build process so the multiple "What's
