@@ -176,11 +176,14 @@ documented failure on the Cloudflare adapter ([Thinkmill/keystatic#1497](https:/
 
 1. Cloudflare dashboard → **Workers & Pages → Create** → **Import a repository** (Workers
    Builds), pick `timsneath/plcc-web` and the deploy branch.
-2. Build settings: **build command** `npx astro build`, **deploy command** `npx wrangler
-deploy`. The adapter emits the Worker config (`main`, `assets` from `dist/client`, and the
-   `SESSION` KV binding) — `wrangler deploy` picks it up from the repo root automatically.
-   **Do not add a root `wrangler.jsonc`** — the `@cloudflare/vite-plugin` treats it as
-   authoritative and Keystatic's `virtual:keystatic-config` fails to build.
+2. Build settings: keep Cloudflare's defaults — **build command** `npm run build`, **deploy
+   command** `npx wrangler deploy`. `npm run build` runs `astro build` plus the `prebuild`
+   hook (clears a stale Vite cache) and depends on the install step's `postinstall`
+   (`patch-package`, which re-applies the Astro 6 fix — Workers Builds runs `npm ci` first, so
+   this happens automatically). The adapter emits the Worker config (`main`, `assets` from
+   `dist/client`, and the `SESSION` KV binding); `wrangler deploy` picks it up from the repo
+   root automatically. **Do not add a root `wrangler.jsonc`** — the `@cloudflare/vite-plugin`
+   treats it as authoritative and Keystatic's `virtual:keystatic-config` fails to build.
 3. **KV namespace (`SESSION`)**: the adapter enables Astro's session API against a `SESSION`
    KV binding. Wrangler auto-provisions it on first deploy; if your CI can't do interactive
    provisioning, create a KV namespace named `SESSION` in the dashboard first.
@@ -190,7 +193,7 @@ deploy`. The adapter emits the Worker config (`main`, `assets` from `dist/client
    account).
 
 A push to the connected branch builds and deploys; other branches get preview URLs. To
-deploy by hand instead: `npx astro build && npx wrangler deploy` from the repo root.
+deploy by hand instead: `npm run build && npx wrangler deploy` from the repo root.
 
 > **`nodejs_compat`:** the adapter emits `compatibility_flags: []`, and a local `wrangler dev`
 > run served both `/keystatic` and `/api/keystatic/*` without it. If the _live_ editor hits a
