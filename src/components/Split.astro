@@ -22,6 +22,7 @@ type Props = {
   class?: string
   imgClass?: string
   id?: string
+  reveal?: boolean
 }
 
 const {
@@ -35,10 +36,15 @@ const {
   class: className,
   imgClass,
   id,
+  reveal = false,
 } = Astro.props
 ---
 
-<section id={id} class:list={['split', `split--${tone}`, reverse && 'split--reverse', className]}>
+<section
+  id={id}
+  {...reveal && { 'data-reveal': true }}
+  class:list={['split', `split--${tone}`, reverse && 'split--reverse', className]}
+>
   <div class="split__media">
     <Photo
       filename={filename}

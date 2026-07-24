@@ -203,4 +203,24 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
       toggle?.setAttribute('aria-label', 'Open navigation menu')
     })
   })
+
+  // Scroll reveal — arm only when JS is present and motion is welcome, so
+  // content stays visible without JS or under prefers-reduced-motion.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const revealables = document.querySelectorAll('[data-reveal]')
+  if (!reduceMotion && revealables.length) {
+    document.documentElement.classList.add('reveal-ready')
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    )
+    revealables.forEach((el) => observer.observe(el))
+  }
 </script>

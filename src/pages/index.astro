@@ -58,21 +58,28 @@ const homeMoments = [
       <p><a class="btn btn--ghost" href={withBase('new/')}>What to expect →</a></p>
     </Split>
 
-    <LinkCardSection links={homeLinks} />
+    <LinkCardSection links={homeLinks} reveal />
 
     <MomentsSection
       photos={homeMoments}
       eyebrow="Life together"
       heading="Moments from Pine Lake"
       sectionClass="to-wide"
+      reveal
     />
 
-    <Band tone="sand" eyebrow="In their words" heading="Why people have made Pine Lake their church">
+    <Band
+      tone="sand"
+      class="band--wash"
+      eyebrow="In their words"
+      heading="Why people have made Pine Lake their church"
+      reveal
+    >
       <p class="measure">A few voices from our community — and a few glimpses of life together at Pine Lake.</p>
       <QuoteCarousel quotes={homeQuotes} />
     </Band>
 
-    <Band tone="forest" flush centered eyebrow="Visiting" heading="Come this Sunday">
+    <Band tone="forest" flush centered eyebrow="Visiting" heading="Come this Sunday" reveal>
       <p>
         We gather at 10:00am at 1715 228th Ave SE in Sammamish. There’s guest parking by the main entrance — walk in,
         grab a coffee, and sit wherever you like.

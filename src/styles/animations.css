@@ -1,0 +1,118 @@
+/*
+ * animations.css — Opt-in scroll-reveal micro-interactions.
+ *
+ * Reveals are *armed* only when JS adds `reveal-ready` to <html>. Without JS
+ * (or on script failure) nothing is hidden, so content renders normally —
+ * mirroring the `@media (scripting: none)` fallback used for the hero video.
+ * A section opts in with `data-reveal`; a grid/list of children opts into the
+ * staggered variant with `reveal-staggered`.
+ */
+
+:root.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+}
+
+:root.reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered children for lists or grids */
+:root.reveal-ready .reveal-staggered > * {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition:
+    opacity 0.6s var(--ease-out),
+    transform 0.6s var(--ease-out);
+}
+
+:root.reveal-ready [data-reveal].is-visible .reveal-staggered > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger delays — 100ms per child, up to 8 */
+:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(1) {
+  transition-delay: 0ms;
+}
+:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(2) {
+  transition-delay: 100ms;
+}
+:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(3) {
+  transition-delay: 200ms;
+}
+:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(4) {
+  transition-delay: 300ms;
+}
+:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(5) {
+  transition-delay: 400ms;
+}
+:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(6) {
+  transition-delay: 500ms;
+}
+:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(7) {
+  transition-delay: 600ms;
+}
+:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(8) {
+  transition-delay: 700ms;
+}
+
+/* Belt-and-suspenders: never hide content under reduced motion, even if armed */
+@media (prefers-reduced-motion: reduce) {
+  :root.reveal-ready [data-reveal],
+  :root.reveal-ready .reveal-staggered > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/*
+ * Hero entrance — the one orchestrated page-load moment. Armed pre-paint by an
+ * inline script (adds `hero-enter` to <html>) only when motion is welcome, so
+ * without JS or under reduced motion the hero renders normally. The eyebrow,
+ * title, subhead, and CTA rise and fade in sequence.
+ */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-enter .hero__content > * {
+  opacity: 0;
+  animation: hero-rise 0.7s var(--ease-out) forwards;
+}
+.hero-enter .hero__content > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.hero-enter .hero__content > *:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.hero-enter .hero__content > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.hero-enter .hero__content > *:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+/* Land the personality once — a gentle spring settle on the primary action. */
+.hero-enter .hero__content :where(.btn) {
+  animation-timing-function: var(--ease-spring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter .hero__content > * {
+    opacity: 1;
+    animation: none;
+  }
+}

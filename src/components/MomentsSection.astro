@@ -12,6 +12,7 @@ type Props = {
   photos?: string[]
   images?: ImageItem[]
   sectionClass?: string
+  reveal?: boolean
 }
 
 const {
@@ -20,6 +21,7 @@ const {
   photos = [],
   images,
   sectionClass = 'section',
+  reveal = false,
 } = Astro.props
 
 // Normalize to a single tile list <Photo> can consume either way.
@@ -27,7 +29,7 @@ const tiles: Array<{ filename?: string; image?: ImageMetadata; alt?: string }> =
   images ?? photos.map((filename) => ({ filename }))
 ---
 
-<section class:list={['moments', sectionClass]}>
+<section {...reveal && { 'data-reveal': true }} class:list={['moments', sectionClass]}>
   {
     (eyebrow || heading) && (
       <div class="moments__head">
@@ -37,7 +39,7 @@ const tiles: Array<{ filename?: string; image?: ImageMetadata; alt?: string }> =
     )
   }
 
-  <div class="moments-grid">
+  <div class:list={['moments-grid', reveal && 'reveal-staggered']}>
     {
       tiles.map((tile, i) => (
         <figure class:list={['moments__tile', i % 2 === 1 && 'moments__tile--offset']}>
