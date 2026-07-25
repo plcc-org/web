@@ -116,7 +116,7 @@
 }
 
 .hero__eyebrow {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-on-dark);
 }
 
 .hero__title {
@@ -130,7 +130,7 @@
 }
 
 .hero__subhead {
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--color-on-dark);
   font-size: var(--text-lg);
   margin: 0.85rem 0 0;
   text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
@@ -193,7 +193,7 @@
 }
 
 .split--forest .split__body-inner :where(p) {
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--color-on-dark);
 }
 
 .split__media {
@@ -293,7 +293,7 @@
  *
  * Padding and layout stay with each component: a dense event row and a roomy
  * link card want different spacing, but they should read as the same material.
- * Some of these classes live in component-scoped <style> blocks, and a scoped
+ * Some of these classes live in component-scoped \3c style> blocks, and a scoped
  * rule outranks this one — so those files must declare only what's genuinely
  * different (the accent list's moss edge, the moment card's clipped photo),
  * never a full surface of their own.
@@ -673,7 +673,7 @@ a.card:hover,
   flex: 0 0 auto;
   width: 2.25rem;
   height: 3px;
-  border-radius: 2px;
+  border-radius: var(--radius-pill);
   background: var(--color-moss);
   margin-bottom: 1.15rem;
 }

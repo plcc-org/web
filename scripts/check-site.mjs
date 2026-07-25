@@ -1,8 +1,10 @@
 // Post-build integrity check: crawls the built dist/ and fails (exit 1) on
 //   1. internal <a href> links that don't resolve to a generated page,
 //   2. content <img> with missing/empty alt (decorative icons are allow-listed),
-//   3. missing public permalinks (URLs promised to the outside world),
-//   4. meta descriptions that are missing, duplicated, or leaking Markdown.
+//   3. <img> src/srcset pointing at an asset that isn't in the build,
+//   4. missing public permalinks (URLs promised to the outside world),
+//   5. meta descriptions that are missing, duplicated, or leaking Markdown,
+//   6. robots.txt that doesn't match the target it was built for.
 // Run after `npm run build`:  node scripts/check-site.mjs
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
@@ -42,6 +44,7 @@ const resolves = (p) => {
 const errors = []
 let linkCount = 0
 let imgCount = 0
+let assetRefCount = 0
 const descriptions = new Map()
 
 for (const file of htmlFiles) {
@@ -79,6 +82,22 @@ for (const file of htmlFiles) {
     // often an oversight, so it still fails. (data: URIs and the YouTube glyph
     // are allow-listed by source — both sit beside their own text label.)
     const declaredDecorative = /\baria-hidden="true"/.test(tag) && /\balt=""/.test(tag)
+
+    // Every local asset a page asks for has to exist. scripts/prune-dist.mjs
+    // deletes emitted images nothing references, and this is what proves it
+    // only ever removes those — a mistake there would otherwise surface as
+    // silently broken images long after the build.
+    for (const attr of [src, (tag.match(/\bsrcset="([^"]*)"/) || [])[1] || '']) {
+      for (const candidate of attr.split(',')) {
+        const url = candidate.trim().split(/\s+/)[0]
+        if (!url || !url.startsWith('/') || url.startsWith('//')) continue
+        assetRefCount++
+        if (!existsSync(`${DIST}/${stripBase(url.split(/[?#]/)[0])}`)) {
+          errors.push(`missing asset  ${file}  →  ${url.slice(0, 70)}`)
+        }
+      }
+    }
+
     if (declaredDecorative || src.startsWith('data:') || /yt_icon/.test(src)) continue
     imgCount++
     const alt = tag.match(/\balt="([^"]*)"/)
@@ -123,7 +142,7 @@ if (!existsSync(robotsPath)) {
 
 console.log(
   `Checked ${htmlFiles.length} pages, ${linkCount} internal links, ${imgCount} images, ` +
-    `${descriptions.size} descriptions (base "${base}").`
+    `${assetRefCount} asset refs, ${descriptions.size} descriptions (base "${base}").`
 )
 if (errors.length) {
   console.error(`\n✗ ${errors.length} problem(s):`)
@@ -131,6 +150,6 @@ if (errors.length) {
   process.exit(1)
 }
 console.log(
-  '✓ All internal links resolve, all content images have alt text, ' +
+  '✓ All internal links and assets resolve, all content images have alt text, ' +
     'every page has its own clean description, all public permalinks present.'
 )

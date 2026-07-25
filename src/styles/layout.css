@@ -108,7 +108,7 @@
 /* Prose links on a forest band need light text to stay legible */
 .band--forest a:not(.btn):not(.btn--ghost) {
   color: var(--color-white);
-  text-decoration-color: rgba(255, 255, 255, 0.5);
+  text-decoration-color: var(--color-on-dark-line);
 }
 
 /* A flush band closes a page against the (also-dark) footer with no stone gap.
@@ -289,7 +289,7 @@ body:has(.is-flush) .site-footer {
 .split--forest .btn--ghost,
 .hero .btn--ghost {
   color: var(--color-white);
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--color-on-dark-line);
 }
 
 .band--forest .btn--ghost:hover,
