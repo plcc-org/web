@@ -86,7 +86,7 @@ p {
 }
 
 a {
-  color: var(--color-moss);
+  color: var(--color-moss-ink);
 }
 
 img {
@@ -112,7 +112,7 @@ img {
   top: 0.75rem;
   left: 0.75rem;
   padding: 0.5rem 1rem;
-  background: var(--color-moss);
+  background: var(--color-moss-ink);
   color: var(--color-white);
   border-radius: var(--radius-pill);
   text-decoration: none;

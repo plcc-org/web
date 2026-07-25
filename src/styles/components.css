@@ -432,7 +432,7 @@ a.card:hover,
 }
 
 .card a {
-  color: var(--color-moss);
+  color: var(--color-moss-ink);
 }
 
 /* "Large" variant — a roomier, more editorial card with a prominent serif
@@ -451,7 +451,7 @@ a.card:hover,
 }
 
 .card--large p {
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
 }
 
 /* Card links lift on hover; static card divs stay put */
@@ -504,7 +504,7 @@ a.card:hover,
 
 .link-card__meta {
   font-size: var(--text-ui);
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
 }
 
 .ratio-4x5 {
@@ -544,7 +544,7 @@ a.card:hover,
 .media__caption {
   margin-top: 0.75rem;
   font-size: var(--text-ui);
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   font-family: var(--font-serif);
   font-style: italic;
 }
@@ -602,14 +602,14 @@ a.card:hover,
   font-weight: 800;
   font-size: var(--text-xl);
   line-height: 1;
-  color: var(--color-moss);
+  color: var(--color-moss-ink);
 }
 
 .event-md {
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
 }
 
 /* What's On: featured grid, coming-up list, rhythms */
@@ -621,7 +621,7 @@ a.card:hover,
 
 .event-time {
   font-size: var(--text-xs);
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   margin-top: 0.15rem;
 }
 
@@ -633,12 +633,12 @@ a.card:hover,
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   margin: 0.15rem 0 0.6rem;
 }
 
 .coming-empty {
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   font-style: italic;
 }
 
@@ -671,14 +671,14 @@ a.card:hover,
   font-size: var(--text-2xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
 }
 
 .event-row__dnum {
   font-family: var(--font-serif);
   font-size: var(--text-base);
   font-weight: 800;
-  color: var(--color-moss);
+  color: var(--color-moss-ink);
 }
 
 .event-row__main {
@@ -700,7 +700,7 @@ a.card:hover,
   flex-wrap: wrap;
   margin-top: 0.35rem;
   font-size: var(--text-ui);
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
 }
 
 /* Appearance comes from `.btn .btn--quiet .btn--sm`; this only stops the label
@@ -781,7 +781,7 @@ a.card:hover,
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
 }
 
 .site-main p {
@@ -794,7 +794,7 @@ a.card:hover,
  * its own color) overrides this instead of inheriting moss-on-moss text.
  */
 :where(.site-main a:not(.link-card):not(.card)) {
-  color: var(--color-moss);
+  color: var(--color-moss-ink);
   text-decoration-color: var(--color-mist);
   text-underline-offset: 0.12em;
 }
@@ -803,7 +803,7 @@ a.card:hover,
    specificity to (0,1,0) — otherwise it ties with (and, being later, beats)
    button classes like .btn, repainting visited buttons moss-on-moss. */
 :where(.site-main a:not(.link-card):not(.card):visited) {
-  color: var(--color-moss);
+  color: var(--color-moss-ink);
 }
 
 :where(.site-main a:not(.link-card):not(.card):hover) {

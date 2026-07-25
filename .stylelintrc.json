@@ -15,7 +15,19 @@
     "",
     "Not covered: transition durations and easings, which mostly sit inside the",
     "`transition` shorthand where a value allow-list can't reach them. Use",
-    "--duration-* and --ease-* anyway."
+    "--duration-* and --ease-* anyway.",
+    "",
+    "The `color` list additionally refuses --color-moss, --color-moss-2 and",
+    "--color-clay by name. They are brand colours, not text colours: none of",
+    "them reaches 4.5:1 on any surface the site uses. Reach for --color-moss-ink",
+    "or --color-clay-ink for type, and leave the full-strength pair for rules,",
+    "borders and marks. This is a lint rather than a review note because the",
+    "failure is invisible — the wrong token looks like the right one.",
+    "",
+    "Not covered here either: an accent used as a *fill* under white text, which",
+    "is the same contrast pair inverted and needs the ink too (see .btn). A value",
+    "allow-list can't see the pairing, so test/contrast.test.ts checks the",
+    "numbers and this comment carries the rule."
   ],
   "overrides": [
     {
@@ -33,7 +45,7 @@
   "rules": {
     "declaration-property-value-allowed-list": {
       "font-size": ["/^var\\(--text-/", "inherit"],
-      "color": ["/^var\\(--color-/", "transparent", "inherit", "currentColor"],
+      "color": ["/^var\\(--color-(?!moss\\)|moss-2\\)|clay\\))/", "transparent", "inherit", "currentColor"],
       "background-color": ["/^var\\(--color-/", "transparent", "inherit"],
       "border-color": ["/^var\\(--color-/", "transparent", "currentColor"],
       "border-top-color": ["/^var\\(--color-/", "transparent"],

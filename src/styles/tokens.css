@@ -13,8 +13,30 @@
   --color-moss: rgb(106, 149, 41); /* primary action / accent */
   --color-moss-2: rgb(115, 148, 59); /* brighter moss (logo, keylines) */
   --color-moss-light: #cde6b2; /* moss legible on a dark panel (footer links) */
-  --color-clay: rgb(166, 123, 91); /* captions, metadata, italic subheads */
+  --color-clay: rgb(166, 123, 91); /* warm secondary — rules, marks, fills */
   --color-ember: rgb(189, 101, 56); /* warm secondary accent — used sparingly */
+
+  /* The accents at full strength are brand colours, not text colours: moss on
+     sand reaches 2.6:1 and clay 2.7:1, against the 4.5:1 that WCAG AA asks of
+     body text. So each accent comes in two strengths, and which one to reach
+     for is decided by whether type is involved, not by how it looks:
+
+       --color-moss / --color-clay   keylines, rules, dots, borders, the
+                                     wordmark — anywhere no text is read
+       --color-moss-ink / -clay-ink  the accent *as* text on a light surface,
+                                     AND as the fill under white text (a moss
+                                     button is the same contrast pair upside
+                                     down, so it takes the same colour)
+
+     Both inks are the full-strength hue scaled toward black, so the hue is
+     unchanged and the two strengths still read as one family. They're set to
+     clear 4.5:1 against `sand` — the darkest surface the site puts text on,
+     and the default tone for Band, Split, QuoteCarousel and PageHero. Sand is
+     therefore the number to re-check if a surface ever changes; test/contrast.test.ts
+     asserts it so that isn't left to memory. Stylelint enforces the split by
+     refusing the full-strength accents as a `color` value. */
+  --color-moss-ink: rgb(74, 104, 29); /* 4.65:1 on sand · white on it, 6.38:1 */
+  --color-clay-ink: rgb(120, 89, 66); /* 4.62:1 on sand · white on it, 6.35:1 */
 
   /* Three light surfaces, spaced so alternating bands read as bands:
      paper L*98 → stone L*94 → sand L*88. Keep at least ~6 points of L*

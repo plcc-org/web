@@ -138,7 +138,7 @@ body:has(.is-flush) .site-footer {
   font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
-  color: var(--color-moss-2);
+  color: var(--color-moss-ink);
   margin: 0 0 0.75rem;
 }
 
@@ -146,7 +146,7 @@ body:has(.is-flush) .site-footer {
   font-family: var(--font-serif);
   font-style: italic;
   font-size: var(--text-lg);
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   margin: 0.5rem 0 0;
 }
 
@@ -205,10 +205,12 @@ body:has(.is-flush) .site-footer {
  * Padding, border weight and shadow are the things that drift first, and a set
  * of nearly-matching buttons is the most visible kind of inconsistency.
  * -------------------------------------------------------------------- */
+/* The fill is moss-ink, not moss: white on full-strength moss is 3.53:1, short
+   of the 4.5:1 this label needs. Same contrast pair as moss-as-text, inverted. */
 .btn {
   display: inline-block;
   padding: 0.85rem 1.75rem;
-  background: var(--color-moss);
+  background: var(--color-moss-ink);
   color: var(--color-white);
   border: 1.5px solid transparent;
   border-radius: var(--radius-pill);
@@ -257,9 +259,9 @@ body:has(.is-flush) .site-footer {
 }
 
 .btn--quiet:hover {
-  background: var(--color-moss);
+  background: var(--color-moss-ink);
   color: var(--color-white);
-  border-color: var(--color-moss);
+  border-color: var(--color-moss-ink);
   box-shadow: none;
 }
 
