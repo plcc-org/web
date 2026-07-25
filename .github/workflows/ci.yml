@@ -1,10 +1,24 @@
 name: CI
 
-# Validate pull requests (formatting, types, build) without deploying.
-# Direct pushes to main run the same checks inside deploy.yml.
+# Every change to main is verified, however it arrives.
+#
+# This used to trigger on pull_request only, on the assumption — stated in a
+# comment here — that direct pushes were covered by deploy.yml. deploy.yml was
+# retired when the site moved off GitHub Pages, so for a while anything pushed
+# straight to main was built and published by Cloudflare with no checks at all.
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer commit on the same branch supersedes an in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:
@@ -18,8 +32,24 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      # Environment-independent: formatting, types, unit tests.
       - run: npm run format:check
       - run: npm run check
       - run: npm run test
-      - run: npm run build
-      - run: npm run test:site
+
+      # Build and crawl both deploy targets. Two builds rather than one because
+      # a chunk of the config is environment-dependent — `site`, the sitemap,
+      # and robots.txt all change — and the production path is the one nobody
+      # exercises locally. robots.txt silently emitted `Disallow: /` on *every*
+      # target once; scripts/check-site.mjs now asserts the output matches
+      # DEPLOY_ENV, but only for the target it was built with, so build both.
+      - name: Verify staging target
+        run: npm run build && npm run test:site
+        env:
+          DEPLOY_ENV: staging
+
+      - name: Verify production target
+        run: npm run build && npm run test:site
+        env:
+          DEPLOY_ENV: production
