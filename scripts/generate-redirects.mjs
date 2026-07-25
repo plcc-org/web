@@ -51,6 +51,14 @@ const STATUS = { shortcut: 302, moved: 301 }
  * ever invoking the Worker, so middleware never sees them. (It does in `astro
  * dev`, where everything goes through Astro, which is a good way to be misled.)
  *
+ * One route per path, rather than a single `[gone].ts` handling them all: a
+ * dynamic route matches every single-segment path, so it takes over the styled
+ * 404 as well — a mistyped /vist returns an empty body instead of the page
+ * offering Home and I'm New. (Deep paths still get the real 404, which makes
+ * the breakage inconsistent too.) A catch-all could serve 404.html back through
+ * Cloudflare's ASSETS binding, but that's runtime-specific plumbing plus a dev
+ * fallback; worth it past roughly ten entries, not for a handful.
+ *
  * So each "gone" entry becomes a tiny generated route. They're committed rather
  * than gitignored so `astro check` and code review can see them, and they carry
  * a marker so this script can find and remove its own leftovers.
