@@ -57,6 +57,25 @@ depends on two function routes (`/keystatic`, `/api/keystatic/*`), so a static-o
 can't serve the CMS. The production cutover (point `plcc.org` DNS at Cloudflare) is covered
 in [cms.md](./cms.md#3-cutover-and-production).
 
+### Settings that live in the Cloudflare dashboard
+
+These can't be committed. `@astrojs/cloudflare` generates `dist/server/wrangler.json`
+itself, and a `wrangler.jsonc` at the repo root makes the build fail outright — the
+Cloudflare Vite plugin stops resolving Astro's virtual modules (`Could not resolve
+"virtual:keystatic-config"`). So the settings below are recorded here instead, because
+nothing in the repo can assert them:
+
+| Setting                 | Value                                | If it's wrong                                                                                                 |
+| ----------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| Build command           | `npm run build`                      | `postbuild` never runs, so the deploy carries ~15 MB of unreferenced images                                   |
+| `DEPLOY_ENV`            | `staging` (production: `production`) | Falls back to staging with a build-log warning; on the production Worker that means the site is never indexed |
+| Node version            | 25                                   | Build may fail on syntax or dependency support                                                                |
+| Keystatic Cloud secrets | per Keystatic Cloud project          | The CMS can't authenticate                                                                                    |
+
+`DEPLOY_ENV` is the one with no safety net in the repo: it's read at build time by
+`astro.config.mjs`, and Workers Builds only takes build variables from the dashboard.
+`resolveDeployEnv()` warns when it has to guess — see `src/config/site.ts`.
+
 ---
 
 ## Optional: run with Apple `container` (macOS)
