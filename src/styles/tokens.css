@@ -16,9 +16,14 @@
   --color-clay: rgb(166, 123, 91); /* captions, metadata, italic subheads */
   --color-ember: rgb(189, 101, 56); /* warm secondary accent — used sparingly */
 
+  /* Three light surfaces, deliberately spaced so alternating bands read as
+     bands. paper L*98 → stone L*94 → sand L*88. Sand used to sit at L*90 — a
+     4-point step from the page background, which is under the threshold where
+     a large flat area registers as a different surface at all, so the banding
+     the whole visual language is built on simply didn't show. */
   --color-stone: rgb(242, 238, 230); /* page background */
   --color-stone-rgb: 242, 238, 230; /* for translucent stone, e.g. the sticky header */
-  --color-sand: rgb(233, 226, 213); /* deeper warm band, alternating sections */
+  --color-sand: rgb(228, 219, 202); /* deeper warm band, alternating sections */
   --color-paper: rgb(250, 248, 244); /* lightest surface (cards) */
   --color-white: #ffffff;
 
