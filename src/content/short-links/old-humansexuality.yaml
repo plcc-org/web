@@ -1,6 +1,0 @@
-name: old-humansexuality
-from: /humansexuality/
-destination: /beliefs/
-kind: moved
-expires: 2027-07-31
-note: No direct equivalent — beliefs is the nearest. Worth a look before cutover.

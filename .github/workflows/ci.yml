@@ -35,6 +35,14 @@ jobs:
       # Environment-independent: formatting, tokens, types, unit tests.
       - run: npm run format:check
       - run: npm run lint:css
+
+      # The 410 routes are generated from the short-links collection but
+      # committed, so `astro check` and code review can see them. Assert they
+      # match, or an edit in Keystatic silently stops taking effect.
+      - name: Generated 410 routes are in sync
+        run: |
+          node scripts/generate-redirects.mjs
+          git diff --exit-code src/pages
       - run: npm run check
       - run: npm run test
 

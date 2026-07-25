@@ -158,18 +158,19 @@ export default config({
           label: 'Sends people to',
           description:
             'Either a full address elsewhere (https://plcc.churchcenter.com/…) or a page on this site, ' +
-            'written with slashes at both ends — "/visit/".',
-          validation: { isRequired: true },
+            'written with slashes at both ends — "/visit/". Leave empty for a page that is gone for good.',
         }),
         kind: fields.select({
           label: 'What kind of link is this?',
           description:
             'A shortcut stays ours to re-point later — use it for sign-ups and anything that changes year to year. ' +
             'Only pick "permanently moved" for a page that has genuinely moved for good: browsers remember those ' +
-            'more or less forever, and it cannot be taken back.',
+            'more or less forever, and it cannot be taken back. "Gone for good" tells search engines to drop the ' +
+            'page rather than keep checking — use it when there is nowhere honest to send people.',
           options: [
             { label: 'A shortcut to a sign-up or another site', value: 'shortcut' },
             { label: 'A page that has permanently moved', value: 'moved' },
+            { label: 'A page that is gone for good', value: 'gone' },
           ],
           defaultValue: 'shortcut',
         }),

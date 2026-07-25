@@ -24,8 +24,8 @@
 // stays reviewable: without one, nobody deletes anything, because nobody
 // remembers what it was for.
 
-import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs'
-import { join } from 'node:path'
+import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync, rmSync } from 'node:fs'
+import { join, dirname } from 'node:path'
 import { parse } from 'yaml'
 
 const SOURCE_DIR = 'src/content/short-links'
@@ -43,6 +43,21 @@ const OUT = 'public/_redirects'
  */
 const STATUS = { shortcut: 302, moved: 301 }
 
+/**
+ * "Gone" can't be a redirect rule: Cloudflare only permits 200/301/302/303/307/308
+ * in `_redirects` (PERMITTED_STATUS_CODES in wrangler), so a 410 needs a real
+ * route — one the Worker actually serves. Middleware doesn't work here: on
+ * Workers Assets the asset layer answers unmatched paths with 404.html without
+ * ever invoking the Worker, so middleware never sees them. (It does in `astro
+ * dev`, where everything goes through Astro, which is a good way to be misled.)
+ *
+ * So each "gone" entry becomes a tiny generated route. They're committed rather
+ * than gitignored so `astro check` and code review can see them, and they carry
+ * a marker so this script can find and remove its own leftovers.
+ */
+const PAGES_DIR = 'src/pages'
+const GONE_MARKER = '@generated-gone-route'
+
 /** Reserved because a short link that shadows one of these would hide real content. */
 const RESERVED = new Set(['_astro', '_headers', '_redirects', 'api', 'keystatic', 'robots.txt', 'sitemap-index.xml'])
 
@@ -55,6 +70,7 @@ const errors = []
 const warnings = []
 const seen = new Map()
 const rules = []
+const gone = []
 
 const today = new Date()
 today.setHours(0, 0, 0, 0)
@@ -75,6 +91,7 @@ for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || 
   }
 
   const { from, destination, kind = 'shortcut', note, expires } = entry
+  const isGone = kind === 'gone'
 
   // The old address is an explicit field rather than the filename: cutover
   // redirects carry several path segments ("/connect/about/leadership-team/"),
@@ -92,14 +109,16 @@ for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || 
     errors.push(`${where}: "/${path}" starts with a path reserved by the site itself`)
     continue
   }
-  const external = /^https?:\/\//i.test(destination ?? '')
-  if (typeof destination !== 'string' || !(external || destination.startsWith('/'))) {
-    errors.push(`${where}: "destination" must be a full https:// address or a path on this site starting with /`)
-    continue
-  }
-  if (!(kind in STATUS)) {
-    errors.push(`${where}: "kind" must be one of ${Object.keys(STATUS).join(', ')}`)
-    continue
+  if (!isGone) {
+    const external = /^https?:\/\//i.test(destination ?? '')
+    if (typeof destination !== 'string' || !(external || destination.startsWith('/'))) {
+      errors.push(`${where}: "destination" must be a full https:// address or a path on this site starting with /`)
+      continue
+    }
+    if (!(kind in STATUS)) {
+      errors.push(`${where}: "kind" must be one of ${[...Object.keys(STATUS), 'gone'].join(', ')}`)
+      continue
+    }
   }
   if (seen.has(path)) {
     errors.push(`${where}: "${path}" is already defined in ${seen.get(path)}`)
@@ -123,6 +142,11 @@ for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || 
 
   seen.set(path, where)
 
+  if (isGone) {
+    gone.push({ path, note, expires })
+    continue
+  }
+
   const status = STATUS[kind]
   rules.push(`# review by ${expires}${status_note}`)
   if (note) rules.push(`# ${note.replace(/\s+/g, ' ').trim()}`)
@@ -139,6 +163,33 @@ if (errors.length) {
   process.exit(1)
 }
 
+// Clear out previously generated routes by looking for the marker, rather than
+// trusting a manifest to have stayed accurate. A removed collection entry can't
+// leave a stale 410 behind.
+for (const file of readdirSync(PAGES_DIR, { recursive: true })) {
+  if (typeof file !== 'string' || !file.endsWith('.ts')) continue
+  const full = join(PAGES_DIR, file)
+  if (readFileSync(full, 'utf-8').includes(GONE_MARKER)) rmSync(full)
+}
+for (const { path, note, expires } of gone) {
+  const full = join(PAGES_DIR, `${path}.ts`)
+  mkdirSync(dirname(full), { recursive: true })
+  writeFileSync(
+    full,
+    [
+      `// ${GONE_MARKER} — generated from src/content/short-links, do not edit.`,
+      `// /${path} is gone for good (review by ${expires}).`,
+      note ? `// ${note.replace(/\s+/g, ' ').trim()}` : null,
+      ``,
+      `export const prerender = false`,
+      `export const GET = () => new Response(null, { status: 410 })`,
+      ``,
+    ]
+      .filter((l) => l !== null)
+      .join('\n')
+  )
+}
+
 mkdirSync('public', { recursive: true })
 const header = [
   '# Generated from src/content/short-links — do not edit.',
@@ -148,6 +199,7 @@ const header = [
 writeFileSync(OUT, [...header, ...rules].join('\n'))
 for (const w of warnings) console.warn(`  ! ${w}`)
 console.log(
-  `generate-redirects: wrote ${seen.size} short link(s) to ${OUT}` +
+  `generate-redirects: wrote ${seen.size - gone.length} redirect(s) to ${OUT}` +
+    (gone.length ? ` and ${gone.length} gone route(s)` : '') +
     (warnings.length ? ` (${warnings.length} need review).` : '.')
 )
