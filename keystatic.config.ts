@@ -138,7 +138,7 @@ export default config({
       path: 'src/content/short-links/*',
       slugField: 'name',
       format: { data: 'yaml' },
-      columns: ['destination'],
+      columns: ['destination', 'expires'],
       entryLayout: 'form',
       schema: {
         name: fields.slug({
@@ -164,9 +164,18 @@ export default config({
           ],
           defaultValue: 'shortcut',
         }),
+        expires: fields.date({
+          label: 'Review by',
+          description:
+            'Every short link gets a date so the list stays honest — otherwise nobody dares delete anything ' +
+            'because nobody remembers what it was for. A sign-up shortcut: the date the thing it points at ends. ' +
+            'A moved page: about a year, by which point search engines have caught up. The link keeps working ' +
+            'past this date; the date is a prompt to check, not a switch.',
+          validation: { isRequired: true },
+        }),
         note: fields.text({
           label: 'What is this for?',
-          description: 'A line for whoever looks at this next — including when it will need updating.',
+          description: 'A line for whoever looks at this next — including what would need to change to renew it.',
           multiline: true,
         }),
       },

@@ -17,6 +17,12 @@
 // truth, and a committed copy would only ever drift from it.
 //
 // Nothing renders these, so this script is also where they get validated.
+//
+// Every link carries a review date. An expired link still redirects — a URL on a
+// printed flyer doesn't stop existing because a date passed, and silently 404ing
+// it would be a worse failure than letting it run on. The date exists so the list
+// stays reviewable: without one, nobody deletes anything, because nobody
+// remembers what it was for.
 
 import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
@@ -46,8 +52,13 @@ if (!existsSync(SOURCE_DIR)) {
 }
 
 const errors = []
+const warnings = []
 const seen = new Map()
 const rules = []
+
+const today = new Date()
+today.setHours(0, 0, 0, 0)
+const SOON_DAYS = 30
 
 for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || f.endsWith('.yml'))) {
   const where = `${SOURCE_DIR}/${file}`
@@ -66,7 +77,7 @@ for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || 
   // The filename is the short link. Keystatic names the file from the slug
   // field, so what an editor types is what the URL becomes.
   const path = file.replace(/\.ya?ml$/, '').toLowerCase()
-  const { destination, kind = 'shortcut', note } = entry
+  const { destination, kind = 'shortcut', note, expires } = entry
 
   if (!/^[a-z0-9][a-z0-9-]*$/.test(path)) {
     errors.push(`${where}: "${path}" must be lowercase letters, numbers and hyphens (it becomes plcc.org/${path})`)
@@ -88,9 +99,26 @@ for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || 
     errors.push(`${where}: "${path}" is already defined in ${seen.get(path)}`)
     continue
   }
+
+  // Required, so the list can't quietly grow a tail of links nobody owns.
+  const reviewBy = expires ? new Date(`${expires}T00:00:00Z`) : null
+  if (!reviewBy || Number.isNaN(reviewBy.getTime())) {
+    errors.push(`${where}: needs a "Review by" date (YYYY-MM-DD)`)
+    continue
+  }
+  const daysLeft = Math.round((reviewBy - today) / 86_400_000)
+  let status_note = ''
+  if (daysLeft < 0) {
+    warnings.push(`/${path} passed its review date ${-daysLeft} day(s) ago — still redirecting. ${where}`)
+    status_note = ` (review date passed ${-daysLeft}d ago)`
+  } else if (daysLeft <= SOON_DAYS) {
+    warnings.push(`/${path} is due for review in ${daysLeft} day(s). ${where}`)
+  }
+
   seen.set(path, where)
 
   const status = STATUS[kind]
+  rules.push(`# review by ${expires}${status_note}`)
   if (note) rules.push(`# ${note.replace(/\s+/g, ' ').trim()}`)
   // Both forms: Cloudflare matches the literal path, and people type — and
   // printed material carries — the trailing slash about half the time.
@@ -112,4 +140,8 @@ const header = [
   '',
 ]
 writeFileSync(OUT, [...header, ...rules].join('\n'))
-console.log(`generate-redirects: wrote ${seen.size} short link(s) to ${OUT}.`)
+for (const w of warnings) console.warn(`  ! ${w}`)
+console.log(
+  `generate-redirects: wrote ${seen.size} short link(s) to ${OUT}` +
+    (warnings.length ? ` (${warnings.length} need review).` : '.')
+)

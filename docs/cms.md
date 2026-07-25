@@ -67,8 +67,21 @@ file is named from it, so typing `camp` gives you `plcc.org/camp`. Two things wo
 - **A short link can't be named after an existing page.** `camp` is fine; `visit` would hide
   `/visit/`. The build fails if you try, rather than quietly taking a page off the site.
 
+**Every short link needs a "Review by" date.** A sign-up shortcut: when the thing it points
+at ends. A moved page: about a year, by which point search engines have caught up. The list
+view shows these dates, so it's obvious at a glance what needs attention.
+
+The date is a prompt, not a switch — **the link keeps working past it.** A URL printed on a
+flyer doesn't stop existing because a date passed, and quietly 404ing it would be a worse
+failure than letting it run on. What the date buys you is a list you can actually review:
+without one, nobody deletes anything, because nobody remembers what it was for. Builds print
+which links are due or overdue.
+
 Both forms work — `plcc.org/camp` and `plcc.org/camp/` — so it doesn't matter which one
 gets printed. The redirect happens at Cloudflare's edge, so there's no page load in between.
+
+Old-site redirects live here too, as "a page that has permanently moved", with a date about
+a year out — one list to review rather than two places to forget about.
 
 ---
 
