@@ -42,14 +42,15 @@ const usePhotos = heroPhotos.length > 0
         <div class="hero__strip" aria-hidden="true" style={`--pane-count:${heroPhotos.length}`}>
           {heroPhotos.map((name, i) => (
             <div class="hero__pane" style={`--pane-index:${i}`}>
-              {/* Deliberately tiny: these are blurred past the point where
-                  resolution is visible, so a 480px source upscales invisibly
-                  and the whole hero costs a fraction of one video. */}
+              {/* Well below what a sharp full-bleed image would need: at a 10px
+                  blur a 720px source upscales without visible artefacts, so
+                  paying for 1440 buys nothing. Checked by forcing each width
+                  and comparing. */}
               <Photo
                 filename={name}
                 class="hero__pane-img"
-                widths={[320, 480]}
-                sizes="480px"
+                widths={[480, 720, 960]}
+                sizes="100vw"
                 loading="eager"
                 fetchpriority={i === 0 ? 'high' : undefined}
               />

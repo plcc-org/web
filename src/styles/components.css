@@ -57,10 +57,15 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  /* Dark enough for white type, warm enough to stay in the palette. */
-  filter: blur(22px) brightness(0.62) saturate(1.15);
-  /* Overscaled so the blur's soft edge never reaches the frame. */
-  transform: scale(1.25);
+  /* Softened until no face is legible, but not so far that the room stops
+     being a room — you should be able to tell people are gathered and light is
+     coming through a door. Past about 16px it turns into abstract colour. */
+  filter: blur(10px) brightness(0.7) saturate(1.15);
+  /* The library is portrait and people sit low in these frames, so a centred
+     crop lands on ceiling and empty wall. Bias downward. */
+  object-position: center 72%;
+  /* Overscaled just enough that the blur's soft edge never reaches the frame. */
+  transform: scale(1.08);
   animation: hero-pane-drift var(--cycle) infinite ease-in-out;
   animation-delay: calc(var(--pane-hold) * var(--pane-index));
   will-change: transform;
@@ -82,10 +87,10 @@
 
 @keyframes hero-pane-drift {
   0% {
-    transform: scale(1.22) translate3d(-1%, -1%, 0);
+    transform: scale(1.08) translate3d(-1%, -0.5%, 0);
   }
   100% {
-    transform: scale(1.34) translate3d(1%, 1%, 0);
+    transform: scale(1.18) translate3d(1%, 0.5%, 0);
   }
 }
 
@@ -100,7 +105,7 @@
   }
   .hero__pane .hero__pane-img {
     animation: none;
-    transform: scale(1.22);
+    transform: scale(1.08);
   }
 }
 
