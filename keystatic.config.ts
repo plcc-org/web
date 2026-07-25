@@ -129,6 +129,49 @@ export default config({
     // Pastors and staff — folder of frontmatter-only Markdown entries; the bio
     // lives in a field (rendered as Markdown), the portrait is uploaded into
     // src/assets/images and stored as the same relative path the build resolves.
+    // Vanity URLs for things that live off-site — printed on flyers and read
+    // from the platform, so the short link has to outlive whatever it points
+    // at. Generated into a Cloudflare `_redirects` file at build time; see
+    // scripts/generate-redirects.mjs.
+    shortLinks: collection({
+      label: 'Short links',
+      path: 'src/content/short-links/*',
+      slugField: 'name',
+      format: { data: 'yaml' },
+      columns: ['destination'],
+      entryLayout: 'form',
+      schema: {
+        name: fields.slug({
+          name: {
+            label: 'Short link',
+            description: 'What comes after plcc.org/ — e.g. "camp" makes plcc.org/camp. Lowercase, no spaces.',
+          },
+        }),
+        destination: fields.url({
+          label: 'Sends people to',
+          description: 'The full address to send them to, e.g. a Church Center registration page.',
+          validation: { isRequired: true },
+        }),
+        kind: fields.select({
+          label: 'What kind of link is this?',
+          description:
+            'A shortcut stays ours to re-point later — use it for sign-ups and anything that changes year to year. ' +
+            'Only pick "permanently moved" for a page that has genuinely moved for good: browsers remember those ' +
+            'more or less forever, and it cannot be taken back.',
+          options: [
+            { label: 'A shortcut to a sign-up or another site', value: 'shortcut' },
+            { label: 'A page that has permanently moved', value: 'moved' },
+          ],
+          defaultValue: 'shortcut',
+        }),
+        note: fields.text({
+          label: 'What is this for?',
+          description: 'A line for whoever looks at this next — including when it will need updating.',
+          multiline: true,
+        }),
+      },
+    }),
+
     leadership: collection({
       label: 'Leadership',
       slugField: 'name',

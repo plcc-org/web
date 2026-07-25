@@ -4,7 +4,8 @@
 //   3. <img> src/srcset pointing at an asset that isn't in the build,
 //   4. missing public permalinks (URLs promised to the outside world),
 //   5. meta descriptions that are missing, duplicated, or leaking Markdown,
-//   6. robots.txt that doesn't match the target it was built for.
+//   6. short links that shadow a real page,
+//   7. robots.txt that doesn't match the target it was built for.
 // Run after `npm run build`:  node scripts/check-site.mjs
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
@@ -118,6 +119,23 @@ for (const { route } of externalPermalinks) {
   if (!existsSync(`${DIST}/${route ? `${route}/` : ''}index.html`)) errors.push(`missing public permalink  /${route}`)
 }
 
+// A short link must not shadow a real page. Cloudflare resolves `_redirects`
+// before it looks for an asset, so a short link named after an existing route
+// would take that page off the site — with no build error and nothing visibly
+// wrong until someone reports a missing page. Checked here, against the built
+// output, because that's the only place the real route list exists.
+const redirectsFile = `${DIST}/_redirects`
+let shortLinkCount = 0
+if (existsSync(redirectsFile)) {
+  for (const line of readFileSync(redirectsFile, 'utf-8').split('\n')) {
+    const [from] = line.trim().split(/\s+/)
+    if (!from || from.startsWith('#') || !from.startsWith('/')) continue
+    shortLinkCount++
+    const p = stripBase(from).replace(/\/$/, '')
+    if (p && resolves(p)) errors.push(`short link shadows a real page  ${from}`)
+  }
+}
+
 // robots.txt must match the target it was built for. Indexability is resolved
 // through a fragile path (see resolveDeployEnv in src/config/site.ts), and
 // getting it wrong has no symptom on the rendered site — production simply
@@ -142,7 +160,7 @@ if (!existsSync(robotsPath)) {
 
 console.log(
   `Checked ${htmlFiles.length} pages, ${linkCount} internal links, ${imgCount} images, ` +
-    `${assetRefCount} asset refs, ${descriptions.size} descriptions (base "${base}").`
+    `${assetRefCount} asset refs, ${descriptions.size} descriptions, ${shortLinkCount} short-link rules (base "${base}").`
 )
 if (errors.length) {
   console.error(`\n✗ ${errors.length} problem(s):`)
