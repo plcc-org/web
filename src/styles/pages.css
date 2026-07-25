@@ -8,6 +8,14 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
+/* The heading is the grid item; it exists for the outline, not for looks, so
+   it carries no type of its own — .leader-card__name inside still sets that. */
+.leader-card-heading {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
 /* Cards are buttons that open an in-place profile — strip the native chrome. */
 .leader-card {
   display: flex;
@@ -26,8 +34,15 @@
 }
 
 .leader-card__photo {
+  display: block;
   margin-bottom: 1.75rem;
   transition: transform 0.4s var(--ease-out);
+}
+
+/* Inside a <button> only phrasing content is valid, so the photo wrappers are
+   <span>s here and need the block display the <div> version got for free. */
+.leader-card__photo .media__frame {
+  display: block;
 }
 
 .leader-card:hover .leader-card__photo {

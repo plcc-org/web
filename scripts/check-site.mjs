@@ -74,8 +74,12 @@ for (const file of htmlFiles) {
   for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
     const tag = m[0]
     const src = (tag.match(/\bsrc="([^"]*)"/) || [])[1] || ''
-    const decorative = src.startsWith('data:') || /yt_icon/.test(src) // IG glyph + YouTube icon sit beside text labels
-    if (decorative) continue
+    // An image is decorative only if it says so. `alt=""` *together with*
+    // aria-hidden is an explicit declaration; `alt=""` on its own is far more
+    // often an oversight, so it still fails. (data: URIs and the YouTube glyph
+    // predate that rule — both sit beside their own text label.)
+    const declaredDecorative = /\baria-hidden="true"/.test(tag) && /\balt=""/.test(tag)
+    if (declaredDecorative || src.startsWith('data:') || /yt_icon/.test(src)) continue
     imgCount++
     const alt = tag.match(/\balt="([^"]*)"/)
     if (!alt) errors.push(`img missing alt  ${file}  →  ${src.slice(0, 60)}`)

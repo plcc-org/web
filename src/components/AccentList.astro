@@ -9,16 +9,23 @@ type Item = { title: string; body: string }
 type Props = {
   items: Item[]
   columns?: 2 | 3
+  /**
+   * Heading level for the card titles. Defaults to 3, which assumes a section
+   * heading sits above the list. A block with no heading of its own must pass
+   * 2 — otherwise the page jumps h1 → h3 and the outline has a hole in it.
+   */
+  headingLevel?: 2 | 3 | 4
 }
 
-const { items, columns = 2 } = Astro.props
+const { items, columns = 2, headingLevel = 3 } = Astro.props
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4'
 ---
 
 <ul class:list={['accent-list', `accent-list--${columns}`]}>
   {
     items.map((item) => (
       <li class="accent-card">
-        <h3 class="accent-card__title">{item.title}</h3>
+        <Heading class="accent-card__title">{item.title}</Heading>
         <p>{item.body}</p>
       </li>
     ))

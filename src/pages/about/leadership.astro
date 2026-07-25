@@ -19,27 +19,36 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
       <div class="leader-grid">
         {
           leaders.map((leader) => (
-            <button
-              type="button"
-              class="leader-card"
-              data-leader={leader.id}
-              aria-expanded="false"
-              aria-controls={`detail-${leader.id}`}
-            >
-              <div class="leader-card__photo" data-portrait>
-                <div class="media__frame ratio-4x5">
-                  <Photo
-                    image={leader.data.portrait}
-                    alt={leader.data.portraitAlt}
-                    class="media__img media__img--cover"
-                    widths={[280, 560]}
-                    sizes="(max-width: 600px) 100vw, 360px"
-                  />
-                </div>
-              </div>
-              <span class="leader-card__name">{leader.data.name}</span>
-              <span class="leader-card__title">{leader.data.title}</span>
-            </button>
+            /* Heading-wrapping-a-button, per the ARIA Authoring Practices
+               disclosure pattern. The names used to be plain <span>s, so a
+               five-person roster contributed nothing to the document outline
+               and heading navigation skipped the whole page. A heading can't
+               live *inside* a <button> (phrasing content only), so it wraps
+               it — which also makes the h2 the grid item, hence width:100% on
+               the button. */
+            <h2 class="leader-card-heading">
+              <button
+                type="button"
+                class="leader-card"
+                data-leader={leader.id}
+                aria-expanded="false"
+                aria-controls={`detail-${leader.id}`}
+              >
+                <span class="leader-card__photo" data-portrait>
+                  <span class="media__frame ratio-4x5">
+                    <Photo
+                      image={leader.data.portrait}
+                      alt={leader.data.portraitAlt}
+                      class="media__img media__img--cover"
+                      widths={[280, 560]}
+                      sizes="(max-width: 600px) 100vw, 360px"
+                    />
+                  </span>
+                </span>
+                <span class="leader-card__name">{leader.data.name}</span>
+                <span class="leader-card__title">{leader.data.title}</span>
+              </button>
+            </h2>
           ))
         }
       </div>
@@ -112,7 +121,14 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
     // Tag the outgoing card portrait and incoming detail portrait with a shared
     // name so the browser morphs one into the other; clear it afterwards so the
     // name stays unique to a single transition.
-    const run = (slug: string | null, fromSlug: string | null) => {
+    //
+    // Resolves once the DOM swap has been applied (not when the animation ends).
+    // Callers must await this before moving focus: the grid and the panel take
+    // turns at `display: none`, and .focus() on a display:none element is
+    // silently a no-op. Focus was previously moved in a requestAnimationFrame,
+    // which fires *before* startViewTransition runs its callback — so both
+    // opening and closing dropped focus to <body> instead of moving it.
+    const run = async (slug: string | null, fromSlug: string | null): Promise<void> => {
       const supportsVT = typeof document.startViewTransition === 'function'
       if (!supportsVT || prefersReduced.matches) {
         applyState(slug)
@@ -130,24 +146,26 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
         if (fromPortrait) fromPortrait.style.viewTransitionName = ''
         if (toPortrait) toPortrait.style.viewTransitionName = ''
       })
+      // Swallow rejection so callers can chain focus onto it unconditionally.
+      await transition.updateCallbackDone.catch(() => {})
     }
 
     const open = (slug: string, push = true) => {
       if (!detailFor(slug) || slug === activeSlug) return
       const from = activeSlug
-      run(slug, from)
+      const swapped = run(slug, from)
       if (push) history.pushState(null, '', `#${slug}`)
-      // Move focus into the panel once it's visible.
-      const focusClose = () => detailFor(slug)?.querySelector<HTMLButtonElement>('.leader-detail__close')?.focus()
-      requestAnimationFrame(focusClose)
+      // Move focus into the panel, once it's actually visible.
+      swapped.then(() => detailFor(slug)?.querySelector<HTMLButtonElement>('.leader-detail__close')?.focus())
     }
 
     const close = (push = true) => {
       if (activeSlug === null) return
       const from = activeSlug
-      run(null, from)
+      const swapped = run(null, from)
       if (push) history.pushState(null, '', window.location.pathname + window.location.search)
-      requestAnimationFrame(() => cardFor(from)?.focus())
+      // Return focus to the card that opened the panel, once the grid is back.
+      swapped.then(() => cardFor(from)?.focus())
     }
 
     for (const card of cards) {
