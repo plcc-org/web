@@ -99,10 +99,6 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
 
 <style>
   .archive-page {
-    --archive-surface: var(--color-paper);
-    --archive-border: var(--color-mist);
-    --archive-muted: var(--color-clay);
-
     color: var(--color-forest);
   }
 
@@ -111,7 +107,7 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
     gap: 1.5rem;
     padding: clamp(1.25rem, 2.4vw, 2rem);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--archive-border);
+    border: 1px solid var(--color-mist);
     background: var(--surface-gradient-soft);
     box-shadow: var(--shadow-md);
   }
@@ -148,7 +144,7 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
 
   .service-hero__date {
     margin: 0.4rem 0 1rem;
-    color: var(--archive-muted);
+    color: var(--color-clay);
   }
 
   .service-hero__actions {
@@ -168,7 +164,7 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
 
   .section__header p {
     margin: 0.35rem 0 0;
-    color: var(--archive-muted);
+    color: var(--color-clay);
   }
 
   .service-grid {
@@ -215,7 +211,7 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
   .service-card__date {
     margin: 0;
     font-size: var(--text-xs);
-    color: var(--archive-muted);
+    color: var(--color-clay);
   }
 
   .service-card h3 {

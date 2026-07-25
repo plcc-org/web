@@ -53,7 +53,7 @@
 .site-footer__info {
   grid-area: info;
   font-size: var(--text-ui);
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--color-on-dark);
 }
 
 .site-footer__info strong {
@@ -65,12 +65,12 @@
 
 .site-footer__links {
   grid-area: links;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--color-on-dark);
   font-size: var(--text-ui);
 }
 
 .site-footer__divider {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-on-dark-line);
   font-weight: 500;
 }
 
@@ -86,7 +86,7 @@
 
 .site-footer a:hover {
   color: var(--color-moss-light);
-  border-bottom-color: rgba(205, 230, 178, 0.85);
+  border-bottom-color: var(--color-moss-light);
 }
 
 .site-footer__social-link {

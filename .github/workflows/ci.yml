@@ -32,8 +32,9 @@ jobs:
 
       - run: npm ci
 
-      # Environment-independent: formatting, types, unit tests.
+      # Environment-independent: formatting, tokens, types, unit tests.
       - run: npm run format:check
+      - run: npm run lint:css
       - run: npm run check
       - run: npm run test
 

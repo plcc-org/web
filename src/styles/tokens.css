@@ -36,6 +36,7 @@
   /* On-dark text (over forest panels / footer) */
   --color-on-dark: rgba(255, 255, 255, 0.94);
   --color-on-dark-soft: rgba(255, 255, 255, 0.72);
+  --color-on-dark-line: rgba(255, 255, 255, 0.5); /* dividers and underlines on dark */
 
   /* ----------------------------------------------------------------------
    * Typography
