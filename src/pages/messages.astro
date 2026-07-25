@@ -179,21 +179,11 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
     grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
   }
 
+  /* Surface + lift from the shared card recipe; the clip keeps the thumbnail
+     inside the card's radius. */
   .service-card {
     height: 100%;
-    border-radius: var(--radius-lg);
     overflow: hidden;
-    border: 1px solid var(--archive-border);
-    background: var(--archive-surface);
-    box-shadow: var(--shadow-sm);
-    transition:
-      transform 0.2s var(--ease-out),
-      box-shadow 0.2s var(--ease-out);
-  }
-
-  .service-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
   }
 
   .service-card__media {

@@ -23,6 +23,7 @@
   --color-ink-soft: rgba(26, 46, 12, 0.72); /* secondary body text */
   --color-mist: rgba(26, 46, 12, 0.08); /* hairline borders, dividers */
   --color-line: rgba(26, 46, 12, 0.14); /* slightly stronger border */
+  --color-moss-line: rgba(106, 149, 41, 0.4); /* the border a card takes on hover */
 
   /* On-dark text (over forest panels / footer) */
   --color-on-dark: rgba(255, 255, 255, 0.94);

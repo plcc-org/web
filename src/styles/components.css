@@ -282,14 +282,61 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+/* ----------------------------------------------------------------------
+ * The card surface
+ *
+ * One recipe — paper, a mist hairline, --radius-lg, --shadow-sm — shared by
+ * every card on the site. It was previously re-declared in ten places, four of
+ * which had drifted onto an older look (white/stone fills, --radius-soft,
+ * --shadow-diffuse) that was still shipping on the events pages.
+ *
+ * Padding and layout stay with each component: a dense event row and a roomy
+ * link card want different spacing, but they should read as the same material.
+ * Some of these classes live in component-scoped <style> blocks; a scoped rule
+ * outranks this one, so those files now declare only what's genuinely
+ * different (the accent list's moss edge, the moment card's clipped photo).
+ * -------------------------------------------------------------------- */
+.card,
+.link-card,
+.story-quote,
+.event-card,
+.rhythm-card,
+.event-row,
+.accent-card,
+.moment-card,
+.moment-list__item,
+.service-card {
+  background: var(--color-paper);
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-forest);
+}
+
+/* The lift is the affordance: cards that do something on click get it, cards
+   that are just containers don't. That's why this is `a.card`, not `.card`. */
+a.card,
+.link-card,
+.event-row,
+.service-card {
+  transition:
+    transform 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out);
+}
+
+a.card:hover,
+.link-card:hover,
+.event-row:hover,
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-moss-line);
+}
+
 .card {
   display: block;
   padding: clamp(1.5rem, 2.2vw, 1.85rem);
-  border-radius: var(--radius-lg);
-  background: var(--color-paper);
-  border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-sm);
-  color: var(--color-forest);
   text-decoration: none;
 }
 
@@ -322,18 +369,6 @@
 }
 
 /* Card links lift on hover; static card divs stay put */
-a.card {
-  transition:
-    transform 0.2s var(--ease-out),
-    box-shadow 0.2s var(--ease-out),
-    border-color 0.2s var(--ease-out);
-}
-
-a.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(106, 149, 41, 0.4);
-}
 
 .link-grid {
   --gap: 1.5rem;
@@ -371,22 +406,7 @@ a.card:hover {
   max-width: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
   min-width: 0;
   padding: clamp(1.5rem, 2.4vw, 2rem);
-  border-radius: var(--radius-lg);
-  background: var(--color-paper);
-  border: 1px solid var(--color-mist);
   text-decoration: none;
-  color: var(--color-forest);
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform 0.2s var(--ease-out),
-    box-shadow 0.2s var(--ease-out),
-    border-color 0.2s var(--ease-out);
-}
-
-.link-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(106, 149, 41, 0.4);
 }
 
 .link-card strong {
@@ -478,10 +498,6 @@ a.card:hover {
 .event-card {
   display: flow-root;
   padding: 2rem;
-  border-radius: var(--radius-soft);
-  background: var(--color-white);
-  box-shadow: var(--shadow-diffuse);
-  border: 1px solid var(--color-mist);
 }
 
 .event-date {
@@ -551,18 +567,6 @@ a.card:hover {
   align-items: center;
   gap: 1.25rem;
   padding: 1rem 1.35rem;
-  background: var(--color-white);
-  border: 1px solid var(--color-mist);
-  border-radius: var(--radius-soft);
-  box-shadow: var(--shadow-diffuse);
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.event-row:hover {
-  transform: translateY(-2px);
-  border-color: rgba(106, 149, 41, 0.4);
 }
 
 .event-row__date-chip {
@@ -627,10 +631,6 @@ a.card:hover {
 
 .rhythm-card {
   padding: 1.5rem;
-  border-radius: var(--radius-soft);
-  background: var(--color-white);
-  border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-diffuse);
 }
 
 .rhythm-card strong {
@@ -660,10 +660,6 @@ a.card:hover {
 /* Story/quote cards */
 .story-quote {
   padding: clamp(1.75rem, 2.6vw, 2.4rem);
-  border-radius: var(--radius-lg);
-  background: var(--color-paper);
-  border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
 }
