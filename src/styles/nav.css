@@ -150,7 +150,7 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav__toggle span {
 }
 
 .site-nav a:not(.btn):hover {
-  color: var(--color-moss);
+  color: var(--color-moss-ink);
   border-bottom-color: var(--color-mist);
 }
 
@@ -283,7 +283,7 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav__toggle span {
   .site-nav__list a:not(.btn)::after {
     content: '›';
     font-size: var(--text-lg);
-    color: var(--color-moss);
+    color: var(--color-moss-ink);
     opacity: 0.7;
     line-height: 1;
   }

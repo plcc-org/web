@@ -22,7 +22,7 @@
   background: var(--color-stone);
   border: 1px solid var(--color-mist);
   text-decoration: none;
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   font-weight: 600;
   font-size: var(--text-xs);
   transition: all var(--duration-fast) ease;
@@ -30,13 +30,13 @@
 
 .chip:hover {
   background: var(--color-mist);
-  color: var(--color-moss);
+  color: var(--color-moss-ink);
 }
 
 .chip--active {
-  background: var(--color-moss);
+  background: var(--color-moss-ink);
   color: var(--color-white);
-  border-color: var(--color-moss);
+  border-color: var(--color-moss-ink);
 }
 
 .tag {
@@ -44,7 +44,7 @@
   padding: 0.25rem 0.65rem;
   border-radius: var(--radius-pill);
   background: var(--color-mist);
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.02em;
