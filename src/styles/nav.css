@@ -14,6 +14,44 @@
     box-shadow var(--duration-mid) var(--ease-out);
 }
 
+/* A page that opens with a full-bleed hero puts the bar *over* it — that's what
+   the transparent-at-rest background and the frosting threshold are for, and
+   sticky can't do it: sticky stays in flow, so it reserves its own height and
+   pushes the hero down the page. Fixed reserves nothing. Scoped with :has() so
+   every other page keeps a bar that sits above its content rather than on it. */
+body:has(.hero) .site-header {
+  position: fixed;
+  inset: 0 0 auto;
+}
+
+/* ...and the shell's own top padding would still hold the hero off the edge. */
+body:has(.hero) .site-main {
+  padding-top: 0;
+}
+
+/* Over the hero the bar has no background of its own, so the forest links and
+   the moss wordmark sit on whatever the video happens to be showing — which is
+   bright as often as not. Invert them to white until the bar frosts on scroll,
+   at which point the stone background returns and so do the normal colours.
+   Dark-on-video can't be rescued by a stronger scrim: it would need the
+   backdrop to be *lighter*, which is the opposite of what the hero wants. */
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav a:not(.btn) {
+  color: var(--color-white);
+}
+
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav a:not(.btn):hover {
+  color: var(--color-white);
+  border-bottom-color: var(--color-on-dark-line);
+}
+
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav__home-logo {
+  background-color: var(--color-white);
+}
+
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav__toggle span {
+  background: var(--color-white);
+}
+
 /* Once the page is scrolled, the bar frosts over. The height stays constant
    so the sticky bar never reflows the content below it (which would jitter
    the page as you scroll across the threshold). */
