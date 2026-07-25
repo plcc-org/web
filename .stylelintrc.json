@@ -4,23 +4,32 @@
     "convention alone it doesn't hold: colours, type sizes and radii drift back",
     "to literals a few at a time, and each one looks harmless in isolation.",
     "",
-    "The allow-lists are deliberately narrow — a token reference or a keyword,",
+    "The allow-lists are deliberately narrow \u2014 a token reference or a keyword,",
     "nothing else. If a value genuinely has no token, the fix is to add one to",
     "src/styles/tokens.css and say what it's for, not to widen these lists.",
     "",
     "Astro component <style> blocks are linted too (via postcss-html), which is",
     "where most of the drift lived. Prettier owns formatting, so the non-token",
-    "rules here are limited to correctness — nothing stylistic that would",
+    "rules here are limited to correctness \u2014 nothing stylistic that would",
     "duplicate or fight it.",
     "",
     "Not covered: transition durations and easings, which mostly sit inside the",
     "`transition` shorthand where a value allow-list can't reach them. Use",
     "--duration-* and --ease-* anyway."
   ],
-
-  "overrides": [{ "files": ["**/*.astro"], "customSyntax": "postcss-html" }],
+  "overrides": [
+    {
+      "files": ["**/*.astro"],
+      "customSyntax": "postcss-html"
+    },
+    {
+      "files": ["**/*.css"],
+      "rules": {
+        "selector-pseudo-class-no-unknown": true
+      }
+    }
+  ],
   "ignoreFiles": ["dist/**", "node_modules/**", ".astro/**"],
-
   "rules": {
     "declaration-property-value-allowed-list": {
       "font-size": ["/^var\\(--text-/", "inherit"],
@@ -32,12 +41,27 @@
       "text-decoration-color": ["/^var\\(--color-/", "transparent", "currentColor"],
       "border-radius": ["/^var\\(--radius-/", "0", "50%"]
     },
-
     "color-no-invalid-hex": true,
-    "declaration-block-no-duplicate-properties": [true, { "ignore": ["consecutive-duplicates-with-different-values"] }],
+    "declaration-block-no-duplicate-properties": [
+      true,
+      {
+        "ignore": ["consecutive-duplicates-with-different-values"]
+      }
+    ],
     "no-duplicate-selectors": true,
     "shorthand-property-no-redundant-values": true,
     "function-calc-no-unspaced-operator": true,
-    "no-invalid-position-at-import-rule": [true, { "ignoreAtRules": ["charset"] }]
+    "no-invalid-position-at-import-rule": [
+      true,
+      {
+        "ignoreAtRules": ["charset"]
+      }
+    ],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ]
   }
 }

@@ -8,6 +8,8 @@ import Photo from './Photo.astro'
 
 type Props = {
   video?: string
+  /** Photos cross-faded behind the headline as a slow, blurred drift. */
+  photos?: string[]
   filename?: string
   alt?: string
   eyebrow?: string
@@ -16,7 +18,9 @@ type Props = {
 }
 
 // alt is optional: omit for catalogued photos (looked up by filename in <Photo>).
-const { video, filename, alt, eyebrow, title, subhead } = Astro.props
+const { video, photos, filename, alt, eyebrow, title, subhead } = Astro.props
+const heroPhotos = photos ?? []
+const usePhotos = heroPhotos.length > 0
 ---
 
 {
@@ -31,10 +35,31 @@ const { video, filename, alt, eyebrow, title, subhead } = Astro.props
   }
 </script>
 
-<section class:list={['hero', { 'hero--has-video': video }]} data-hero>
+<section class:list={['hero', { 'hero--has-video': video && !usePhotos, 'hero--photos': usePhotos }]} data-hero>
   <div class="hero__media">
     {
-      filename && (
+      usePhotos && (
+        <div class="hero__strip" aria-hidden="true" style={`--pane-count:${heroPhotos.length}`}>
+          {heroPhotos.map((name, i) => (
+            <div class="hero__pane" style={`--pane-index:${i}`}>
+              {/* Deliberately tiny: these are blurred past the point where
+                  resolution is visible, so a 480px source upscales invisibly
+                  and the whole hero costs a fraction of one video. */}
+              <Photo
+                filename={name}
+                class="hero__pane-img"
+                widths={[320, 480]}
+                sizes="480px"
+                loading="eager"
+                fetchpriority={i === 0 ? 'high' : undefined}
+              />
+            </div>
+          ))}
+        </div>
+      )
+    }
+    {
+      !usePhotos && filename && (
         <Photo
           filename={filename}
           alt={alt}
@@ -47,7 +72,7 @@ const { video, filename, alt, eyebrow, title, subhead } = Astro.props
       )
     }
     {
-      video && (
+      video && !usePhotos && (
         <video class="hero__video" muted loop playsinline autoplay preload="none" aria-hidden="true" tabindex="-1">
           {/* src is held in data-src so nothing downloads until the script opts in */}
           <source data-src={video} type="video/mp4" />

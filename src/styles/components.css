@@ -25,6 +25,85 @@
     linear-gradient(180deg, var(--color-forest-2) 0%, var(--color-forest) 100%);
 }
 
+/* Photo hero — a slow drift of blurred stills, standing in for a video.
+   The library is ~98% portrait, so no single image fills a wide band without
+   losing its subject. Blurring past legibility sidesteps that entirely: the
+   photos stop being pictures and become the colour and light of the room,
+   which is what a background wants to be anyway. Real light from this actual
+   building, rather than stock motion.
+ *
+ * Two consequences worth knowing. The sources are served at 480px because
+ * blur destroys detail long before resolution matters — the whole hero costs a
+ * fraction of one video file. And only `transform` and `opacity` animate, so
+ * the blur rasterizes once and the drift stays on the compositor. */
+.hero__strip {
+  position: absolute;
+  inset: 0;
+  /* Seconds each photo holds before the next takes over. */
+  --pane-hold: 7s;
+  --cycle: calc(var(--pane-hold) * var(--pane-count));
+}
+
+.hero__pane {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: hero-pane-fade var(--cycle) infinite;
+  animation-delay: calc(var(--pane-hold) * var(--pane-index));
+}
+
+.hero__pane .hero__pane-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Dark enough for white type, warm enough to stay in the palette. */
+  filter: blur(22px) brightness(0.62) saturate(1.15);
+  /* Overscaled so the blur's soft edge never reaches the frame. */
+  transform: scale(1.25);
+  animation: hero-pane-drift var(--cycle) infinite ease-in-out;
+  animation-delay: calc(var(--pane-hold) * var(--pane-index));
+  will-change: transform;
+}
+
+@keyframes hero-pane-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  4%,
+  25% {
+    opacity: 1;
+  }
+  29% {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-pane-drift {
+  0% {
+    transform: scale(1.22) translate3d(-1%, -1%, 0);
+  }
+  100% {
+    transform: scale(1.34) translate3d(1%, 1%, 0);
+  }
+}
+
+/* Motion off: hold the first photo, still blurred, and drop the rest. */
+@media (prefers-reduced-motion: reduce) {
+  .hero__pane {
+    animation: none;
+    opacity: 0;
+  }
+  .hero__pane:first-child {
+    opacity: 1;
+  }
+  .hero__pane .hero__pane-img {
+    animation: none;
+    transform: scale(1.22);
+  }
+}
+
 /* A soft glow that breathes while we wait for the video to start. */
 .hero__media::before {
   content: '';
