@@ -223,11 +223,10 @@ deploy by hand instead: `npm run build && npx wrangler deploy` from the repo roo
 
 ### 3. Cutover and production
 
-GitHub Pages (`.github/workflows/deploy.yml`) is left running in parallel during the
-Cloudflare staging bring-up as a fallback. Once `plcc.dev` is confirmed, retire `deploy.yml`
-so merges don't publish a broken static-only build (keep `ci.yml` — it still validates every
-push). The `plcc.org` production cutover is future work: add a Worker environment with
-`DEPLOY_ENV=production`, bind `plcc.org`, and point its DNS at Cloudflare.
+Cloudflare is the only host; `plcc.dev` serves staging. The `plcc.org` production cutover
+is future work: add a Worker environment with `DEPLOY_ENV=production`, bind `plcc.org`, and
+point its DNS at Cloudflare. Redirects from the old site's URLs need to land in the same
+change, or every existing inbound link breaks.
 
 ---
 
