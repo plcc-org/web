@@ -10,6 +10,7 @@
     "_comment_prebuild": "Vite's SSR dep cache goes stale across Astro/adapter upgrades and surfaces as 'The file does not exist at node_modules/.vite/deps_ssr/...'. Cheap to drop; always drop it.",
     "prebuild": "rm -rf node_modules/.vite",
     "build": "astro build",
+    "postbuild": "node scripts/prune-dist.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
