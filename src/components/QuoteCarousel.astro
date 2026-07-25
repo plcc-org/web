@@ -4,6 +4,15 @@
 // uses the dots / arrows. All quotes are rendered server-side (good for SEO
 // and no-JS) and stacked in one grid cell, so the viewport sizes itself to
 // the tallest quote and nothing jumps as they rotate.
+//
+// Accessibility: the slides are deliberately NOT a live region. This used to
+// carry aria-live="polite", which meant a screen-reader user on the homepage
+// had a testimonial read to them every 7 seconds, unprompted, for as long as
+// they stayed. Instead there's a visually-hidden status line that announces
+// only when the visitor works the controls themselves — the pattern the ARIA
+// Authoring Practices carousel guidance describes. Timer-driven changes stay
+// silent; inactive slides are visibility:hidden, so they're out of the
+// accessibility tree either way.
 
 type Quote = { text: string; by?: string }
 
@@ -15,7 +24,7 @@ const { quotes } = Astro.props
 ---
 
 <div class="quote-carousel" data-quote-carousel>
-  <div class="quote-carousel__viewport" aria-live="polite" aria-atomic="true">
+  <div class="quote-carousel__viewport">
     {
       quotes.map((quote, i) => (
         <blockquote class:list={['story-quote', 'quote-slide', i === 0 && 'is-active']} aria-hidden={i !== 0}>
@@ -49,6 +58,9 @@ const { quotes } = Astro.props
       </div>
     )
   }
+
+  {/* Announces the new position, but only when the visitor moved it themselves. */}
+  <p class="visually-hidden" role="status" data-quote-status></p>
 </div>
 
 <style>
@@ -177,13 +189,16 @@ const { quotes } = Astro.props
   function initQuoteCarousel(root: HTMLElement) {
     const slides = Array.from(root.querySelectorAll<HTMLElement>('.quote-slide'))
     const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('.quote-dot'))
+    const status = root.querySelector<HTMLElement>('[data-quote-status]')
     if (slides.length <= 1) return
 
     let current = 0
     let timer: ReturnType<typeof setInterval> | undefined
     const ROTATE_MS = 7000
 
-    const show = (next: number) => {
+    // `announce` is true only for visitor-driven changes — see the note at the
+    // top of this file on why the timer must stay silent.
+    const show = (next: number, announce = false) => {
       const index = (next + slides.length) % slides.length
       if (index === current) return
 
@@ -198,6 +213,8 @@ const { quotes } = Astro.props
       slides[current].setAttribute('aria-hidden', 'false')
       dots[current]?.classList.add('is-active')
       dots[current]?.setAttribute('aria-current', 'true')
+
+      if (announce && status) status.textContent = `Quote ${current + 1} of ${slides.length}`
     }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -217,7 +234,7 @@ const { quotes } = Astro.props
     root.querySelectorAll<HTMLButtonElement>('.quote-nav').forEach((btn) => {
       btn.addEventListener('click', () => {
         stop()
-        show(current + (btn.dataset.dir === 'prev' ? -1 : 1))
+        show(current + (btn.dataset.dir === 'prev' ? -1 : 1), true)
         start()
       })
     })
@@ -225,7 +242,7 @@ const { quotes } = Astro.props
     dots.forEach((dot, i) => {
       dot.addEventListener('click', () => {
         stop()
-        show(i)
+        show(i, true)
         start()
       })
     })
@@ -235,6 +252,10 @@ const { quotes } = Astro.props
     root.addEventListener('mouseleave', start)
     root.addEventListener('focusin', stop)
     root.addEventListener('focusout', start)
+
+    // ...and while the tab is in the background, where rotating burns a timer
+    // wake-up every 7s to animate something nobody is looking at.
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()))
 
     start()
   }

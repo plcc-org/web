@@ -52,7 +52,8 @@ const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata
             widths={[340, 680]}
             sizes="(max-width: 600px) 70vw, 340px"
           />
-          <h1 class="page-hero__sr-title">{title}</h1>
+          {/* A real <h1> for the document outline, visually replaced by the logo above. */}
+          <h1 class="visually-hidden">{title}</h1>
         </Fragment>
       ) : (
         <h1 class="display">{title}</h1>
@@ -92,18 +93,5 @@ const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata
     height: auto;
     object-fit: contain;
     margin: 0 0 1rem;
-  }
-
-  /* A real <h1> for the document outline, visually replaced by the logo. */
-  .page-hero__sr-title {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
   }
 </style>
