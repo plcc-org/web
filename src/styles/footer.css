@@ -32,7 +32,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  max-width: 1100px;
+  max-width: var(--width-shell);
   margin: 0 auto;
   gap: 0.55rem 1rem;
   grid-template-columns: 1fr auto;

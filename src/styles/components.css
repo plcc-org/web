@@ -112,7 +112,7 @@
 }
 
 .hero__content {
-  max-width: 44rem;
+  max-width: var(--measure-wide);
 }
 
 .hero__eyebrow {
@@ -219,7 +219,7 @@
 
 .split__body-inner {
   width: 100%;
-  max-width: 36rem;
+  max-width: var(--measure-narrow);
 }
 
 .split__heading {
@@ -268,9 +268,10 @@
     padding: clamp(1.75rem, 6vw, 2.75rem) var(--gutter);
   }
 
+  /* Stacked, the body no longer sits beside the photo — but --measure-narrow
+     still reads well at this width, so only the alignment changes. */
   .split__body-inner,
   .split--reverse .split__body-inner {
-    max-width: 40rem;
     margin-left: 0;
   }
 }

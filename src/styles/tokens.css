@@ -97,8 +97,12 @@
   /* ----------------------------------------------------------------------
    * Layout widths
    * -------------------------------------------------------------------- */
-  --measure: 65ch; /* max readable line length */
-  --width-text: 38rem; /* narrow reading column */
+  /* Reading measures. Three, and only three — the site had accumulated eight
+     (36/40/42/44/46/48rem, 60ch, 65ch), most of them one component's guess.
+     Pick by what the text is doing, not by how it happens to look today. */
+  --measure: 65ch; /* long-form prose: body copy, bios, letters */
+  --measure-narrow: 38rem; /* a column sitting beside something else */
+  --measure-wide: 46rem; /* centred display text: hero, band intros, quotes */
   --width-content: 70rem; /* default content container */
   --width-wide: 78rem; /* wide container for galleries/splits */
   --width-shell: 1120px; /* header/footer shell */

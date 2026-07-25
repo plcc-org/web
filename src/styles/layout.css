@@ -88,7 +88,7 @@
 /* Narrower band content; centered also centers the text (closing CTAs, quotes) */
 .band--narrow .band__inner,
 .band--centered .band__inner {
-  max-width: 46rem;
+  max-width: var(--measure-wide);
 }
 
 .band--centered .band__inner {
@@ -97,7 +97,7 @@
 }
 
 .band--centered .band__inner > p {
-  max-width: 42rem;
+  max-width: var(--measure-narrow);
   margin-inline: auto;
 }
 
