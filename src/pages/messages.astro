@@ -39,9 +39,14 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
         <p>Join in worship, prayer, and Scripture from our latest Sunday gathering.</p>
 
         <div class="service-hero__actions">
-          <a href={latestService.watchUrl} target="_blank" rel="noopener">Watch on YouTube</a>
-          <a href="https://www.youtube.com/@PineLkCovChurch/streams" target="_blank" rel="noopener">
-            View Full Streams Archive
+          <a class="btn" href={latestService.watchUrl} target="_blank" rel="noopener">Watch on YouTube</a>
+          <a
+            class="btn btn--ghost"
+            href="https://www.youtube.com/@PineLkCovChurch/streams"
+            target="_blank"
+            rel="noopener"
+          >
+            All services on YouTube
           </a>
         </div>
       </div>
@@ -150,37 +155,6 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
     flex-wrap: wrap;
     gap: 0.75rem;
     margin-top: 1.25rem;
-  }
-
-  .service-hero__actions a {
-    display: inline-block;
-    padding: 0.7rem 1.2rem;
-    border-radius: var(--radius-pill);
-    border: 1.5px solid var(--color-line);
-    text-decoration: none;
-    font-weight: 600;
-    color: var(--color-forest);
-    background: transparent;
-    transition:
-      background 0.2s var(--ease-out),
-      color 0.2s var(--ease-out);
-  }
-
-  .service-hero__actions a:hover {
-    background: var(--color-forest);
-    color: var(--color-white);
-    border-color: var(--color-forest);
-  }
-
-  .service-hero__actions a:first-child {
-    color: var(--color-white);
-    background: var(--color-moss);
-    border-color: var(--color-moss);
-  }
-
-  .service-hero__actions a:first-child:hover {
-    background: var(--color-forest);
-    border-color: var(--color-forest);
   }
 
   .section__header {

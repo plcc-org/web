@@ -29,6 +29,13 @@ const external = event.url.startsWith('http')
   </div>
 
   <div class="event-row__cta">
-    <a href={event.url} rel={external ? 'noopener' : undefined} target={external ? '_blank' : undefined}>Details →</a>
+    <a
+      class="btn btn--quiet btn--sm"
+      href={event.url}
+      rel={external ? 'noopener' : undefined}
+      target={external ? '_blank' : undefined}
+    >
+      Details <span aria-hidden="true">→</span>
+    </a>
   </div>
 </article>

@@ -190,20 +190,39 @@ body:has(.is-flush) .site-footer {
 }
 
 /* ----------------------------------------------------------------------
- * Buttons (reusable)
+ * Buttons
+ *
+ * Three tones and one size modifier, and that is the whole system:
+ *
+ *   .btn            moss fill        the page's primary action
+ *   .btn--ghost     outlined         a secondary action beside a primary one
+ *   .btn--quiet     stone fill       a repeated, low-emphasis action (rows,
+ *                                    lists) that shouldn't shout 40 times
+ *   .btn--sm        smaller          dense contexts: the header, table rows
+ *
+ * The header CTA, the messages-page actions, the event-row "Details" links and
+ * the leadership close button each used to hand-roll their own pill, with
+ * differing padding, border weights (1.5px vs 2px) and bespoke shadows. They
+ * now compose from these; the per-component classes that remain carry layout
+ * only (margins, block display), never appearance.
  * -------------------------------------------------------------------- */
 .btn {
   display: inline-block;
   padding: 0.85rem 1.75rem;
   background: var(--color-moss);
   color: var(--color-white);
+  border: 1.5px solid transparent;
   border-radius: var(--radius-pill);
   text-decoration: none;
   font-weight: 700;
   font-family: var(--font-sans);
+  text-align: center;
+  cursor: pointer;
   transition:
     transform 0.2s var(--ease-out),
     background 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
     box-shadow 0.2s var(--ease-out);
   box-shadow: var(--shadow-md);
 }
@@ -219,13 +238,35 @@ body:has(.is-flush) .site-footer {
   background: transparent;
   color: var(--color-forest);
   box-shadow: none;
-  border: 1.5px solid var(--color-line);
+  border-color: var(--color-line);
 }
 
 .btn--ghost:hover {
   background: var(--color-forest);
   color: var(--color-white);
   border-color: var(--color-forest);
+}
+
+/* Quiet: reads as a control rather than an invitation. For actions that repeat
+   down a list, where a moss pill on every row would be noise. */
+.btn--quiet {
+  background: var(--color-stone);
+  color: var(--color-forest);
+  border-color: var(--color-mist);
+  box-shadow: none;
+  font-weight: 600;
+}
+
+.btn--quiet:hover {
+  background: var(--color-moss);
+  color: var(--color-white);
+  border-color: var(--color-moss);
+  box-shadow: none;
+}
+
+.btn--sm {
+  padding: 0.5rem 1.25rem;
+  font-size: var(--text-sm);
 }
 
 /* On dark surfaces (hero scrim, forest bands/splits), a moss button reads as

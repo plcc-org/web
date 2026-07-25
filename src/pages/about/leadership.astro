@@ -85,8 +85,12 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
                     <a href={withBase(leader.data.link.href)}>{leader.data.link.label}</a>
                   </p>
                 )}
-                <button type="button" class="leader-detail__close" aria-label="Back to all staff">
-                  ← All staff
+                <button
+                  type="button"
+                  class="btn btn--ghost btn--sm leader-detail__close"
+                  aria-label="Back to all staff"
+                >
+                  <span aria-hidden="true">←</span> All staff
                 </button>
               </div>
             </article>

@@ -99,7 +99,10 @@
   flex-shrink: 0; /* never compress an item until its label wraps mid-phrase */
 }
 
-.site-nav a {
+/* The link reset deliberately excludes .btn: `.site-nav a` is (0,1,1) and would
+   otherwise outrank `.btn` (0,1,0), stripping the CTA's padding and repainting
+   its white label with the header's forest `inherit`. */
+.site-nav a:not(.btn) {
   text-decoration: none;
   color: inherit;
   white-space: nowrap;
@@ -108,7 +111,7 @@
   border-bottom: 2px solid transparent;
 }
 
-.site-nav a:not(.site-nav__cta):hover {
+.site-nav a:not(.btn):hover {
   color: var(--color-moss);
   border-bottom-color: var(--color-mist);
 }
@@ -137,30 +140,9 @@
   mask-size: contain;
 }
 
-.site-nav a.site-nav__cta {
-  background: var(--color-moss);
-  color: var(--color-white);
-  padding: 0.5rem 1.25rem;
-  border-radius: 999px;
-  border-bottom: none;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(106, 149, 41, 0.15);
-  margin-left: 0.5rem; /* Give it a little extra breathing room */
-}
-
-.site-nav a.site-nav__cta:hover {
-  background: var(--color-forest);
-  color: var(--color-white);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(26, 46, 12, 0.2);
-}
-
-.site-nav a:focus-visible,
-.link-card:focus-visible,
-.card:focus-visible,
-.site-footer a:focus-visible {
-  outline: 2px solid var(--color-moss);
-  outline-offset: 3px;
+/* Appearance comes from `.btn .btn--sm` in the markup; this only positions it. */
+.site-nav__cta {
+  margin-left: 0.5rem;
 }
 
 /* Hamburger menu for mobile and narrower desktops. The nav is capped at the
@@ -251,7 +233,7 @@
     border-top: 1px solid rgba(26, 46, 12, 0.08);
   }
 
-  .site-nav__list a:not(.site-nav__cta) {
+  .site-nav__list a:not(.btn) {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -260,7 +242,7 @@
     border-bottom: none;
   }
 
-  .site-nav__list a:not(.site-nav__cta)::after {
+  .site-nav__list a:not(.btn)::after {
     content: '›';
     font-size: 1.25rem;
     color: var(--color-moss);
@@ -268,13 +250,12 @@
     line-height: 1;
   }
 
-  /* CTA at the bottom, full width */
-  .site-nav a.site-nav__cta {
+  /* CTA at the bottom, full width — and back to full-size padding, since it's
+     the one prominent action in the drawer rather than a header-bar item. */
+  .site-nav__cta {
     display: block;
-    text-align: center;
     margin: 0.75rem 0 0;
     padding: 0.85rem 1.25rem;
-    border-radius: 999px;
   }
 
   .site-nav__list li:last-child {
