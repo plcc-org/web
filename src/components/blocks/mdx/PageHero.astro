@@ -4,7 +4,7 @@ import Split from '../../Split.astro'
 import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
 import { renderInline } from '../../../lib/markdown'
-import { withBase } from '../../../lib/url'
+import { resolveHref } from '../../../lib/url'
 
 // The page hero, from a CMS page's frontmatter `hero`. Renders the site's
 // reversed sand Split with the page H1 + lede — guaranteeing every CMS page has
@@ -29,7 +29,6 @@ type Props = {
 const { image, alt, eyebrow, title, subhead, lede, logo, logoAlt, buttonLabel, buttonHref, flush } = Astro.props
 const heroImg = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined
 const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined
-const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href : withBase(href))
 ---
 
 {
@@ -53,7 +52,8 @@ const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href
             widths={[340, 680]}
             sizes="(max-width: 600px) 70vw, 340px"
           />
-          <h1 class="page-hero__sr-title">{title}</h1>
+          {/* A real <h1> for the document outline, visually replaced by the logo above. */}
+          <h1 class="visually-hidden">{title}</h1>
         </Fragment>
       ) : (
         <h1 class="display">{title}</h1>
@@ -62,7 +62,7 @@ const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href
       {lede && <p class="lede" set:html={renderInline(lede)} />}
       {buttonHref && (
         <p>
-          <a class="btn" href={resolve(buttonHref)}>
+          <a class="btn" href={resolveHref(buttonHref)}>
             {buttonLabel || 'Learn more'}
           </a>
         </p>
@@ -76,7 +76,7 @@ const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href
       {lede && <p class="lede" set:html={renderInline(lede)} />}
       {buttonHref && (
         <p>
-          <a class="btn" href={resolve(buttonHref)}>
+          <a class="btn" href={resolveHref(buttonHref)}>
             {buttonLabel || 'Learn more'}
           </a>
         </p>
@@ -93,18 +93,5 @@ const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href
     height: auto;
     object-fit: contain;
     margin: 0 0 1rem;
-  }
-
-  /* A real <h1> for the document outline, visually replaced by the logo. */
-  .page-hero__sr-title {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
   }
 </style>

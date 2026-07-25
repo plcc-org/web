@@ -1,22 +1,10 @@
-// Canonical event domain types. Every events adapter (curated, Church Center,
-// ICS, PCO API) normalizes into CalendarEvent so the pages never depend on the
-// source. See docs/events-plan.md for the architecture.
+// Canonical event domain types. Every events adapter (curated, snapshot, and
+// later ICS or the PCO API) normalizes into CalendarEvent so the pages never
+// depend on the source.
 
 export type EventCategory = 'Everyone' | 'Families' | 'Youth' | 'Groups' | 'Serve'
 
-export type EventTag =
-  | 'Drop-in'
-  | 'Register'
-  | 'Childcare'
-  | 'Newcomers'
-  | 'Weekly'
-  | 'Monthly'
-  | 'Serving'
-  | 'Community'
-  | 'Families'
-  | 'Support'
-
-export type EventSource = 'curated' | 'churchcenter' | 'snapshot' | 'ics' | 'pco'
+export type EventSource = 'curated' | 'snapshot' | 'ics' | 'pco'
 
 export type CalendarEvent = {
   /** Stable id from the source — used for dedupe and as a render key. */
@@ -32,7 +20,6 @@ export type CalendarEvent = {
   /** Church Center / registration link, or an internal page path. */
   url: string
   category: EventCategory
-  tags?: EventTag[]
   featured?: boolean
   source: EventSource
 }

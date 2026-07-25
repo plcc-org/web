@@ -14,14 +14,33 @@
 
 export type DeployEnv = 'development' | 'staging' | 'production'
 
+function isDeployEnv(value: unknown): value is DeployEnv {
+  return value === 'production' || value === 'staging' || value === 'development'
+}
+
 export function resolveDeployEnv(): DeployEnv {
-  const explicit = process.env.DEPLOY_ENV?.toLowerCase()
-  if (explicit === 'production' || explicit === 'staging' || explicit === 'development') {
-    return explicit
-  }
+  // This module is loaded in two different places with two different envs:
+  //
+  //   1. astro.config.mjs, in Node, where process.env.DEPLOY_ENV is set.
+  //   2. Inside the app bundle (robots.txt.ts and anything else that imports
+  //      it), which Astro prerenders through a Vite SSR runner targeting
+  //      workerd. There, `process` exists but `process.env` is an empty shim,
+  //      so DEPLOY_ENV reads as undefined.
+  //
+  // Without the inlined value, (2) resolves to 'development' and robots.txt
+  // emits a blanket `Disallow: /` on every target, production included — a
+  // failure with no symptom short of the site vanishing from search.
+  // astro.config.mjs pins import.meta.env.DEPLOY_ENV to the value resolved in
+  // (1) so both agree; that's the branch the bundle takes. Keep this order.
+  const inlined = import.meta.env?.DEPLOY_ENV
+  if (isDeployEnv(inlined)) return inlined
+
+  const explicit = process.env?.DEPLOY_ENV?.toLowerCase()
+  if (isDeployEnv(explicit)) return explicit
+
   // Back-compat: CI builds (GitHub Actions, or Cloudflare Workers/Pages builds)
   // default to the staging target when DEPLOY_ENV isn't set explicitly.
-  if (process.env.GITHUB_ACTIONS || process.env.CF_PAGES || process.env.WORKERS_CI) {
+  if (process.env?.GITHUB_ACTIONS || process.env?.CF_PAGES || process.env?.WORKERS_CI) {
     return 'staging'
   }
   return 'development'

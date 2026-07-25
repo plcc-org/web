@@ -13,9 +13,14 @@ type Props = {
 }
 const { eyebrow, heading, columns, items = [] } = Astro.props
 const cols = Number(columns) === 3 ? 3 : 2
+
+// SectionHeader emits the h2 the card titles sit under. With no heading there's
+// nothing between the page h1 and the cards, so they step up to h2 rather than
+// leaving a gap in the outline. /beliefs/ is the case that exercises this.
+const headingLevel = heading ? 3 : 2
 ---
 
 <section class="section" data-reveal>
   {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
-  <AccentList items={items} columns={cols} />
+  <AccentList items={items} columns={cols} headingLevel={headingLevel} />
 </section>

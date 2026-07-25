@@ -13,7 +13,10 @@ type Props = {
   reveal?: boolean
 }
 
-const { heading = 'Start here', links, reveal = false } = Astro.props
+// Keystatic sends '' for an empty text field, not undefined — a default
+// parameter alone lets that through and renders a bare <h2>.
+const { heading: headingProp, links, reveal = false } = Astro.props
+const heading = headingProp?.trim() || 'Start here'
 
 // Pick a column count from the item count: as many columns as cards (capped at
 // 4 so cards don't get too narrow), except 5 splits 3+2 to avoid a lone 4+1

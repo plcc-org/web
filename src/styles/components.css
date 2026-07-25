@@ -45,7 +45,7 @@
 }
 
 .hero__img {
-  transition: opacity 0.6s ease;
+  transition: opacity var(--duration-slow) ease;
 }
 
 .hero__video {
@@ -112,7 +112,7 @@
 }
 
 .hero__content {
-  max-width: 44rem;
+  max-width: var(--measure-wide);
 }
 
 .hero__eyebrow {
@@ -219,7 +219,7 @@
 
 .split__body-inner {
   width: 100%;
-  max-width: 36rem;
+  max-width: var(--measure-narrow);
 }
 
 .split__heading {
@@ -268,9 +268,10 @@
     padding: clamp(1.75rem, 6vw, 2.75rem) var(--gutter);
   }
 
+  /* Stacked: the body gets the full column, but --measure-narrow still reads
+     well here, so only the alignment changes. */
   .split__body-inner,
   .split--reverse .split__body-inner {
-    max-width: 40rem;
     margin-left: 0;
   }
 }
@@ -282,14 +283,62 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+/* ----------------------------------------------------------------------
+ * The card surface
+ *
+ * One recipe — paper, a mist hairline, --radius-lg, --shadow-sm — shared by
+ * every card on the site. Add new cards to this list rather than restating the
+ * declarations; a second card material is immediately obvious on a page that
+ * shows both.
+ *
+ * Padding and layout stay with each component: a dense event row and a roomy
+ * link card want different spacing, but they should read as the same material.
+ * Some of these classes live in component-scoped <style> blocks, and a scoped
+ * rule outranks this one — so those files must declare only what's genuinely
+ * different (the accent list's moss edge, the moment card's clipped photo),
+ * never a full surface of their own.
+ * -------------------------------------------------------------------- */
+.card,
+.link-card,
+.story-quote,
+.event-card,
+.rhythm-card,
+.event-row,
+.accent-card,
+.moment-card,
+.moment-list__item,
+.service-card {
+  background: var(--color-paper);
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-forest);
+}
+
+/* The lift is the affordance: cards that do something on click get it, cards
+   that are just containers don't. That's why this is `a.card`, not `.card`. */
+a.card,
+.link-card,
+.event-row,
+.service-card {
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+a.card:hover,
+.link-card:hover,
+.event-row:hover,
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-moss-line);
+}
+
 .card {
   display: block;
   padding: clamp(1.5rem, 2.2vw, 1.85rem);
-  border-radius: var(--radius-lg);
-  background: var(--color-paper);
-  border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-sm);
-  color: var(--color-forest);
   text-decoration: none;
 }
 
@@ -322,18 +371,6 @@
 }
 
 /* Card links lift on hover; static card divs stay put */
-a.card {
-  transition:
-    transform 0.2s var(--ease-out),
-    box-shadow 0.2s var(--ease-out),
-    border-color 0.2s var(--ease-out);
-}
-
-a.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(106, 149, 41, 0.4);
-}
 
 .link-grid {
   --gap: 1.5rem;
@@ -371,49 +408,24 @@ a.card:hover {
   max-width: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
   min-width: 0;
   padding: clamp(1.5rem, 2.4vw, 2rem);
-  border-radius: var(--radius-lg);
-  background: var(--color-paper);
-  border: 1px solid var(--color-mist);
   text-decoration: none;
-  color: var(--color-forest);
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform 0.2s var(--ease-out),
-    box-shadow 0.2s var(--ease-out),
-    border-color 0.2s var(--ease-out);
-}
-
-.link-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(106, 149, 41, 0.4);
 }
 
 .link-card strong {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   margin-bottom: 0.5rem;
 }
 
 .link-card__meta {
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-clay);
 }
 
-.ratio-16x9 {
-  aspect-ratio: 16 / 9;
-}
-.ratio-1x1 {
-  aspect-ratio: 1 / 1;
-}
 .ratio-4x5 {
   aspect-ratio: 4 / 5;
 }
-.ratio-4x3 {
-  aspect-ratio: 4 / 3;
-}
-
 /* Media primitives: photos, video, embeds */
 .media {
   margin: var(--space-m) 0;
@@ -427,7 +439,7 @@ a.card:hover {
   display: grid;
   place-items: center;
   overflow: hidden;
-  box-shadow: var(--shadow-diffuse);
+  box-shadow: var(--shadow-md);
   position: relative;
 }
 
@@ -447,28 +459,10 @@ a.card:hover {
 
 .media__caption {
   margin-top: 0.75rem;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-clay);
   font-family: var(--font-serif);
   font-style: italic;
-}
-
-.media__label {
-  color: var(--color-clay);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 0.9rem;
-}
-
-.embed {
-  margin: 2rem 0;
-  aspect-ratio: 16 / 9;
-}
-
-.embed iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
 }
 
 .chip-row {
@@ -503,20 +497,9 @@ a.card:hover {
   margin-top: 0.5rem;
 }
 
-.story-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-  margin-top: var(--space-lg);
-}
-
 .event-card {
   display: flow-root;
   padding: 2rem;
-  border-radius: var(--radius-soft);
-  background: var(--color-white);
-  box-shadow: var(--shadow-diffuse);
-  border: 1px solid var(--color-mist);
 }
 
 .event-date {
@@ -524,7 +507,7 @@ a.card:hover {
   width: 100px;
   margin: 0 1.5rem 1rem 0;
   text-align: center;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   background: var(--color-stone);
   padding: 0.75rem;
   font-family: var(--font-serif);
@@ -533,13 +516,13 @@ a.card:hover {
 
 .event-day {
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: var(--text-xl);
   line-height: 1;
   color: var(--color-moss);
 }
 
 .event-md {
-  font-size: 0.85rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-clay);
@@ -553,7 +536,7 @@ a.card:hover {
 }
 
 .event-time {
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   color: var(--color-clay);
   margin-top: 0.15rem;
 }
@@ -563,7 +546,7 @@ a.card:hover {
 }
 
 .event-meta {
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-clay);
@@ -586,18 +569,6 @@ a.card:hover {
   align-items: center;
   gap: 1.25rem;
   padding: 1rem 1.35rem;
-  background: var(--color-white);
-  border: 1px solid var(--color-mist);
-  border-radius: var(--radius-soft);
-  box-shadow: var(--shadow-diffuse);
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.event-row:hover {
-  transform: translateY(-2px);
-  border-color: rgba(106, 149, 41, 0.4);
 }
 
 .event-row__date-chip {
@@ -606,14 +577,14 @@ a.card:hover {
   text-align: center;
   min-width: 3.9rem;
   padding: 0.5rem 0.65rem;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   background: var(--color-stone);
   border: 1px solid var(--color-mist);
   line-height: 1.15;
 }
 
 .event-row__dow {
-  font-size: 0.72rem;
+  font-size: var(--text-2xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-clay);
@@ -621,7 +592,7 @@ a.card:hover {
 
 .event-row__dnum {
   font-family: var(--font-serif);
-  font-size: 1.05rem;
+  font-size: var(--text-base);
   font-weight: 800;
   color: var(--color-moss);
 }
@@ -632,7 +603,7 @@ a.card:hover {
 
 .event-row__title {
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: var(--text-md);
   font-weight: 700;
   color: var(--color-forest);
   line-height: 1.2;
@@ -644,28 +615,14 @@ a.card:hover {
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-top: 0.35rem;
-  font-size: 0.9rem;
+  font-size: var(--text-ui);
   color: var(--color-clay);
 }
 
+/* Appearance comes from `.btn .btn--quiet .btn--sm`; this only stops the label
+   wrapping mid-row. */
 .event-row__cta a {
-  display: inline-block;
   white-space: nowrap;
-  padding: 0.45rem 1.05rem;
-  border-radius: 999px;
-  background: var(--color-stone);
-  border: 1px solid var(--color-mist);
-  color: var(--color-forest);
-  font-weight: 600;
-  font-size: 0.85rem;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.event-row__cta a:hover {
-  background: var(--color-moss);
-  color: var(--color-white);
-  border-color: var(--color-moss);
 }
 
 .rhythm-grid {
@@ -676,16 +633,12 @@ a.card:hover {
 
 .rhythm-card {
   padding: 1.5rem;
-  border-radius: var(--radius-soft);
-  background: var(--color-white);
-  border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-diffuse);
 }
 
 .rhythm-card strong {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: var(--text-md);
   color: var(--color-forest);
   margin-bottom: 0.35rem;
 }
@@ -699,32 +652,16 @@ a.card:hover {
     grid-column: 1 / -1;
   }
 
+  /* Full-width tap target when the CTA drops to its own row. (.btn already
+     centres its label.) */
   .event-row__cta a {
     display: block;
-    text-align: center;
-  }
-}
-
-/* Door cards (Neighbors page) */
-.doors {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 900px) {
-  .doors {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 /* Story/quote cards */
 .story-quote {
   padding: clamp(1.75rem, 2.6vw, 2.4rem);
-  border-radius: var(--radius-lg);
-  background: var(--color-paper);
-  border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
 }
@@ -746,7 +683,7 @@ a.card:hover {
   flex-grow: 1;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.15rem;
+  font-size: var(--text-md);
   line-height: 1.5;
   color: var(--color-forest);
   max-width: none;
@@ -757,7 +694,7 @@ a.card:hover {
   margin-top: 1.25rem;
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--color-clay);

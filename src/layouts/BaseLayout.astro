@@ -1,6 +1,8 @@
 ---
 import { getImage, Font } from 'astro:assets'
 import { withBase } from '../lib/url'
+import { churchGraph, jsonLdDocument } from '../lib/structured-data'
+import { brand } from '../config/church'
 import '../styles/global.css'
 import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
 import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
@@ -13,15 +15,27 @@ type Props = {
   title?: string
   description?: string
   noindex?: boolean
+  /**
+   * Extra schema.org nodes to merge into the page's `@graph` alongside the
+   * Church node emitted here (see src/lib/structured-data.ts). Pages that have
+   * something genuinely additional to declare — the events board, for
+   * instance — pass it; most pages don't need this.
+   */
+  structuredData?: Record<string, unknown>[]
 }
 
 const {
   title = 'Pine Lake Covenant Church',
   description = 'A church in Sammamish, discovering life with Jesus together.',
   noindex = false,
+  structuredData = [],
 }: Props = Astro.props
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
+
+// The share card carries no photo — just the wordmark on the hero glow (see
+// scripts/generate-social-card.mjs) — so one alt string covers every page.
+const SOCIAL_IMAGE_ALT = 'The Pine Lake Covenant Church wordmark on a deep green background'
 
 // Social share image (1200x630), Apple touch icon, and favicons, generated at build time.
 const socialImage = await getImage({ src: socialImageSource, width: 1200, height: 630, fit: 'cover', format: 'png' })
@@ -31,6 +45,18 @@ const favicon16 = await getImage({ src: faviconSource, width: 16, height: 16, fo
 const favicon32 = await getImage({ src: faviconSource, width: 32, height: 32, format: 'png' })
 // Open Graph images must be absolute URLs.
 const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toString() : socialImage.src
+
+// Structured data needs absolute `@id`s to be stable, so it only emits when a
+// `site` origin is configured — i.e. staging and production, never dev. Same
+// guard the canonical link uses.
+const origin = Astro.site ? Astro.site.origin : undefined
+const absolute = (path: string) => (Astro.site ? new URL(path, Astro.site).toString() : path)
+const jsonLd = origin
+  ? jsonLdDocument([
+      ...churchGraph(origin, { logo: absolute(appleTouchIcon.src), image: socialImageUrl }),
+      ...structuredData,
+    ])
+  : undefined
 ---
 
 <!doctype html>
@@ -49,7 +75,7 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
     {canonical && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-    <meta name="theme-color" content="#6a9529" />
+    <meta name="theme-color" content={brand.theme} />
 
     <!-- Icons + PWA manifest -->
     <link rel="icon" href={favicon32.src} type="image/png" sizes="32x32" />
@@ -67,6 +93,8 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    {/* The card is the same for every page, so its alt text is fixed too. */}
+    <meta property="og:image:alt" content={SOCIAL_IMAGE_ALT} />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
@@ -74,6 +102,10 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content={SOCIAL_IMAGE_ALT} />
+
+    {/* schema.org graph — Church + Place, plus anything the page adds. */}
+    {jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd} />}
   </head>
 
   <body>
@@ -105,7 +137,7 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
           <li><a href={withBase('church-life/')}>Church Life</a></li>
           <li><a href={withBase('events/')}>What’s On</a></li>
           <li><a href={withBase('messages/')}>Messages</a></li>
-          <li><a href={withBase('visit/')} class="site-nav__cta">Plan a Visit</a></li>
+          <li><a href={withBase('visit/')} class="btn btn--sm site-nav__cta">Plan a Visit</a></li>
         </ul>
       </nav>
     </header>

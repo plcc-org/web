@@ -7,6 +7,7 @@
     "dev": "ASTRO_DEV=1 astro dev",
     "dev:container": "container run --name plcc-dev --detach --rm --env ASTRO_CONTAINER_DEV=1 --publish 4321:4321 --mount type=bind,source=\"$PWD\",target=/workspace --tmpfs /workspace/node_modules --workdir /workspace docker.io/library/node:lts sh -lc \"npm ci && npm run dev -- --host 0.0.0.0 --port 4321\"",
     "dev:container:stop": "container stop plcc-dev",
+    "_comment_prebuild": "Vite's SSR dep cache goes stale across Astro/adapter upgrades and surfaces as 'The file does not exist at node_modules/.vite/deps_ssr/...'. Cheap to drop; always drop it.",
     "prebuild": "rm -rf node_modules/.vite",
     "build": "astro build",
     "preview": "astro preview",
@@ -15,6 +16,7 @@
     "test": "vitest run",
     "test:site": "node scripts/check-site.mjs",
     "scrape:events": "node scripts/scrape-events.mjs",
+    "generate:social-card": "node scripts/generate-social-card.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -43,6 +45,7 @@
     "playwright": "^1.61.1",
     "prettier": "^3.8.4",
     "prettier-plugin-astro": "^0.14.1",
+    "sharp": "^0.34.4",
     "typescript": "^6.0.3",
     "vitest": "^4.1.9",
     "wrangler": "^4.102.0"

@@ -1,10 +1,23 @@
 name: CI
 
-# Validate pull requests (formatting, types, build) without deploying.
-# Direct pushes to main run the same checks inside deploy.yml.
+# Every change to main is verified, however it arrives.
+#
+# Cloudflare builds and publishes whatever lands on main, and it does not run
+# these checks. This workflow is the only gate, so it has to cover direct
+# pushes as well as pull requests.
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer commit on the same branch supersedes an in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:
@@ -18,8 +31,24 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      # Environment-independent: formatting, types, unit tests.
       - run: npm run format:check
       - run: npm run check
       - run: npm run test
-      - run: npm run build
-      - run: npm run test:site
+
+      # Build and crawl both deploy targets. `site`, the sitemap and robots.txt
+      # are all environment-dependent, and production is the target nobody
+      # exercises locally — an indexability mistake there is invisible until it
+      # costs the site its search presence. scripts/check-site.mjs asserts
+      # robots.txt matches DEPLOY_ENV, but only for the target in front of it,
+      # so both have to be built for the assertion to mean anything.
+      - name: Verify staging target
+        run: npm run build && npm run test:site
+        env:
+          DEPLOY_ENV: staging
+
+      - name: Verify production target
+        run: npm run build && npm run test:site
+        env:
+          DEPLOY_ENV: production

@@ -1,7 +1,8 @@
 // Post-build integrity check: crawls the built dist/ and fails (exit 1) on
 //   1. internal <a href> links that don't resolve to a generated page,
 //   2. content <img> with missing/empty alt (decorative icons are allow-listed),
-//   3. missing public permalinks (URLs promised to the outside world).
+//   3. missing public permalinks (URLs promised to the outside world),
+//   4. meta descriptions that are missing, duplicated, or leaking Markdown.
 // Run after `npm run build`:  node scripts/check-site.mjs
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
@@ -41,9 +42,26 @@ const resolves = (p) => {
 const errors = []
 let linkCount = 0
 let imgCount = 0
+const descriptions = new Map()
 
 for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf-8')
+
+  // Every page needs its own description, free of Markdown syntax. A page that
+  // passes none silently inherits the generic site tagline, and a hero lede
+  // reused verbatim carries its `_emphasis_` markers into the search snippet.
+  // Neither shows on the rendered page, so assert them here.
+  const desc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1]
+  if (!desc?.trim()) {
+    errors.push(`missing description  ${file}`)
+  } else {
+    if (/(^|\s)[_*]\w|\w[_*]($|\s)|\[.+\]\(.+\)/.test(desc)) {
+      errors.push(`markdown in description  ${file}  →  ${desc.slice(0, 70)}`)
+    }
+    const seen = descriptions.get(desc)
+    if (seen) errors.push(`duplicate description  ${file}  ↔  ${seen}`)
+    else descriptions.set(desc, file)
+  }
 
   for (const m of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/gi)) {
     const href = m[1]
@@ -56,8 +74,12 @@ for (const file of htmlFiles) {
   for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
     const tag = m[0]
     const src = (tag.match(/\bsrc="([^"]*)"/) || [])[1] || ''
-    const decorative = src.startsWith('data:') || /yt_icon/.test(src) // IG glyph + YouTube icon sit beside text labels
-    if (decorative) continue
+    // An image is decorative only if it says so. `alt=""` *together with*
+    // aria-hidden is an explicit declaration; `alt=""` on its own is far more
+    // often an oversight, so it still fails. (data: URIs and the YouTube glyph
+    // are allow-listed by source — both sit beside their own text label.)
+    const declaredDecorative = /\baria-hidden="true"/.test(tag) && /\balt=""/.test(tag)
+    if (declaredDecorative || src.startsWith('data:') || /yt_icon/.test(src)) continue
     imgCount++
     const alt = tag.match(/\balt="([^"]*)"/)
     if (!alt) errors.push(`img missing alt  ${file}  →  ${src.slice(0, 60)}`)
@@ -77,10 +99,38 @@ for (const { route } of externalPermalinks) {
   if (!existsSync(`${DIST}/${route ? `${route}/` : ''}index.html`)) errors.push(`missing public permalink  /${route}`)
 }
 
-console.log(`Checked ${htmlFiles.length} pages, ${linkCount} internal links, ${imgCount} images (base "${base}").`)
+// robots.txt must match the target it was built for. Indexability is resolved
+// through a fragile path (see resolveDeployEnv in src/config/site.ts), and
+// getting it wrong has no symptom on the rendered site — production simply
+// never gets indexed. Assert the emitted file rather than trusting the
+// resolution.
+const isProduction = (process.env.DEPLOY_ENV || '').toLowerCase() === 'production'
+const robotsPath = `${DIST}/robots.txt`
+if (!existsSync(robotsPath)) {
+  errors.push('missing robots.txt')
+} else {
+  const robots = readFileSync(robotsPath, 'utf-8')
+  if (isProduction) {
+    if (!/^Allow: \/$/m.test(robots)) errors.push('robots.txt: production build is not indexable')
+    if (!/^Sitemap: https?:\/\//m.test(robots)) errors.push('robots.txt: production build has no Sitemap line')
+    for (const path of ['/keystatic', '/api/']) {
+      if (!robots.includes(`Disallow: ${path}`)) errors.push(`robots.txt: production build does not disallow ${path}`)
+    }
+  } else if (!/^Disallow: \/$/m.test(robots)) {
+    errors.push(`robots.txt: non-production build is indexable (DEPLOY_ENV=${process.env.DEPLOY_ENV || 'unset'})`)
+  }
+}
+
+console.log(
+  `Checked ${htmlFiles.length} pages, ${linkCount} internal links, ${imgCount} images, ` +
+    `${descriptions.size} descriptions (base "${base}").`
+)
 if (errors.length) {
   console.error(`\n✗ ${errors.length} problem(s):`)
   for (const e of errors) console.error(`  ${e}`)
   process.exit(1)
 }
-console.log('✓ All internal links resolve, all content images have alt text, all public permalinks present.')
+console.log(
+  '✓ All internal links resolve, all content images have alt text, ' +
+    'every page has its own clean description, all public permalinks present.'
+)

@@ -29,7 +29,16 @@ export default defineConfig({
   // runtime can't supply the Node globals Keystatic's admin needs ("module is
   // not defined"). Dev serves every route fine without an adapter.
   adapter: process.env.ASTRO_DEV ? undefined : cloudflare({ imageService: 'compile' }),
-  integrations: [react(), keystatic(), mdx(), sitemap()],
+  integrations: [
+    react(),
+    keystatic(),
+    mdx(),
+    // SSR-only routes are already excluded, so /keystatic doesn't appear today.
+    // The filter is a guard: if Keystatic ever prerenders its shell, or another
+    // admin route is added, it would otherwise be advertised to crawlers
+    // silently. Mirrors the Disallow list in src/pages/robots.txt.ts.
+    sitemap({ filter: (page) => !/\/(keystatic|api)(\/|$)/.test(new URL(page).pathname) }),
+  ],
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL
   // that can rot) and emitted as content-hashed, CDN-cacheable static assets.
@@ -87,12 +96,21 @@ export default defineConfig({
       EVENTS_SOURCE: envField.enum({
         context: 'server',
         access: 'public',
-        values: ['curated', 'churchcenter', 'snapshot', 'ics', 'pco'],
+        // Keep in sync with EventSource in src/lib/events/types.ts.
+        values: ['curated', 'snapshot', 'ics', 'pco'],
         optional: true,
       }),
     },
   },
   vite: {
+    define: {
+      // The prerender bundle runs against an empty `process.env` shim (the
+      // Cloudflare adapter targets workerd), so src/config/site.ts can't read
+      // DEPLOY_ENV there and would re-resolve to 'development' — emitting a
+      // blanket `Disallow: /` robots.txt even on production. Pin the value
+      // resolved here, in Node, so both contexts agree. See resolveDeployEnv().
+      'import.meta.env.DEPLOY_ENV': JSON.stringify(siteConfig.env),
+    },
     server: {
       allowedHosts: ['plcc-dev.internal', 'plcc.internal', 'localhost'],
       watch: process.env.ASTRO_CONTAINER_DEV

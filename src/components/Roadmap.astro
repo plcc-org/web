@@ -7,8 +7,11 @@ import SectionHeader from './SectionHeader.astro'
 // single row (one column per step); it collapses to a vertical list on narrow
 // screens.
 type Step = { title: string; body: string }
-type Props = { eyebrow?: string; heading?: string; steps: Step[] }
-const { eyebrow, heading, steps } = Astro.props
+type Props = { eyebrow?: string; heading?: string; steps?: Step[] }
+// Defaulted so the Keystatic block maps straight to this component with no
+// pass-through wrapper: an editor who adds the block before filling it in
+// sends no steps at all.
+const { eyebrow, heading, steps = [] } = Astro.props
 ---
 
 <section class="section roadmap-section" data-reveal>
@@ -71,12 +74,12 @@ const { eyebrow, heading, steps } = Astro.props
     transform: translateX(-50%);
     width: 2.15rem;
     height: 2.15rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     display: grid;
     place-items: center;
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: 0.92rem;
+    font-size: var(--text-ui);
     color: var(--color-white);
     background: var(--color-moss);
     box-shadow: 0 6px 16px rgba(26, 46, 12, 0.2);
@@ -93,7 +96,7 @@ const { eyebrow, heading, steps } = Astro.props
   .roadmap__desc {
     display: block;
     margin-top: 0.5rem;
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     line-height: 1.5;
     color: var(--color-ink-soft);
   }

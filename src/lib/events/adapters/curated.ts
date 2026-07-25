@@ -6,7 +6,7 @@
 // stale. Add confirmed one-off events to `fixedEvents` as their real dates and
 // Church Center links become available.
 
-import type { CalendarEvent, EventCategory, EventTag } from '../types'
+import type { CalendarEvent, EventCategory } from '../types'
 
 // --- Pacific-time helpers --------------------------------------------------
 // CI runs in UTC, so we compute Pacific wall-clock dates explicitly (DST-aware
@@ -69,7 +69,6 @@ type WeeklyRhythm = {
   summary: string
   url: string
   category: EventCategory
-  tags?: EventTag[]
   featured?: boolean
   /** How many upcoming instances to surface. */
   instances: number
@@ -87,7 +86,6 @@ const WEEKLY_RHYTHMS: WeeklyRhythm[] = [
     summary: 'Worship, teaching, and programs for kids and youth.',
     url: '/visit/',
     category: 'Everyone',
-    tags: ['Weekly', 'Newcomers'],
     featured: true,
     instances: 6,
   },
@@ -102,7 +100,6 @@ const WEEKLY_RHYTHMS: WeeklyRhythm[] = [
     summary: 'Dinner at 6pm, then connection time, worship, teaching, and small groups for middle & high school.',
     url: '/youth/',
     category: 'Youth',
-    tags: ['Weekly'],
     instances: 4,
   },
 ]
@@ -125,7 +122,6 @@ export async function curatedEvents(): Promise<CalendarEvent[]> {
         summary: r.summary,
         url: r.url,
         category: r.category,
-        tags: r.tags,
         featured: r.featured,
         source: 'curated' as const,
       }

@@ -6,8 +6,10 @@
 // glow rising from the bottom-centre — and composites the white wordmark on
 // top. No photo, so the card looks consistent everywhere it's shared.
 //
-// Run with: node scripts/generate-social-card.mjs
-// Re-run whenever the glow colours (tokens.css) or the wordmark change.
+// Run with: npm run generate:social-card
+// Re-run whenever the glow colours (tokens.css) or the wordmark change, then
+// commit the regenerated PNG — the build reads the committed file, it is not
+// generated during `npm run build`.
 
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'

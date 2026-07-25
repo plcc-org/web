@@ -2,10 +2,20 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import EventsBoard from '../../components/EventsBoard.astro'
 import { getUpcomingEvents } from '../../lib/events/provider'
+import { eventGraph } from '../../lib/structured-data'
 
 const events = await getUpcomingEvents()
+
+// Event JSON-LD lives on this board only, not on the four category pages: the
+// same event under five URLs would read as five entities. See structured-data.ts.
+const origin = Astro.site?.origin
+const structuredData = origin ? eventGraph(origin, events) : []
 ---
 
-<BaseLayout title="What’s On | Pine Lake Covenant Church">
+<BaseLayout
+  title="What’s On | Pine Lake Covenant Church"
+  description="What’s coming up at Pine Lake — Sunday gatherings, groups, family events, and ways to help out around Sammamish."
+  structuredData={structuredData}
+>
   <EventsBoard events={events} selected="Everyone" />
 </BaseLayout>

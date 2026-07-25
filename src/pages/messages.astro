@@ -5,7 +5,10 @@ import { getSundayServices } from '../lib/messages'
 const { latest: latestService, archive: archiveServices } = await getSundayServices()
 ---
 
-<BaseLayout title="Messages | Pine Lake Covenant Church">
+<BaseLayout
+  title="Messages | Pine Lake Covenant Church"
+  description="Watch recent Sunday services from Pine Lake Covenant Church in Sammamish — teaching, music, and prayer, whenever suits you."
+>
   <div class="canvas archive-page">
     <header class="section page-intro archive-header">
       <p class="eyebrow">Sunday Messages</p>
@@ -36,9 +39,14 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
         <p>Join in worship, prayer, and Scripture from our latest Sunday gathering.</p>
 
         <div class="service-hero__actions">
-          <a href={latestService.watchUrl} target="_blank" rel="noopener">Watch on YouTube</a>
-          <a href="https://www.youtube.com/@PineLkCovChurch/streams" target="_blank" rel="noopener">
-            View Full Streams Archive
+          <a class="btn" href={latestService.watchUrl} target="_blank" rel="noopener">Watch on YouTube</a>
+          <a
+            class="btn btn--ghost"
+            href="https://www.youtube.com/@PineLkCovChurch/streams"
+            target="_blank"
+            rel="noopener"
+          >
+            All services on YouTube
           </a>
         </div>
       </div>
@@ -56,14 +64,28 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
           archiveServices.map((service) => (
             <li>
               <article class="service-card">
-                <a class="service-card__image-link" href={service.watchUrl} target="_blank" rel="noopener">
-                  <img src={service.thumbnailUrl} alt={service.title} loading="lazy" width="480" height="360" />
-                </a>
+                {/* The thumbnail is decorative — it repeats the <h3> below it.
+                    Deliberately inert: linking it as well would give every card
+                    two links to the same URL, so keyboard and screen-reader
+                    users would hit each service twice. The link below carries
+                    the accessible name. */}
+                <span class="service-card__media">
+                  <img
+                    src={service.thumbnailUrl}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
+                    referrerpolicy="no-referrer"
+                    width="480"
+                    height="360"
+                  />
+                </span>
                 <div class="service-card__body">
                   <p class="service-card__date">{service.dateLabel}</p>
                   <h3>{service.title}</h3>
                   <a href={service.watchUrl} target="_blank" rel="noopener">
-                    Watch Service
+                    Watch <span class="visually-hidden">{service.title}</span> on YouTube
                   </a>
                 </div>
               </article>
@@ -136,37 +158,6 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
     margin-top: 1.25rem;
   }
 
-  .service-hero__actions a {
-    display: inline-block;
-    padding: 0.7rem 1.2rem;
-    border-radius: var(--radius-pill);
-    border: 1.5px solid var(--color-line);
-    text-decoration: none;
-    font-weight: 600;
-    color: var(--color-forest);
-    background: transparent;
-    transition:
-      background 0.2s var(--ease-out),
-      color 0.2s var(--ease-out);
-  }
-
-  .service-hero__actions a:hover {
-    background: var(--color-forest);
-    color: var(--color-white);
-    border-color: var(--color-forest);
-  }
-
-  .service-hero__actions a:first-child {
-    color: var(--color-white);
-    background: var(--color-moss);
-    border-color: var(--color-moss);
-  }
-
-  .service-hero__actions a:first-child:hover {
-    background: var(--color-forest);
-    border-color: var(--color-forest);
-  }
-
   .section__header {
     margin-bottom: 1rem;
   }
@@ -189,24 +180,14 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
     grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
   }
 
+  /* Surface + lift from the shared card recipe; the clip keeps the thumbnail
+     inside the card's radius. */
   .service-card {
     height: 100%;
-    border-radius: var(--radius-lg);
     overflow: hidden;
-    border: 1px solid var(--archive-border);
-    background: var(--archive-surface);
-    box-shadow: var(--shadow-sm);
-    transition:
-      transform 0.2s var(--ease-out),
-      box-shadow 0.2s var(--ease-out);
   }
 
-  .service-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
-  }
-
-  .service-card__image-link {
+  .service-card__media {
     display: block;
     aspect-ratio: 4 / 3;
     overflow: hidden;
@@ -217,11 +198,13 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 160ms ease;
+    transition: transform var(--duration-fast) ease;
   }
 
-  .service-card__image-link:hover img,
-  .service-card__image-link:focus-visible img {
+  /* Driven from the card, not the thumbnail: the thumbnail is inert and can't
+     take focus, and the zoom should answer the card's one link. */
+  .service-card:hover img,
+  .service-card:focus-within img {
     transform: scale(1.04);
   }
 
@@ -231,13 +214,13 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
 
   .service-card__date {
     margin: 0;
-    font-size: 0.84rem;
+    font-size: var(--text-xs);
     color: var(--archive-muted);
   }
 
   .service-card h3 {
     margin: 0.5rem 0 0.6rem;
-    font-size: 1rem;
+    font-size: var(--text-base);
     line-height: 1.3;
   }
 

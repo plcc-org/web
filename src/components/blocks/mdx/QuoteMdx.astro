@@ -32,7 +32,7 @@ const { quote, attribution, tone = 'none' } = Astro.props
   /* Out of the card: let the quote sit in open space like the carousel's solo
      slide — drop the paper panel, keep the centered serif and moss accent. */
   .pull-quote {
-    max-width: 48rem;
+    max-width: var(--measure-wide);
     margin-inline: auto;
     padding: 0;
     background: none;
@@ -53,7 +53,7 @@ const { quote, attribution, tone = 'none' } = Astro.props
   /* Toned variant: a centered serif "verse" set inside the colored band. Colors
      inherit from the band tone so it reads on dark or light. */
   :global(.verse-band .band__inner) {
-    max-width: 48rem;
+    max-width: var(--measure-wide);
     text-align: center;
   }
 

@@ -8,6 +8,14 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
+/* The heading is the grid item. It exists for the outline, not for looks, so
+   it carries no type of its own — .leader-card__name inside sets that. */
+.leader-card-heading {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
 /* Cards are buttons that open an in-place profile — strip the native chrome. */
 .leader-card {
   display: flex;
@@ -26,8 +34,9 @@
 }
 
 .leader-card__photo {
+  display: block;
   margin-bottom: 1.75rem;
-  transition: transform 0.4s var(--ease-out);
+  transition: transform var(--duration-mid) var(--ease-out);
 }
 
 .leader-card:hover .leader-card__photo {
@@ -36,7 +45,7 @@
 
 .leader-card__photo .media__frame,
 .leader-detail__photo .media__frame {
-  box-shadow: var(--shadow-diffuse);
+  box-shadow: var(--shadow-md);
   background-color: var(--color-white);
   padding: 0.65rem;
   border: 1px solid var(--color-mist);
@@ -45,7 +54,7 @@
 .leader-card__name {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.65rem;
+  font-size: var(--text-xl);
   font-weight: 700;
   color: var(--color-forest);
   margin: 0 0 0.35rem;
@@ -57,7 +66,7 @@
   display: block;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.1rem;
+  font-size: var(--text-md);
   color: var(--color-clay);
   line-height: 1.35;
   margin: 0;
@@ -97,7 +106,7 @@
 }
 
 .leader-detail__name {
-  font-size: 2rem;
+  font-size: var(--text-xl);
 }
 
 .leader-detail__title {
@@ -114,7 +123,7 @@
 
 .leader-detail__meta {
   margin-top: 1.5rem;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   font-family: var(--font-sans);
 }
 
@@ -123,7 +132,7 @@
   font-weight: 700;
   text-decoration: none;
   border-bottom: 2px solid var(--color-mist);
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast) ease;
 }
 
 .leader-detail__meta a:hover {
@@ -131,21 +140,26 @@
   border-bottom-color: var(--color-moss);
 }
 
+/* Deliberately not a .btn. This is a way back, not a call to action, and the
+   button system's ghost variant fills solid forest on hover — far too much
+   weight for a return link on a quiet, photo-led page. Moss text on an
+   unfilled ground, staying light throughout, is the page's own register.
+   Leave it out of any future button consolidation. */
 .leader-detail__close {
   margin-top: 2rem;
   padding: 0.5rem 1.25rem;
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-moss);
   background: none;
   border: 2px solid var(--color-mist);
   border-radius: var(--radius-pill);
   cursor: pointer;
   transition:
-    color 0.2s var(--ease-out),
-    border-color 0.2s var(--ease-out),
-    background 0.2s var(--ease-out);
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
 }
 
 .leader-detail__close:hover {

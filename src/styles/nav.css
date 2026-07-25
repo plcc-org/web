@@ -10,8 +10,8 @@
   padding-bottom: 1.75rem;
   background: transparent;
   transition:
-    background 0.3s var(--ease-out),
-    box-shadow 0.3s var(--ease-out);
+    background var(--duration-mid) var(--ease-out),
+    box-shadow var(--duration-mid) var(--ease-out);
 }
 
 /* Once the page is scrolled, the bar frosts over. The height stays constant
@@ -38,7 +38,7 @@
   -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
   mask-image: linear-gradient(to bottom, #000, transparent);
   opacity: 0;
-  transition: opacity 0.35s var(--ease-out);
+  transition: opacity var(--duration-mid) var(--ease-out);
 }
 
 .site-header.is-scrolled::after {
@@ -92,36 +92,28 @@
   margin: 0;
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
 }
 
 .site-nav__list li {
   flex-shrink: 0; /* never compress an item until its label wraps mid-phrase */
 }
 
-.site-nav a {
+/* The link reset must exclude .btn: `.site-nav a` is (0,1,1) and outranks
+   `.btn` (0,1,0), so without the :not() it strips the CTA's padding and
+   repaints its white label with the header's forest `inherit`. */
+.site-nav a:not(.btn) {
   text-decoration: none;
   color: inherit;
   white-space: nowrap;
-  transition: all 180ms ease;
+  transition: all var(--duration-fast) ease;
   padding: 0.25rem 0;
   border-bottom: 2px solid transparent;
 }
 
-.site-nav a:not(.site-nav__cta):hover {
+.site-nav a:not(.btn):hover {
   color: var(--color-moss);
   border-bottom-color: var(--color-mist);
-}
-
-/* Legacy circular mark stays available for future use */
-.logo-circle {
-  display: block;
-  width: 3.3rem;
-  height: 3.3rem;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(26, 46, 12, 0.2);
 }
 
 /* Current wordmark in brand green via image mask */
@@ -137,7 +129,7 @@
   width: clamp(10.5rem, 22vw, 13rem);
   height: clamp(1.8rem, 3.8vw, 2.25rem);
   display: inline-block;
-  background-color: #73943b;
+  background-color: var(--color-moss-2);
   -webkit-mask-image: var(--logo-wordmark-url);
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -148,30 +140,9 @@
   mask-size: contain;
 }
 
-.site-nav a.site-nav__cta {
-  background: var(--color-moss);
-  color: var(--color-white);
-  padding: 0.5rem 1.25rem;
-  border-radius: 999px;
-  border-bottom: none;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(106, 149, 41, 0.15);
-  margin-left: 0.5rem; /* Give it a little extra breathing room */
-}
-
-.site-nav a.site-nav__cta:hover {
-  background: var(--color-forest);
-  color: var(--color-white);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(26, 46, 12, 0.2);
-}
-
-.site-nav a:focus-visible,
-.link-card:focus-visible,
-.card:focus-visible,
-.site-footer a:focus-visible {
-  outline: 2px solid var(--color-moss);
-  outline-offset: 3px;
+/* Appearance comes from `.btn .btn--sm` in the markup; this only positions it. */
+.site-nav__cta {
+  margin-left: 0.5rem;
 }
 
 /* Hamburger menu for mobile and narrower desktops. The nav is capped at the
@@ -206,8 +177,8 @@
     border: none;
     cursor: pointer;
     padding: 0.5rem;
-    border-radius: 8px;
-    transition: background 180ms ease;
+    border-radius: var(--radius-sm);
+    transition: background var(--duration-fast) ease;
   }
 
   .site-nav__toggle:hover {
@@ -259,33 +230,32 @@
   }
 
   .site-nav__list li + li {
-    border-top: 1px solid rgba(26, 46, 12, 0.08);
+    border-top: 1px solid var(--color-mist);
   }
 
-  .site-nav__list a:not(.site-nav__cta) {
+  .site-nav__list a:not(.btn) {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0.8rem 0.25rem;
-    font-size: 1.05rem;
+    font-size: var(--text-base);
     border-bottom: none;
   }
 
-  .site-nav__list a:not(.site-nav__cta)::after {
+  .site-nav__list a:not(.btn)::after {
     content: '›';
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     color: var(--color-moss);
     opacity: 0.7;
     line-height: 1;
   }
 
-  /* CTA at the bottom, full width */
-  .site-nav a.site-nav__cta {
+  /* CTA at the bottom, full width — and back to full-size padding, since it's
+     the one prominent action in the drawer rather than a header-bar item. */
+  .site-nav__cta {
     display: block;
-    text-align: center;
     margin: 0.75rem 0 0;
     padding: 0.85rem 1.25rem;
-    border-radius: 999px;
   }
 
   .site-nav__list li:last-child {
