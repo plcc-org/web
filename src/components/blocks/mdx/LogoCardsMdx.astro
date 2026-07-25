@@ -4,7 +4,7 @@ import SectionHeader from '../../SectionHeader.astro'
 import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
 import { renderMarkdown } from '../../../lib/markdown'
-import { withBase } from '../../../lib/url'
+import { resolveHref } from '../../../lib/url'
 
 // MDX wrapper for the Logo cards block — a row of cards, each topped by a
 // program/partner logo, with a short Markdown body and an optional link (the
@@ -12,8 +12,6 @@ import { withBase } from '../../../lib/url'
 type Card = { image?: string; alt: string; body?: string; linkLabel?: string; href?: string }
 type Props = { eyebrow?: string; heading?: string; cards?: Card[] }
 const { eyebrow, heading, cards = [] } = Astro.props
-
-const resolve = (href: string) => (/^(https?:|mailto:|#)/.test(href) ? href : withBase(href))
 
 const items: { image?: ImageMetadata; alt: string; body?: string; linkLabel?: string; href?: string }[] = []
 for (const c of cards) {
@@ -40,7 +38,7 @@ for (const c of cards) {
           {c.body && <Fragment set:html={renderMarkdown(c.body)} />}
           {c.href && c.linkLabel && (
             <p>
-              <a href={resolve(c.href)}>{c.linkLabel} →</a>
+              <a href={resolveHref(c.href)}>{c.linkLabel} →</a>
             </p>
           )}
         </div>

@@ -4,7 +4,7 @@ import Split from '../../Split.astro'
 import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
 import { renderInline } from '../../../lib/markdown'
-import { withBase } from '../../../lib/url'
+import { resolveHref } from '../../../lib/url'
 
 // The page hero, from a CMS page's frontmatter `hero`. Renders the site's
 // reversed sand Split with the page H1 + lede — guaranteeing every CMS page has
@@ -29,7 +29,6 @@ type Props = {
 const { image, alt, eyebrow, title, subhead, lede, logo, logoAlt, buttonLabel, buttonHref, flush } = Astro.props
 const heroImg = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined
 const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined
-const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href : withBase(href))
 ---
 
 {
@@ -62,7 +61,7 @@ const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href
       {lede && <p class="lede" set:html={renderInline(lede)} />}
       {buttonHref && (
         <p>
-          <a class="btn" href={resolve(buttonHref)}>
+          <a class="btn" href={resolveHref(buttonHref)}>
             {buttonLabel || 'Learn more'}
           </a>
         </p>
@@ -76,7 +75,7 @@ const resolve = (href: string) => (/^(https?:|mailto:|tel:|#)/.test(href) ? href
       {lede && <p class="lede" set:html={renderInline(lede)} />}
       {buttonHref && (
         <p>
-          <a class="btn" href={resolve(buttonHref)}>
+          <a class="btn" href={resolveHref(buttonHref)}>
             {buttonLabel || 'Learn more'}
           </a>
         </p>
