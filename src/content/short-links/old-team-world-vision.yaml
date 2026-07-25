@@ -1,0 +1,5 @@
+name: old-team-world-vision
+from: /serve/global/team-world-vision/
+destination: /neighbors/serve/
+kind: moved
+expires: 2027-07-31

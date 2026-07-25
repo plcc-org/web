@@ -1,0 +1,5 @@
+name: old-upcoming-events-nested
+from: /connect/resources/calendar/upcoming-events/
+destination: /events/
+kind: moved
+expires: 2027-07-31

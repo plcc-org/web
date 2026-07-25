@@ -1,0 +1,5 @@
+name: old-sermon-series-page
+from: /connect/resources/sermon-library/series/
+destination: /messages/
+kind: moved
+expires: 2027-07-31

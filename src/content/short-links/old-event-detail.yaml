@@ -1,0 +1,5 @@
+name: old-event-detail
+from: /connect/resources/calendar/event-detail/
+destination: /events/
+kind: moved
+expires: 2027-07-31

@@ -1,0 +1,5 @@
+name: old-kodera-kenya
+from: /serve/global/kodera-kenya/
+destination: /neighbors/serve/
+kind: moved
+expires: 2027-07-31

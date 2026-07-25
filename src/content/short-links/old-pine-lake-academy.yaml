@@ -1,0 +1,5 @@
+name: old-pine-lake-academy
+from: /serve/global/pine-lake-academy/
+destination: /neighbors/serve/
+kind: moved
+expires: 2027-07-31

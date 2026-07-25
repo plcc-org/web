@@ -1,0 +1,6 @@
+name: old-annual-meeting
+from: /annual-meeting-documents/
+destination: https://plcc.churchcenter.com/
+kind: moved
+expires: 2027-07-31
+note: No equivalent on the new site; Church Center is where members find documents.

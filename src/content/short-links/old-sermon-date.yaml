@@ -1,0 +1,5 @@
+name: old-sermon-date
+from: /connect/resources/sermon-library/date/
+destination: /messages/
+kind: moved
+expires: 2027-07-31

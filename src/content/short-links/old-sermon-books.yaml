@@ -1,0 +1,5 @@
+name: old-sermon-books
+from: /connect/resources/sermon-library/books/
+destination: /messages/
+kind: moved
+expires: 2027-07-31

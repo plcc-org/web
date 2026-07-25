@@ -138,18 +138,27 @@ export default config({
       path: 'src/content/short-links/*',
       slugField: 'name',
       format: { data: 'yaml' },
-      columns: ['destination', 'expires'],
+      columns: ['from', 'destination', 'expires'],
       entryLayout: 'form',
       schema: {
         name: fields.slug({
           name: {
-            label: 'Short link',
-            description: 'What comes after plcc.org/ — e.g. "camp" makes plcc.org/camp. Lowercase, no spaces.',
+            label: 'Name',
+            description: 'Just a label for this list — it does not appear anywhere on the site.',
           },
         }),
-        destination: fields.url({
+        from: fields.text({
+          label: 'Old address',
+          description:
+            'The address people are typing or following, starting with a slash — "/camp" for plcc.org/camp. ' +
+            'It can have several parts, e.g. "/connect/about/leadership-team/".',
+          validation: { isRequired: true },
+        }),
+        destination: fields.text({
           label: 'Sends people to',
-          description: 'The full address to send them to, e.g. a Church Center registration page.',
+          description:
+            'Either a full address elsewhere (https://plcc.churchcenter.com/…) or a page on this site, ' +
+            'written with slashes at both ends — "/visit/".',
           validation: { isRequired: true },
         }),
         kind: fields.select({

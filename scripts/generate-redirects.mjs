@@ -74,21 +74,27 @@ for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || 
     continue
   }
 
-  // The filename is the short link. Keystatic names the file from the slug
-  // field, so what an editor types is what the URL becomes.
-  const path = file.replace(/\.ya?ml$/, '').toLowerCase()
-  const { destination, kind = 'shortcut', note, expires } = entry
+  const { from, destination, kind = 'shortcut', note, expires } = entry
 
-  if (!/^[a-z0-9][a-z0-9-]*$/.test(path)) {
-    errors.push(`${where}: "${path}" must be lowercase letters, numbers and hyphens (it becomes plcc.org/${path})`)
+  // The old address is an explicit field rather than the filename: cutover
+  // redirects carry several path segments ("/connect/about/leadership-team/"),
+  // which a filename can't hold.
+  if (typeof from !== 'string' || !from.startsWith('/')) {
+    errors.push(`${where}: "from" must be the old address, starting with a slash`)
     continue
   }
-  if (RESERVED.has(path)) {
-    errors.push(`${where}: "${path}" is reserved by the site itself`)
+  const path = from.toLowerCase().replace(/^\/+/, '').replace(/\/+$/, '')
+  if (!/^[a-z0-9][a-z0-9\-/]*$/.test(path)) {
+    errors.push(`${where}: "${from}" must be lowercase letters, numbers, hyphens and slashes`)
     continue
   }
-  if (typeof destination !== 'string' || !/^https?:\/\//i.test(destination)) {
-    errors.push(`${where}: "destination" must be a full URL starting http:// or https://`)
+  if (RESERVED.has(path.split('/')[0])) {
+    errors.push(`${where}: "/${path}" starts with a path reserved by the site itself`)
+    continue
+  }
+  const external = /^https?:\/\//i.test(destination ?? '')
+  if (typeof destination !== 'string' || !(external || destination.startsWith('/'))) {
+    errors.push(`${where}: "destination" must be a full https:// address or a path on this site starting with /`)
     continue
   }
   if (!(kind in STATUS)) {

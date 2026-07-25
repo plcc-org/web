@@ -1,0 +1,5 @@
+name: old-connect-about
+from: /connect/about/
+destination: /about/
+kind: moved
+expires: 2027-07-31

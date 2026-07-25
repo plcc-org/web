@@ -1,0 +1,6 @@
+name: old-sermon-library
+from: /connect/resources/sermon-library/
+destination: /messages/
+kind: moved
+expires: 2027-07-31
+note: The library landing page has a direct equivalent, unlike the individual sermons.

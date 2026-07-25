@@ -1,0 +1,6 @@
+name: old-give
+from: /give/
+destination: https://plcc.churchcenter.com/giving
+kind: moved
+expires: 2027-07-31
+note: High-traffic URL — printed and spoken. Goes straight to Church Center giving.

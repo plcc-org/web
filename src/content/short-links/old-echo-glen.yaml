@@ -1,0 +1,6 @@
+name: old-echo-glen
+from: /echo-glen/
+destination: /neighbors/serve/
+kind: moved
+expires: 2027-07-31
+note: Echo Glen is named on the serving page.

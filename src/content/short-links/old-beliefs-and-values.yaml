@@ -1,0 +1,5 @@
+name: old-beliefs-and-values
+from: /connect/about/our-beliefs-and-values/
+destination: /beliefs/
+kind: moved
+expires: 2027-07-31

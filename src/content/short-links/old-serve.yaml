@@ -1,0 +1,5 @@
+name: old-serve
+from: /serve/
+destination: /neighbors/serve/
+kind: moved
+expires: 2027-07-31

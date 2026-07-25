@@ -1,0 +1,6 @@
+name: old-grow-trips
+from: /grow/trips/
+destination: /youth/
+kind: moved
+expires: 2027-07-31
+note: Trips on the old site were the youth mission trips.

@@ -1,0 +1,6 @@
+name: old-subscribe
+from: /subscribe-to-emails/
+destination: /contact/
+kind: moved
+expires: 2027-07-31
+note: Contact carries the newsletter sign-up.

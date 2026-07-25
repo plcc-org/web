@@ -1,0 +1,5 @@
+name: old-romania
+from: /serve/global/romania/
+destination: /neighbors/serve/
+kind: moved
+expires: 2027-07-31

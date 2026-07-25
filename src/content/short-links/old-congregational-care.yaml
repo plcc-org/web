@@ -1,0 +1,5 @@
+name: old-congregational-care
+from: /care/practical-assistance/congregational-care/
+destination: /neighbors/care/
+kind: moved
+expires: 2027-07-31
