@@ -9,7 +9,10 @@ import { withBase } from '../../lib/url'
 const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order)
 ---
 
-<BaseLayout title="Leadership | Pine Lake Covenant Church">
+<BaseLayout
+  title="Leadership | Pine Lake Covenant Church"
+  description="The pastors and staff at Pine Lake Covenant Church in Sammamish — who they are and how they got here."
+>
   <div class="canvas">
     <PageIntro eyebrow="About" title="Leadership" subhead="Our pastors and staff" />
     <section class="section leader-section">

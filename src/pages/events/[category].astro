@@ -4,6 +4,16 @@ import EventsBoard from '../../components/EventsBoard.astro'
 import { getUpcomingEvents } from '../../lib/events/provider'
 import type { EventCategory } from '../../lib/events/types'
 
+// Written per category rather than generated from the label: a template like
+// "{category} events at Pine Lake" reads as filler in a search result, which is
+// the one place these sentences are actually seen.
+const DESCRIPTIONS: Record<Exclude<EventCategory, 'Everyone'>, string> = {
+  Families: 'Playgroups, camps, and family events at Pine Lake Covenant Church in Sammamish.',
+  Youth: 'Tuesday nights, retreats, and trips for middle and high school students at Pine Lake.',
+  Groups: 'Small groups, studies, and support groups meeting at Pine Lake Covenant Church.',
+  Serve: 'Ways to lend a hand — around Pine Lake and across Sammamish and Issaquah.',
+}
+
 // One statically-generated page per category — no client-side filtering. The
 // events are fetched once here and shared across all category pages via props.
 export async function getStaticPaths() {
@@ -18,6 +28,9 @@ export async function getStaticPaths() {
 const { selected, events } = Astro.props
 ---
 
-<BaseLayout title={`${selected} · What’s On | Pine Lake Covenant Church`}>
+<BaseLayout
+  title={`${selected} · What’s On | Pine Lake Covenant Church`}
+  description={DESCRIPTIONS[selected as Exclude<EventCategory, 'Everyone'>]}
+>
   <EventsBoard events={events} selected={selected} />
 </BaseLayout>

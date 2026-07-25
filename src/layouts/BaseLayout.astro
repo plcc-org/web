@@ -32,6 +32,10 @@ const {
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
 
+// The share card carries no photo — just the wordmark on the hero glow (see
+// scripts/generate-social-card.mjs) — so one alt string covers every page.
+const SOCIAL_IMAGE_ALT = 'The Pine Lake Covenant Church wordmark on a deep green background'
+
 // Social share image (1200x630), Apple touch icon, and favicons, generated at build time.
 const socialImage = await getImage({ src: socialImageSource, width: 1200, height: 630, fit: 'cover', format: 'png' })
 const appleTouchIcon = await getImage({ src: iconSource, width: 180, height: 180, fit: 'cover', format: 'png' })
@@ -88,6 +92,8 @@ const jsonLd = origin
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    {/* The card is the same for every page, so its alt text is fixed too. */}
+    <meta property="og:image:alt" content={SOCIAL_IMAGE_ALT} />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
@@ -95,6 +101,7 @@ const jsonLd = origin
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content={SOCIAL_IMAGE_ALT} />
 
     {/* schema.org graph — Church + Place, plus anything the page adds. */}
     {jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd} />}

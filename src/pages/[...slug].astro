@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { renderPlain } from '../lib/markdown'
 import PageHero from '../components/blocks/mdx/PageHero.astro'
 import SplitMdx from '../components/blocks/mdx/SplitMdx.astro'
 import CalloutMdx from '../components/blocks/mdx/CalloutMdx.astro'
@@ -34,6 +35,11 @@ export async function getStaticPaths() {
 const { page } = Astro.props
 const { Content } = await render(page)
 
+// Hero ledes are authored as Markdown, so strip it before reusing one as the
+// meta description — a raw `_word_` in a search snippet is the tell that a
+// description was reused without being looked at.
+const description = page.data.seoDescription ?? renderPlain(page.data.hero.lede)
+
 // MDX component tags ↔ site components. Keys must match the component names in
 // the Keystatic `fields.mdx` config.
 const components = {
@@ -57,10 +63,7 @@ const components = {
 }
 ---
 
-<BaseLayout
-  title={`${page.data.title} | Pine Lake Covenant Church`}
-  description={page.data.seoDescription ?? page.data.hero.lede}
->
+<BaseLayout title={`${page.data.title} | Pine Lake Covenant Church`} description={description}>
   <div class="canvas">
     <PageHero {...page.data.hero} title={page.data.title} />
     <Content components={components} />

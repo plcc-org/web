@@ -1,7 +1,8 @@
 // Post-build integrity check: crawls the built dist/ and fails (exit 1) on
 //   1. internal <a href> links that don't resolve to a generated page,
 //   2. content <img> with missing/empty alt (decorative icons are allow-listed),
-//   3. missing public permalinks (URLs promised to the outside world).
+//   3. missing public permalinks (URLs promised to the outside world),
+//   4. meta descriptions that are missing, duplicated, or leaking Markdown.
 // Run after `npm run build`:  node scripts/check-site.mjs
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
@@ -41,9 +42,26 @@ const resolves = (p) => {
 const errors = []
 let linkCount = 0
 let imgCount = 0
+const descriptions = new Map()
 
 for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf-8')
+
+  // Every page needs its own description. Five pages once shipped the generic
+  // site tagline because they simply never passed one, and a Markdown lede
+  // reused verbatim leaked "_exhausting_" into a search snippet — neither
+  // failure is visible on the rendered page, so it's asserted here instead.
+  const desc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1]
+  if (!desc?.trim()) {
+    errors.push(`missing description  ${file}`)
+  } else {
+    if (/(^|\s)[_*]\w|\w[_*]($|\s)|\[.+\]\(.+\)/.test(desc)) {
+      errors.push(`markdown in description  ${file}  →  ${desc.slice(0, 70)}`)
+    }
+    const seen = descriptions.get(desc)
+    if (seen) errors.push(`duplicate description  ${file}  ↔  ${seen}`)
+    else descriptions.set(desc, file)
+  }
 
   for (const m of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/gi)) {
     const href = m[1]
@@ -77,10 +95,16 @@ for (const { route } of externalPermalinks) {
   if (!existsSync(`${DIST}/${route ? `${route}/` : ''}index.html`)) errors.push(`missing public permalink  /${route}`)
 }
 
-console.log(`Checked ${htmlFiles.length} pages, ${linkCount} internal links, ${imgCount} images (base "${base}").`)
+console.log(
+  `Checked ${htmlFiles.length} pages, ${linkCount} internal links, ${imgCount} images, ` +
+    `${descriptions.size} descriptions (base "${base}").`
+)
 if (errors.length) {
   console.error(`\n✗ ${errors.length} problem(s):`)
   for (const e of errors) console.error(`  ${e}`)
   process.exit(1)
 }
-console.log('✓ All internal links resolve, all content images have alt text, all public permalinks present.')
+console.log(
+  '✓ All internal links resolve, all content images have alt text, ' +
+    'every page has its own clean description, all public permalinks present.'
+)

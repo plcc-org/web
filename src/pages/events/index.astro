@@ -12,6 +12,10 @@ const origin = Astro.site?.origin
 const structuredData = origin ? eventGraph(origin, events) : []
 ---
 
-<BaseLayout title="What’s On | Pine Lake Covenant Church" structuredData={structuredData}>
+<BaseLayout
+  title="What’s On | Pine Lake Covenant Church"
+  description="What’s coming up at Pine Lake — Sunday gatherings, groups, family events, and ways to help out around Sammamish."
+  structuredData={structuredData}
+>
   <EventsBoard events={events} selected="Everyone" />
 </BaseLayout>
