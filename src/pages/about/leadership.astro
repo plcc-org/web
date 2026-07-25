@@ -84,11 +84,7 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
                     <a href={withBase(leader.data.link.href)}>{leader.data.link.label}</a>
                   </p>
                 )}
-                <button
-                  type="button"
-                  class="btn btn--ghost btn--sm leader-detail__close"
-                  aria-label="Back to all staff"
-                >
+                <button type="button" class="leader-detail__close" aria-label="Back to all staff">
                   <span aria-hidden="true">←</span> All staff
                 </button>
               </div>
@@ -153,13 +149,24 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
       await transition.updateCallbackDone.catch(() => {})
     }
 
+    // Where the reader was in the grid when they opened a profile, so closing
+    // puts them back there. Focus alone doesn't do this: .focus() scrolls the
+    // element into view on its own terms, which lands you somewhere near the
+    // card rather than where you were standing.
+    let scrollBeforeOpen: number | null = null
+
     const open = (slug: string, push = true) => {
       if (!detailFor(slug) || slug === activeSlug) return
       const from = activeSlug
+      if (from === null) scrollBeforeOpen = window.scrollY
       const swapped = run(slug, from)
       if (push) history.pushState(null, '', `#${slug}`)
-      // Move focus into the panel, once it's actually visible.
-      swapped.then(() => detailFor(slug)?.querySelector<HTMLButtonElement>('.leader-detail__close')?.focus())
+      // Focus the panel once it's actually visible. preventScroll because the
+      // panel has already replaced the grid in the viewport — there's nothing
+      // to scroll to, and letting the browser try only shifts the page.
+      swapped.then(() =>
+        detailFor(slug)?.querySelector<HTMLButtonElement>('.leader-detail__close')?.focus({ preventScroll: true })
+      )
     }
 
     const close = (push = true) => {
@@ -167,8 +174,14 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
       const from = activeSlug
       const swapped = run(null, from)
       if (push) history.pushState(null, '', window.location.pathname + window.location.search)
-      // Return focus to the card that opened the panel, once the grid is back.
-      swapped.then(() => cardFor(from)?.focus())
+      swapped.then(() => {
+        // Restore the scroll position first, then focus without scrolling: the
+        // card is back under the cursor where the reader left it, and keyboard
+        // users still resume from the card they opened.
+        if (scrollBeforeOpen !== null) window.scrollTo({ top: scrollBeforeOpen, behavior: 'instant' as ScrollBehavior })
+        scrollBeforeOpen = null
+        cardFor(from)?.focus({ preventScroll: true })
+      })
     }
 
     for (const card of cards) {

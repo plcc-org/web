@@ -39,12 +39,6 @@
   transition: transform var(--duration-mid) var(--ease-out);
 }
 
-/* Only phrasing content is valid inside a <button>, so the photo wrappers are
-   <span>s and need block display stated explicitly. */
-.leader-card__photo .media__frame {
-  display: block;
-}
-
 .leader-card:hover .leader-card__photo {
   transform: translateY(-10px) rotate(1deg);
 }
@@ -146,9 +140,31 @@
   border-bottom-color: var(--color-moss);
 }
 
-/* Appearance comes from `.btn .btn--ghost .btn--sm`; this only spaces it. */
+/* Deliberately not a .btn. This is a way back, not a call to action, and the
+   button system's ghost variant fills solid forest on hover — far too much
+   weight for a return link on a quiet, photo-led page. Moss text on an
+   unfilled ground, staying light throughout, is the page's own register.
+   Leave it out of any future button consolidation. */
 .leader-detail__close {
   margin-top: 2rem;
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-ui);
+  color: var(--color-moss);
+  background: none;
+  border: 2px solid var(--color-mist);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.leader-detail__close:hover {
+  color: var(--color-forest);
+  border-color: var(--color-moss);
 }
 
 /* Let the shared portrait morph between grid and detail without a cross-fade
