@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# generated from src/content/short-links by scripts/generate-redirects.mjs
+public/_redirects

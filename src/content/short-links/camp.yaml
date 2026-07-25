@@ -1,0 +1,6 @@
+name: camp
+destination: https://plcc.churchcenter.com/registrations/events/3370274
+kind: shortcut
+expires: 2026-09-30
+note: Sports Camp registration. Church Center mints a new event ID each year, so this
+  needs re-pointing every spring.

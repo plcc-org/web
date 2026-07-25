@@ -37,6 +37,7 @@ just a page's content and belongs in that page's editor.
 | **Youth moments**    | Signature youth trips/retreats (curated)      | shared    |
 | **Homepage quotes**  | Rotating testimonials (reusable social proof) | shared    |
 | **Start-here links** | Homepage link cards                           | page data |
+| **Short links**      | Vanity URLs pointing off-site                 | routing   |
 
 > **Start-here links** remains because the homepage (still hand-built; see below) renders its
 > `home` group. Page-specific cards that used to be stored as data now live inline in the
@@ -45,9 +46,42 @@ just a page's content and belongs in that page's editor.
 > in the page itself — they were only ever used on that one page, so they're content, not
 > shared data.
 
-**Photos are deliberately not a collection.** The 442-entry catalog (`src/content/photos.json`)
+**Photos are deliberately not a collection.** The 110-entry catalog (`src/content/photos.json`)
 is build-time infrastructure for the hand-built pages. Editors add photos by **uploading them
 into a page block**, where the photo and its (required) description live together.
+
+### Short links
+
+`plcc.org/camp` → a Church Center registration page. These go on flyers and get read out
+from the platform, so the short link has to outlive whatever it points at — Church Center
+mints a new event ID every year, and the printed URL can't change.
+
+Add one under **Short links**. The "Short link" field is the bit after `plcc.org/`, and the
+file is named from it, so typing `camp` gives you `plcc.org/camp`. Two things worth knowing:
+
+- **Leave the kind as "a shortcut" unless you're certain.** A shortcut stays yours to
+  re-point next year. "Permanently moved" tells browsers to remember the destination more
+  or less forever — they'll stop asking the site at all, so re-pointing it later won't
+  reach anyone who has already followed it. Use it only for a page that has genuinely moved
+  for good.
+- **A short link can't be named after an existing page.** `camp` is fine; `visit` would hide
+  `/visit/`. The build fails if you try, rather than quietly taking a page off the site.
+
+**Every short link needs a "Review by" date.** A sign-up shortcut: when the thing it points
+at ends. A moved page: about a year, by which point search engines have caught up. The list
+view shows these dates, so it's obvious at a glance what needs attention.
+
+The date is a prompt, not a switch — **the link keeps working past it.** A URL printed on a
+flyer doesn't stop existing because a date passed, and quietly 404ing it would be a worse
+failure than letting it run on. What the date buys you is a list you can actually review:
+without one, nobody deletes anything, because nobody remembers what it was for. Builds print
+which links are due or overdue.
+
+Both forms work — `plcc.org/camp` and `plcc.org/camp/` — so it doesn't matter which one
+gets printed. The redirect happens at Cloudflare's edge, so there's no page load in between.
+
+Old-site redirects live here too, as "a page that has permanently moved", with a date about
+a year out — one list to review rather than two places to forget about.
 
 ---
 
