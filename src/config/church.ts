@@ -9,6 +9,22 @@
 // Deployment concerns (origin, base path, indexability) live in ./site.ts;
 // this file is only about the organisation itself.
 
+/**
+ * The two brand colours that have to exist outside CSS.
+ *
+ * `<meta name="theme-color">` and the web manifest can't read a custom
+ * property, so these values were hard-coded in two files and drifted out of
+ * anyone's view. They must stay in step with --color-moss and --color-stone in
+ * src/styles/tokens.css; there is no mechanism that enforces it, so the comment
+ * is the mechanism.
+ */
+export const brand = {
+  /** = --color-moss */
+  theme: '#6a9529',
+  /** = --color-stone */
+  background: '#f2eee6',
+} as const
+
 export const church = {
   name: 'Pine Lake Covenant Church',
   /** Used where the full name is too long for the line — e.g. schema alternateName. */

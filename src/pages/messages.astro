@@ -197,7 +197,7 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 160ms ease;
+    transition: transform var(--duration-fast) ease;
   }
 
   /* Driven from the card, not the thumbnail: the thumbnail is no longer a link,
@@ -213,13 +213,13 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
 
   .service-card__date {
     margin: 0;
-    font-size: 0.84rem;
+    font-size: var(--text-xs);
     color: var(--archive-muted);
   }
 
   .service-card h3 {
     margin: 0.5rem 0 0.6rem;
-    font-size: 1rem;
+    font-size: var(--text-base);
     line-height: 1.3;
   }
 

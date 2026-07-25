@@ -36,7 +36,7 @@
 .leader-card__photo {
   display: block;
   margin-bottom: 1.75rem;
-  transition: transform 0.4s var(--ease-out);
+  transition: transform var(--duration-mid) var(--ease-out);
 }
 
 /* Inside a <button> only phrasing content is valid, so the photo wrappers are
@@ -51,7 +51,7 @@
 
 .leader-card__photo .media__frame,
 .leader-detail__photo .media__frame {
-  box-shadow: var(--shadow-diffuse);
+  box-shadow: var(--shadow-md);
   background-color: var(--color-white);
   padding: 0.65rem;
   border: 1px solid var(--color-mist);
@@ -60,7 +60,7 @@
 .leader-card__name {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.65rem;
+  font-size: var(--text-xl);
   font-weight: 700;
   color: var(--color-forest);
   margin: 0 0 0.35rem;
@@ -72,7 +72,7 @@
   display: block;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.1rem;
+  font-size: var(--text-md);
   color: var(--color-clay);
   line-height: 1.35;
   margin: 0;
@@ -112,7 +112,7 @@
 }
 
 .leader-detail__name {
-  font-size: 2rem;
+  font-size: var(--text-xl);
 }
 
 .leader-detail__title {
@@ -129,7 +129,7 @@
 
 .leader-detail__meta {
   margin-top: 1.5rem;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   font-family: var(--font-sans);
 }
 
@@ -138,7 +138,7 @@
   font-weight: 700;
   text-decoration: none;
   border-bottom: 2px solid var(--color-mist);
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast) ease;
 }
 
 .leader-detail__meta a:hover {

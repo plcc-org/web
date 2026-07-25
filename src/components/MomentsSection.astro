@@ -94,7 +94,7 @@ const tiles: Array<{ filename?: string; image?: ImageMetadata; alt?: string }> =
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.5s var(--ease-out);
+    transition: transform var(--duration-slow) var(--ease-out);
   }
 
   .moments__tile:hover :global(.moments__img) {

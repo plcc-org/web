@@ -2,6 +2,7 @@
 import { getImage, Font } from 'astro:assets'
 import { withBase } from '../lib/url'
 import { churchGraph, jsonLdDocument } from '../lib/structured-data'
+import { brand } from '../config/church'
 import '../styles/global.css'
 import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
 import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
@@ -74,7 +75,7 @@ const jsonLd = origin
     {canonical && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-    <meta name="theme-color" content="#6a9529" />
+    <meta name="theme-color" content={brand.theme} />
 
     <!-- Icons + PWA manifest -->
     <link rel="icon" href={favicon32.src} type="image/png" sizes="32x32" />

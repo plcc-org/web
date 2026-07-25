@@ -91,9 +91,9 @@ const { quotes } = Astro.props
     visibility: hidden;
     transform: translateY(8px);
     transition:
-      opacity 0.6s var(--ease-out),
-      transform 0.6s var(--ease-out),
-      visibility 0s linear 0.6s;
+      opacity var(--duration-slow) var(--ease-out),
+      transform var(--duration-slow) var(--ease-out),
+      visibility 0s linear var(--duration-slow);
   }
 
   .quote-slide.is-active {
@@ -101,8 +101,8 @@ const { quotes } = Astro.props
     visibility: visible;
     transform: translateY(0);
     transition:
-      opacity 0.6s var(--ease-out),
-      transform 0.6s var(--ease-out);
+      opacity var(--duration-slow) var(--ease-out),
+      transform var(--duration-slow) var(--ease-out);
   }
 
   /* Solo quote: larger and centered, with the accent rule centered too. */
@@ -132,12 +132,12 @@ const { quotes } = Astro.props
     border: 1px solid var(--color-line);
     background: var(--color-paper);
     color: var(--color-forest);
-    font-size: 1.1rem;
+    font-size: var(--text-md);
     cursor: pointer;
     transition:
-      background 0.2s var(--ease-out),
-      border-color 0.2s var(--ease-out),
-      transform 0.2s var(--ease-out);
+      background var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
   }
 
   .quote-nav:hover {
@@ -166,8 +166,8 @@ const { quotes } = Astro.props
     background: var(--color-line);
     cursor: pointer;
     transition:
-      background 0.2s var(--ease-out),
-      transform 0.2s var(--ease-out);
+      background var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
   }
 
   .quote-dot:hover {

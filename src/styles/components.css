@@ -45,7 +45,7 @@
 }
 
 .hero__img {
-  transition: opacity 0.6s ease;
+  transition: opacity var(--duration-slow) ease;
 }
 
 .hero__video {
@@ -321,9 +321,9 @@ a.card,
 .event-row,
 .service-card {
   transition:
-    transform 0.2s var(--ease-out),
-    box-shadow 0.2s var(--ease-out),
-    border-color 0.2s var(--ease-out);
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
 }
 
 a.card:hover,
@@ -413,12 +413,12 @@ a.card:hover,
 .link-card strong {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   margin-bottom: 0.5rem;
 }
 
 .link-card__meta {
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-clay);
 }
 
@@ -438,7 +438,7 @@ a.card:hover,
   display: grid;
   place-items: center;
   overflow: hidden;
-  box-shadow: var(--shadow-diffuse);
+  box-shadow: var(--shadow-md);
   position: relative;
 }
 
@@ -458,7 +458,7 @@ a.card:hover,
 
 .media__caption {
   margin-top: 0.75rem;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-clay);
   font-family: var(--font-serif);
   font-style: italic;
@@ -506,7 +506,7 @@ a.card:hover,
   width: 100px;
   margin: 0 1.5rem 1rem 0;
   text-align: center;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   background: var(--color-stone);
   padding: 0.75rem;
   font-family: var(--font-serif);
@@ -515,13 +515,13 @@ a.card:hover,
 
 .event-day {
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: var(--text-xl);
   line-height: 1;
   color: var(--color-moss);
 }
 
 .event-md {
-  font-size: 0.85rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-clay);
@@ -535,7 +535,7 @@ a.card:hover,
 }
 
 .event-time {
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   color: var(--color-clay);
   margin-top: 0.15rem;
 }
@@ -545,7 +545,7 @@ a.card:hover,
 }
 
 .event-meta {
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-clay);
@@ -576,14 +576,14 @@ a.card:hover,
   text-align: center;
   min-width: 3.9rem;
   padding: 0.5rem 0.65rem;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   background: var(--color-stone);
   border: 1px solid var(--color-mist);
   line-height: 1.15;
 }
 
 .event-row__dow {
-  font-size: 0.72rem;
+  font-size: var(--text-2xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-clay);
@@ -591,7 +591,7 @@ a.card:hover,
 
 .event-row__dnum {
   font-family: var(--font-serif);
-  font-size: 1.05rem;
+  font-size: var(--text-base);
   font-weight: 800;
   color: var(--color-moss);
 }
@@ -602,7 +602,7 @@ a.card:hover,
 
 .event-row__title {
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: var(--text-md);
   font-weight: 700;
   color: var(--color-forest);
   line-height: 1.2;
@@ -614,7 +614,7 @@ a.card:hover,
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-top: 0.35rem;
-  font-size: 0.9rem;
+  font-size: var(--text-ui);
   color: var(--color-clay);
 }
 
@@ -637,7 +637,7 @@ a.card:hover,
 .rhythm-card strong {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: var(--text-md);
   color: var(--color-forest);
   margin-bottom: 0.35rem;
 }
@@ -682,7 +682,7 @@ a.card:hover,
   flex-grow: 1;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.15rem;
+  font-size: var(--text-md);
   line-height: 1.5;
   color: var(--color-forest);
   max-width: none;
@@ -693,7 +693,7 @@ a.card:hover,
   margin-top: 1.25rem;
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--color-clay);

@@ -10,8 +10,8 @@
   padding-bottom: 1.75rem;
   background: transparent;
   transition:
-    background 0.3s var(--ease-out),
-    box-shadow 0.3s var(--ease-out);
+    background var(--duration-mid) var(--ease-out),
+    box-shadow var(--duration-mid) var(--ease-out);
 }
 
 /* Once the page is scrolled, the bar frosts over. The height stays constant
@@ -38,7 +38,7 @@
   -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
   mask-image: linear-gradient(to bottom, #000, transparent);
   opacity: 0;
-  transition: opacity 0.35s var(--ease-out);
+  transition: opacity var(--duration-mid) var(--ease-out);
 }
 
 .site-header.is-scrolled::after {
@@ -92,7 +92,7 @@
   margin: 0;
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
 }
 
 .site-nav__list li {
@@ -106,7 +106,7 @@
   text-decoration: none;
   color: inherit;
   white-space: nowrap;
-  transition: all 180ms ease;
+  transition: all var(--duration-fast) ease;
   padding: 0.25rem 0;
   border-bottom: 2px solid transparent;
 }
@@ -129,7 +129,7 @@
   width: clamp(10.5rem, 22vw, 13rem);
   height: clamp(1.8rem, 3.8vw, 2.25rem);
   display: inline-block;
-  background-color: #73943b;
+  background-color: var(--color-moss-2);
   -webkit-mask-image: var(--logo-wordmark-url);
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -177,8 +177,8 @@
     border: none;
     cursor: pointer;
     padding: 0.5rem;
-    border-radius: 8px;
-    transition: background 180ms ease;
+    border-radius: var(--radius-sm);
+    transition: background var(--duration-fast) ease;
   }
 
   .site-nav__toggle:hover {
@@ -230,7 +230,7 @@
   }
 
   .site-nav__list li + li {
-    border-top: 1px solid rgba(26, 46, 12, 0.08);
+    border-top: 1px solid var(--color-mist);
   }
 
   .site-nav__list a:not(.btn) {
@@ -238,13 +238,13 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.8rem 0.25rem;
-    font-size: 1.05rem;
+    font-size: var(--text-base);
     border-bottom: none;
   }
 
   .site-nav__list a:not(.btn)::after {
     content: '›';
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     color: var(--color-moss);
     opacity: 0.7;
     line-height: 1;

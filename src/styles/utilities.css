@@ -18,14 +18,14 @@
 .chip {
   display: inline-block;
   padding: 0.5rem 1rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--color-stone);
   border: 1px solid var(--color-mist);
   text-decoration: none;
   color: var(--color-clay);
   font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
+  font-size: var(--text-xs);
+  transition: all var(--duration-fast) ease;
 }
 
 .chip:hover {
@@ -40,9 +40,9 @@
 }
 
 .tag {
-  font-size: 0.75rem;
+  font-size: var(--text-2xs);
   padding: 0.25rem 0.65rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--color-mist);
   color: var(--color-clay);
   font-weight: 600;

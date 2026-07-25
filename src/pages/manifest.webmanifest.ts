@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro'
 import { getImage } from 'astro:assets'
 import iconSource from '../assets/images/plcc-logo-icon.jpg'
+import { brand } from '../config/church'
 
 // Web app manifest with build-time generated PNG icons.
 export const GET: APIRoute = async () => {
@@ -14,8 +15,8 @@ export const GET: APIRoute = async () => {
     start_url: import.meta.env.BASE_URL,
     scope: import.meta.env.BASE_URL,
     display: 'standalone',
-    background_color: '#f2eee6',
-    theme_color: '#6a9529',
+    background_color: brand.background,
+    theme_color: brand.theme,
     icons: [
       { src: icon192.src, sizes: '192x192', type: 'image/png' },
       { src: icon512.src, sizes: '512x512', type: 'image/png' },
