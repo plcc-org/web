@@ -42,7 +42,7 @@ the same docs.
 
 ## Deployment
 
-Hosting is environment-aware (`DEPLOY_ENV`): `development` (localhost), `staging`
-(GitHub Pages), and `production` (`plcc.org`). GitHub Actions builds the staging target by
-default. Full details — including the Apple `container` workflow — are in
-[infrastructure.md](./docs/infrastructure.md).
+Hosting is Cloudflare Workers, environment-aware via `DEPLOY_ENV`: `development`
+(localhost), `staging` (`plcc.dev`), and `production` (`plcc.org`). Cloudflare builds and
+deploys on push; GitHub Actions runs the checks. Full details — including the Apple
+`container` workflow — are in [infrastructure.md](./docs/infrastructure.md).

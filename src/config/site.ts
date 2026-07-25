@@ -38,9 +38,17 @@ export function resolveDeployEnv(): DeployEnv {
   const explicit = process.env?.DEPLOY_ENV?.toLowerCase()
   if (isDeployEnv(explicit)) return explicit
 
-  // Back-compat: CI builds (GitHub Actions, or Cloudflare Workers/Pages builds)
-  // default to the staging target when DEPLOY_ENV isn't set explicitly.
-  if (process.env?.GITHUB_ACTIONS || process.env?.CF_PAGES || process.env?.WORKERS_CI) {
+  // Cloudflare's build settings live in its dashboard, not this repo, so a build
+  // can arrive here with DEPLOY_ENV unset. Falling back to staging is the safe
+  // guess — never-indexed, and it still produces a `site` so canonical URLs and
+  // the sitemap are correct — but it *is* a guess about where this build is
+  // going, so say so. Silence here is how a target gets mis-set for months.
+  //
+  // GitHub Actions is deliberately not in this list: every workflow sets
+  // DEPLOY_ENV explicitly, and a CI run should fail loudly rather than infer a
+  // deploy target it has no business inferring.
+  if (process.env?.CF_PAGES || process.env?.WORKERS_CI) {
+    console.warn('[site] DEPLOY_ENV is unset on a Cloudflare build — assuming "staging".')
     return 'staging'
   }
   return 'development'

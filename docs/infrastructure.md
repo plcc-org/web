@@ -47,15 +47,15 @@ Builds): the connected branch publishes to `plcc.dev`, other branches get previe
 build command is `npm run build`; the adapter needs the `nodejs_compat` compatibility flag
 (see [cms.md](./cms.md)).
 
-`.github/workflows/ci.yml` still runs the checks on every push — `format:check`, `check`,
-`test`, `build`, `test:site` (see [development.md](./development.md)).
+`.github/workflows/ci.yml` runs the checks on every pull request and every push to `main`
+— `format:check`, `lint:css`, `check`, `test`, then a build and crawl of _both_ deploy
+targets (see [development.md](./development.md)). Cloudflare does not run these, so this
+workflow is the only gate.
 
-### GitHub Pages runs in parallel (for now)
-
-The site still deploys to GitHub Pages via `.github/workflows/deploy.yml`. During the
-Cloudflare staging bring-up it's left running as a fallback — it just can't serve Keystatic's
-function routes. Retiring `deploy.yml` and the eventual `plcc.org` production cutover (point
-DNS at Cloudflare) are covered in [cms.md](./cms.md#3-cutover-and-production).
+Cloudflare is the only host, and the site needs it to stay that way: Keystatic's admin
+depends on two function routes (`/keystatic`, `/api/keystatic/*`), so a static-only host
+can't serve the CMS. The production cutover (point `plcc.org` DNS at Cloudflare) is covered
+in [cms.md](./cms.md#3-cutover-and-production).
 
 ---
 

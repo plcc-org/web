@@ -9,13 +9,13 @@ import { siteConfig } from './src/config/site.ts'
 
 // https://astro.build/config
 // `site` and `base` are resolved per environment (development | staging | production)
-// from DEPLOY_ENV — see src/config/site.ts. Defaults to the GitHub Pages staging
-// target under GitHub Actions, and to a root-served localhost build otherwise.
+// from DEPLOY_ENV — see src/config/site.ts. Unset, it resolves to a root-served
+// localhost build.
 // @astrojs/sitemap only emits when `site` is set (i.e. staging/production builds).
 export default defineConfig({
   site: siteConfig.site,
   base: siteConfig.base,
-  // Cloudflare Pages host. `output` stays static (the default): every public
+  // Cloudflare Workers host. `output` stays static (the default): every public
   // page is prerendered to HTML at build time. Keystatic injects two routes
   // (`/keystatic`, `/api/keystatic/*`) that self-mark `prerender: false`; the
   // adapter ships only those as functions. React powers Keystatic's admin UI.

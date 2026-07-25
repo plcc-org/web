@@ -15,8 +15,9 @@ polish pass. What remains is for closer to launch ("prime time").
 
 - Build the production deploy with `DEPLOY_ENV=production` so `site` / `base` / indexing
   target plcc.org: `robots.txt` switches to `Allow` + sitemap, and OG/canonical URLs use the
-  real domain. (Staging stays noindex on GitHub Pages.)
-- Stage DNS / redirects from the old site and confirm the GitHub Pages → plcc.org path.
+  real domain. (`plcc.dev` staging stays noindex.)
+- Stage DNS and commit redirects from the old site's URLs before pointing plcc.org at
+  Cloudflare.
 
 ## Known residuals (optional, no user impact)
 
