@@ -95,6 +95,28 @@ for (const { route } of externalPermalinks) {
   if (!existsSync(`${DIST}/${route ? `${route}/` : ''}index.html`)) errors.push(`missing public permalink  /${route}`)
 }
 
+// robots.txt must match the target it was built for. This once silently emitted
+// `Disallow: /` on *every* target — including production — because the
+// prerender bundle couldn't see DEPLOY_ENV (see src/config/site.ts). Nothing on
+// the rendered site would have shown it; plcc.org would simply never have been
+// indexed. Assert the output rather than trusting the resolution.
+const isProduction = (process.env.DEPLOY_ENV || '').toLowerCase() === 'production'
+const robotsPath = `${DIST}/robots.txt`
+if (!existsSync(robotsPath)) {
+  errors.push('missing robots.txt')
+} else {
+  const robots = readFileSync(robotsPath, 'utf-8')
+  if (isProduction) {
+    if (!/^Allow: \/$/m.test(robots)) errors.push('robots.txt: production build is not indexable')
+    if (!/^Sitemap: https?:\/\//m.test(robots)) errors.push('robots.txt: production build has no Sitemap line')
+    for (const path of ['/keystatic', '/api/']) {
+      if (!robots.includes(`Disallow: ${path}`)) errors.push(`robots.txt: production build does not disallow ${path}`)
+    }
+  } else if (!/^Disallow: \/$/m.test(robots)) {
+    errors.push(`robots.txt: non-production build is indexable (DEPLOY_ENV=${process.env.DEPLOY_ENV || 'unset'})`)
+  }
+}
+
 console.log(
   `Checked ${htmlFiles.length} pages, ${linkCount} internal links, ${imgCount} images, ` +
     `${descriptions.size} descriptions (base "${base}").`
