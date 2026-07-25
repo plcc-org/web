@@ -1,10 +1,10 @@
 // Snapshot adapter — Church Center calendar data captured out-of-band by a
 // headless browser (scripts/scrape-events.mjs, run daily in CI) and committed to
 // src/content/events-snapshot.json. This is the production default: Church Center
-// moved its calendar to a client-rendered SPA, so a build-time fetch can no
-// longer obtain the CSRF token it needs. The scraper lets the SPA obtain the
-// token, then fetches the same JSON:API — so the snapshot has the shape
-// churchcenter-map.ts already knows how to read.
+// serves its calendar from a client-rendered SPA, so a plain build-time fetch
+// can't get the CSRF token the API requires. The scraper lets the SPA do the
+// token handshake in a real browser, then fetches the same JSON:API — so the
+// snapshot has the shape churchcenter-map.ts reads.
 //
 // The snapshot is imported statically so Vite inlines it into the build: the
 // Cloudflare adapter prerenders in workerd, which has no `node:fs`, so we can't

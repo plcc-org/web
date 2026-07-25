@@ -8,8 +8,8 @@ import SectionHeader from './SectionHeader.astro'
 // screens.
 type Step = { title: string; body: string }
 type Props = { eyebrow?: string; heading?: string; steps?: Step[] }
-// Defaulted so the Keystatic block can map straight to this component without
-// a pass-through wrapper — an editor who adds the block before filling it in
+// Defaulted so the Keystatic block maps straight to this component with no
+// pass-through wrapper: an editor who adds the block before filling it in
 // sends no steps at all.
 const { eyebrow, heading, steps = [] } = Astro.props
 ---

@@ -2,9 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { renderPlain } from '../src/lib/markdown'
 
 // renderPlain feeds `<meta>` content and JSON-LD strings, where any surviving
-// markup or Markdown syntax is visible to users in a search result. The
-// regression it exists for: a hero lede reused as a meta description shipped
-// "sometimes _exhausting_" to Google.
+// markup or Markdown syntax is visible to users in a search result — a lede
+// containing "sometimes _exhausting_" must not reach Google that way.
 describe('renderPlain', () => {
   it('strips emphasis markers', () => {
     expect(renderPlain('sometimes _exhausting_')).toBe('sometimes exhausting')

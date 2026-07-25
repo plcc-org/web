@@ -5,8 +5,8 @@
  * a centered content column by default but can opt into full-viewport-width
  * bleed. Every page is built on it.
  *
- * The original `.page` flow it replaced is gone — the migration finished, and
- * 404 (its last consumer) now uses `.canvas` + PageIntro like everything else.
+ * Every page uses it, 404 included — there is no second layout system, and
+ * there shouldn't be.
  * ==================================================================== */
 
 /* ----------------------------------------------------------------------
@@ -200,11 +200,10 @@ body:has(.is-flush) .site-footer {
  *                                    lists) that shouldn't shout 40 times
  *   .btn--sm        smaller          dense contexts: the header, table rows
  *
- * The header CTA, the messages-page actions, the event-row "Details" links and
- * the leadership close button each used to hand-roll their own pill, with
- * differing padding, border weights (1.5px vs 2px) and bespoke shadows. They
- * now compose from these; the per-component classes that remain carry layout
- * only (margins, block display), never appearance.
+ * Compose from these rather than hand-rolling a pill: per-component button
+ * classes should carry layout only (margins, block display), never appearance.
+ * Padding, border weight and shadow are the things that drift first, and a set
+ * of nearly-matching buttons is the most visible kind of inconsistency.
  * -------------------------------------------------------------------- */
 .btn {
   display: inline-block;

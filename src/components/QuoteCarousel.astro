@@ -5,14 +5,13 @@
 // and no-JS) and stacked in one grid cell, so the viewport sizes itself to
 // the tallest quote and nothing jumps as they rotate.
 //
-// Accessibility: the slides are deliberately NOT a live region. This used to
-// carry aria-live="polite", which meant a screen-reader user on the homepage
-// had a testimonial read to them every 7 seconds, unprompted, for as long as
-// they stayed. Instead there's a visually-hidden status line that announces
-// only when the visitor works the controls themselves — the pattern the ARIA
-// Authoring Practices carousel guidance describes. Timer-driven changes stay
-// silent; inactive slides are visibility:hidden, so they're out of the
-// accessibility tree either way.
+// Accessibility: the slides are deliberately NOT a live region. Marking them
+// aria-live would read a testimonial to a screen-reader user every 7 seconds,
+// unprompted, for as long as they stayed on the page. Instead a visually-hidden
+// status line announces only when the visitor works the controls themselves —
+// the pattern the ARIA Authoring Practices carousel guidance describes.
+// Timer-driven changes stay silent; inactive slides are visibility:hidden, so
+// they're out of the accessibility tree either way.
 
 type Quote = { text: string; by?: string }
 

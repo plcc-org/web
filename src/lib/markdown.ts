@@ -28,11 +28,11 @@ export function renderInline(md: string | null | undefined): string {
  * Markdown → plain text, for places that can't render HTML at all: `<meta>`
  * content, JSON-LD strings, page titles.
  *
- * Hero ledes are authored as Markdown, so reusing one verbatim as a meta
- * description leaked the source syntax into search results ("sometimes
- * _exhausting_"). Rendering then stripping is deliberate — it means emphasis,
- * links and entities collapse the same way they do on the page, rather than
- * being guessed at with a regex over the raw Markdown.
+ * Hero ledes are authored as Markdown, so anything reusing one has to strip it
+ * or the source syntax shows up in search results. Rendering and *then*
+ * stripping is deliberate: emphasis, links and entities collapse exactly as
+ * they do on the page, rather than being guessed at with a regex over the raw
+ * Markdown.
  */
 export function renderPlain(md: string | null | undefined): string {
   if (!md) return ''

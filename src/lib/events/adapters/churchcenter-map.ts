@@ -3,11 +3,10 @@
 // snapshot adapter's job (scripts/scrape-events.mjs captures the payload with a
 // headless browser, since Church Center went client-rendered).
 //
-// This module used to sit alongside a live build-time adapter that obtained a
-// short-lived public read token via a three-step CSRF handshake. That path had
-// been dead since the client-render change and was removed; the mapping stayed
-// because the captured payload has the identical shape. If a Planning Center
-// API token ever lands, it plugs in as a sibling adapter and reuses this.
+// Kept separate from the adapter that supplies the payload: the shape is
+// Church Center's, but nothing here cares where the bytes came from. A
+// Planning Center API adapter would plug in as a sibling and reuse this
+// unchanged.
 
 import type { CalendarEvent, EventSource } from '../types'
 import { mapCategory } from '../logic'
@@ -41,10 +40,9 @@ function stripHtml(html: string | undefined | null): string {
 /**
  * Trim to length on a word boundary, with an ellipsis.
  *
- * A plain `.slice(0, 180)` used to cut mid-word — the Sports Camp card on
- * /events/ ended "…participate in PLCC's Sports Ca", with nothing to signal
- * that it had been truncated. Church Center descriptions are written for
- * Church Center, so they routinely overrun.
+ * Church Center descriptions are written for Church Center, so they routinely
+ * overrun the card. A plain `.slice()` cuts mid-word and gives the reader no
+ * signal that anything is missing.
  */
 function truncate(text: string, max = SUMMARY_MAX): string {
   if (text.length <= max) return text
@@ -66,8 +64,8 @@ export function mapChurchCenterBody(body: any, source: EventSource): CalendarEve
   for (const ev of (body.data ?? []) as JsonApiResource[]) {
     const a = ev.attributes ?? {}
     // Church Center titles routinely carry stray leading/trailing whitespace
-    // (" High School Mission Trip ", "Blood Drive  "), which flowed straight
-    // through to the page and into the event JSON-LD.
+    // (" High School Mission Trip ", "Blood Drive  "). Untrimmed it reaches
+    // both the page and the event JSON-LD.
     const title: string = (a.name ?? '').trim()
     if (!title || !a.starts_at) continue
     if (EXCLUDE_TITLE.test(title)) continue

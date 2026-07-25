@@ -47,10 +47,10 @@ const descriptions = new Map()
 for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf-8')
 
-  // Every page needs its own description. Five pages once shipped the generic
-  // site tagline because they simply never passed one, and a Markdown lede
-  // reused verbatim leaked "_exhausting_" into a search snippet — neither
-  // failure is visible on the rendered page, so it's asserted here instead.
+  // Every page needs its own description, free of Markdown syntax. A page that
+  // passes none silently inherits the generic site tagline, and a hero lede
+  // reused verbatim carries its `_emphasis_` markers into the search snippet.
+  // Neither shows on the rendered page, so assert them here.
   const desc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1]
   if (!desc?.trim()) {
     errors.push(`missing description  ${file}`)
@@ -77,7 +77,7 @@ for (const file of htmlFiles) {
     // An image is decorative only if it says so. `alt=""` *together with*
     // aria-hidden is an explicit declaration; `alt=""` on its own is far more
     // often an oversight, so it still fails. (data: URIs and the YouTube glyph
-    // predate that rule — both sit beside their own text label.)
+    // are allow-listed by source — both sit beside their own text label.)
     const declaredDecorative = /\baria-hidden="true"/.test(tag) && /\balt=""/.test(tag)
     if (declaredDecorative || src.startsWith('data:') || /yt_icon/.test(src)) continue
     imgCount++
@@ -99,11 +99,11 @@ for (const { route } of externalPermalinks) {
   if (!existsSync(`${DIST}/${route ? `${route}/` : ''}index.html`)) errors.push(`missing public permalink  /${route}`)
 }
 
-// robots.txt must match the target it was built for. This once silently emitted
-// `Disallow: /` on *every* target — including production — because the
-// prerender bundle couldn't see DEPLOY_ENV (see src/config/site.ts). Nothing on
-// the rendered site would have shown it; plcc.org would simply never have been
-// indexed. Assert the output rather than trusting the resolution.
+// robots.txt must match the target it was built for. Indexability is resolved
+// through a fragile path (see resolveDeployEnv in src/config/site.ts), and
+// getting it wrong has no symptom on the rendered site — production simply
+// never gets indexed. Assert the emitted file rather than trusting the
+// resolution.
 const isProduction = (process.env.DEPLOY_ENV || '').toLowerCase() === 'production'
 const robotsPath = `${DIST}/robots.txt`
 if (!existsSync(robotsPath)) {

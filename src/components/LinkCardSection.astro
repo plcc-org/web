@@ -13,8 +13,8 @@ type Props = {
   reveal?: boolean
 }
 
-// Keystatic sends '' for an empty text field, not undefined, so a default
-// parameter alone would let an empty heading through and render a bare <h2>.
+// Keystatic sends '' for an empty text field, not undefined — a default
+// parameter alone lets that through and renders a bare <h2>.
 const { heading: headingProp, links, reveal = false } = Astro.props
 const heading = headingProp?.trim() || 'Start here'
 

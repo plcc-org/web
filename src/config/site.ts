@@ -27,11 +27,11 @@ export function resolveDeployEnv(): DeployEnv {
   //      workerd. There, `process` exists but `process.env` is an empty shim,
   //      so DEPLOY_ENV reads as undefined.
   //
-  // Left to itself, (2) fell through to 'development' and emitted a blanket
-  // `Disallow: /` robots.txt on *every* target, production included — which
-  // would have quietly de-indexed plcc.org at cutover. astro.config.mjs pins
-  // import.meta.env.DEPLOY_ENV to the value resolved in (1) so both agree;
-  // that's the branch the bundle takes. Keep them in this order.
+  // Without the inlined value, (2) resolves to 'development' and robots.txt
+  // emits a blanket `Disallow: /` on every target, production included — a
+  // failure with no symptom short of the site vanishing from search.
+  // astro.config.mjs pins import.meta.env.DEPLOY_ENV to the value resolved in
+  // (1) so both agree; that's the branch the bundle takes. Keep this order.
   const inlined = import.meta.env?.DEPLOY_ENV
   if (isDeployEnv(inlined)) return inlined
 

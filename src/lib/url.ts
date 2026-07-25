@@ -12,11 +12,10 @@ export function withBase(path = ''): string {
 // absolute URLs, the three link schemes CMS editors actually type, protocol-
 // relative URLs, and in-page anchors. Anything else is an internal path.
 //
-// This test used to be copy-pasted into four components, and one copy had
-// drifted — only PageHero handled `tel:`, so a phone number typed into a Cta
-// button or a CardRow link came out as `/tel:+14253928636`. check-site.mjs
-// skips `tel:` hrefs (it can't resolve them against dist), so the crawler
-// could never have caught it. One definition, next to withBase.
+// Keep this as the single definition. A component that reimplements the test
+// will get the scheme list subtly wrong, and check-site.mjs can't catch it:
+// the crawler skips mailto:/tel:/# hrefs because it has no way to resolve them
+// against dist, so a mangled `/tel:+14253928636` reaches production silently.
 const EXTERNAL_HREF = /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i
 
 /** Base-prefix an internal path; leave external URLs, mailto/tel, and anchors alone. */

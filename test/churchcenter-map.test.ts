@@ -4,9 +4,8 @@ import { mapChurchCenterBody, __test } from '../src/lib/events/adapters/churchce
 const { truncate, stripHtml } = __test
 
 // Church Center descriptions are written for Church Center and routinely
-// overrun the card. The previous `.slice(0, 180)` cut mid-word with no
-// ellipsis, which shipped "…participate in PLCC's Sports Ca" to /events/ and,
-// once JSON-LD landed, into the structured data too.
+// overrun the card, so every event on /events/ — and every Event node in the
+// structured data — depends on this cutting cleanly.
 describe('truncate', () => {
   it('leaves short text alone', () => {
     expect(truncate('Short and sweet.', 40)).toBe('Short and sweet.')
@@ -23,9 +22,9 @@ describe('truncate', () => {
     expect(out.endsWith('…')).toBe(true)
     expect(out.length).toBeLessThanOrEqual(31)
 
-    // The real property: what's kept is a prefix of the original that stops at
-    // a word boundary — so the next character in the source is a space, never
-    // the middle of a word. ("…Sports Ca" was the bug.)
+    // The property that matters: what's kept is a prefix of the original that
+    // stops at a word boundary, so the next character in the source is a
+    // space — never the middle of a word.
     const kept = out.slice(0, -1)
     expect(source.startsWith(kept)).toBe(true)
     expect(source[kept.length]).toBe(' ')

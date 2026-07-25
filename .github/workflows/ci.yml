@@ -2,10 +2,9 @@ name: CI
 
 # Every change to main is verified, however it arrives.
 #
-# This used to trigger on pull_request only, on the assumption — stated in a
-# comment here — that direct pushes were covered by deploy.yml. deploy.yml was
-# retired when the site moved off GitHub Pages, so for a while anything pushed
-# straight to main was built and published by Cloudflare with no checks at all.
+# Cloudflare builds and publishes whatever lands on main, and it does not run
+# these checks. This workflow is the only gate, so it has to cover direct
+# pushes as well as pull requests.
 on:
   push:
     branches: [main]
@@ -38,12 +37,12 @@ jobs:
       - run: npm run check
       - run: npm run test
 
-      # Build and crawl both deploy targets. Two builds rather than one because
-      # a chunk of the config is environment-dependent — `site`, the sitemap,
-      # and robots.txt all change — and the production path is the one nobody
-      # exercises locally. robots.txt silently emitted `Disallow: /` on *every*
-      # target once; scripts/check-site.mjs now asserts the output matches
-      # DEPLOY_ENV, but only for the target it was built with, so build both.
+      # Build and crawl both deploy targets. `site`, the sitemap and robots.txt
+      # are all environment-dependent, and production is the target nobody
+      # exercises locally — an indexability mistake there is invisible until it
+      # costs the site its search presence. scripts/check-site.mjs asserts
+      # robots.txt matches DEPLOY_ENV, but only for the target in front of it,
+      # so both have to be built for the assertion to mean anything.
       - name: Verify staging target
         run: npm run build && npm run test:site
         env:

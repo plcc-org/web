@@ -13,10 +13,10 @@
  * The two brand colours that have to exist outside CSS.
  *
  * `<meta name="theme-color">` and the web manifest can't read a custom
- * property, so these values were hard-coded in two files and drifted out of
- * anyone's view. They must stay in step with --color-moss and --color-stone in
- * src/styles/tokens.css; there is no mechanism that enforces it, so the comment
- * is the mechanism.
+ * property, so the values have to be literals somewhere. Keep them here rather
+ * than at the two use sites, and keep them in step with --color-moss and
+ * --color-stone in src/styles/tokens.css — nothing enforces that, so this
+ * comment is the enforcement.
  */
 export const brand = {
   /** = --color-moss */

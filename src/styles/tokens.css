@@ -16,11 +16,11 @@
   --color-clay: rgb(166, 123, 91); /* captions, metadata, italic subheads */
   --color-ember: rgb(189, 101, 56); /* warm secondary accent — used sparingly */
 
-  /* Three light surfaces, deliberately spaced so alternating bands read as
-     bands. paper L*98 → stone L*94 → sand L*88. Sand used to sit at L*90 — a
-     4-point step from the page background, which is under the threshold where
-     a large flat area registers as a different surface at all, so the banding
-     the whole visual language is built on simply didn't show. */
+  /* Three light surfaces, spaced so alternating bands read as bands:
+     paper L*98 → stone L*94 → sand L*88. Keep at least ~6 points of L*
+     between stone and sand — below that a large flat area stops registering
+     as a different surface at all, and the banding the visual language is
+     built on stops showing. */
   --color-stone: rgb(242, 238, 230); /* page background */
   --color-stone-rgb: 242, 238, 230; /* for translucent stone, e.g. the sticky header */
   --color-sand: rgb(228, 219, 202); /* deeper warm band, alternating sections */
@@ -51,9 +51,8 @@
 
   /* The display ramp (md and up) is fluid; the small end is fixed, because UI
      chrome shouldn't grow with the viewport the way headlines do. `--text-ui`
-     is deliberately between sm and base: it's the size nav links, footer text
-     and card metadata had all independently converged on (0.92–0.98rem), and
-     it is not part of the content ramp. */
+     sits between sm and base and is not part of the content ramp — it's for
+     interface text (nav, footer, card metadata), which wants to stay put. */
   --text-2xs: 0.75rem; /* micro-labels: tags, chips, legal */
   --text-xs: 0.8rem; /* small captions, cadence labels */
   --text-sm: 0.875rem; /* eyebrows, small buttons */
@@ -88,9 +87,9 @@
 
   /* ----------------------------------------------------------------------
    * Spacing & rhythm
-   * A single ramp. --space-s and --space-m are older names that outlived the
-   * pages they were added for and are still widely used; the rest of the
-   * legacy aliases had no references left and are gone.
+   * A single ramp. --space-s and --space-m are misnamed for their values
+   * (1.5rem and 3rem) but are used widely enough that renaming them is its
+   * own change; don't add new uses.
    * -------------------------------------------------------------------- */
   --space-s: 1.5rem; /* legacy alias */
   --space-sm: 0.75rem;
@@ -106,9 +105,9 @@
   /* ----------------------------------------------------------------------
    * Layout widths
    * -------------------------------------------------------------------- */
-  /* Reading measures. Three, and only three — the site had accumulated eight
-     (36/40/42/44/46/48rem, 60ch, 65ch), most of them one component's guess.
-     Pick by what the text is doing, not by how it happens to look today. */
+  /* Reading measures. Three, and only three. Pick by what the text is doing,
+     not by what looks right in one component — a fourth value added by eye is
+     how a site ends up with eight of these and no two columns aligned. */
   --measure: 65ch; /* long-form prose: body copy, bios, letters */
   --measure-narrow: 38rem; /* a column sitting beside something else */
   --measure-wide: 46rem; /* centred display text: hero, band intros, quotes */
@@ -141,9 +140,9 @@
   --ease-out: cubic-bezier(0.2, 0, 0.2, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Three durations, matched to how far a thing moves. Twelve hand-written
-     values (160ms, 180ms, 0.2s, 0.3s, 0.35s, 0.4s…) were in the codebase before
-     these existed, which is why nothing quite matched anything else. */
+  /* Three durations, matched to how far a thing moves. Reach for the nearest
+     one rather than a bespoke value — transitions that nearly agree read as
+     sloppier than ones that plainly differ. */
   --duration-fast: 0.2s; /* colour and small state changes */
   --duration-mid: 0.35s; /* a panel frosting, a header settling */
   --duration-slow: 0.6s; /* something crossing the screen */

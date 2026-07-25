@@ -64,10 +64,11 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
           archiveServices.map((service) => (
             <li>
               <article class="service-card">
-                {/* The thumbnail is decorative: it repeats the <h3> below it, and
-                    it linked to the same URL as "Watch Service", so keyboard and
-                    screen-reader users hit every service twice. It's now inert,
-                    with the single link below carrying the accessible name. */}
+                {/* The thumbnail is decorative — it repeats the <h3> below it.
+                    Deliberately inert: linking it as well would give every card
+                    two links to the same URL, so keyboard and screen-reader
+                    users would hit each service twice. The link below carries
+                    the accessible name. */}
                 <span class="service-card__media">
                   <img
                     src={service.thumbnailUrl}
@@ -200,8 +201,8 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
     transition: transform var(--duration-fast) ease;
   }
 
-  /* Driven from the card, not the thumbnail: the thumbnail is no longer a link,
-     so it can't take focus, and the zoom should answer the card's one link. */
+  /* Driven from the card, not the thumbnail: the thumbnail is inert and can't
+     take focus, and the zoom should answer the card's one link. */
   .service-card:hover img,
   .service-card:focus-within img {
     transform: scale(1.04);

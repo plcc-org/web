@@ -20,12 +20,11 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
         {
           leaders.map((leader) => (
             /* Heading-wrapping-a-button, per the ARIA Authoring Practices
-               disclosure pattern. The names used to be plain <span>s, so a
-               five-person roster contributed nothing to the document outline
-               and heading navigation skipped the whole page. A heading can't
-               live *inside* a <button> (phrasing content only), so it wraps
-               it — which also makes the h2 the grid item, hence width:100% on
-               the button. */
+               disclosure pattern. The names have to be headings or the roster
+               contributes nothing to the document outline and heading
+               navigation skips the page. A heading can't live *inside* a
+               <button> (phrasing content only), so it wraps it — which makes
+               the h2 the grid item, hence width:100% on the button. */
             <h2 class="leader-card-heading">
               <button
                 type="button"
@@ -129,9 +128,9 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
     // Resolves once the DOM swap has been applied (not when the animation ends).
     // Callers must await this before moving focus: the grid and the panel take
     // turns at `display: none`, and .focus() on a display:none element is
-    // silently a no-op. Focus was previously moved in a requestAnimationFrame,
-    // which fires *before* startViewTransition runs its callback — so both
-    // opening and closing dropped focus to <body> instead of moving it.
+    // silently a no-op. requestAnimationFrame is not a substitute — it fires
+    // *before* startViewTransition runs its callback, so focus would land on
+    // an element that is still hidden and fall through to <body>.
     const run = async (slug: string | null, fromSlug: string | null): Promise<void> => {
       const supportsVT = typeof document.startViewTransition === 'function'
       if (!supportsVT || prefersReduced.matches) {

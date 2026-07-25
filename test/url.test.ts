@@ -23,10 +23,9 @@ describe('withBase', () => {
   })
 })
 
-// resolveHref decides whether an editor-supplied href is ours to prefix. It
-// replaces four copy-pasted regexes, one of which had drifted: only PageHero
-// handled `tel:`, so a phone number in a Cta or CardRow link became
-// `/tel:+1425…`. The crawler skips tel: hrefs, so nothing caught it.
+// resolveHref decides whether an editor-supplied href is ours to prefix.
+// check-site.mjs skips mailto:/tel:/# hrefs, so a mangled one reaches
+// production silently — these cases are the only guard.
 describe('resolveHref', () => {
   it('base-prefixes internal paths', () => {
     expect(resolveHref('visit/')).toBe(`${BASE}visit/`)

@@ -99,9 +99,9 @@
   flex-shrink: 0; /* never compress an item until its label wraps mid-phrase */
 }
 
-/* The link reset deliberately excludes .btn: `.site-nav a` is (0,1,1) and would
-   otherwise outrank `.btn` (0,1,0), stripping the CTA's padding and repainting
-   its white label with the header's forest `inherit`. */
+/* The link reset must exclude .btn: `.site-nav a` is (0,1,1) and outranks
+   `.btn` (0,1,0), so without the :not() it strips the CTA's padding and
+   repaints its white label with the header's forest `inherit`. */
 .site-nav a:not(.btn) {
   text-decoration: none;
   color: inherit;
