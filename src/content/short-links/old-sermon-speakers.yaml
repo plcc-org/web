@@ -1,0 +1,5 @@
+name: old-sermon-speakers
+from: /connect/resources/sermon-library/speakers/
+destination: /messages/
+kind: moved
+expires: 2027-07-31

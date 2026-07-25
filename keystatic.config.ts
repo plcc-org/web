@@ -138,29 +138,39 @@ export default config({
       path: 'src/content/short-links/*',
       slugField: 'name',
       format: { data: 'yaml' },
-      columns: ['destination', 'expires'],
+      columns: ['from', 'destination', 'expires'],
       entryLayout: 'form',
       schema: {
         name: fields.slug({
           name: {
-            label: 'Short link',
-            description: 'What comes after plcc.org/ — e.g. "camp" makes plcc.org/camp. Lowercase, no spaces.',
+            label: 'Name',
+            description: 'Just a label for this list — it does not appear anywhere on the site.',
           },
         }),
-        destination: fields.url({
-          label: 'Sends people to',
-          description: 'The full address to send them to, e.g. a Church Center registration page.',
+        from: fields.text({
+          label: 'Old address',
+          description:
+            'The address people are typing or following, starting with a slash — "/camp" for plcc.org/camp. ' +
+            'It can have several parts, e.g. "/connect/about/leadership-team/".',
           validation: { isRequired: true },
+        }),
+        destination: fields.text({
+          label: 'Sends people to',
+          description:
+            'Either a full address elsewhere (https://plcc.churchcenter.com/…) or a page on this site, ' +
+            'written with slashes at both ends — "/visit/". Leave empty for a page that is gone for good.',
         }),
         kind: fields.select({
           label: 'What kind of link is this?',
           description:
             'A shortcut stays ours to re-point later — use it for sign-ups and anything that changes year to year. ' +
             'Only pick "permanently moved" for a page that has genuinely moved for good: browsers remember those ' +
-            'more or less forever, and it cannot be taken back.',
+            'more or less forever, and it cannot be taken back. "Gone for good" tells search engines to drop the ' +
+            'page rather than keep checking — use it when there is nowhere honest to send people.',
           options: [
             { label: 'A shortcut to a sign-up or another site', value: 'shortcut' },
             { label: 'A page that has permanently moved', value: 'moved' },
+            { label: 'A page that is gone for good', value: 'gone' },
           ],
           defaultValue: 'shortcut',
         }),

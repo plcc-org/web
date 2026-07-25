@@ -1,0 +1,5 @@
+name: old-habitat-work-day
+from: /serve/local/habitat-for-humanity/plcc-work-day/
+destination: /neighbors/serve/
+kind: moved
+expires: 2027-07-31

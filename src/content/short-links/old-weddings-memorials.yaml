@@ -1,0 +1,5 @@
+name: old-weddings-memorials
+from: /care/practical-assistance/weddings-memorials/
+destination: /neighbors/weddings/
+kind: moved
+expires: 2027-07-31

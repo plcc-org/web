@@ -1,0 +1,5 @@
+name: old-care
+from: /care/
+destination: /neighbors/care/
+kind: moved
+expires: 2027-07-31

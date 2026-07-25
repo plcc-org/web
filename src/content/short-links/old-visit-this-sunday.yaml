@@ -1,0 +1,5 @@
+name: old-visit-this-sunday
+from: /connect/visit-this-sunday/
+destination: /visit/
+kind: moved
+expires: 2027-07-31

@@ -1,0 +1,5 @@
+name: old-meals-of-care
+from: /care/practical-assistance/meals-of-care/
+destination: /neighbors/meals/
+kind: moved
+expires: 2027-07-31

@@ -1,0 +1,31 @@
+# Security response headers for the whole site. Cloudflare reads this from the
+# deployed assets; @astrojs/cloudflare appends its own rules at build time.
+#
+# Caching is deliberately absent. Workers Assets already serves HTML as
+# `public, max-age=0, must-revalidate` and content-hashed assets as
+# `immutable`, which is exactly right — and a blanket Cache-Control here would
+# make things worse two ways: Cloudflare *appends* rather than overrides, so a
+# hashed asset would get both policies concatenated and browsers would take the
+# first max-age it found; and the adapter skips injecting its immutable rule
+# when _headers already sets Cache-Control on a matching path.
+#
+# Also deliberately absent: a script-src/style-src Content-Security-Policy.
+# This is a static site with no accounts, no user input and nothing to steal,
+# and a strict policy would mean maintaining hashes for the inline styles Astro
+# emits for scoped CSS, the inline hero script, and the wordmark's inline style
+# attribute — trading a real failure mode (a blank page months from now when
+# someone adds a block) for a threat this site doesn't carry. frame-ancestors
+# is here because it costs nothing and stops clickjacking.
+
+/*
+  # Don't let a browser guess a type we didn't send.
+  X-Content-Type-Options: nosniff
+  # Send the origin to other sites, the full path only to ourselves.
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Nobody should be able to frame the site.
+  Content-Security-Policy: frame-ancestors 'none'
+  # Nothing here needs any of these; deny by default.
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  # Six months, without includeSubDomains or preload: both are effectively
+  # irreversible, and not every subdomain of plcc.org is ours to guarantee.
+  Strict-Transport-Security: max-age=15552000

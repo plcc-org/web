@@ -1,0 +1,5 @@
+name: old-getting-in-touch
+from: /connect/getting-in-touch/
+destination: /contact/
+kind: moved
+expires: 2027-07-31

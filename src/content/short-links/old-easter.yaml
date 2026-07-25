@@ -1,0 +1,6 @@
+name: old-easter
+from: /easter/
+destination: /events/
+kind: moved
+expires: 2027-07-31
+note: Seasonal landing page; What’s On is the closest live equivalent.

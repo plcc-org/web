@@ -1,0 +1,5 @@
+name: old-past-events
+from: /connect/resources/calendar/upcoming-events/past-events/
+destination: /events/
+kind: moved
+expires: 2027-07-31
