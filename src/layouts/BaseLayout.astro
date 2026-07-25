@@ -1,6 +1,7 @@
 ---
 import { getImage, Font } from 'astro:assets'
 import { withBase } from '../lib/url'
+import { churchGraph, jsonLdDocument } from '../lib/structured-data'
 import '../styles/global.css'
 import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
 import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
@@ -13,12 +14,20 @@ type Props = {
   title?: string
   description?: string
   noindex?: boolean
+  /**
+   * Extra schema.org nodes to merge into the page's `@graph` alongside the
+   * Church node emitted here (see src/lib/structured-data.ts). Pages that have
+   * something genuinely additional to declare — the events board, for
+   * instance — pass it; most pages don't need this.
+   */
+  structuredData?: Record<string, unknown>[]
 }
 
 const {
   title = 'Pine Lake Covenant Church',
   description = 'A church in Sammamish, discovering life with Jesus together.',
   noindex = false,
+  structuredData = [],
 }: Props = Astro.props
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
@@ -31,6 +40,18 @@ const favicon16 = await getImage({ src: faviconSource, width: 16, height: 16, fo
 const favicon32 = await getImage({ src: faviconSource, width: 32, height: 32, format: 'png' })
 // Open Graph images must be absolute URLs.
 const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toString() : socialImage.src
+
+// Structured data needs absolute `@id`s to be stable, so it only emits when a
+// `site` origin is configured — i.e. staging and production, never dev. Same
+// guard the canonical link uses.
+const origin = Astro.site ? Astro.site.origin : undefined
+const absolute = (path: string) => (Astro.site ? new URL(path, Astro.site).toString() : path)
+const jsonLd = origin
+  ? jsonLdDocument([
+      ...churchGraph(origin, { logo: absolute(appleTouchIcon.src), image: socialImageUrl }),
+      ...structuredData,
+    ])
+  : undefined
 ---
 
 <!doctype html>
@@ -74,6 +95,9 @@ const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).toStrin
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageUrl} />
+
+    {/* schema.org graph — Church + Place, plus anything the page adds. */}
+    {jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd} />}
   </head>
 
   <body>
