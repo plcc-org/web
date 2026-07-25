@@ -1,10 +1,10 @@
 // Capture the church's public Church Center calendar into a committed snapshot.
 //
-// Church Center moved the calendar to a client-rendered SPA, so the old
-// build-time CSRF-scrape (src/lib/events/adapters/churchcenter.ts) can't obtain
-// the public "organization read token" anymore. Here we let their own SPA do the
+// Church Center moved the calendar to a client-rendered SPA, so a build-time
+// CSRF-scrape can no longer obtain the public "organization read token" (the
+// adapter that did that has been removed). Here we let their own SPA do the
 // token handshake in a real browser, intercept the Bearer token off the request
-// it makes to the calendar API, then fetch the same JSON:API the old adapter used
+// it makes to the calendar API, then fetch the same JSON:API it uses
 // (same fields/includes/window) and write the raw body to
 // src/content/events-snapshot.json. The `snapshot` events source maps it at build
 // time — see src/lib/events/adapters/snapshot.ts.

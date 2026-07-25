@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import PageIntro from '../components/PageIntro.astro'
 import { withBase } from '../lib/url'
 ---
 
@@ -8,16 +9,13 @@ import { withBase } from '../lib/url'
   description="The page you are looking for could not be found."
   noindex={true}
 >
-  <article class="page">
-    <header class="page__header">
-      <h1>Page not found</h1>
-      <p class="lede">We could not find that page. It may have moved or been renamed.</p>
-    </header>
+  <div class="canvas">
+    <PageIntro title="Page not found" subhead="We could not find that page. It may have moved or been renamed." />
 
     <section class="section">
       <p>
         Try <a href={withBase()}>Home</a> or <a href={withBase('new/')}>I’m New</a>.
       </p>
     </section>
-  </article>
+  </div>
 </BaseLayout>

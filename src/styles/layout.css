@@ -1,57 +1,16 @@
 /* ======================================================================
  * LAYOUT
  *
- * Two systems live here:
- *  1. Legacy `.page` flow — the original narrow/wide reading wrapper. Kept
- *     intact so existing pages render unchanged until they're migrated.
- *  2. `.canvas` full-bleed grid — the modern system. A single grid whose
- *     children sit in a centered content column by default, but can opt into
- *     full-viewport-width bleed. This is what photo-forward pages are built on.
+ * `.canvas` is the one layout system: a full-bleed grid whose children sit in
+ * a centered content column by default but can opt into full-viewport-width
+ * bleed. Every page is built on it.
+ *
+ * The original `.page` flow it replaced is gone — the migration finished, and
+ * 404 (its last consumer) now uses `.canvas` + PageIntro like everything else.
  * ==================================================================== */
 
 /* ----------------------------------------------------------------------
- * 1. Legacy page flow
- * -------------------------------------------------------------------- */
-.page {
-  max-width: var(--measure);
-  margin: var(--space-m) 0 var(--space-l);
-}
-
-.page--wide {
-  max-width: 100%;
-}
-
-.page > * + * {
-  margin-top: var(--space-m);
-}
-
-.page__header h1 {
-  font-size: var(--text-display);
-  letter-spacing: var(--tracking-tight);
-  margin: 0;
-}
-
-.page__subhead {
-  margin-top: 0.5rem;
-  font-size: var(--text-lg);
-  color: var(--color-clay);
-  font-family: var(--font-serif);
-  font-style: italic;
-}
-
-.page__quote {
-  margin-top: 1.25rem;
-  padding-left: 1.1rem;
-  border-left: 3px solid rgba(106, 149, 41, 0.45);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.2rem;
-  line-height: 1.5;
-  color: var(--color-forest);
-}
-
-/* ----------------------------------------------------------------------
- * 2. Canvas — full-bleed content grid
+ * Canvas — full-bleed content grid
  *
  * Breaks out of `.site-main`'s constraint to span the viewport, then lays
  * out children in a centered column. Children bleed full-width by adding
@@ -85,11 +44,6 @@
   grid-column: full;
   width: min(100% - 2 * var(--canvas-gutter), var(--width-wide));
   margin-inline: auto;
-}
-
-/* Tighten the gap above/below when blocks should read as a pair */
-.canvas > .pull-up {
-  margin-top: calc(var(--space-section) * -0.45);
 }
 
 /* ----------------------------------------------------------------------
@@ -176,22 +130,7 @@ body:has(.is-flush) .site-footer {
 }
 
 /* ----------------------------------------------------------------------
- * Section rhythm utilities (work anywhere, not just inside .page)
- * -------------------------------------------------------------------- */
-.flow > * + * {
-  margin-top: var(--space-section);
-}
-
-.flow-tight > * + * {
-  margin-top: var(--space-lg);
-}
-
-.stack > * + * {
-  margin-top: var(--space-md);
-}
-
-/* ----------------------------------------------------------------------
- * Typographic utilities (decoupled from .page)
+ * Typographic utilities
  * -------------------------------------------------------------------- */
 .eyebrow {
   font-family: var(--font-sans);
@@ -248,14 +187,6 @@ body:has(.is-flush) .site-footer {
 
 .page-intro .subhead {
   margin-bottom: var(--space-md);
-}
-
-.prose-measure {
-  max-width: var(--measure);
-}
-
-.measure-wide {
-  max-width: 52rem;
 }
 
 /* ----------------------------------------------------------------------
@@ -330,19 +261,8 @@ body:has(.is-flush) .site-footer {
 }
 
 /* ----------------------------------------------------------------------
- * Panels & callouts (refined; class names preserved for legacy pages)
+ * Surfaces & callouts
  * -------------------------------------------------------------------- */
-.content-panel {
-  padding: clamp(1.5rem, 2.4vw, 2.25rem);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-md);
-}
-
-.content-panel h2 {
-  margin-top: 0;
-}
-
 .surface-gradient-soft {
   background: var(--surface-gradient-soft);
 }

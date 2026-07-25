@@ -3,8 +3,9 @@ import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { renderPlain } from '../lib/markdown'
 import PageHero from '../components/blocks/mdx/PageHero.astro'
+import Callout from '../components/Callout.astro'
+import Roadmap from '../components/Roadmap.astro'
 import SplitMdx from '../components/blocks/mdx/SplitMdx.astro'
-import CalloutMdx from '../components/blocks/mdx/CalloutMdx.astro'
 import CtaMdx from '../components/blocks/mdx/CtaMdx.astro'
 import CaptionedPhotoMdx from '../components/blocks/mdx/CaptionedPhotoMdx.astro'
 import SectionMdx from '../components/blocks/mdx/SectionMdx.astro'
@@ -18,7 +19,6 @@ import LogoCardsMdx from '../components/blocks/mdx/LogoCardsMdx.astro'
 import AsideMdx from '../components/blocks/mdx/AsideMdx.astro'
 import YouthMomentsMdx from '../components/blocks/mdx/YouthMomentsMdx.astro'
 import QuoteCarouselMdx from '../components/blocks/mdx/QuoteCarouselMdx.astro'
-import RoadmapMdx from '../components/blocks/mdx/RoadmapMdx.astro'
 import LetterMdx from '../components/blocks/mdx/LetterMdx.astro'
 
 // Renders CMS-built pages from the `pages` collection. Each entry is an MDX file:
@@ -44,7 +44,9 @@ const description = page.data.seoDescription ?? renderPlain(page.data.hero.lede)
 // the Keystatic `fields.mdx` config.
 const components = {
   Split: SplitMdx,
-  Callout: CalloutMdx,
+  // Callout and Roadmap need nothing from the MDX layer, so the Keystatic key
+  // maps straight to the component instead of a pass-through wrapper.
+  Callout: Callout,
   Cta: CtaMdx,
   CaptionedPhoto: CaptionedPhotoMdx,
   Section: SectionMdx,
@@ -58,7 +60,7 @@ const components = {
   Aside: AsideMdx,
   YouthMomentsBlock: YouthMomentsMdx,
   QuoteCarousel: QuoteCarouselMdx,
-  Roadmap: RoadmapMdx,
+  Roadmap: Roadmap,
   Letter: LetterMdx,
 }
 ---

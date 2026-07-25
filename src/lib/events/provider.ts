@@ -1,15 +1,13 @@
 // Events provider: the single entry point pages use to get events.
 //
-// Selects an adapter by the EVENTS_SOURCE env var (default 'curated'), normalizes
-// the result to an upcoming, sorted list, and falls back to the curated source on
-// any failure so "What's On" is never empty. New sources (Church Center
-// headless capture, public ICS feed, PCO API) plug in here behind the same
-// interface — see docs/events-plan.md.
+// Selects an adapter by the EVENTS_SOURCE env var, normalizes the result to an
+// upcoming, sorted list, and falls back to the curated source on any failure so
+// "What's On" is never empty. New sources (public ICS feed, PCO API) plug in
+// here behind the same interface.
 
 import { EVENTS_SOURCE } from 'astro:env/server'
 import type { CalendarEvent, EventSource } from './types'
 import { curatedEvents } from './adapters/curated'
-import { churchCenterEvents } from './adapters/churchcenter'
 import { snapshotEvents } from './adapters/snapshot'
 import { normalizeUpcoming } from './logic'
 
@@ -18,10 +16,6 @@ async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
     case 'snapshot':
       // Church Center data captured daily by a headless browser (see snapshot.ts).
       return snapshotEvents()
-    case 'churchcenter':
-      // Live build-time handshake — dead since Church Center went client-rendered;
-      // kept for reference. Use 'snapshot' instead.
-      return churchCenterEvents()
     case 'ics':
     case 'pco':
       // Not implemented yet; the provider falls back to curated.

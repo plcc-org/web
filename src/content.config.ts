@@ -3,7 +3,7 @@ import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
 
-// quotes / neighbor-doors / start-here-links each live as a single YAML file,
+// quotes / start-here-links each live as a single YAML file,
 // but the Git CMS (Keystatic) edits them as an array field, which serializes to
 // `{ <key>: [...] }`. Parse tolerantly so both the hand-authored bare-array form
 // and the CMS-wrapped form load, and give every item a stable `id` for the store.

@@ -113,17 +113,6 @@
   border-bottom-color: var(--color-mist);
 }
 
-/* Legacy circular mark stays available for future use */
-.logo-circle {
-  display: block;
-  width: 3.3rem;
-  height: 3.3rem;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(26, 46, 12, 0.2);
-}
-
 /* Current wordmark in brand green via image mask */
 .site-nav__home {
   display: flex;

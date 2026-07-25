@@ -96,7 +96,8 @@ export default defineConfig({
       EVENTS_SOURCE: envField.enum({
         context: 'server',
         access: 'public',
-        values: ['curated', 'churchcenter', 'snapshot', 'ics', 'pco'],
+        // Keep in sync with EventSource in src/lib/events/types.ts.
+        values: ['curated', 'snapshot', 'ics', 'pco'],
         optional: true,
       }),
     },

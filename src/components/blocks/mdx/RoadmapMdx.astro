@@ -1,9 +1,0 @@
----
-import Roadmap from '../../Roadmap.astro'
-
-// MDX wrapper for the Roadmap block — a numbered timeline of steps.
-type Props = { eyebrow?: string; heading?: string; steps?: { title: string; body: string }[] }
-const { eyebrow, heading, steps = [] } = Astro.props
----
-
-<Roadmap eyebrow={eyebrow} heading={heading} steps={steps} />
