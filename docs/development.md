@@ -2,7 +2,8 @@
 
 How the site is built and the conventions that keep it consistent. For the visual layer
 (tokens, layout, components), see [design-system.md](./design-system.md); for hosting and
-deploys, see [infrastructure.md](./infrastructure.md).
+deploys, see [infrastructure.md](./infrastructure.md); for the CMS, see [cms.md](./cms.md);
+for "What's On", see [events.md](./events.md).
 
 ---
 
@@ -19,8 +20,10 @@ deploys, see [infrastructure.md](./infrastructure.md).
 - **Host:** Cloudflare (Workers) via `@astrojs/cloudflare` (`imageService: 'compile'` keeps
   images optimized at build time). See [infrastructure.md](./infrastructure.md).
 
-This is a clean, maintainable codebase designed to be handed off and extended — not a
-fragile one-off.
+Public pages ship **no framework JavaScript** — there are no `client:*` directives
+anywhere. The handful of interactive behaviours are hand-written progressive
+enhancement, each with a reduced-motion path and a no-JS fallback. That's a property
+worth preserving, not an accident.
 
 ---
 
@@ -30,17 +33,26 @@ fragile one-off.
 src/
   assets/images/    Photo library (source for the <Image> pipeline; CMS uploads land here)
   components/       Astro components (Hero, Split, MomentsSection, cards, …)
-    blocks/         Block renderer for CMS-built pages (Blocks.astro)
-  config/site.ts    Environment-aware site/base/index config
-  content/          Editable content collections (photos catalog, leadership, quotes, …)
-    pages/          CMS-built block pages (rendered by pages/[...slug].astro)
+    blocks/mdx/     Thin wrappers exposing site components to CMS-authored MDX
+  config/
+    site.ts         Environment-aware site/base/index config (resolves DEPLOY_ENV)
+    church.ts       Name, address, service time — the facts that must not drift
+  content/          Editable content collections
+    pages/          CMS-built MDX pages (rendered by pages/[...slug].astro)
+    leadership/     One file per leader
+    youth-moments/  Youth photo captions
+    short-links/    Redirects + 410s (NOT an Astro collection — see below)
+    photos.json     The photo catalog: filename → alt
+    quotes.yaml, start-here-links.yaml, events-snapshot.json
   content.config.ts Collection definitions + Zod schemas
-  layouts/          BaseLayout.astro (head, header, footer, skip link)
-  lib/              Image registry, photo catalog, URL/markdown helpers, events/messages
+  layouts/          BaseLayout.astro (head, header, footer, skip link, JSON-LD)
+  lib/              Image registry, photo catalog, URL/markdown helpers, events, messages
   pages/            Routes (file-based); [...slug].astro renders the pages collection
   styles/           Design tokens + global CSS (entry: global.css)
+scripts/            Build and verification scripts (see "The build pipeline")
+test/               Vitest unit tests
 keystatic.config.ts Keystatic CMS config (collections/fields ↔ content.config.ts)
-public/             Static assets served as-is (favicon, video, manifest)
+public/             Static assets served as-is (favicon, manifest, _headers)
 docs/               Project documentation (you are here)
 nginx/, Dockerfile  Container image for serving the built site
 ```
@@ -49,41 +61,114 @@ nginx/, Dockerfile  Container image for serving the built site
 
 ## Building and running
 
-Requires Node.js (LTS) and npm.
+Requires Node.js (LTS — CI uses 25) and npm.
 
 ```bash
 npm install
 npm run dev          # local dev server at http://localhost:4321/
-npm run build        # production build to dist/
+npm run build        # production build to dist/ (runs prebuild + postbuild)
 npm run preview      # preview the production build locally
-npm run check        # astro check (type + template diagnostics)
-npm run format        # Prettier — write
-npm run format:check  # Prettier — verify only
 ```
 
-> Run `npm run format` before committing. **CI runs `format:check` and `check`** — a
-> formatting or type error fails the build.
+The full gate, in the order CI runs it:
+
+```bash
+npm run format        # Prettier — write
+npm run format:check  # Prettier — verify only
+npm run lint:css      # Stylelint — enforces tokens-first
+npm run check         # astro check (type + template diagnostics)
+npm test              # Vitest unit tests
+npm run build         # then:
+npm run test:site     # post-build crawl of dist/
+```
+
+> Run `npm run format` before committing. Cloudflare builds and publishes whatever lands
+> on `main` and does **not** run these checks — `.github/workflows/ci.yml` is the only
+> gate, which is why it runs on direct pushes as well as pull requests.
+
+---
+
+## The build pipeline
+
+`npm run build` is three steps, not one.
+
+### `prebuild`
+
+```
+rm -rf node_modules/.vite && node scripts/generate-redirects.mjs
+```
+
+- **Clearing the Vite cache** is not superstition: the Cloudflare workerd build and
+  `astro check` write mutually incompatible SSR dep caches, so a stale one surfaces as
+  `The file does not exist at node_modules/.vite/deps_ssr/…` on the next run.
+- **`generate-redirects.mjs`** turns the `short-links` collection into
+  `public/_redirects` (gitignored — the collection is the source of truth) plus one
+  generated route per `gone` entry. It validates as it goes: bad paths, duplicates,
+  reserved prefixes and missing review dates all fail the build.
+
+### `build`
+
+`astro build`. Note that `astro.config.mjs` pins `import.meta.env.DEPLOY_ENV` through
+`vite.define`. That's load-bearing — see [infrastructure.md](./infrastructure.md).
+
+### `postbuild`
+
+`scripts/prune-dist.mjs` deletes emitted image originals that nothing references.
+`src/lib/images.ts` registers the entire photo library through `import.meta.glob` (which
+is what makes a photo selectable by filename), and Vite emits an original for every
+registered image whether or not a page renders it. Without the prune the deploy carries
+roughly 15 MB of images no page can reach. It refuses to run if it finds no HTML, and
+`check-site.mjs` verifies every remaining asset reference resolves — which is what proves
+the prune only ever removed unreachable files.
 
 ---
 
 ## Conventions
 
 - **Internal linking.** Use the `withBase()` helper (`src/lib/url.ts`) so links work under
-  a subpath deploy: `href={withBase('about/')}`. Never hard-code a leading `/`.
-- **Content collections.** Editable content (the photo catalog, leadership, quotes, doors,
-  start-here links) lives under `src/content/`, defined and validated in
-  `src/content.config.ts`. Query with `getCollection(...)` and map over the results — don't
-  hand-author lists in markup or add new `src/data/*.ts` arrays. Editing copy shouldn't
-  mean touching layout. Editable content is also exposed through the CMS — keep
-  `keystatic.config.ts` in step with `src/content.config.ts` (see [cms.md](./cms.md)).
-- **CMS-built pages** live in the `pages` collection as block lists, rendered by
-  `pages/[...slug].astro` via `components/blocks/Blocks.astro`. New block types go in both
-  the Zod union (`content.config.ts`) and the Keystatic block editor. See [cms.md](./cms.md).
+  a subpath deploy: `href={withBase('about/')}`. Never hard-code a leading `/`. For links
+  that may be external or a `mailto:`/`tel:` — anything an editor can type into a CMS
+  field — use `resolveHref()`, which passes those through untouched.
+- **Content collections.** Editable content lives under `src/content/`, defined and
+  validated in `src/content.config.ts`: `photos`, `youthMoments`, `leadership`, `quotes`,
+  `startHereLinks`, `pages`. Query with `getCollection(...)` — don't hand-author lists in
+  markup or add new `src/data/*.ts` arrays. Editing copy shouldn't mean touching layout.
+  Keep `keystatic.config.ts` in step (see [cms.md](./cms.md)).
+- **`short-links` is the one exception**, and deliberately so. It lives in
+  `src/content/` and is edited in Keystatic like everything else, but it is _not_ in
+  `content.config.ts`, because nothing renders it — it's build-time configuration read
+  directly by `generate-redirects.mjs`. Registering it as an Astro collection would imply
+  a page could query it, which is exactly backwards.
 - **Tokens & components first.** Prefer existing design tokens and components over new
-  one-off CSS (see [design-system.md](./design-system.md)). Consistency is a feature.
+  one-off CSS (see [design-system.md](./design-system.md)). This is enforced by Stylelint,
+  not just asked for.
 - **Scoped styles don't reach child components.** A scoped rule in a parent `.astro`
   won't style markup rendered by a child (e.g. the `<img>` inside `<Photo>`). Use
-  `:global()` for those.
+  `:global()` for those — but only inside an `.astro` `<style>` block. `:global()` is
+  Astro syntax, not CSS: in a plain `.css` file the browser drops the entire rule
+  silently. Stylelint now catches this.
+
+### CMS-built pages
+
+Pages in the `pages` collection are **MDX files**, not block lists: a structured hero in
+frontmatter plus a body the editor composes in Keystatic's rich-text editor, inserting
+components. `src/pages/[...slug].astro` renders them, passing a **components map** that
+binds each MDX tag to a real site component. The filename is the URL slug
+(`src/content/pages/church-life.mdx` → `/church-life/`). Drafts render in dev and are
+excluded from production builds.
+
+Adding a block type means touching **three** places, and they have to agree:
+
+1. `keystatic.config.ts` — the editor UI for the block.
+2. `src/components/blocks/mdx/<Name>Mdx.astro` — a thin wrapper adapting the CMS's flat
+   props to the real component. If a component needs no adaptation, skip this and map the
+   Keystatic key straight to it (`Callout` and `Roadmap` do exactly that).
+3. The `components` map in `src/pages/[...slug].astro` — **the key must match the
+   component name used in the Keystatic config.**
+
+There is no Zod union of block types and no `Blocks.astro`. If a tag isn't in the map,
+MDX renders it as an unknown element rather than failing, so a mismatch between (1) and
+(3) is silent — check both.
 
 ---
 
@@ -91,7 +176,9 @@ npm run format:check  # Prettier — verify only
 
 Photos are the primary visual material, and the pipeline keeps them fast and consistent.
 
-- Image files live in `src/assets/images/`.
+- Image files live in `src/assets/images/`. The library is deliberately larger than what
+  the site renders, so there's a real pool to select from. `prune-dist` keeps the surplus
+  out of the deploy — don't prune the source.
 - Render through **`<Photo>`** (`src/components/Photo.astro`), a wrapper over Astro's
   `<Image>` that emits an optimized, responsive WebP with intrinsic dimensions (no layout
   shift). Pass it **either** an `image` (a resolved `ImageMetadata`, e.g. from a collection
@@ -105,33 +192,63 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
   `<Split>` / `<Hero>` take a `filename`, and `<MomentsSection photos={[…]}>` takes an
   ordered list. The `alt` is looked up from the catalog by filename (`src/lib/photos.ts`),
   so pages don't repeat it. To rotate a Moments gallery, edit the page's filename list.
-- **Logos and adornments are not photos.** Ministry logos (`ecc.png`, the Kids/Youth marks),
-  the Instagram/YouTube icons, and the PWA icon are _not_ in the catalog; pass their `alt`
-  explicitly to `<Photo>` (or `alt=""` for decorative icons that sit beside a text label).
-- **CMS page blocks carry their own photos.** Blocks on CMS-built pages (Split, Photo band,
-  Captioned photo, Page header — see [cms.md](./cms.md)) store an uploaded image and its alt
-  together via Keystatic `image()` fields, and render through the same `<Photo>` pipeline.
-  They don't touch the catalog.
-- **Favor portrait imagery** (see [design-system.md](./design-system.md)).
+- **Logos and adornments are not photos.** Partner logos (`ecc.png`), the Pine Lake Youth
+  mark, the Instagram/YouTube icons and the PWA icon are _not_ in the catalog; pass their
+  `alt` explicitly to `<Photo>`. A decorative image needs **both** `alt=""` and
+  `aria-hidden="true"` — the crawl treats `alt=""` on its own as an oversight and fails.
+- **CMS page blocks carry their own photos.** Blocks on CMS-built pages store an uploaded
+  image and its alt together via Keystatic `image()` fields, resolved at render time
+  through `imageFromRef` rather than Astro's `image()` helper — so a fixed
+  `../../assets/images/…` reference works from both flat and nested pages. They don't
+  touch the catalog.
+- **Favour portrait imagery** (see [design-system.md](./design-system.md)).
 
 ---
 
-## Quality & CI
+## What's enforced, and where
 
-- **Performance & accessibility are built in:** responsive, optimized images through a
-  single pipeline; a skip link and semantic structure in `BaseLayout.astro`.
-- **CI** (`.github/workflows/`) runs `format:check`, `check`, `test`, `build`, and
-  `test:site` on every push, and builds the staging target (see
-  [infrastructure.md](./infrastructure.md)).
-- **Tests** come in two layers:
-  - `npm test` — Vitest unit tests (`test/*.test.ts`) for pure logic: `withBase()`, the
-    events helpers in `src/lib/events/logic.ts` (`mapCategory`, `normalizeUpcoming`), and a
-    check that every image referenced in source / the photo catalog exists in
-    `src/assets/images`. Keep pure logic in dependency-free modules (no `astro:` imports) so
-    it stays unit-testable.
-  - `npm run test:site` — a post-build crawl of the prerendered pages (`dist/client/` under
-    the Cloudflare adapter; `scripts/check-site.mjs`) that fails on broken internal links,
-    content images missing `alt`, or missing key routes. Run it after `npm run build`.
+The repo's rules are mechanical wherever they can be, because conventions alone don't
+hold — they drift back a little at a time, and each step looks harmless.
 
-> `npm run build` clears the Vite dep cache first (`prebuild`): the Cloudflare workerd build
-> and `astro check` write incompatible dep caches, so a stale one would break the next run.
+| Guard                       | Catches                                                                                                                                                                          |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Prettier**                | Formatting. `format:check` in CI.                                                                                                                                                |
+| **Stylelint**               | Non-token colours, type sizes and radii, in `.css` **and** `.astro` `<style>` blocks. Also `:global()` used outside `.astro`, and the full-strength accent colours used as text. |
+| **`astro check`**           | Types and template diagnostics.                                                                                                                                                  |
+| **Vitest** (`test/`)        | Pure logic only — no `astro:` imports, so it stays unit-testable.                                                                                                                |
+| **`check-site.mjs`**        | Seven classes of post-build defect (below).                                                                                                                                      |
+| **CI: 410 routes in sync**  | A `short-links` edit in Keystatic that never regenerated its route.                                                                                                              |
+| **CI: both deploy targets** | Environment-dependent output — `site`, sitemap, `robots.txt`.                                                                                                                    |
+
+### The post-build crawl
+
+`npm run test:site` crawls the built `dist/` and fails on:
+
+1. Internal `<a href>` links that don't resolve to a generated page.
+2. Content `<img>` with missing or empty `alt`.
+3. `<img>` `src`/`srcset` pointing at an asset that isn't in the build.
+4. Missing public permalinks — URLs promised to the outside world (yard signs, printed
+   material, Google Business). Add an entry to `externalPermalinks` **only** for URLs
+   referenced off-site, and say where; ordinary internal pages are already covered by (1).
+5. Meta descriptions that are missing, duplicated, or leaking Markdown.
+6. Short links that shadow a real page — Cloudflare resolves `_redirects` before it looks
+   for an asset, so this would take a page off the site with no build error.
+7. A `robots.txt` that doesn't match the target it was built for.
+
+Several of these exist because the failure has **no symptom on the rendered page**. A
+production build that isn't indexable looks perfect and simply never appears in search.
+
+### Unit tests
+
+`test/*.test.ts`, run by `npm test`:
+
+- `url.test.ts` — `withBase()` / `resolveHref()`
+- `events.test.ts` — `mapCategory`, `normalizeUpcoming`
+- `churchcenter-map.test.ts` — HTML stripping and word-boundary truncation
+- `markdown.test.ts` — `renderPlain`, including entity decoding
+- `assets.test.ts` — every image referenced in source or the catalog exists on disk
+- `contrast.test.ts` — the accent tokens still clear WCAG AA against the surfaces they're
+  painted on, computed from `tokens.css` rather than restated
+
+Keep pure logic in dependency-free modules so it stays testable. When you add a guard,
+**break it once** to confirm it fires — a clean run proves nothing on its own.

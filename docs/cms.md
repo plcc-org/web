@@ -132,6 +132,91 @@ Notes for editors:
   Straight quotes and dashes become curly typographic forms automatically.
 - Internal links should be root-relative: `/visit/`, `/kids/`.
 
+### Which block do I use?
+
+The palette above tells you what each block _is_. This is the question you actually have:
+**I have something to say — where does it go?**
+
+Start here and take the first match:
+
+| If what you have is…                               | Reach for         |
+| -------------------------------------------------- | ----------------- |
+| A few paragraphs that just need to be read         | **Rich text**     |
+| Something better _shown_ than described            | **Photo & text**  |
+| One point you don't want people to skim past       | **Callout**       |
+| One sentence someone said, worth its own space     | **Quote**         |
+| Three or four parallel things, each a line or two  | **Text cards**    |
+| Three or four places to go next                    | **Link cards**    |
+| A sequence where the order matters                 | **Roadmap**       |
+| A set of principles where the order doesn't        | **Key points**    |
+| A single photo that needs explaining               | **Photo**         |
+| A moment of visual breathing room                  | **Photo gallery** |
+| The one thing you want the reader to do at the end | **Banner**        |
+| A personal note in someone's own voice             | **Letter**        |
+
+Three rules of thumb behind that table:
+
+- **Order matters → Roadmap. Order doesn't → Key points.** They look similar in the palette
+  and they're not interchangeable: numbering things that aren't sequential tells the reader
+  a lie about how to read them.
+- **Cards are for parallel things.** If your three cards aren't the same _kind_ of thing,
+  they should be prose.
+- **One Banner per page, at the end.** It's the loudest block. A second one in the middle
+  makes both quieter.
+
+### A page, block by block
+
+`/visit/` — the page a first-time guest actually reads. Why each block is what it is:
+
+| Block             | On the page                               | Why this one                                                                                                                                        |
+| ----------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| _(hero)_          | "Plan a Visit" + a reassuring lede        | Every page gets one. The lede does the emotional work before any logistics.                                                                         |
+| **Rich text**     | "Sundays at 10:00am" — when & where       | Facts someone may be scanning for. Prose, not a card — they need to be _read_, and cards invite skimming.                                           |
+| **Photo**         | The building, captioned                   | "What am I looking for when I arrive?" A caption can say the thing a photo can't — where to park.                                                   |
+| **Photo & text**  | "What happens on a Sunday"                | Show-and-tell: the description is more believable next to the photo of it happening.                                                                |
+| **Callout**       | "Will I stand out or be put on the spot?" | The single biggest fear, answered where it can't be skimmed past. This is what a Callout is for — not decoration, but the one point that must land. |
+| **Photo & text**  | "We make Sundays smooth for parents"      | Same pattern, second audience. The alternating tint (`paper` then `sand`) is what keeps two adjacent splits from reading as one long block.         |
+| **Rich text**     | "What should I wear?"                     | A short practical answer. Doesn't need a photo, doesn't need a box.                                                                                 |
+| **Photo gallery** | Three photos, no words                    | Breathing room before the close, and the last impression is faces rather than logistics.                                                            |
+| **Banner**        | "A place to belong" + the CTA             | One action, at the end, on a dark band so it reads as the page's conclusion.                                                                        |
+
+The shape underneath: **reassure → orient → show → answer the fear → show again → practical
+detail → breathe → invite.** Most guest-facing pages want roughly that arc. You're not
+obliged to follow it, but if a page feels flat, compare it against this one.
+
+### Choosing photos
+
+- **Portrait, not landscape.** The whole layout is built around vertical images; a wide crop
+  will be cut off or letterboxed.
+- **People over places.** A room with nobody in it says nothing. A photo with faces in it
+  answers "would I be out of place here?" — which is the question the whole site exists for.
+- **Candid over posed.** Nobody lined up looking at the camera.
+- **Real, not stock.** Ever.
+- **Look at the whole frame before you choose it.** Check the background and the edges — a
+  crop lands where you don't expect, and the thing you didn't notice is the thing everyone
+  sees.
+- **Don't use the same photo twice on one page.** Across pages is fine.
+
+**Alt text** is required and the build fails without it. Write what a person who can't see
+the photo would need in order to follow the page — _"A volunteer making coffee at the
+welcome café before the service"_, not _"coffee"_ and not _"photo of church"_. If the photo
+shows people doing something, say what they're doing.
+
+### Before you publish: the voice check
+
+The full reference is [voice.md](./voice.md). At the moment of writing, five questions:
+
+1. **Could this sentence describe any church?** If yes, rewrite it with something only true
+   of Pine Lake. This is the test everything else follows from.
+2. **Would a person with no church background understand every word?** Cut "fellowship",
+   "discipleship", "ministry", "outreach", "plug in".
+3. **Am I describing a program, or a person's situation?** Start with the situation. Not
+   _"We have a meals ministry"_ but _"When life is overwhelming, even simple tasks can feel
+   heavy."_
+4. **Will this still be true in a year?** Dates, times and specific events belong in What's
+   On, not in narrative copy.
+5. **Am I saying "no pressure" more than once?** Say it once, then show it through structure.
+
 ### Where uploaded photos go
 
 When you upload a photo into a block, Keystatic stores it under
@@ -179,8 +264,8 @@ different decisions:
    page, so a one-off block makes the editor worse for the pages that aren't it.
 
 By this rule, these stay **hand-built `.astro`**, not CMS pages: `index` (home — a bespoke
-full-bleed video hero), `events/*` (the `EventsBoard` _is_ the page), `messages` (live
-video archive), and `about/leadership` (modal + view-transition morph). They're already
+full-bleed hero with a drifting photo stack), `events/*` (the `EventsBoard` _is_ the page),
+`messages` (live video archive), and `about/leadership` (modal + view-transition morph). They're already
 components; they just aren't editor surface. (The pastor's letter _was_ here until its
 layout became the reusable **Letter** block.)
 

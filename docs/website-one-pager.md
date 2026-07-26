@@ -73,16 +73,22 @@ It is **intentionally asymmetric** — we only built pages where there's real co
 a real need, and the emotional order of the pages is deliberate:
 
 1. **Home** → _"I might belong here."_
-2. **I'm New / Families / Youth** → _"I understand what this would feel like."_
-3. **For Our Neighbors / Next Steps** → _"I can engage at my own pace."_
+2. **I'm New / Families** → _"I understand what this would feel like."_
+3. **For Our Neighbors / Church Life** → _"I can engage at my own pace."_
+4. **Plan a Visit** → _"I know exactly what happens if I turn up."_
 
 Primary navigation:
 
 - **I'm New** — the front door; answers the practical and emotional questions a guest has.
-- **About** — who we are, what we believe, leadership, ethos.
+- **About** — who we are, what we believe, leadership.
 - **Families** — kids, youth, and family life.
-- **For Our Neighbors** — organized around _needs_, not departments (the Doors model).
-- **What's Happening / Messages** — current events and the sermon archive.
+- **For Our Neighbors** — how we show up _outside_ ourselves, organized around needs
+  rather than departments (the Doors model).
+- **Church Life** — what shared life looks like _inside_, for people starting to make
+  Pine Lake home.
+- **What's On** — the calendar.
+- **Messages** — the sermon archive.
+- **Plan a Visit** — the one call to action, carried as a button rather than a link.
 
 This is a **high-signal front door, not an exhaustive catalog.** Strategic
 incompleteness is a feature: a clear, confident site beats a complete-but-cluttered

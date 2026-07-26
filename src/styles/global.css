@@ -3,7 +3,8 @@
  *
  * Split into partials for readability. Import order IS the cascade order
  * (later files win on equal-specificity ties), so keep these in sequence:
- *   tokens → base → nav → layout → components → footer → utilities → pages
+ *   tokens → base → nav → layout → components → footer → utilities →
+ *   animations → pages
  */
 @import './tokens.css';
 @import './base.css';

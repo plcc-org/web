@@ -6,10 +6,12 @@ polish pass. What remains is for closer to launch ("prime time").
 
 ## Content
 
-- **Real testimonials.** `src/data/quotes.ts` still mixes a few genuine quotes with
-  fabricated "placeholder" personas feeding the homepage carousel. Replace with real,
-  attributed quotes and drop the fakes. (The carousel currently assumes ≥4 quotes — adjust
-  if there are fewer.)
+- **Real testimonials.** All eight quotes in `src/content/quotes.yaml` are attributed to
+  anonymous personas ("A recent attendee", "A middle-aged family"). Eight anonymous voices
+  read as invented, which is exactly what the filter test in [voice.md](./docs/voice.md)
+  exists to catch — and they sit under a heading that says "In their words." Replace with
+  two or three real first names, and faces if consent allows; three named voices beat eight
+  anonymous ones. (The carousel assumes ≥4 quotes — adjust it if there are fewer.)
 
 ## Production cutover (plcc.org)
 
@@ -21,9 +23,8 @@ polish pass. What remains is for closer to launch ("prime time").
 
 ## Known residuals (optional, no user impact)
 
-- ~5 MB of unused `pickImageByAnyTag` pool originals are emitted to `dist` (never referenced
-  or served). Prune, or replace the random-pick pools with explicit images.
-- Events use an undocumented Church Center read-token endpoint — it works and falls back to a
-  curated list, but a public iCal feed URL or a Planning Center API token would be more durable.
 - Leadership portraits are 400×400 sources, so they're a little soft scaled into the cards —
   swap for higher-resolution files if available.
+- Events still run on a nightly headless-browser capture of Church Center rather than an
+  official API. It's stable and falls back to a curated list, but a Planning Center API key
+  would remove the whole scraper. See [events.md](./docs/events.md) for the migration path.

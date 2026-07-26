@@ -11,8 +11,10 @@ If you're about to change something, start with the doc that matches the change:
 | -------------------------------------------------- | ---------------------------------------------------------------- | ---------------------- |
 | **[philosophy.md](./philosophy.md)**               | adding or restructuring pages, deciding what belongs on the site | everyone               |
 | **[voice.md](./voice.md)**                         | writing or editing any copy                                      | everyone               |
+| **[cms.md](./cms.md)**                             | editing the site — pages, blocks, photos, short links            | editors / developers   |
 | **[design-system.md](./design-system.md)**         | making visual changes — tokens, layout, components               | designers / developers |
 | **[development.md](./development.md)**             | working in the codebase — build, conventions, components, images | developers             |
+| **[events.md](./events.md)**                       | touching "What's On" — the calendar pipeline and its stopgap     | developers             |
 | **[infrastructure.md](./infrastructure.md)**       | deploying, configuring environments, or running in a container   | developers / ops       |
 | **[website-one-pager.md](./website-one-pager.md)** | sharing a 5-minute "what changed and why" brief with the team    | stakeholders           |
 

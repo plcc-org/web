@@ -2,11 +2,12 @@
 import { renderMarkdown } from '../lib/markdown'
 
 // A bordered "aside" panel — sand background, moss left-accent — for a single
-// emphasized point (safety note, a reassurance, an FYI). Backs the repeated
-// `.section-callout` pattern on Kids/Youth/Visit, and is offered as a CMS block.
+// emphasized point (safety note, a reassurance, an FYI). Rendered as the CMS
+// "Callout" block; the Keystatic key maps straight here with no MDX wrapper.
 //
-// Pass `body` (Markdown) when CMS-driven; otherwise use the default slot so the
-// hand-authored pages keep their inline markup (lists, <strong>, links).
+// Two content paths: the default slot (what MDX children arrive as, and the one
+// in use) preserves inline markup — lists, <strong>, links. `body` takes a
+// Markdown string instead, for any caller that has one rather than children.
 
 type Props = {
   heading?: string

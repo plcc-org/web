@@ -20,11 +20,15 @@ Other scripts:
 
 ```bash
 npm run check         # astro check (type + template diagnostics)
+npm run lint:css      # Stylelint — enforces the design tokens
+npm test              # Vitest unit tests
+npm run test:site     # crawl the built site (run after npm run build)
 npm run format        # Prettier — write
 npm run format:check  # Prettier — verify only
 ```
 
-> Run `npm run format` before committing. CI runs `format:check` and `check`.
+> Run `npm run format` before committing. CI runs all of the above, and builds and crawls
+> both deploy targets. Cloudflare does **not** run them — GitHub Actions is the only gate.
 
 ## Documentation
 
@@ -33,8 +37,10 @@ Start with the [docs index](./docs/README.md), or jump straight in:
 
 - **[Philosophy & guardrails](./docs/philosophy.md)** — why the site exists and what belongs on it.
 - **[Editorial voice](./docs/voice.md)** — tone and word choices.
+- **[Editing the site](./docs/cms.md)** — the Keystatic CMS: pages, blocks, photos, short links.
 - **[Design system](./docs/design-system.md)** — visual language, tokens, layout, components.
 - **[Development & architecture](./docs/development.md)** — stack, structure, conventions, the image system.
+- **[The events subsystem](./docs/events.md)** — how "What's On" gets its data.
 - **[Infrastructure & deployment](./docs/infrastructure.md)** — environments, hosting, and container workflows.
 
 [`CLAUDE.md`](./CLAUDE.md) is a condensed rule sheet for AI coding agents that points into
