@@ -79,9 +79,10 @@ function preview(label: string, info: ReactNode, media: ReactNode, children?: Re
 // (format: <team>/<project>). Update the slug if the Keystatic Cloud project uses
 // a different name.
 //
-// Photos are deliberately NOT a CMS collection: the 442-entry catalog
-// (src/content/photos.json) is build-time infrastructure. Editors add and pick
-// photos through image fields (on page blocks and the hero).
+// Photos are deliberately NOT a CMS collection: the catalog
+// (src/content/photos.json) is build-time infrastructure for the hand-built
+// pages. Editors add and pick photos through image fields (on page blocks and
+// the hero), which store the photo and its description together.
 export default config({
   storage: import.meta.env.DEV ? { kind: 'local' } : { kind: 'cloud' },
   cloud: { project: 'plcc/plcc-web' },
@@ -256,7 +257,8 @@ export default config({
             }),
             alt: fields.text({
               label: 'Photo description (alt text)',
-              description: 'Required only when a hero photo is set.',
+              description:
+                'Required only when a hero photo is set. Say what someone who can’t see it would need — “A volunteer making coffee before the service”, not “coffee”.',
               validation: { isRequired: false },
             }),
             eyebrow: fields.text({
@@ -266,7 +268,8 @@ export default config({
             }),
             lede: fields.text({
               label: 'Intro line',
-              description: 'A one- or two-sentence opening. The heading comes from the page title.',
+              description:
+                'A one- or two-sentence opening. The heading comes from the page title. If it could describe any church, rewrite it with something only true of Pine Lake.',
               multiline: true,
               validation: { isRequired: false },
             }),
@@ -302,7 +305,8 @@ export default config({
         ),
         content: fields.mdx({
           label: 'Body',
-          description: 'Type prose; use the “+” / insert menu to add styled blocks.',
+          description:
+            'Type prose; use the “+” / insert menu to add styled blocks. Two habits carry most of the voice: start with the reader’s situation rather than our programme (“When life is overwhelming…”, not “We have a meals ministry”), and keep anything that changes — dates, times, one-off events — on What’s On rather than here.',
           components: {
             Section: wrapper({
               label: 'Rich text',
