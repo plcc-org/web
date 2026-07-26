@@ -303,3 +303,15 @@
     font-size: var(--text-xs);
   }
 }
+
+/* A closing band that runs flush to the footer removes the stone gap between
+   them. Driven by :has() on <body> so no page needs its own CSS — the marker
+   goes on the last band (`.band--flush`, or `.is-flush` on a closing Split),
+   and the rules that collapse the canvas and main padding sit in layout.css
+   with the elements they affect. This half lives here, with the margin it
+   cancels: the footer layer wins over the layout layer, so declaring it there
+   would be silently overridden by `.site-footer` above. */
+body:has(.band--flush) .site-footer,
+body:has(.is-flush) .site-footer {
+  margin-top: 0;
+}

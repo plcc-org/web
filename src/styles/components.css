@@ -21,7 +21,6 @@
  *   Roadmap       Roadmap.astro         the numbered step timeline
  *   Events        EventsBoard/EventRow  What's On listings
  *   Quotes        QuoteCarousel         the story-quote card and its carousel
- *   Prose         —                     default link colours inside .site-main
  *
  * No component carries its own <style> block; all component CSS lives here, in
  * blocks.css (the MDX block palette) or in pages.css (one-page styling). See
@@ -1526,45 +1525,4 @@ a.card:hover,
 .quote-dot:focus-visible {
   outline: 2px solid var(--color-moss);
   outline-offset: 2px;
-}
-
-/* ======================================================================
- * Prose defaults inside the page body
- * ==================================================================== */
-
-/* Every paragraph in the main column is held to a reading measure by default,
-   so page authors get a comfortable line length without asking for one. */
-.site-main p {
-  max-width: var(--measure);
-}
-
-/*
- * Default styling for in-content prose links. Wrapped in :where() so it carries
- * (almost) no specificity — any link that's also a button/pill/chip (which sets
- * its own color) overrides this instead of inheriting moss-on-moss text.
- */
-:where(.site-main a:not(.link-card):not(.card)) {
-  color: var(--color-moss-ink);
-  text-decoration-color: var(--color-mist);
-  text-underline-offset: 0.12em;
-}
-
-/* Keep :visited and :hover INSIDE :where() so the pseudo-class doesn't raise
-   specificity to (0,1,0) — otherwise it ties with (and, being later, beats)
-   button classes like .btn, repainting visited buttons moss-on-moss. */
-:where(.site-main a:not(.link-card):not(.card):visited) {
-  color: var(--color-moss-ink);
-}
-
-/* Hover darkens to forest and warms the underline — the one place ember is
-   used as a line rather than a wash. */
-:where(.site-main a:not(.link-card):not(.card):hover) {
-  color: var(--color-forest);
-  text-decoration-color: var(--color-ember);
-}
-
-/* The quote card sets its own width; re-stated here to outrank `.site-main p`,
-   which is (0,1,1) and would otherwise clamp it back to the measure. */
-.site-main .story-quote p {
-  max-width: none;
 }
