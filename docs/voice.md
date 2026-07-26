@@ -62,7 +62,7 @@ up.
   with church. Never require agreement to belong. But also never hide our convictions or
   water them down. Welcoming and distinctive at the same time.
 - **Evergreen copy.** Anything that changes often (event times, schedules) lives in a
-  dedicated module like the Calendar / What's Happening — never baked into narrative
+  dedicated module like What's On — never baked into narrative
   pages that should stay true for years.
 
 ---
