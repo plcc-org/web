@@ -34,21 +34,23 @@ body:has(.hero) .site-main {
    bright as often as not. Invert them to white until the bar frosts on scroll,
    at which point the stone background returns and so do the normal colours.
    Dark-on-video can't be rescued by a stronger scrim: it would need the
-   backdrop to be *lighter*, which is the opposite of what the hero wants. */
-body:has(.hero) .site-header:not(.is-scrolled) .site-nav a:not(.btn) {
+   backdrop to be *lighter*, which is the opposite of what the hero wants.
+   The inversion must lift while the mobile menu is open: the open menu frosts
+   the header to near-opaque stone, so white links there would vanish. */
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) a:not(.btn) {
   color: var(--color-white);
 }
 
-body:has(.hero) .site-header:not(.is-scrolled) .site-nav a:not(.btn):hover {
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) a:not(.btn):hover {
   color: var(--color-white);
   border-bottom-color: var(--color-on-dark-line);
 }
 
-body:has(.hero) .site-header:not(.is-scrolled) .site-nav__home-logo {
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav__home-logo {
   background-color: var(--color-white);
 }
 
-body:has(.hero) .site-header:not(.is-scrolled) .site-nav__toggle span {
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav__toggle span {
   background: var(--color-white);
 }
 
