@@ -1,4 +1,25 @@
-/* Footer */
+/* ======================================================================
+ * footer.css — the full-bleed site footer (see Footer.astro).
+ *
+ * A dark forest panel closing every page (markup lives in BaseLayout.astro),
+ * in four stacked areas:
+ *
+ *   sitemap   every page below a hub, in four labelled columns
+ *   info      the church's name, address, and service time
+ *   links     social and secondary links
+ *   legal     the copyright line
+ *
+ * Those names are the grid areas below; the layout is defined once in
+ * `grid-template-areas` and re-declared as a single column under 800px, so
+ * changing the arrangement means editing the template, not each child.
+ *
+ * The footer is one of two dark surfaces on the site (the other is
+ * `.band--forest`), so it uses the `--color-on-dark-*` tokens throughout
+ * rather than the page's normal ink.
+ * ==================================================================== */
+
+/* Breaks out of `.site-main`'s shell width to span the viewport, the same way
+   `.canvas` does. `overflow: hidden` clips the grid overlay below to the panel. */
 .site-footer {
   margin-top: var(--space-m);
   max-width: none;
@@ -16,6 +37,8 @@
   overflow: hidden;
 }
 
+/* A faint 28px graph-paper grid over the gradient — texture at the same
+   near-invisible strength as the body grain, so the panel isn't flat. */
 .site-footer::before {
   content: '';
   position: absolute;
@@ -28,6 +51,8 @@
   pointer-events: none;
 }
 
+/* Re-contains the content at the shell width inside the full-bleed panel.
+   `z-index: 1` lifts it above the grid overlay. */
 .site-footer__main {
   position: relative;
   z-index: 1;
@@ -43,6 +68,7 @@
   align-items: center;
 }
 
+/* Four equal columns of links, ruled off from the rest of the footer. */
 .site-footer__sitemap {
   grid-area: sitemap;
   display: grid;
@@ -53,12 +79,15 @@
   border-bottom: 1px solid var(--color-on-dark-hairline);
 }
 
+/* One column. A column may hold more than one hub, hence the flex stack. */
 .site-footer__column {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
 }
 
+/* A hub's name above its pages — a label, not a title, so it's the smallest
+   type on the site and set in sans. */
 .site-footer__heading {
   margin: 0 0 0.5rem;
   font-family: var(--font-sans);
@@ -84,6 +113,8 @@
   line-height: 1.35;
 }
 
+/* Both of the horizontal rows below the sitemap: items sit inline and wrap as
+   a group on a narrow screen. */
 .site-footer__info,
 .site-footer__links {
   display: flex;
@@ -98,6 +129,7 @@
   color: var(--color-on-dark);
 }
 
+/* The church name, the one serif word in the footer. */
 .site-footer__info strong {
   font-family: var(--font-serif);
   font-size: var(--text-md);
@@ -111,11 +143,18 @@
   font-size: var(--text-ui);
 }
 
+/* The "|" separating inline items. Decorative, so it's dimmer than the text
+   it stands between. */
 .site-footer__divider {
   color: var(--color-on-dark-line);
   font-weight: 500;
 }
 
+/* Every footer link, underlined by default. The rule is a `border-bottom`
+   rather than `text-decoration` so its distance from the baseline and its
+   colour are set independently — and so the sitemap rules below can turn it
+   off by making it transparent, which keeps the link's height unchanged
+   between rest and hover. */
 .site-footer a {
   color: var(--color-white);
   text-decoration: none;
@@ -161,6 +200,7 @@
   border-bottom-color: var(--color-moss-light);
 }
 
+/* Icon + label, kept on one line. */
 .site-footer__social-link {
   display: inline-flex;
   align-items: center;
@@ -173,6 +213,10 @@
   flex-shrink: 0;
 }
 
+/* The two marks are sized individually rather than to one shared box. Their
+   source artwork has different proportions and different amounts of padding,
+   so equal dimensions would leave one visibly larger; these values match them
+   optically. Re-measure by eye if either asset is replaced. */
 .site-footer__social-icon--instagram {
   width: 0.84rem;
   height: 0.84rem;
@@ -184,6 +228,8 @@
   transform: translateY(0.01rem);
 }
 
+/* Copyright, set opposite the social links on the same row and the quietest
+   text in the footer. */
 .site-footer__legal {
   grid-area: legal;
   margin: 0;
@@ -193,6 +239,9 @@
   font-size: var(--text-xs);
 }
 
+/* Phones and small tablets: everything becomes one column, the sitemap halves
+   to two, and the whole panel tightens up — a footer this tall on a phone is
+   just a long scroll past the content. */
 @media (max-width: 800px) {
   .site-footer {
     margin-left: calc(50% - 50vw);
@@ -221,12 +270,16 @@
     font-size: var(--text-ui);
   }
 
+  /* Full width forces the address onto its own line under the name, rather
+     than trailing it in a cramped inline run. */
   .site-footer__info strong {
     width: 100%;
     margin-bottom: 0.15rem;
     font-size: var(--text-base);
   }
 
+  /* Wrapped rows put the separators in the wrong places, so drop them and let
+     the larger gap do the separating. */
   .site-footer__divider {
     display: none;
   }
@@ -236,10 +289,13 @@
     gap: 0.3rem 0.65rem;
   }
 
+  /* Taller tap targets once these are the only links on the row. */
   .site-footer__links a {
     padding: 0.2rem 0;
   }
 
+  /* No longer sharing a row with the links, so it aligns left like everything
+     else in the single column. */
   .site-footer__legal {
     justify-self: start;
     text-align: left;

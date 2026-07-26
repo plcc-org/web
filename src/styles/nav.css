@@ -1,4 +1,27 @@
-/* Header + primary navigation — sticky, frosting into the content on scroll */
+/* ======================================================================
+ * nav.css — the site header and primary navigation (markup in BaseLayout.astro).
+ *
+ * One bar with three jobs, and most of the file is the interaction between
+ * them:
+ *
+ *   Position   sticky on an ordinary page, fixed over a page that opens with a
+ *              hero, selected by `body:has(.hero)`.
+ *   Frosting   transparent at rest, frosted stone once scrolled. Toggled by
+ *              `.is-scrolled` on `.site-header`, which a scroll listener adds.
+ *   Layout     a single row up to 1119px wide, a hamburger and a drawer below
+ *              that. Open state is `.is-open` on `.site-nav`.
+ *
+ * Two state classes, then, and both come from script — `.is-scrolled` on the
+ * header and `.is-open` on the nav. Everything else is derived from those, the
+ * `body:has(.hero)` check, and the one width breakpoint.
+ *
+ * The tricky combination is a transparent bar over a hero: the links have to
+ * invert to white, and then invert back the moment anything puts a surface
+ * behind them (scrolling, or opening the menu). That's what the long
+ * `body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open)`
+ * selectors below are for.
+ * ==================================================================== */
+
 .site-header {
   /* Reach the physical top edge (behind the iOS status bar) so the frosted bar
      covers the safe area; the inset pads content back below the status bar. */
@@ -130,6 +153,9 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
   padding-right: max(var(--space-s), env(safe-area-inset-right, 0px));
 }
 
+/* Wordmark plus hamburger. Never shrinks, so a long nav list wraps rather than
+   squeezing the logo. On mobile this becomes the always-visible top row and the
+   list drops beneath it. */
 .site-nav__bar {
   display: flex;
   align-items: center;
@@ -174,7 +200,8 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
   border-bottom-color: var(--color-mist);
 }
 
-/* Current wordmark in brand green via image mask */
+/* The wordmark link. `line-height: 0` stops the inline-block logo from
+   inheriting a text baseline gap and pushing the bar taller than it needs. */
 .site-nav__home {
   display: flex;
   align-items: center;
@@ -183,6 +210,9 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
   line-height: 0;
 }
 
+/* The wordmark is painted, not drawn: the SVG is used as a mask over a
+   background colour, so one asset can be moss on a light bar and white over a
+   hero without shipping a second file or inlining the markup. */
 .site-nav__home-logo {
   width: clamp(10.5rem, 22vw, 13rem);
   height: clamp(1.8rem, 3.8vw, 2.25rem);
@@ -203,10 +233,12 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
   margin-left: 0.5rem;
 }
 
-/* Hamburger menu for mobile and narrower desktops. The nav is capped at the
+/* ----------------------------------------------------------------------
+ * Hamburger menu for mobile and narrower desktops. The nav is capped at the
    1120px shell, so the full row renders at a constant width above that; below
    it the row no longer fits. Switching here keeps the full bar on tablets at
-   the shell width and up (e.g. iPad Mini landscape at 1133px). */
+   the shell width and up (e.g. iPad Mini landscape at 1133px).
+ * -------------------------------------------------------------------- */
 @media (max-width: 1119px) {
   .site-header {
     padding-top: calc(1rem + var(--safe-top));

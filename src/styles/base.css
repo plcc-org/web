@@ -1,4 +1,12 @@
-/* Base document defaults */
+/* ======================================================================
+ * base.css — document defaults.
+ *
+ * Element-level styling only: the reset, the document surface, the heading
+ * scale, and the two pieces of chrome that belong to no component (the grain
+ * overlay and the skip link). Everything here is unclassed, so any rule with a
+ * class beats it — which is the point. If a change needs a class to be applied,
+ * it belongs in layout.css or components.css instead.
+ * ==================================================================== */
 
 *,
 *::before,
@@ -18,6 +26,8 @@ html {
   scroll-padding-top: 5.5rem;
 }
 
+/* `position: relative` is for the grain overlay below; the rest is the site's
+   default text setting, which every page inherits. */
 body {
   margin: 0;
   font-family: var(--font-sans);
@@ -29,6 +39,10 @@ body {
 }
 
 /* Tactile grain overlay — subtle print quality, never interrupts interaction */
+/* Fixed and above everything (z 9999, under only the skip link at 10000) so it
+   sits over the whole page including full-bleed panels. `multiply` lets it
+   darken light surfaces without washing out dark ones, and `pointer-events:
+   none` keeps a full-viewport layer from swallowing every click. */
 body::before {
   content: '';
   position: fixed;
@@ -40,6 +54,7 @@ body::before {
   mix-blend-mode: multiply;
 }
 
+/* Smooth scrolling is motion the user didn't ask for; jump instead. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -47,6 +62,9 @@ body::before {
 }
 
 /* Shared heading treatment */
+/* Bottom-only margin in `em` so the space under a heading scales with it, and
+   `text-wrap: balance` so a two-line title splits evenly instead of leaving one
+   word alone on the second line. */
 h1,
 h2,
 h3,
@@ -81,18 +99,25 @@ h4 {
   font-variation-settings: var(--serif-h4);
 }
 
+/* Avoid a single-word last line in body copy. */
 p {
   text-wrap: pretty;
 }
 
+/* The bare-element default; prose links inside the page body get their
+   underline treatment from components.css. */
 a {
   color: var(--color-moss-ink);
 }
 
+/* No image overflows its column, however it was authored. */
 img {
   max-width: 100%;
 }
 
+/* Keyboard focus ring. `:focus-visible` rather than `:focus` so it appears for
+   keyboard and assistive-tech users without ringing every mouse click. Moss at
+   full strength: it's a line, not text, so the accent applies. */
 :focus-visible {
   outline: 2px solid var(--color-moss);
   outline-offset: 3px;
@@ -107,6 +132,8 @@ img {
 }
 
 /* Accessibility: keyboard skip-to-content */
+/* Parked off-screen by a transform rather than `display: none`, so it stays
+   focusable and slides in as the first Tab stop on the page. */
 .skip-link {
   position: absolute;
   top: 0.75rem;

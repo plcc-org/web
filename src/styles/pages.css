@@ -1,7 +1,25 @@
-/* The Mission & Vision "three movements" timeline now lives in the Roadmap
-   block component (src/components/Roadmap.astro), which owns its own styles. */
+/* ======================================================================
+ * pages.css — styling for one page's markup, where the page is a one-off and
+ * the classes would never be reused.
+ *
+ * Everything here belongs to the Leadership page (src/pages/about/leadership.astro):
+ * a grid of staff portraits that swaps in place for a single profile when one
+ * is chosen. Adding a second page's styles here is a sign the shape is more
+ * general than it looked — reach for a component with a scoped <style> block,
+ * or a shared class in components.css, before growing this file.
+ *
+ * Loaded last, so these rules win any tie with the shared stylesheets.
+ *
+ * The Mission & Vision "three movements" timeline is styled by the Roadmap
+ * block component (src/components/Roadmap.astro), which scopes its own rules.
+ * ==================================================================== */
 
-/* Leadership page grid and cards */
+/* ------------------------------------------------------------------ *
+ * The portrait grid
+ * ------------------------------------------------------------------ */
+
+/* Generous row gap — these are portraits with two lines of type beneath them,
+   and a tight grid makes a name look like it belongs to the photo below it. */
 .leader-grid {
   display: grid;
   gap: 4.5rem 2.5rem;
@@ -33,6 +51,9 @@
   appearance: none;
 }
 
+/* Hovering lifts and tilts the portrait a degree, like a photo nudged on a
+   desk. The transform lives on the wrapper, not the frame, so the shadow and
+   mount inside travel with it. */
 .leader-card__photo {
   display: block;
   margin-bottom: 1.75rem;
@@ -43,6 +64,10 @@
   transform: translateY(-10px) rotate(1deg);
 }
 
+/* A white mount inside the shared media frame — these are portraits presented
+   as prints, and the extra padding is what makes the mount read. Applies in
+   both the grid and the open profile so the photo doesn't change material as
+   it moves between them. */
 .leader-card__photo .media__frame,
 .leader-detail__photo .media__frame {
   box-shadow: var(--shadow-md);
@@ -51,6 +76,9 @@
   border: 1px solid var(--color-mist);
 }
 
+/* Name and role. Both are spans inside the card button, styled to look like a
+   heading pair; the actual heading is .leader-card-heading above. Shared with
+   the open profile, which adds .leader-detail__name / __title on top. */
 .leader-card__name {
   display: block;
   font-family: var(--font-serif);
@@ -74,6 +102,10 @@
 
 /* ------------------------------------------------------------------ *
  * In-place profile ("focus") view
+ *
+ * Every profile is rendered up front and hidden; choosing a card adds
+ * `is-focused` to the section and unhides one panel. No navigation, so the
+ * shared portrait can morph across the swap via a view transition.
  * ------------------------------------------------------------------ */
 
 /* The focus stack and grid trade places; only one is visible at a time. */
@@ -94,6 +126,8 @@
   display: none;
 }
 
+/* Portrait beside prose. The photo column is bounded at both ends so a wide
+   screen doesn't hand it half the page. */
 .leader-detail {
   display: grid;
   grid-template-columns: minmax(15rem, 21rem) 1fr;
@@ -101,10 +135,15 @@
   align-items: start;
 }
 
+/* The grid aligns to the top so the portrait starts at the panel's top edge;
+   the prose is centred against it instead, since a short bio floating at the
+   top of a tall portrait looks unanchored. */
 .leader-detail__body {
   align-self: center;
 }
 
+/* Smaller than the grid's name: in the profile it's competing with body copy,
+   not labelling a photo across a wide grid. */
 .leader-detail__name {
   font-size: var(--text-xl);
 }
@@ -113,6 +152,8 @@
   margin-bottom: 1.5rem;
 }
 
+/* The bio is rendered from Markdown, so it gets sans body type and its own
+   paragraph rhythm via the owl selector rather than margins on <p>. */
 .leader-detail__prose {
   font-family: var(--font-sans);
 }
@@ -121,6 +162,7 @@
   margin-top: 1rem;
 }
 
+/* Contact line beneath the bio (email, and anything else the profile carries). */
 .leader-detail__meta {
   margin-top: 1.5rem;
   font-size: var(--text-ui);
@@ -168,13 +210,17 @@
 }
 
 /* Let the shared portrait morph between grid and detail without a cross-fade
-   over the move; unchanged cards still cross-fade via the default root. */
+   over the move; unchanged cards still cross-fade via the default root.
+   The `leader-portrait` name is assigned to the two portraits involved by the
+   page's script, just before it takes the snapshot. */
 ::view-transition-old(leader-portrait),
 ::view-transition-new(leader-portrait) {
   height: 100%;
   object-fit: cover;
 }
 
+/* Phones: one portrait per row, and the profile stacks. Both photo columns are
+   capped so a portrait doesn't run the full width of the screen. */
 @media (max-width: 600px) {
   .leader-grid {
     grid-template-columns: 1fr;

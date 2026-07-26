@@ -1,6 +1,34 @@
 /* ======================================================================
+ * components.css — the shared, named pieces a page is assembled from.
+ *
+ * Everything here is styling for a specific component's markup, as opposed to
+ * layout.css (the grid and the page-level primitives every component sits in)
+ * and utilities.css (single-purpose classes with no component of their own).
+ *
+ * Sections, in file order — the order is the cascade, so keep related rules
+ * together rather than appending to the end:
+ *
+ *   Hero          Hero.astro          full-bleed media header
+ *   Split         Split.astro         asymmetric photo + text section
+ *   Cards         many                the shared card surface, .card, .card--large
+ *   Link cards    LinkCardSection     the wrapping row of navigational cards
+ *   Media         CaptionedPhotoMdx   framed photo, caption, aspect ratios
+ *   Events        EventsBoard/EventRow  What's On listings
+ *   Quotes        QuoteCarousel       the story-quote card
+ *   Prose         —                   default link colours inside .site-main
+ *
+ * A component may also carry a scoped <style> block in its .astro file. Scoped
+ * rules outrank these, so a component should scope only what is genuinely its
+ * own and inherit the rest from here.
+ * ==================================================================== */
+
+/* ======================================================================
  * Hero — full-bleed cinematic media header (see Hero.astro)
  * ==================================================================== */
+/* Breaks out of the shell to span the viewport and bottom-aligns its content,
+   so the headline sits in the dark end of the scrim. `isolation` keeps the
+   negative z-index layers below (media, scrim) inside this stacking context
+   rather than sliding behind the page background. */
 .hero {
   position: relative;
   width: 100vw;
@@ -13,6 +41,8 @@
   color: var(--color-on-dark);
 }
 
+/* The backdrop layer: holds whichever source the hero is using (photo strip,
+   video, or still) and paints the fallback beneath all of them. */
 .hero__media {
   position: absolute;
   inset: 0;
@@ -36,6 +66,9 @@
  * blur destroys detail long before resolution matters — the whole hero costs a
  * fraction of one video file. And only `transform` and `opacity` animate, so
  * the blur rasterizes once and the drift stays on the compositor. */
+/* Container for the stack of panes. `--pane-count` is set inline by Hero.astro
+   from the number of photos; the cycle length falls out of it, so adding a
+   photo lengthens the loop instead of speeding every pane up. */
 .hero__strip {
   position: absolute;
   inset: 0;
@@ -44,6 +77,8 @@
   --cycle: calc(var(--pane-hold) * var(--pane-count));
 }
 
+/* One photo in the stack. All panes share one animation and are separated only
+   by delay — `--pane-index` is set inline per pane. */
 .hero__pane {
   position: absolute;
   inset: 0;
@@ -71,6 +106,9 @@
   will-change: transform;
 }
 
+/* Each pane is visible for a quarter of the cycle, with a short overlap at
+   both ends so consecutive panes cross-fade rather than cut. The percentages
+   assume four panes; they are the one place pane count is baked in. */
 @keyframes hero-pane-fade {
   0%,
   100% {
@@ -85,6 +123,7 @@
   }
 }
 
+/* A slow push-in that runs the whole cycle, so the still never looks still. */
 @keyframes hero-pane-drift {
   0% {
     transform: scale(1.08) translate3d(-1%, -0.5%, 0);
@@ -119,6 +158,8 @@
   animation: hero-glow 6s ease-in-out infinite;
 }
 
+/* The video and the still photo occupy the same box and cover it; which one is
+   seen is decided by opacity in the state rules below. */
 .hero__video,
 .hero__img {
   position: absolute;
@@ -173,6 +214,9 @@
   }
 }
 
+/* The scrim. Dark at the very top so the header's white links hold, clear
+   through the middle where the subject usually is, then heavy at the bottom
+   where the headline sits. Sits above the media (z -1) and below content. */
 .hero::after {
   content: '';
   position: absolute;
@@ -187,6 +231,7 @@
   );
 }
 
+/* Re-contains the text at the shell width inside the full-bleed frame. */
 .hero__inner {
   width: 100%;
   max-width: var(--width-content);
@@ -195,6 +240,8 @@
   padding-block-end: clamp(2rem, 5vw, 3.5rem);
 }
 
+/* The entrance animation staggers this element's children (animations.css),
+   so eyebrow / title / subhead / CTA must stay direct children of it. */
 .hero__content {
   max-width: var(--measure-wide);
 }
@@ -203,6 +250,9 @@
   color: var(--color-on-dark);
 }
 
+/* Text shadows here are doing accessibility work, not decoration: a photo
+   backdrop can put a bright patch behind any word, and the scrim alone can't
+   guarantee contrast. */
 .hero__title {
   color: var(--color-white);
   font-size: var(--text-display);
@@ -225,6 +275,8 @@
   margin-top: 1.6rem;
 }
 
+/* Motion off: drop the video entirely and show the blurred still instead — a
+   looping background video is exactly what this preference is asking about. */
 @media (prefers-reduced-motion: reduce) {
   .hero__media::before {
     animation: none;
@@ -253,6 +305,11 @@
 
 /* ======================================================================
  * Split — asymmetric portrait photo + text (see Split.astro)
+ *
+ * A full-bleed two-column section: a photo running edge to edge on one side,
+ * a column of text on the other, held at the shell's inner edge so the type
+ * still lines up with the rest of the page. Tones mirror the band tones in
+ * layout.css so a Split and a Band can sit next to each other.
  * ==================================================================== */
 .split {
   display: grid;
@@ -272,6 +329,7 @@
   isolation: isolate;
 }
 
+/* Headings default to forest ink, which disappears on a forest ground. */
 .split--forest :is(h2, h3) {
   color: var(--color-white);
 }
@@ -280,6 +338,8 @@
   color: var(--color-on-dark);
 }
 
+/* The photo column. It has no intrinsic height (the image is positioned), so
+   the min-height is what actually sizes the section on a short body. */
 .split__media {
   position: relative;
   min-height: clamp(20rem, 40vw, 34rem);
@@ -310,11 +370,16 @@
   margin-top: 0;
 }
 
-/* Media left, text right (default) */
+/* Media left, text right (default). The `order` pair, not the source order, is
+   what decides the arrangement — the markup order stays fixed so the photo is
+   always first in the DOM and stacks on top on mobile. */
 .split:not(.split--reverse) .split__media {
   order: 1;
 }
 
+/* The outer padding is `max(gutter, half the leftover viewport)`, which lands
+   the text on the same vertical line as content inside `.canvas` while still
+   keeping a gutter once the viewport is narrower than the content width. */
 .split:not(.split--reverse) .split__body {
   order: 2;
   padding-inline: clamp(1.5rem, 4vw, 3rem) max(var(--gutter), calc((100vw - var(--width-content)) / 2));
@@ -331,10 +396,12 @@
   padding-inline: max(var(--gutter), calc((100vw - var(--width-content)) / 2)) clamp(1.5rem, 4vw, 3rem);
 }
 
+/* Push the narrow measure to the inner edge so it meets the photo. */
 .split--reverse .split__body-inner {
   margin-left: auto;
 }
 
+/* Below the two-column threshold, both variants stack photo-then-text. */
 @media (max-width: 860px) {
   .split {
     grid-template-columns: 1fr;
@@ -360,7 +427,12 @@
   }
 }
 
-/* Reusable content cards and grids */
+/* ======================================================================
+ * Cards
+ * ==================================================================== */
+
+/* An even grid of equal cards that reflows by available width rather than by
+   breakpoint. Used by CardRow and the MDX logo-cards block. */
 .card-grid {
   display: grid;
   gap: 1.5rem;
@@ -420,6 +492,8 @@ a.card:hover,
   border-color: var(--color-moss-line);
 }
 
+/* The plain card: the surface above plus padding. `display: block` and the
+   text-decoration reset are for when it's an <a>. */
 .card {
   display: block;
   padding: clamp(1.5rem, 2.2vw, 1.85rem);
@@ -454,8 +528,13 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
-/* Card links lift on hover; static card divs stay put */
-
+/* ----------------------------------------------------------------------
+ * Link cards (LinkCardSection.astro) — a centred row of navigational cards.
+ *
+ * Flex rather than grid, because the point is the last row: an odd card out
+ * should keep its siblings' width and sit centred, which `auto-fit` columns
+ * can't do. The width maths below is what makes that work.
+ * -------------------------------------------------------------------- */
 .link-grid {
   --gap: 1.5rem;
   /* Column count comes from LinkCardSection (set by item count); the fallback
@@ -467,6 +546,8 @@ a.card:hover,
   gap: var(--gap);
 }
 
+/* Column count is capped by width, not by the item count, once the row is too
+   narrow to hold the component's preference. */
 @media (max-width: 860px) {
   .link-grid {
     --cols: 2;
@@ -479,6 +560,8 @@ a.card:hover,
   }
 }
 
+/* Belongs to `.section-callout` in layout.css; the fluid padding there doesn't
+   shrink fast enough on a phone. Kept here so it wins on a specificity tie. */
 @media (max-width: 640px) {
   .section-callout {
     padding: 1.5rem;
@@ -495,6 +578,8 @@ a.card:hover,
   text-decoration: none;
 }
 
+/* The card's title. A <strong> rather than a heading, because these cards are
+   navigation and shouldn't add levels to the page outline. */
 .link-card strong {
   display: block;
   font-family: var(--font-serif);
@@ -502,19 +587,30 @@ a.card:hover,
   margin-bottom: 0.5rem;
 }
 
+/* The supporting line under the title (time, place, one-line description). */
 .link-card__meta {
   font-size: var(--text-ui);
   color: var(--color-clay-ink);
 }
 
+/* ======================================================================
+ * Media primitives — framed photos, captions, embeds
+ *
+ * Used by CaptionedPhotoMdx, Letter, and the leadership portraits. `<Photo>`
+ * renders the <img>; these classes supply the frame around it.
+ * ==================================================================== */
+
+/* Portrait ratio for photos that must agree in height across a row. */
 .ratio-4x5 {
   aspect-ratio: 4 / 5;
 }
-/* Media primitives: photos, video, embeds */
+/* The outer block, carrying the vertical rhythm around a photo. */
 .media {
   margin: var(--space-m) 0;
 }
 
+/* The frame: a stone mat with a hairline and a lift, clipping whatever sits
+   inside it to the rounded corner. */
 .media__frame {
   width: 100%;
   border-radius: var(--radius-soft);
@@ -527,6 +623,9 @@ a.card:hover,
   position: relative;
 }
 
+/* The photo itself. The white border is the printed-photo mount, which is why
+   it's a border rather than padding on the frame — it hugs the image at its
+   natural height rather than the frame's. */
 .media__img {
   display: block;
   width: 100%;
@@ -535,6 +634,8 @@ a.card:hover,
   border: 4px solid var(--color-white);
 }
 
+/* Fill a fixed-ratio frame instead of setting the height. Drops the mount,
+   which would otherwise be cropped by the frame's own clipping. */
 .media__img--cover {
   height: 100%;
   object-fit: cover;
@@ -549,6 +650,16 @@ a.card:hover,
   font-style: italic;
 }
 
+/* ======================================================================
+ * Events — What's On (EventsBoard.astro, EventRow.astro)
+ *
+ * Two presentations of the same data. The *card* (`.event-card` and its
+ * `.event-…` parts) is the featured, roomy form at the top of the page; the
+ * *row* (`.event-row__…`) is the dense list form used for everything after it
+ * and for the featured-events MDX block.
+ * ==================================================================== */
+
+/* The category filter above the board (chip styling is in utilities.css). */
 .chip-row {
   display: flex;
   gap: 0.5rem;
@@ -568,6 +679,7 @@ a.card:hover,
   margin: 0.75rem 0 0;
 }
 
+/* A dated group of rows ("This week", "Later this month") in the list below. */
 .event-group {
   margin: 1.25rem 0;
 }
@@ -576,16 +688,19 @@ a.card:hover,
   margin: 0 0 0.5rem;
 }
 
-/* Home/story visual grids */
+/* The "find out more" line at the foot of a rhythm card. */
 .rhythm-card__cta {
   margin-top: 0.5rem;
 }
 
+/* `flow-root` contains the floated date block, so a short summary can't leave
+   the card shorter than its own date. */
 .event-card {
   display: flow-root;
   padding: 2rem;
 }
 
+/* The tear-off calendar block, floated so a long summary wraps around it. */
 .event-date {
   float: left;
   width: 100px;
@@ -598,6 +713,7 @@ a.card:hover,
   border: 1px solid var(--color-mist);
 }
 
+/* Day-of-week, the largest line in the date block. */
 .event-day {
   font-weight: 800;
   font-size: var(--text-xl);
@@ -605,6 +721,7 @@ a.card:hover,
   color: var(--color-moss-ink);
 }
 
+/* Month and day beneath it. (`md` is month/day, not the size token.) */
 .event-md {
   font-size: var(--text-xs);
   text-transform: uppercase;
@@ -612,7 +729,8 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
-/* What's On: featured grid, coming-up list, rhythms */
+/* The featured cards. A wider minimum than `.card-grid` because an event card
+   carries a floated date block beside its text. */
 .event-grid {
   display: grid;
   gap: 1.5rem;
@@ -625,10 +743,13 @@ a.card:hover,
   margin-top: 0.15rem;
 }
 
+/* The text beside the floated date. `min-width: 0` lets a long unbroken title
+   wrap instead of pushing the card wide. */
 .event-body {
   min-width: 0;
 }
 
+/* Category and location line under an event card's title. */
 .event-meta {
   font-size: var(--text-xs);
   text-transform: uppercase;
@@ -637,6 +758,8 @@ a.card:hover,
   margin: 0.15rem 0 0.6rem;
 }
 
+/* Shown when a filter matches nothing — quiet, so it reads as an answer
+   rather than an error. */
 .coming-empty {
   color: var(--color-clay-ink);
   font-style: italic;
@@ -647,6 +770,8 @@ a.card:hover,
   gap: 0.85rem;
 }
 
+/* One row: date chip · title and meta · action. The middle column is the only
+   flexible one, so the chip and the button keep their size as the row narrows. */
 .event-row {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -655,6 +780,7 @@ a.card:hover,
   padding: 1rem 1.35rem;
 }
 
+/* The row's compact date block — the list-form counterpart to `.event-date`. */
 .event-row__date-chip {
   display: grid;
   place-items: center;
@@ -667,6 +793,7 @@ a.card:hover,
   line-height: 1.15;
 }
 
+/* Day of week, above the number. */
 .event-row__dow {
   font-size: var(--text-2xs);
   text-transform: uppercase;
@@ -674,6 +801,7 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
+/* Day of month. */
 .event-row__dnum {
   font-family: var(--font-serif);
   font-size: var(--text-base);
@@ -681,10 +809,14 @@ a.card:hover,
   color: var(--color-moss-ink);
 }
 
+/* The flexible middle column; `min-width: 0` for the same reason as
+   `.event-body`. */
 .event-row__main {
   min-width: 0;
 }
 
+/* Not a heading element — the row's accessible name comes from its link, and
+   a list of thirty <h3>s would bury the page outline. */
 .event-row__title {
   font-family: var(--font-serif);
   font-size: var(--text-md);
@@ -693,6 +825,7 @@ a.card:hover,
   line-height: 1.2;
 }
 
+/* Time, place, and the category tag, wrapping as a group when space runs out. */
 .event-row__meta {
   display: flex;
   align-items: center;
@@ -709,6 +842,8 @@ a.card:hover,
   white-space: nowrap;
 }
 
+/* The weekly/monthly rhythms below the dated listings — things that recur and
+   so have no single date to show. */
 .rhythm-grid {
   display: grid;
   gap: 1.5rem;
@@ -719,6 +854,7 @@ a.card:hover,
   padding: 1.5rem;
 }
 
+/* The rhythm's name. A <strong> for the same outline reason as the row title. */
 .rhythm-card strong {
   display: block;
   font-family: var(--font-serif);
@@ -727,6 +863,8 @@ a.card:hover,
   margin-bottom: 0.35rem;
 }
 
+/* Phones: three columns won't fit, so the action drops to a full-width row of
+   its own beneath the date and title. */
 @media (max-width: 560px) {
   .event-row {
     grid-template-columns: auto 1fr;
@@ -743,7 +881,13 @@ a.card:hover,
   }
 }
 
-/* Story/quote cards */
+/* ======================================================================
+ * Story quotes (QuoteCarousel.astro, QuoteMdx.astro)
+ *
+ * A card holding one person's words plus an attribution. Column flex so the
+ * footer sits on the card's bottom edge however long the quote runs, which
+ * keeps a row of quotes aligned.
+ * ==================================================================== */
 .story-quote {
   padding: clamp(1.75rem, 2.6vw, 2.4rem);
   display: flex;
@@ -762,6 +906,8 @@ a.card:hover,
   margin-bottom: 1.15rem;
 }
 
+/* `flex-grow` pushes the attribution down; `max-width: none` opts out of the
+   reading measure below, since the card is already narrow. */
 .story-quote p {
   margin: 0;
   flex-grow: 1;
@@ -774,6 +920,7 @@ a.card:hover,
   text-wrap: pretty;
 }
 
+/* The attribution — small caps-ish sans, deliberately unlike the quote. */
 .story-quote footer {
   margin-top: 1.25rem;
   font-family: var(--font-sans);
@@ -784,6 +931,12 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
+/* ======================================================================
+ * Prose defaults inside the page body
+ * ==================================================================== */
+
+/* Every paragraph in the main column is held to a reading measure by default,
+   so page authors get a comfortable line length without asking for one. */
 .site-main p {
   max-width: var(--measure);
 }
@@ -806,11 +959,15 @@ a.card:hover,
   color: var(--color-moss-ink);
 }
 
+/* Hover darkens to forest and warms the underline — the one place ember is
+   used as a line rather than a wash. */
 :where(.site-main a:not(.link-card):not(.card):hover) {
   color: var(--color-forest);
   text-decoration-color: var(--color-ember);
 }
 
+/* The quote card sets its own width; re-stated here to outrank `.site-main p`,
+   which is (0,1,1) and would otherwise clamp it back to the measure. */
 .site-main .story-quote p {
   max-width: none;
 }

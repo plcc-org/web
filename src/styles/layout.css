@@ -30,16 +30,21 @@
   margin-bottom: var(--space-3xl);
 }
 
+/* Everything lands in the centre column unless it says otherwise. `min-width: 0`
+   overrides a grid item's `auto` minimum, without which one wide child (a code
+   block, a long URL) would stretch the column past its cap. */
 .canvas > * {
   grid-column: content;
   min-width: 0;
 }
 
+/* Edge to edge: bands, splits, photo panels. */
 .canvas > .to-full {
   grid-column: full;
 }
 
-/* Slightly wider than text but not full bleed — for galleries/splits */
+/* Slightly wider than text but not full bleed — for galleries/splits.
+   Takes the full grid column, then re-centres itself at the wider cap. */
 .canvas > .to-wide {
   grid-column: full;
   width: min(100% - 2 * var(--canvas-gutter), var(--width-wide));
@@ -49,11 +54,16 @@
 /* ----------------------------------------------------------------------
  * Bands — full-bleed colored/▒photo sections with re-contained inner content
  * -------------------------------------------------------------------- */
+/* A band is a `.to-full` child: it paints edge to edge, and its own vertical
+   padding is what separates it from its neighbours (the canvas row-gap sits
+   outside it). */
 .band {
   padding-block: clamp(2.5rem, 5vw, var(--space-3xl));
   position: relative;
 }
 
+/* Pulls the band's content back to the content column, so text inside a
+   full-bleed band still lines up with text outside it. */
 .band__inner {
   width: 100%;
   max-width: var(--width-content);
@@ -61,12 +71,16 @@
   padding-inline: var(--gutter);
 }
 
+/* The three band tones. Alternating them down a page is what gives the site its
+   banded rhythm; the light two are deliberately close in value (see the surface
+   notes in tokens.css) and forest is the full inversion. */
 .band--forest {
   background: var(--gradient-forest);
   color: var(--color-on-dark);
   isolation: isolate;
 }
 
+/* Headings default to forest ink, invisible on a forest ground. */
 .band--forest :is(h1, h2, h3, h4) {
   color: var(--color-white);
 }
@@ -131,7 +145,14 @@ body:has(.is-flush) .site-footer {
 
 /* ----------------------------------------------------------------------
  * Typographic utilities
+ *
+ * The named parts of a section's opening: an eyebrow above the title, a subhead
+ * below it, and a lede for the first paragraph. Between them they set every
+ * heading area on the site, which is why no page should be reaching for a
+ * font-size of its own.
  * -------------------------------------------------------------------- */
+
+/* A small uppercase label above a heading — the section's category. */
 .eyebrow {
   font-family: var(--font-sans);
   font-weight: 600;
@@ -142,6 +163,8 @@ body:has(.is-flush) .site-footer {
   margin: 0 0 0.75rem;
 }
 
+/* An italic serif line under a heading. Sits in the same family as the heading
+   rather than the body, so it reads as part of the title block. */
 .subhead {
   font-family: var(--font-serif);
   font-style: italic;
@@ -150,6 +173,9 @@ body:has(.is-flush) .site-footer {
   margin: 0.5rem 0 0;
 }
 
+/* The largest type on the site — a page or hero title. Applied to whatever
+   heading level the outline calls for, so size stays a visual decision and the
+   element stays a structural one. */
 .display {
   font-size: var(--text-display);
   letter-spacing: var(--tracking-tight);
@@ -158,6 +184,9 @@ body:has(.is-flush) .site-footer {
   font-variation-settings: var(--serif-display);
 }
 
+/* Larger body copy. `.lede` is the opening paragraph of a section;
+   `.text-body-large` is the same size without the softened colour, for copy
+   that needs the emphasis further down a page. */
 .lede,
 .text-body-large {
   font-size: var(--text-lg);
@@ -168,6 +197,9 @@ body:has(.is-flush) .site-footer {
   color: var(--color-ink-soft);
 }
 
+/* Hold a block to the long-form reading measure. Paragraphs inside `.site-main`
+   already get this (components.css); use it on anything else that needs it —
+   a list, a rendered Markdown block, a wrapper. */
 .measure {
   max-width: var(--measure);
 }
@@ -305,10 +337,16 @@ body:has(.is-flush) .site-footer {
 /* ----------------------------------------------------------------------
  * Surfaces & callouts
  * -------------------------------------------------------------------- */
+
+/* A soft white-to-stone wash. For a panel that wants to lift off the page
+   without becoming a card. */
 .surface-gradient-soft {
   background: var(--surface-gradient-soft);
 }
 
+/* An aside within a section (see Callout.astro) — a sand block with a moss edge
+   on the leading side. The one place a coloured rule marks a whole block, so
+   keep it to genuine asides or it stops meaning anything. */
 .section-callout {
   padding: clamp(1.75rem, 3.2vw, 2.75rem);
   border-radius: var(--radius-lg);
