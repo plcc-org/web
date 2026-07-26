@@ -1,16 +1,20 @@
 /*
- * global.css — stylesheet entry point.
+ * global.css — stylesheet entry point, and the whole of the site's CSS.
  *
  * Split into partials for readability. Import order IS the cascade order
  * (later files win on equal-specificity ties), so keep these in sequence:
- *   tokens → base → nav → layout → components → footer → utilities →
+ *   tokens → base → nav → layout → components → blocks → footer → utilities →
  *   animations → pages
+ *
+ * blocks.css sits after components.css because an MDX block often lands on top
+ * of a component's class and has to win the tie (see its header).
  */
 @import './tokens.css';
 @import './base.css';
 @import './nav.css';
 @import './layout.css';
 @import './components.css';
+@import './blocks.css';
 @import './footer.css';
 @import './utilities.css';
 @import './animations.css';

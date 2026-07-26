@@ -33,54 +33,64 @@ magazine than a corporate web app.
 (later files win on equal-specificity ties):
 
 ```
-tokens → base → nav → layout → components → footer → utilities → animations → pages
+tokens → base → nav → layout → components → blocks → footer → utilities → animations → pages
 ```
 
-| File             | Responsibility                                                                   |
-| ---------------- | -------------------------------------------------------------------------------- |
-| `tokens.css`     | All custom properties (`:root`). No selectors but `:root`.                       |
-| `base.css`       | Resets, document defaults, heading scale, grain overlay, skip link.              |
-| `nav.css`        | Header / primary navigation (incl. mobile hamburger and the hero overlay state). |
-| `layout.css`     | The canvas grid, bands, typographic utilities, buttons.                          |
-| `components.css` | Hero, Split, cards, media, events, quotes, prose-link defaults.                  |
-| `footer.css`     | Full-bleed site footer.                                                          |
-| `utilities.css`  | Pills, tags, and utility chips.                                                  |
-| `animations.css` | Opt-in scroll reveals and the hero entrance (§6).                                |
-| `pages.css`      | Page-specific styling that isn't reusable (Leadership).                          |
+| File             | Responsibility                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------------- |
+| `tokens.css`     | All custom properties (`:root`). No selectors but `:root`.                                  |
+| `base.css`       | Resets, document defaults, heading scale, grain overlay, skip link.                         |
+| `nav.css`        | Header / primary navigation (incl. mobile hamburger and the hero overlay state).            |
+| `layout.css`     | The canvas grid, bands, typographic utilities, buttons.                                     |
+| `components.css` | The pieces a developer assembles a layout from — Hero, Split, cards, media, events, quotes. |
+| `blocks.css`     | The MDX block palette an editor assembles a page from (see [cms.md](./cms.md)).             |
+| `footer.css`     | Full-bleed site footer.                                                                     |
+| `utilities.css`  | Pills, tags, and utility chips.                                                             |
+| `animations.css` | Opt-in scroll reveals and the hero entrance (§6).                                           |
+| `pages.css`      | Page-specific styling that isn't reusable (Leadership, Messages).                           |
 
-### What goes in a scoped `<style>` block
+### All CSS lives here — no scoped `<style>` blocks
 
-Most styling lives in `src/styles/`; about a fifth of it lives in `.astro` scoped
-blocks. The dividing line is **who renders the class**:
+**No `.astro` file carries a `<style>` block.** Every rule the site ships is in
+one of the files above. `test/styles.test.ts` enforces this, and names the
+offending file when it fails.
 
-- **Rendered by more than one file → `src/styles/`.** A class two components can
-  put on an element is part of the shared vocabulary, and it belongs where someone
-  scanning the stylesheet will find it.
-- **Rendered by exactly one file → that file's `<style>` block.** A component's
-  private structure (`.roadmap`, `.moments__tile`, `.service-card__media`) has no
-  business in a global file, and scoping keeps its names from colliding.
+This is deliberately the opposite of Astro's own default advice, so it's worth
+knowing why. Three reasons, in order of weight:
 
-Two corollaries follow, and both are already the practice:
+1. **Shared recipes can't be written from inside a component.** The card surface
+   in `components.css` is one rule naming ten classes — paper, hairline,
+   `--radius-lg`, `--shadow-sm`. A component can't participate in a rule it
+   doesn't contain, so going the other way would mean restating that recipe ten
+   times. There are ~33 such grouped selectors; they're the design system's
+   actual claims about itself, and they only work co-located.
+2. **The import order above is the architecture.** `utilities.css` beats
+   `components.css` on purpose. A scoped block sits _outside_ that sequence
+   entirely, so moving a rule into a component doesn't reposition it in the
+   layering — it removes it from the scheme.
+3. **Scoping wins on specificity, not order.** Astro appends a
+   `[data-astro-cid-…]` attribute to scoped selectors, so `.card` in a component
+   outranks `.card` in the stylesheet no matter where either sits. Someone
+   reading `components.css` to work out why a card looks wrong has no way to
+   find the rule that beat it.
 
-- **Opting into a shared recipe is not a split.** `.accent-card`, `.moment-card`
-  and `.service-card` each add themselves to the card-surface list in
-  `components.css` — paper, hairline, radius, shadow — and then style their own
-  internals in their scoped block. That's the intended way to use those grouped
-  selectors; restating the recipe locally is the thing to avoid.
-- **Adjust a shared class inside your own container; never redefine it.**
-  `.aside-note__text .eyebrow { margin-bottom: … }` in `AsideMdx.astro` is fine —
-  it tunes a shared class within markup that component owns. A bare `.eyebrow { … }`
-  in a scoped block would not be: it would change the class everywhere the
-  component appears, from a file nobody grepping `layout.css` would think to open.
+What scoping mainly buys — collision safety — this codebase already has from BEM
+naming. `.event-row__main` can't collide with anything.
 
-Astro adds a `[data-astro-cid-…]` attribute to scoped selectors, so a scoped rule
-outranks a same-name global rule on **specificity**, not just source order. That
-makes these overrides silent — they win from a file the global stylesheet never
-mentions. It's a good reason to keep the boundary above rather than rely on it.
+The costs are real and worth stating: deleting a component leaves its CSS behind,
+and the files are longer than per-component blocks would be. The first is the
+price of the three points above; the second is answered by keeping each file's
+sections in the order its header lists.
+
+**Where a new rule goes:** shared vocabulary and any named component →
+`components.css`; an MDX block → `blocks.css`; a single page's non-reusable
+markup → `pages.css`. If a page's styling starts looking reusable, it's a
+component, and it moves.
 
 > The cascade depending on `@import` sequence is a real fragility — reordering these
 > lines silently changes which rules win. `@layer` would make the order explicit and
 > is worth adopting; it hasn't been yet. Until then, treat the order above as load-bearing.
+> It matters more now that every rule in the site is governed by this sequence.
 
 ---
 

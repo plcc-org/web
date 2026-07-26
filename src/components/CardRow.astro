@@ -57,32 +57,3 @@ const cols = columns && Number(columns) >= 2 ? Number(columns) : undefined
     })
   }
 </div>
-
-<style>
-  /* A capped column count (vs the default auto-fit) — e.g. four richer cards
-     wrapping 2×2. Scoped, so it overrides the global .card-grid here only.
-     Collapses to a single column on narrow screens. */
-  .card-grid--cols {
-    grid-template-columns: repeat(var(--card-cols), minmax(0, 1fr));
-  }
-
-  @media (max-width: 720px) {
-    .card-grid--cols {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* When a card carries a labelled CTA, lay it out as a column so the CTA can
-     sit at the foot regardless of body length, keeping a row of cards aligned. */
-  .card--cta {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .card__cta {
-    margin-top: auto;
-    padding-top: 1rem;
-    color: var(--color-moss-ink);
-    font-weight: 700;
-  }
-</style>

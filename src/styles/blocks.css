@@ -1,0 +1,148 @@
+/* ======================================================================
+ * blocks.css — the MDX block palette (src/components/blocks/mdx/).
+ *
+ * These are the blocks an editor assembles a page from in Keystatic, as
+ * opposed to components.css (the pieces a developer assembles a layout from).
+ * See docs/cms.md for the palette and which block to reach for.
+ *
+ * Loaded after components.css, which matters: a block often sits on top of a
+ * component's class and needs to win the tie. `.pull-quote` below is the clear
+ * case — it's rendered as `class="story-quote pull-quote"` and strips the card
+ * surface that `.story-quote` supplies.
+ *
+ * Sections, in file order:
+ *
+ *   Pull quotes   QuoteMdx.astro      the un-carded quote, and the verse band
+ *   Aside notes   AsideMdx.astro      tinted prose + optional logo
+ *   Block logos   PageHero/LogoCards  logos rendered through <Photo>
+ * ==================================================================== */
+
+/* ======================================================================
+ * Pull quotes (QuoteMdx.astro)
+ *
+ * Two presentations of one quote. Untoned, it drops out of the card and sits
+ * in open space like the carousel's solo slide. Toned, it becomes a centered
+ * serif "verse" inside a colored band.
+ * ==================================================================== */
+.pull-quote {
+  max-width: var(--measure-wide);
+  margin-inline: auto;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  text-align: center;
+  align-items: center;
+}
+
+.pull-quote::before {
+  margin-inline: auto;
+}
+
+.pull-quote p {
+  font-size: var(--text-lg);
+}
+
+/* The verse's measure and centering come from `.band--centered` (Band's
+   `centered` prop, styled in layout.css). Colors inherit from the band tone so
+   the same rules read on a dark or a light band. */
+.verse {
+  margin: 0;
+}
+
+.verse p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-2xl);
+  line-height: 1.35;
+  color: inherit;
+  text-wrap: balance;
+}
+
+.verse footer {
+  margin-top: 1.1rem;
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-size: var(--text-sm);
+  color: inherit;
+  opacity: 0.75;
+}
+
+/* ======================================================================
+ * Aside notes (AsideMdx.astro) — tinted prose beside an optional small logo.
+ *
+ * Two columns on wide screens, stacked on narrow. The logo column is `auto`,
+ * so it takes only the width the logo asks for and the prose gets the rest.
+ * ==================================================================== */
+.aside-note {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 2.4vw, 2rem);
+  background: var(--color-sand);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-line);
+}
+
+.aside-note--solo {
+  grid-template-columns: 1fr;
+}
+
+.aside-note__text {
+  max-width: var(--measure);
+}
+
+/* Tightens the shared .eyebrow (layout.css) inside this block only — the note
+   is compact, so the label sits closer to the prose than it would on a page. */
+.aside-note__text .eyebrow {
+  margin-bottom: 0.5rem;
+}
+
+/* The block's prose is authored in MDX, so its last paragraph carries the
+   default bottom margin into the note's padding. Drop it. */
+.aside-note__text p:last-child {
+  margin: 0;
+}
+
+.aside-note__logo {
+  width: clamp(9rem, 16vw, 13rem);
+  height: auto;
+  justify-self: end;
+}
+
+@media (max-width: 640px) {
+  .aside-note {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: 1.5rem;
+  }
+
+  .aside-note__logo {
+    justify-self: start;
+  }
+}
+
+/* ======================================================================
+ * Block logos — a partner or programme mark rendered through <Photo>.
+ *
+ * Both are contained rather than cropped: these are logos with their own
+ * whitespace, so `object-fit: contain` keeps them off their own edges.
+ * ==================================================================== */
+.page-hero__logo {
+  display: block;
+  width: clamp(13.75rem, 48vw, 20rem);
+  height: auto;
+  object-fit: contain;
+  margin: 0 0 1rem;
+}
+
+.logo-card__logo {
+  display: block;
+  width: clamp(11.25rem, 37.5vw, 15rem);
+  height: auto;
+  object-fit: contain;
+  margin: 0 0 1rem;
+}

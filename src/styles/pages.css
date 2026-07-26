@@ -2,16 +2,26 @@
  * pages.css — styling for one page's markup, where the page is a one-off and
  * the classes would never be reused.
  *
- * Everything here belongs to the Leadership page (src/pages/about/leadership.astro):
- * a grid of staff portraits that swaps in place for a single profile when one
- * is chosen. Adding a second page's styles here is a sign the shape is more
- * general than it looked — reach for a component with a scoped <style> block,
- * or a shared class in components.css, before growing this file.
+ * Two pages qualify, each in its own section below:
+ *
+ *   Leadership   src/pages/about/leadership.astro   portrait grid + profiles
+ *   Messages     src/pages/messages.astro           service archive
+ *
+ * A third page arriving here is worth a pause: it usually means the shape is
+ * more general than it looked, and belongs in components.css as a named
+ * component instead.
  *
  * Loaded last, so these rules win any tie with the shared stylesheets.
  *
  * The Mission & Vision "three movements" timeline is styled by the Roadmap
- * block component (src/components/Roadmap.astro), which scopes its own rules.
+ * component (components.css), not here — it's reused across pages.
+ * ==================================================================== */
+
+/* ======================================================================
+ * Leadership (src/pages/about/leadership.astro)
+ *
+ * A grid of staff portraits that swaps in place for a single profile when one
+ * is chosen.
  * ==================================================================== */
 
 /* ------------------------------------------------------------------ *
@@ -240,4 +250,155 @@
   .leader-detail__photo {
     max-width: 320px;
   }
+}
+
+/* ======================================================================
+ * Messages (src/pages/messages.astro) — the service archive.
+ *
+ * One featured service at the top with an embedded player, then a grid of
+ * past services as thumbnail cards.
+ * ==================================================================== */
+.archive-page {
+  color: var(--color-forest);
+}
+
+/* ------------------------------------------------------------------ *
+ * The featured service
+ * ------------------------------------------------------------------ */
+
+/* Stacked by default; the wide layout below turns it into player + details. */
+.service-hero {
+  display: grid;
+  gap: 1.5rem;
+  padding: clamp(1.25rem, 2.4vw, 2rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-mist);
+  background: var(--surface-gradient-soft);
+  box-shadow: var(--shadow-md);
+}
+
+/* Padding-top is the 16:9 ratio trick — the iframe has no intrinsic size, so
+   the box has to reserve the height before the embed loads into it. */
+.service-hero__media {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  border-radius: var(--radius-soft);
+  overflow: hidden;
+  background: #111;
+}
+
+.service-hero__media iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.service-hero__tag {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-moss-ink);
+  font-weight: 600;
+}
+
+.service-hero h2 {
+  margin: 0;
+}
+
+.service-hero__date {
+  margin: 0.4rem 0 1rem;
+  color: var(--color-clay-ink);
+}
+
+.service-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 880px) {
+  .service-hero {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * The archive grid
+ * ------------------------------------------------------------------ */
+.section__header {
+  margin-bottom: 1rem;
+}
+
+.section__header h2 {
+  margin: 0;
+}
+
+.section__header p {
+  margin: 0.35rem 0 0;
+  color: var(--color-clay-ink);
+}
+
+/* auto-fill rather than auto-fit: a short final row keeps the card width the
+   rest of the grid uses instead of stretching to fill. */
+.service-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+}
+
+/* Surface + lift from the shared card recipe (components.css); the clip keeps
+   the thumbnail inside the card's radius. */
+.service-card {
+  height: 100%;
+  overflow: hidden;
+}
+
+.service-card__media {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #111;
+}
+
+.service-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-fast) ease;
+}
+
+/* Driven from the card, not the thumbnail: the thumbnail is inert and can't
+   take focus, and the zoom should answer the card's one link. */
+.service-card:hover img,
+.service-card:focus-within img {
+  transform: scale(1.04);
+}
+
+.service-card__body {
+  padding: 0.8rem 0.85rem 0.95rem;
+}
+
+.service-card__date {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-clay-ink);
+}
+
+.service-card h3 {
+  margin: 0.5rem 0 0.6rem;
+  font-size: var(--text-base);
+  line-height: 1.3;
+}
+
+.service-card__body a {
+  font-weight: 600;
 }
