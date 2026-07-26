@@ -434,7 +434,8 @@ automatically flips to a light fill so it doesn't read green-on-green.
   line. The columns collapse to two ≤ 800px. A closing `band--forest` flows flush into it
   (see `band--flush`, §5).
 
-  The sitemap is the persistent path to every page below a hub. The primary nav is capped
+  Each column heading is itself the link to that hub, so the hub isn't listed twice. The
+  sitemap is the persistent path to every page below a hub. The primary nav is capped
   at eight items on purpose, so pages like `/about/leadership/` or `/neighbors/care/` are
   otherwise reachable only from their hub — land on one from search and there's no way
   across. Keep its columns aligned with the nav's sections; if a new page has no footer

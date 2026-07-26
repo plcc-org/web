@@ -168,9 +168,8 @@ const jsonLd = origin
 
           <div class="site-footer__column">
             <div class="site-footer__group">
-              <h2 class="site-footer__heading">About</h2>
+              <h2 class="site-footer__heading"><a href={withBase('about/')}>About</a></h2>
               <ul>
-                <li><a href={withBase('about/')}>About Pine Lake</a></li>
                 <li><a href={withBase('about/leadership/')}>Leadership</a></li>
                 <li><a href={withBase('about/pastors-letter/')}>A Welcome from Austin Bailey</a></li>
                 <li><a href={withBase('vision/')}>Mission &amp; Vision</a></li>
@@ -182,17 +181,15 @@ const jsonLd = origin
 
           <div class="site-footer__column">
             <div class="site-footer__group">
-              <h2 class="site-footer__heading">Families</h2>
+              <h2 class="site-footer__heading"><a href={withBase('families/')}>Families</a></h2>
               <ul>
-                <li><a href={withBase('families/')}>Families</a></li>
                 <li><a href={withBase('kids/')}>Pine Lake Kids</a></li>
                 <li><a href={withBase('youth/')}>Pine Lake Youth</a></li>
               </ul>
             </div>
             <div class="site-footer__group">
-              <h2 class="site-footer__heading">Church Life</h2>
+              <h2 class="site-footer__heading"><a href={withBase('church-life/')}>Church Life</a></h2>
               <ul>
-                <li><a href={withBase('church-life/')}>Church Life</a></li>
                 <li><a href={withBase('church-life/pine-lake-academy/')}>Pine Lake Academy</a></li>
               </ul>
             </div>
@@ -200,9 +197,10 @@ const jsonLd = origin
 
           <div class="site-footer__column">
             <div class="site-footer__group">
-              <h2 class="site-footer__heading">For Our Neighbors</h2>
+              <h2 class="site-footer__heading">
+                <a href={withBase('neighbors/')}>For Our Neighbors</a>
+              </h2>
               <ul>
-                <li><a href={withBase('neighbors/')}>For Our Neighbors</a></li>
                 <li><a href={withBase('neighbors/care/')}>Care &amp; Support</a></li>
                 <li><a href={withBase('neighbors/meals/')}>Meals of Care</a></li>
                 <li><a href={withBase('neighbors/serve/')}>Serving Locally</a></li>

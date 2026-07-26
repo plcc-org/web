@@ -131,19 +131,33 @@
   border-bottom-color: var(--color-moss-light);
 }
 
-/* Sits after the rules above because it overrides them at equal specificity:
-   twenty underlined links in a column set reads as noise, so the rule only
-   appears on hover. */
-.site-footer__sitemap a {
+/* The sitemap link rules sit after the two above because they override them at
+   equal specificity. A column of underlined links reads as noise, so in here
+   the rule only appears on hover. */
+.site-footer__sitemap li a {
   display: inline-block;
-  /* Small type, so the target is under 24px; the 0.25rem list gap keeps enough
-     clearance between neighbours to satisfy WCAG 2.2 target spacing. */
+  /* At this type size the target lands near 22px rather than the 24px minimum.
+     WCAG 2.2 allows that where neighbouring targets sit 24px apart centre to
+     centre, which the list gap provides — close that gap and this stops
+     holding. */
   padding: 0.15rem 0;
   font-size: var(--text-sm);
   border-bottom-color: transparent;
 }
 
-.site-footer__sitemap a:hover {
+.site-footer__sitemap li a:hover {
+  border-bottom-color: var(--color-moss-light);
+}
+
+/* A heading is also the link to its hub, so it keeps the label's size and
+   colour rather than taking the white every other footer link uses. */
+.site-footer__heading a {
+  color: inherit;
+  border-bottom-color: transparent;
+}
+
+.site-footer__heading a:hover {
+  color: var(--color-moss-light);
   border-bottom-color: var(--color-moss-light);
 }
 
