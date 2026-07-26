@@ -48,7 +48,35 @@ tokens → base → nav → layout → components → footer → utilities → a
 | `animations.css` | Opt-in scroll reveals and the hero entrance (§6).                                |
 | `pages.css`      | Page-specific styling that isn't reusable (Leadership).                          |
 
-Component-local styling lives in each `.astro` file's scoped `<style>` block.
+### What goes in a scoped `<style>` block
+
+Most styling lives in `src/styles/`; about a fifth of it lives in `.astro` scoped
+blocks. The dividing line is **who renders the class**:
+
+- **Rendered by more than one file → `src/styles/`.** A class two components can
+  put on an element is part of the shared vocabulary, and it belongs where someone
+  scanning the stylesheet will find it.
+- **Rendered by exactly one file → that file's `<style>` block.** A component's
+  private structure (`.roadmap`, `.moments__tile`, `.service-card__media`) has no
+  business in a global file, and scoping keeps its names from colliding.
+
+Two corollaries follow, and both are already the practice:
+
+- **Opting into a shared recipe is not a split.** `.accent-card`, `.moment-card`
+  and `.service-card` each add themselves to the card-surface list in
+  `components.css` — paper, hairline, radius, shadow — and then style their own
+  internals in their scoped block. That's the intended way to use those grouped
+  selectors; restating the recipe locally is the thing to avoid.
+- **Adjust a shared class inside your own container; never redefine it.**
+  `.aside-note__text .eyebrow { margin-bottom: … }` in `AsideMdx.astro` is fine —
+  it tunes a shared class within markup that component owns. A bare `.eyebrow { … }`
+  in a scoped block would not be: it would change the class everywhere the
+  component appears, from a file nobody grepping `layout.css` would think to open.
+
+Astro adds a `[data-astro-cid-…]` attribute to scoped selectors, so a scoped rule
+outranks a same-name global rule on **specificity**, not just source order. That
+makes these overrides silent — they win from a file the global stylesheet never
+mentions. It's a good reason to keep the boundary above rather than rely on it.
 
 > The cascade depending on `@import` sequence is a real fragility — reordering these
 > lines silently changes which rules win. `@layer` would make the order explicit and

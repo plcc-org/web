@@ -87,6 +87,16 @@ export default defineConfig({
       },
     },
   ],
+  // Astro's default ('auto') inlines any CSS chunk under 4kB into every page that
+  // imports it. Our component CSS sits just under that line, and the block
+  // components are imported by the catch-all route, so a chunk gets stamped into
+  // all ~20 pages the route generates whether or not they render the component —
+  // ~66kB of duplicated inline CSS site-wide, most of it styling nothing. 'never'
+  // emits those as shared, content-hashed files instead: fetched once, cached for
+  // good, and with prefetchAll below they're already warm by the time a visitor
+  // navigates. Costs one extra request on a cold first paint. The @font-face
+  // blocks the Fonts API emits stay inline either way, which is what we want.
+  build: { inlineStylesheets: 'never' },
   // Prefetch internal links on hover/focus for snappier navigation between pages.
   prefetch: { prefetchAll: true },
   // Type-safe, validated build-time selection of the events source (see
