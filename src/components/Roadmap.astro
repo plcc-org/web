@@ -2,8 +2,8 @@
 import SectionHeader from './SectionHeader.astro'
 
 // A numbered "roadmap": steps as nodes on a connecting line, each with a title
-// and a short description. Backs the Mission & Vision "three movements" timeline
-// and is offered as a CMS block. The connecting line + centered nodes assume a
+// and a short description. Rendered as the CMS "Roadmap" block; the Keystatic
+// key maps straight here with no MDX wrapper. The connecting line + centered nodes assume a
 // single row (one column per step); it collapses to a vertical list on narrow
 // screens.
 type Step = { title: string; body: string }

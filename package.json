@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "_comment_postinstall": "Re-applies patches/@keystatic+astro+5.2.0.patch, which wraps that package's read of Astro.locals.runtime.env — removed in Astro 6, and under workerd it throws, 500ing every /api/keystatic/* request. REMOVE when @keystatic/astro supports Astro 6; re-generate with `npx patch-package @keystatic/astro` if you bump the version. Without this script the CMS is broken in production only, which is the worst place to find out.",
     "postinstall": "patch-package",
     "dev": "ASTRO_DEV=1 astro dev",
     "dev:container": "container run --name plcc-dev --detach --rm --env ASTRO_CONTAINER_DEV=1 --publish 4321:4321 --mount type=bind,source=\"$PWD\",target=/workspace --tmpfs /workspace/node_modules --workdir /workspace docker.io/library/node:lts sh -lc \"npm ci && npm run dev -- --host 0.0.0.0 --port 4321\"",

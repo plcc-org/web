@@ -42,6 +42,19 @@ lives_, not internal departments. Avoid churchy jargon and in/out language; don'
 the reader's theology — but equally, don't shy from being distinctive and naming unique
 values.
 
+### The proper-noun exception
+
+The ban on "ministry" is about the word as a **category label** — "our care ministry",
+"other ministries we offer". It does not extend to **proper nouns**, where the word is
+part of a name we don't own or a formal job title:
+
+- **Stephen Ministry** — an international programme with its own name and training. Calling
+  it something else would make it unfindable for the people who already know what it is.
+- **"Director, Facilities & Ministries"** — a staff title as it appears on payroll.
+
+The test: could we rename it? If not, it's a name, and names stay. If we could, it's a
+category label, and it should be rewritten as a situation.
+
 ---
 
 ## Situation-first writing
