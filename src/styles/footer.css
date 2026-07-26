@@ -4,7 +4,7 @@
   max-width: none;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  padding: clamp(1.05rem, 2vw, 1.5rem) 1.5rem;
+  padding: clamp(1.75rem, 3vw, 2.5rem) 1.5rem clamp(1.05rem, 2vw, 1.5rem);
   background:
     radial-gradient(circle at 12% 10%, rgba(106, 149, 41, 0.35) 0%, rgba(106, 149, 41, 0) 45%),
     linear-gradient(145deg, var(--color-forest-deep) 0%, var(--color-forest-deep-2) 48%, var(--color-forest-deep) 100%);
@@ -37,9 +37,51 @@
   gap: 0.55rem 1rem;
   grid-template-columns: 1fr auto;
   grid-template-areas:
+    'sitemap sitemap'
     'info info'
     'links legal';
   align-items: center;
+}
+
+.site-footer__sitemap {
+  grid-area: sitemap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-md) 1.5rem;
+  margin-bottom: 1.35rem;
+  padding-bottom: 1.35rem;
+  border-bottom: 1px solid var(--color-on-dark-hairline);
+}
+
+.site-footer__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.site-footer__heading {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-on-dark-soft);
+}
+
+.site-footer__sitemap ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Narrow columns wrap the longer labels, and body leading opens too big a gap
+   between the two halves of one link. */
+.site-footer__sitemap li {
+  line-height: 1.35;
 }
 
 .site-footer__info,
@@ -89,6 +131,36 @@
   border-bottom-color: var(--color-moss-light);
 }
 
+/* The sitemap link rules sit after the two above because they override them at
+   equal specificity. A column of underlined links reads as noise, so in here
+   the rule only appears on hover. */
+.site-footer__sitemap li a {
+  display: inline-block;
+  /* At this type size the target lands near 22px rather than the 24px minimum.
+     WCAG 2.2 allows that where neighbouring targets sit 24px apart centre to
+     centre, which the list gap provides — close that gap and this stops
+     holding. */
+  padding: 0.15rem 0;
+  font-size: var(--text-sm);
+  border-bottom-color: transparent;
+}
+
+.site-footer__sitemap li a:hover {
+  border-bottom-color: var(--color-moss-light);
+}
+
+/* A heading is also the link to its hub, so it keeps the label's size and
+   colour rather than taking the white every other footer link uses. */
+.site-footer__heading a {
+  color: inherit;
+  border-bottom-color: transparent;
+}
+
+.site-footer__heading a:hover {
+  color: var(--color-moss-light);
+  border-bottom-color: var(--color-moss-light);
+}
+
 .site-footer__social-link {
   display: inline-flex;
   align-items: center;
@@ -132,9 +204,17 @@
     gap: 0.6rem;
     grid-template-columns: 1fr;
     grid-template-areas:
+      'sitemap'
       'info'
       'links'
       'legal';
+  }
+
+  .site-footer__sitemap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md) 1rem;
+    margin-bottom: 1.1rem;
+    padding-bottom: 1.1rem;
   }
 
   .site-footer__info {

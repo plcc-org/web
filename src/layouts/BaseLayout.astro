@@ -148,6 +148,69 @@ const jsonLd = origin
 
     <footer class="site-footer">
       <div class="site-footer__main">
+        {
+          /* The nav is capped at eight items, which leaves every page below a hub reachable
+            only from that hub. These columns are the persistent path to them. */
+        }
+        <nav class="site-footer__sitemap" aria-label="Footer">
+          <div class="site-footer__column">
+            <div class="site-footer__group">
+              <h2 class="site-footer__heading">Visit</h2>
+              <ul>
+                <li><a href={withBase('new/')}>I’m New</a></li>
+                <li><a href={withBase('visit/')}>Plan a Visit</a></li>
+                <li><a href={withBase('events/')}>What’s On</a></li>
+                <li><a href={withBase('messages/')}>Messages</a></li>
+                <li><a href={withBase('contact/')}>Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="site-footer__column">
+            <div class="site-footer__group">
+              <h2 class="site-footer__heading"><a href={withBase('about/')}>About</a></h2>
+              <ul>
+                <li><a href={withBase('about/leadership/')}>Leadership</a></li>
+                <li><a href={withBase('about/pastors-letter/')}>A Welcome from Austin Bailey</a></li>
+                <li><a href={withBase('vision/')}>Mission &amp; Vision</a></li>
+                <li><a href={withBase('beliefs/')}>What We Believe</a></li>
+                <li><a href={withBase('about/covenant/')}>The Evangelical Covenant Church</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="site-footer__column">
+            <div class="site-footer__group">
+              <h2 class="site-footer__heading"><a href={withBase('families/')}>Families</a></h2>
+              <ul>
+                <li><a href={withBase('kids/')}>Pine Lake Kids</a></li>
+                <li><a href={withBase('youth/')}>Pine Lake Youth</a></li>
+              </ul>
+            </div>
+            <div class="site-footer__group">
+              <h2 class="site-footer__heading"><a href={withBase('church-life/')}>Church Life</a></h2>
+              <ul>
+                <li><a href={withBase('church-life/pine-lake-academy/')}>Pine Lake Academy</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="site-footer__column">
+            <div class="site-footer__group">
+              <h2 class="site-footer__heading">
+                <a href={withBase('neighbors/')}>For Our Neighbors</a>
+              </h2>
+              <ul>
+                <li><a href={withBase('neighbors/care/')}>Care &amp; Support</a></li>
+                <li><a href={withBase('neighbors/meals/')}>Meals of Care</a></li>
+                <li><a href={withBase('neighbors/serve/')}>Serving Locally</a></li>
+                <li><a href={withBase('neighbors/stephen-ministry/')}>Stephen Ministry</a></li>
+                <li><a href={withBase('neighbors/weddings/')}>Weddings &amp; Memorials</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
         <div class="site-footer__info">
           <strong>Pine Lake Covenant Church</strong>
           <span class="site-footer__divider">|</span>
@@ -160,11 +223,7 @@ const jsonLd = origin
           <a href="mailto:office@plcc.org">office@plcc.org</a>
         </div>
 
-        <nav class="site-footer__links" aria-label="Footer">
-          <a href={withBase('visit/')}>Plan a Visit</a>
-          <span class="site-footer__divider">|</span>
-          <a href={withBase('contact/')}>Contact</a>
-          <span class="site-footer__divider">|</span>
+        <div class="site-footer__links">
           <a
             href="https://www.instagram.com/pinelakecov/"
             target="_blank"
@@ -194,7 +253,7 @@ const jsonLd = origin
             />
             <span>YouTube</span>
           </a>
-        </nav>
+        </div>
 
         <p class="site-footer__legal">© {new Date().getFullYear()} Pine Lake Covenant Church</p>
       </div>

@@ -429,9 +429,17 @@ automatically flips to a light fill so it doesn't read green-on-green.
   `body:has(.hero)`), and its links, wordmark and hamburger repaint white until the page
   scrolls — which is what makes the hero read full-bleed to the top of the viewport.
 
-- **Footer** (`footer.css`) — full-bleed forest panel with church info, footer nav, and
-  social links on a faint grid texture. A closing `band--forest` flows flush into it
+- **Footer** (`footer.css`) — full-bleed forest panel on a faint grid texture: a sitemap
+  of four link columns above a hairline, then church info, social links and the copyright
+  line. The columns collapse to two ≤ 800px. A closing `band--forest` flows flush into it
   (see `band--flush`, §5).
+
+  Each column heading is itself the link to that hub, so the hub isn't listed twice. The
+  sitemap is the persistent path to every page below a hub. The primary nav is capped
+  at eight items on purpose, so pages like `/about/leadership/` or `/neighbors/care/` are
+  otherwise reachable only from their hub — land on one from search and there's no way
+  across. Keep its columns aligned with the nav's sections; if a new page has no footer
+  column it belongs in, that's a signal about the IA, not a reason to skip the link.
 
 ---
 
