@@ -368,3 +368,11 @@ body:has(.is-flush) .site-footer {
 .section-callout p {
   font-size: var(--text-md);
 }
+
+/* The fluid padding above bottoms out at 1.75rem, which is still a lot of inset
+   on a phone. Nothing else sets this padding, so the later rule simply wins. */
+@media (max-width: 640px) {
+  .section-callout {
+    padding: 1.5rem;
+  }
+}

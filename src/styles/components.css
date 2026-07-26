@@ -560,13 +560,6 @@ a.card:hover,
   }
 }
 
-/* Belongs to `.section-callout` in layout.css; the fluid padding there doesn't
-   shrink fast enough on a phone. Kept here so it wins on a specificity tie. */
-@media (max-width: 640px) {
-  .section-callout {
-    padding: 1.5rem;
-  }
-}
 .link-card {
   display: block;
   /* Width for exactly --cols per row; max-width = basis so cards don't grow to
@@ -600,10 +593,6 @@ a.card:hover,
  * renders the <img>; these classes supply the frame around it.
  * ==================================================================== */
 
-/* Portrait ratio for photos that must agree in height across a row. */
-.ratio-4x5 {
-  aspect-ratio: 4 / 5;
-}
 /* The outer block, carrying the vertical rhythm around a photo. */
 .media {
   margin: var(--space-m) 0;
@@ -650,6 +639,13 @@ a.card:hover,
   font-style: italic;
 }
 
+/* Give a frame a fixed portrait ratio, so a row of photos agrees in height
+   whatever the images behind them are. Pairs with `.media__img--cover`, which
+   is what actually fills the resulting box. */
+.ratio-4x5 {
+  aspect-ratio: 4 / 5;
+}
+
 /* ======================================================================
  * Events — What's On (EventsBoard.astro, EventRow.astro)
  *
@@ -667,30 +663,21 @@ a.card:hover,
   margin: 0.75rem 0 1rem;
 }
 
-.event-card__title {
-  margin: 0 0 0.25rem;
-}
+/* ----------------------------------------------------------------------
+ * The card form — the featured events at the top of the board.
+ *
+ * Structure: `.event-grid` > `.event-card` > a floated `.event-date` (holding
+ * `.event-day` / `.event-md` / `.event-time`) beside an `.event-body` (holding
+ * `.event-card__title` and `.event-meta`), then `.event-card__summary` and
+ * `.event-card__cta` below.
+ * -------------------------------------------------------------------- */
 
-.event-card__summary {
-  margin: 0.5rem 0 0;
-}
-
-.event-card__cta {
-  margin: 0.75rem 0 0;
-}
-
-/* A dated group of rows ("This week", "Later this month") in the list below. */
-.event-group {
-  margin: 1.25rem 0;
-}
-
-.event-group__label {
-  margin: 0 0 0.5rem;
-}
-
-/* The "find out more" line at the foot of a rhythm card. */
-.rhythm-card__cta {
-  margin-top: 0.5rem;
+/* The featured cards. A wider minimum than `.card-grid` because an event card
+   carries a floated date block beside its text. */
+.event-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
 }
 
 /* `flow-root` contains the floated date block, so a short summary can't leave
@@ -729,14 +716,7 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
-/* The featured cards. A wider minimum than `.card-grid` because an event card
-   carries a floated date block beside its text. */
-.event-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-}
-
+/* Start time, the last line of the date block. */
 .event-time {
   font-size: var(--text-xs);
   color: var(--color-clay-ink);
@@ -749,6 +729,10 @@ a.card:hover,
   min-width: 0;
 }
 
+.event-card__title {
+  margin: 0 0 0.25rem;
+}
+
 /* Category and location line under an event card's title. */
 .event-meta {
   font-size: var(--text-xs);
@@ -758,16 +742,41 @@ a.card:hover,
   margin: 0.15rem 0 0.6rem;
 }
 
-/* Shown when a filter matches nothing — quiet, so it reads as an answer
-   rather than an error. */
-.coming-empty {
-  color: var(--color-clay-ink);
-  font-style: italic;
+.event-card__summary {
+  margin: 0.5rem 0 0;
+}
+
+.event-card__cta {
+  margin: 0.75rem 0 0;
+}
+
+/* ----------------------------------------------------------------------
+ * The row form — the dense list below the featured cards.
+ *
+ * Structure: `.event-group` (a dated heading) > `.event-list` > `.event-row`,
+ * each row being a `.event-row__date-chip`, a `.event-row__main`, and a
+ * `.event-row__cta`.
+ * -------------------------------------------------------------------- */
+
+/* A dated group of rows ("This week", "Later this month"). */
+.event-group {
+  margin: 1.25rem 0;
+}
+
+.event-group__label {
+  margin: 0 0 0.5rem;
 }
 
 .event-list {
   display: grid;
   gap: 0.85rem;
+}
+
+/* Shown when a filter matches nothing — quiet, so it reads as an answer
+   rather than an error. */
+.coming-empty {
+  color: var(--color-clay-ink);
+  font-style: italic;
 }
 
 /* One row: date chip · title and meta · action. The middle column is the only
@@ -842,8 +851,28 @@ a.card:hover,
   white-space: nowrap;
 }
 
-/* The weekly/monthly rhythms below the dated listings — things that recur and
-   so have no single date to show. */
+/* Phones: three columns won't fit, so the action drops to a full-width row of
+   its own beneath the date and title. */
+@media (max-width: 560px) {
+  .event-row {
+    grid-template-columns: auto 1fr;
+  }
+
+  .event-row__cta {
+    grid-column: 1 / -1;
+  }
+
+  /* Full-width tap target when the CTA drops to its own row. (.btn already
+     centres its label.) */
+  .event-row__cta a {
+    display: block;
+  }
+}
+
+/* ----------------------------------------------------------------------
+ * Rhythms — the recurring things at the foot of the board, which have no one
+ * date to show and so get neither a date block nor a place in the list.
+ * -------------------------------------------------------------------- */
 .rhythm-grid {
   display: grid;
   gap: 1.5rem;
@@ -863,22 +892,9 @@ a.card:hover,
   margin-bottom: 0.35rem;
 }
 
-/* Phones: three columns won't fit, so the action drops to a full-width row of
-   its own beneath the date and title. */
-@media (max-width: 560px) {
-  .event-row {
-    grid-template-columns: auto 1fr;
-  }
-
-  .event-row__cta {
-    grid-column: 1 / -1;
-  }
-
-  /* Full-width tap target when the CTA drops to its own row. (.btn already
-     centres its label.) */
-  .event-row__cta a {
-    display: block;
-  }
+/* The "find out more" line at the foot of a rhythm card. */
+.rhythm-card__cta {
+  margin-top: 0.5rem;
 }
 
 /* ======================================================================
