@@ -64,6 +64,24 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
   box-shadow: 0 1px 0 var(--color-mist);
 }
 
+/* iOS Safari shifts its layout viewport as the browser chrome collapses and
+   expands mid-scroll, and the pinned bar tracks that viewport — so while
+   scrolling back up, page text can show through the status-bar strip *above*
+   the bar. This cover hangs off the bar's top edge to catch that strip; when
+   the bar sits flush with the physical top it's entirely off-screen.
+   `inherit` keeps it matching the bar through every state (transparent at
+   rest, frosted on scroll, near-opaque behind the open menu). */
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 100%;
+  height: calc(var(--safe-top) + 4rem);
+  pointer-events: none;
+  background: inherit;
+  -webkit-backdrop-filter: inherit;
+  backdrop-filter: inherit;
+}
+
 /* A soft, blurred gradient skirt below the bar so content dissolves under it.
    The mask fades the blur itself out, not just the tint. */
 .site-header::after {
