@@ -136,8 +136,9 @@
    appears on hover. */
 .site-footer__sitemap a {
   display: inline-block;
-  /* Keeps the tap target at 24px even though the label is small type. */
-  padding: 0.25rem 0;
+  /* Small type, so the target is under 24px; the 0.25rem list gap keeps enough
+     clearance between neighbours to satisfy WCAG 2.2 target spacing. */
+  padding: 0.15rem 0;
   font-size: var(--text-sm);
   border-bottom-color: transparent;
 }
