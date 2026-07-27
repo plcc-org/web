@@ -1,17 +1,45 @@
 /*
- * global.css — stylesheet entry point.
+ * global.css — stylesheet entry point, and the whole of the site's CSS.
  *
- * Split into partials for readability. Import order IS the cascade order
- * (later files win on equal-specificity ties), so keep these in sequence:
- *   tokens → base → nav → layout → components → footer → utilities →
- *   animations → pages
+ * The @layer line below is the cascade order, stated once and explicitly. It is
+ * the only place that order lives: between layers, a later layer wins over an
+ * earlier one *regardless of specificity*, so the sequence here decides ties
+ * instead of the order the @imports happen to appear in.
+ *
+ * That's the point of declaring it. Before, the order was implicit in the
+ * @import sequence, and reordering two lines silently changed which rules won
+ * with nothing to indicate it had. Now the imports could be listed in any order
+ * — the layer statement still governs — and each file names the layer it fills,
+ * so a file can't quietly land in the wrong place in the cascade.
+ *
+ * Adding a layer means adding it to this list. A file imported without a
+ * layer() would be *unlayered*, which beats every layer here; that's almost
+ * never what's wanted, so give any new partial a layer of its own.
+ *
+ * Why this sequence:
+ *   tokens      custom properties only; nothing overrides them
+ *   base        element defaults, so everything named can override them
+ *   prose       defaults for author-written Markdown — deliberately the
+ *               weakest rules here, so any named thing beats them
+ *   nav/layout  page-level structure
+ *   components  the named pieces a layout is assembled from
+ *   blocks      the MDX palette — usually sits *on* a component class and
+ *               has to win the tie (see blocks.css)
+ *   footer      its own region, kept apart from layout for readability
+ *   utilities   single-purpose classes, deliberately able to beat a component
+ *   animations  opt-in motion, applied on top of a settled layout
+ *   pages       one page's own markup; the last word, and the narrowest scope
  */
-@import './tokens.css';
-@import './base.css';
-@import './nav.css';
-@import './layout.css';
-@import './components.css';
-@import './footer.css';
-@import './utilities.css';
-@import './animations.css';
-@import './pages.css';
+@layer tokens, base, prose, nav, layout, components, blocks, footer, utilities, animations, pages;
+
+@import './tokens.css' layer(tokens);
+@import './base.css' layer(base);
+@import './prose.css' layer(prose);
+@import './nav.css' layer(nav);
+@import './layout.css' layer(layout);
+@import './components.css' layer(components);
+@import './blocks.css' layer(blocks);
+@import './footer.css' layer(footer);
+@import './utilities.css' layer(utilities);
+@import './animations.css' layer(animations);
+@import './pages.css' layer(pages);

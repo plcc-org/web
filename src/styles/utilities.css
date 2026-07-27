@@ -1,3 +1,11 @@
+/* ======================================================================
+ * utilities.css — small, single-purpose classes with no component of their own.
+ *
+ * A class earns a place here when it does one thing, is used in more than one
+ * component, and carries no layout opinion about where it sits. Anything that
+ * styles a specific component's markup belongs in components.css instead.
+ * ==================================================================== */
+
 /* Content for screen readers only — present in the accessibility tree and the
    document outline, but taking no visual space. Used for headings a design
    replaces with a logo, and for status messages that have no visual
@@ -15,6 +23,10 @@
 }
 
 /* Pills, tags, and utility chips */
+
+/* `.chip` — an interactive pill. The category filter on What's On is the only
+   current user; it's a control, so it has a hover state and an active state.
+   Distinct from `.btn--quiet`, which is an action rather than a selection. */
 .chip {
   display: inline-block;
   padding: 0.5rem 1rem;
@@ -33,12 +45,16 @@
   color: var(--color-moss-ink);
 }
 
+/* The currently selected chip: filled, so selection reads at a glance down a
+   row rather than needing a comparison between neighbours. */
 .chip--active {
   background: var(--color-moss-ink);
   color: var(--color-white);
   border-color: var(--color-moss-ink);
 }
 
+/* `.tag` — a non-interactive label (an event's category). Smaller and flatter
+   than a chip, with no hover, because there is nothing to click. */
 .tag {
   font-size: var(--text-2xs);
   padding: 0.25rem 0.65rem;

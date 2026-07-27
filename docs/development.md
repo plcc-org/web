@@ -142,11 +142,15 @@ the prune only ever removed unreachable files.
 - **Tokens & components first.** Prefer existing design tokens and components over new
   one-off CSS (see [design-system.md](./design-system.md)). This is enforced by Stylelint,
   not just asked for.
-- **Scoped styles don't reach child components.** A scoped rule in a parent `.astro`
-  won't style markup rendered by a child (e.g. the `<img>` inside `<Photo>`). Use
-  `:global()` for those — but only inside an `.astro` `<style>` block. `:global()` is
-  Astro syntax, not CSS: in a plain `.css` file the browser drops the entire rule
-  silently. Stylelint now catches this.
+- **All CSS lives in `src/styles/`.** No `.astro` file carries a `<style>` block; a
+  test enforces it. See §2 of [design-system.md](./design-system.md) for which file a
+  new rule belongs in and why the site doesn't use Astro's scoped styles.
+- **Don't reach for `:global()`.** It's Astro syntax that only means something inside
+  an `.astro` `<style>` block. In a plain `.css` file the browser doesn't recognise the
+  pseudo-class and drops the whole rule — the styling vanishes with no error. Since
+  every rule now lives in a `.css` file, there's nothing left for it to do: a rule that
+  needs to reach an `<img>` inside `<Photo>` is just a normal selector. Both Stylelint
+  and `test/styles.test.ts` catch a stray one.
 
 ### CMS-built pages
 
@@ -210,15 +214,15 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
 The repo's rules are mechanical wherever they can be, because conventions alone don't
 hold — they drift back a little at a time, and each step looks harmless.
 
-| Guard                       | Catches                                                                                                                                                                          |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Prettier**                | Formatting. `format:check` in CI.                                                                                                                                                |
-| **Stylelint**               | Non-token colours, type sizes and radii, in `.css` **and** `.astro` `<style>` blocks. Also `:global()` used outside `.astro`, and the full-strength accent colours used as text. |
-| **`astro check`**           | Types and template diagnostics.                                                                                                                                                  |
-| **Vitest** (`test/`)        | Pure logic only — no `astro:` imports, so it stays unit-testable.                                                                                                                |
-| **`check-site.mjs`**        | Seven classes of post-build defect (below).                                                                                                                                      |
-| **CI: 410 routes in sync**  | A `short-links` edit in Keystatic that never regenerated its route.                                                                                                              |
-| **CI: both deploy targets** | Environment-dependent output — `site`, sitemap, `robots.txt`.                                                                                                                    |
+| Guard                       | Catches                                                                                                                                                                                      |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Prettier**                | Formatting. `format:check` in CI.                                                                                                                                                            |
+| **Stylelint**               | Non-token colours, type sizes and radii, and the full-strength accent colours used as text. Runs over `.astro` too, so a reintroduced `<style>` block is still linted rather than unchecked. |
+| **`astro check`**           | Types and template diagnostics.                                                                                                                                                              |
+| **Vitest** (`test/`)        | Pure logic only — no `astro:` imports, so it stays unit-testable. Plus `styles.test.ts`, which pins CSS to `src/styles/`: no `<style>` block in any `.astro`, no `:global()` in any `.css`.  |
+| **`check-site.mjs`**        | Seven classes of post-build defect (below).                                                                                                                                                  |
+| **CI: 410 routes in sync**  | A `short-links` edit in Keystatic that never regenerated its route.                                                                                                                          |
+| **CI: both deploy targets** | Environment-dependent output — `site`, sitemap, `robots.txt`.                                                                                                                                |
 
 ### The post-build crawl
 

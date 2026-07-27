@@ -29,30 +29,102 @@ magazine than a corporate web app.
 
 ## 2. Stylesheet organization
 
-`src/styles/global.css` is the entry point. **Import order is the cascade order**
-(later files win on equal-specificity ties):
+`src/styles/global.css` is the entry point, and it declares the cascade as an
+explicit **`@layer` order**:
 
 ```
-tokens → base → nav → layout → components → footer → utilities → animations → pages
+tokens → base → prose → nav → layout → components → blocks → footer → utilities → animations → pages
 ```
 
-| File             | Responsibility                                                                   |
-| ---------------- | -------------------------------------------------------------------------------- |
-| `tokens.css`     | All custom properties (`:root`). No selectors but `:root`.                       |
-| `base.css`       | Resets, document defaults, heading scale, grain overlay, skip link.              |
-| `nav.css`        | Header / primary navigation (incl. mobile hamburger and the hero overlay state). |
-| `layout.css`     | The canvas grid, bands, typographic utilities, buttons.                          |
-| `components.css` | Hero, Split, cards, media, events, quotes, prose-link defaults.                  |
-| `footer.css`     | Full-bleed site footer.                                                          |
-| `utilities.css`  | Pills, tags, and utility chips.                                                  |
-| `animations.css` | Opt-in scroll reveals and the hero entrance (§6).                                |
-| `pages.css`      | Page-specific styling that isn't reusable (Leadership).                          |
+| File             | Layer        | Responsibility                                                                              |
+| ---------------- | ------------ | ------------------------------------------------------------------------------------------- |
+| `tokens.css`     | `tokens`     | All custom properties (`:root`). No selectors but `:root`.                                  |
+| `base.css`       | `base`       | Resets, document defaults, heading scale, grain overlay, skip link.                         |
+| `prose.css`      | `prose`      | Defaults for author-written Markdown in `.site-main` — the weakest rules on the site.       |
+| `nav.css`        | `nav`        | Header / primary navigation (incl. mobile hamburger and the hero overlay state).            |
+| `layout.css`     | `layout`     | The canvas grid, bands, typographic utilities, buttons.                                     |
+| `components.css` | `components` | The pieces a developer assembles a layout from — Hero, Split, cards, media, events, quotes. |
+| `blocks.css`     | `blocks`     | The MDX block palette an editor assembles a page from (see [cms.md](./cms.md)).             |
+| `footer.css`     | `footer`     | Full-bleed site footer.                                                                     |
+| `utilities.css`  | `utilities`  | Pills, tags, and utility chips.                                                             |
+| `animations.css` | `animations` | Opt-in scroll reveals and the hero entrance (§6).                                           |
+| `pages.css`      | `pages`      | Page-specific styling that isn't reusable (Leadership, Messages).                           |
 
-Component-local styling lives in each `.astro` file's scoped `<style>` block.
+**A later layer beats an earlier one regardless of specificity.** That is the
+whole point — the sequence above decides ties, so you no longer have to reason
+about selector weight across files. Inside a layer, ordinary specificity and
+source order apply as normal.
 
-> The cascade depending on `@import` sequence is a real fragility — reordering these
-> lines silently changes which rules win. `@layer` would make the order explicit and
-> is worth adopting; it hasn't been yet. Until then, treat the order above as load-bearing.
+Two consequences worth holding on to:
+
+- **A rule's file is now load-bearing in a stronger way than before.** Putting a
+  rule in the wrong file doesn't just place it oddly, it can hand it a fight it
+  was never meant to win. The flush-band footer override lives in `footer.css`
+  rather than `layout.css` for exactly this reason — see the comment there.
+- **An unlayered rule beats every layer.** Any new partial must be imported with
+  `layer(name)` and added to the `@layer` statement, or it silently outranks the
+  entire system.
+
+### All CSS lives here — no scoped `<style>` blocks
+
+**No `.astro` file carries a `<style>` block.** Every rule the site ships is in
+one of the files above. `test/styles.test.ts` enforces this, and names the
+offending file when it fails.
+
+This is deliberately the opposite of Astro's own default advice, so it's worth
+knowing why. Three reasons, in order of weight:
+
+1. **Shared recipes can't be written from inside a component.** The card surface
+   in `components.css` is one rule naming ten classes — paper, hairline,
+   `--radius-lg`, `--shadow-sm`. A component can't participate in a rule it
+   doesn't contain, so going the other way would mean restating that recipe ten
+   times. There are ~33 such grouped selectors; they're the design system's
+   actual claims about itself, and they only work co-located.
+2. **The import order above is the architecture.** `utilities.css` beats
+   `components.css` on purpose. A scoped block sits _outside_ that sequence
+   entirely, so moving a rule into a component doesn't reposition it in the
+   layering — it removes it from the scheme.
+3. **Scoping wins on specificity, not order.** Astro appends a
+   `[data-astro-cid-…]` attribute to scoped selectors, so `.card` in a component
+   outranks `.card` in the stylesheet no matter where either sits. Someone
+   reading `components.css` to work out why a card looks wrong has no way to
+   find the rule that beat it.
+
+What scoping mainly buys — collision safety — this codebase already has from BEM
+naming. `.event-row__main` can't collide with anything.
+
+The costs are real and worth stating: deleting a component leaves its CSS behind,
+and the files are longer than per-component blocks would be. The first is the
+price of the three points above; the second is answered by keeping each file's
+sections in the order its header lists.
+
+**Where a new rule goes:** shared vocabulary and any named component →
+`components.css`; an MDX block → `blocks.css`; a single page's non-reusable
+markup → `pages.css`. If a page's styling starts looking reusable, it's a
+component, and it moves.
+
+### What adopting `@layer` cost
+
+Worth recording, because "make the implicit order explicit" sounds like a no-op
+and isn't. Layer order **replaces** specificity across files, so anywhere the
+site relied on a strong selector in an early file beating a weak one in a late
+file, the answer flipped. Two places did:
+
+- **The prose defaults.** They were at the foot of `components.css`, written with
+  `:where()` so they'd carry no specificity and lose to `.btn`, `.band--forest a`
+  and anything else with a name. Under layers, `components` beat `layout`, so
+  they started winning: buttons grew underlines and white links on forest bands
+  turned moss. The fix wasn't to fight it — it was to admit these are base-level
+  defaults and give them their own early layer. `prose.css` exists because of
+  this, and the `:where()` stays as reinforcement.
+- **The flush-band footer margin.** `body:has(.band--flush) .site-footer` sat in
+  `layout.css` and beat `.site-footer` in `footer.css` on specificity. Under
+  layers `footer` wins, so the override moved into `footer.css` beside the
+  margin it cancels.
+
+Both were real smells that the old cascade hid: a set of defaults filed under
+"components", and a footer rule filed under "layout". Adopting layers is what
+surfaced them.
 
 ---
 

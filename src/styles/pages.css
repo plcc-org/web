@@ -1,7 +1,35 @@
-/* The Mission & Vision "three movements" timeline now lives in the Roadmap
-   block component (src/components/Roadmap.astro), which owns its own styles. */
+/* ======================================================================
+ * pages.css — styling for one page's markup, where the page is a one-off and
+ * the classes would never be reused.
+ *
+ * Two pages qualify, each in its own section below:
+ *
+ *   Leadership   src/pages/about/leadership.astro   portrait grid + profiles
+ *   Messages     src/pages/messages.astro           service archive
+ *
+ * A third page arriving here is worth a pause: it usually means the shape is
+ * more general than it looked, and belongs in components.css as a named
+ * component instead.
+ *
+ * Loaded last, so these rules win any tie with the shared stylesheets.
+ *
+ * The Mission & Vision "three movements" timeline is styled by the Roadmap
+ * component (components.css), not here — it's reused across pages.
+ * ==================================================================== */
 
-/* Leadership page grid and cards */
+/* ======================================================================
+ * Leadership (src/pages/about/leadership.astro)
+ *
+ * A grid of staff portraits that swaps in place for a single profile when one
+ * is chosen.
+ * ==================================================================== */
+
+/* ------------------------------------------------------------------ *
+ * The portrait grid
+ * ------------------------------------------------------------------ */
+
+/* Generous row gap — these are portraits with two lines of type beneath them,
+   and a tight grid makes a name look like it belongs to the photo below it. */
 .leader-grid {
   display: grid;
   gap: 4.5rem 2.5rem;
@@ -33,6 +61,9 @@
   appearance: none;
 }
 
+/* Hovering lifts and tilts the portrait a degree, like a photo nudged on a
+   desk. The transform lives on the wrapper, not the frame, so the shadow and
+   mount inside travel with it. */
 .leader-card__photo {
   display: block;
   margin-bottom: 1.75rem;
@@ -43,6 +74,10 @@
   transform: translateY(-10px) rotate(1deg);
 }
 
+/* A white mount inside the shared media frame — these are portraits presented
+   as prints, and the extra padding is what makes the mount read. Applies in
+   both the grid and the open profile so the photo doesn't change material as
+   it moves between them. */
 .leader-card__photo .media__frame,
 .leader-detail__photo .media__frame {
   box-shadow: var(--shadow-md);
@@ -51,6 +86,9 @@
   border: 1px solid var(--color-mist);
 }
 
+/* Name and role. Both are spans inside the card button, styled to look like a
+   heading pair; the actual heading is .leader-card-heading above. Shared with
+   the open profile, which adds .leader-detail__name / __title on top. */
 .leader-card__name {
   display: block;
   font-family: var(--font-serif);
@@ -74,6 +112,10 @@
 
 /* ------------------------------------------------------------------ *
  * In-place profile ("focus") view
+ *
+ * Every profile is rendered up front and hidden; choosing a card adds
+ * `is-focused` to the section and unhides one panel. No navigation, so the
+ * shared portrait can morph across the swap via a view transition.
  * ------------------------------------------------------------------ */
 
 /* The focus stack and grid trade places; only one is visible at a time. */
@@ -94,6 +136,8 @@
   display: none;
 }
 
+/* Portrait beside prose. The photo column is bounded at both ends so a wide
+   screen doesn't hand it half the page. */
 .leader-detail {
   display: grid;
   grid-template-columns: minmax(15rem, 21rem) 1fr;
@@ -101,10 +145,15 @@
   align-items: start;
 }
 
+/* The grid aligns to the top so the portrait starts at the panel's top edge;
+   the prose is centred against it instead, since a short bio floating at the
+   top of a tall portrait looks unanchored. */
 .leader-detail__body {
   align-self: center;
 }
 
+/* Smaller than the grid's name: in the profile it's competing with body copy,
+   not labelling a photo across a wide grid. */
 .leader-detail__name {
   font-size: var(--text-xl);
 }
@@ -113,6 +162,8 @@
   margin-bottom: 1.5rem;
 }
 
+/* The bio is rendered from Markdown, so it gets sans body type and its own
+   paragraph rhythm via the owl selector rather than margins on <p>. */
 .leader-detail__prose {
   font-family: var(--font-sans);
 }
@@ -121,6 +172,7 @@
   margin-top: 1rem;
 }
 
+/* Contact line beneath the bio (email, and anything else the profile carries). */
 .leader-detail__meta {
   margin-top: 1.5rem;
   font-size: var(--text-ui);
@@ -168,13 +220,17 @@
 }
 
 /* Let the shared portrait morph between grid and detail without a cross-fade
-   over the move; unchanged cards still cross-fade via the default root. */
+   over the move; unchanged cards still cross-fade via the default root.
+   The `leader-portrait` name is assigned to the two portraits involved by the
+   page's script, just before it takes the snapshot. */
 ::view-transition-old(leader-portrait),
 ::view-transition-new(leader-portrait) {
   height: 100%;
   object-fit: cover;
 }
 
+/* Phones: one portrait per row, and the profile stacks. Both photo columns are
+   capped so a portrait doesn't run the full width of the screen. */
 @media (max-width: 600px) {
   .leader-grid {
     grid-template-columns: 1fr;
@@ -194,4 +250,155 @@
   .leader-detail__photo {
     max-width: 320px;
   }
+}
+
+/* ======================================================================
+ * Messages (src/pages/messages.astro) — the service archive.
+ *
+ * One featured service at the top with an embedded player, then a grid of
+ * past services as thumbnail cards.
+ * ==================================================================== */
+.archive-page {
+  color: var(--color-forest);
+}
+
+/* ------------------------------------------------------------------ *
+ * The featured service
+ * ------------------------------------------------------------------ */
+
+/* Stacked by default; the wide layout below turns it into player + details. */
+.service-hero {
+  display: grid;
+  gap: 1.5rem;
+  padding: clamp(1.25rem, 2.4vw, 2rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-mist);
+  background: var(--surface-gradient-soft);
+  box-shadow: var(--shadow-md);
+}
+
+/* Padding-top is the 16:9 ratio trick — the iframe has no intrinsic size, so
+   the box has to reserve the height before the embed loads into it. */
+.service-hero__media {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  border-radius: var(--radius-soft);
+  overflow: hidden;
+  background: #111;
+}
+
+.service-hero__media iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.service-hero__tag {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-moss-ink);
+  font-weight: 600;
+}
+
+.service-hero h2 {
+  margin: 0;
+}
+
+.service-hero__date {
+  margin: 0.4rem 0 1rem;
+  color: var(--color-clay-ink);
+}
+
+.service-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 880px) {
+  .service-hero {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * The archive grid
+ * ------------------------------------------------------------------ */
+.section__header {
+  margin-bottom: 1rem;
+}
+
+.section__header h2 {
+  margin: 0;
+}
+
+.section__header p {
+  margin: 0.35rem 0 0;
+  color: var(--color-clay-ink);
+}
+
+/* auto-fill rather than auto-fit: a short final row keeps the card width the
+   rest of the grid uses instead of stretching to fill. */
+.service-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+}
+
+/* Surface + lift from the shared card recipe (components.css); the clip keeps
+   the thumbnail inside the card's radius. */
+.service-card {
+  height: 100%;
+  overflow: hidden;
+}
+
+.service-card__media {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #111;
+}
+
+.service-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-fast) ease;
+}
+
+/* Driven from the card, not the thumbnail: the thumbnail is inert and can't
+   take focus, and the zoom should answer the card's one link. */
+.service-card:hover img,
+.service-card:focus-within img {
+  transform: scale(1.04);
+}
+
+.service-card__body {
+  padding: 0.8rem 0.85rem 0.95rem;
+}
+
+.service-card__date {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-clay-ink);
+}
+
+.service-card h3 {
+  margin: 0.5rem 0 0.6rem;
+  font-size: var(--text-base);
+  line-height: 1.3;
+}
+
+.service-card__body a {
+  font-weight: 600;
 }

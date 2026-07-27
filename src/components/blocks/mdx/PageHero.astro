@@ -84,14 +84,3 @@ const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata
     </header>
   )
 }
-
-<style>
-  /* Rendered by <Photo>, so the <img> must be styled globally. */
-  :global(.page-hero__logo) {
-    display: block;
-    width: clamp(13.75rem, 48vw, 20rem);
-    height: auto;
-    object-fit: contain;
-    margin: 0 0 1rem;
-  }
-</style>

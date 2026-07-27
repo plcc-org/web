@@ -1,0 +1,48 @@
+/* ======================================================================
+ * prose.css — defaults for author-written content in the main column.
+ *
+ * These are the weakest rules in the site by design: they give an editor's
+ * unadorned Markdown a comfortable measure and a readable link colour, and
+ * anything with a name of its own — a button, a card, a band variant — is
+ * meant to beat them without having to try.
+ *
+ * That's why this is its own layer, sitting before nav/layout/components
+ * rather than inside them. It used to live at the foot of components.css and
+ * rely on `:where()` zero-specificity to lose those fights, which worked but
+ * expressed "weakest in the system" as a trick rather than a statement. The
+ * layer says it directly, and the :where() below is kept as reinforcement.
+ *
+ * Adding a rule here means it should lose to everything named. If it needs to
+ * win, it isn't a prose default — put it with the component it belongs to.
+ * ==================================================================== */
+
+/* Every paragraph in the main column is held to a reading measure by default,
+   so page authors get a comfortable line length without asking for one. */
+.site-main p {
+  max-width: var(--measure);
+}
+
+/*
+ * Default styling for in-content prose links. Wrapped in :where() so it carries
+ * (almost) no specificity — any link that's also a button/pill/chip (which sets
+ * its own color) overrides this instead of inheriting moss-on-moss text.
+ */
+:where(.site-main a:not(.link-card):not(.card)) {
+  color: var(--color-moss-ink);
+  text-decoration-color: var(--color-mist);
+  text-underline-offset: 0.12em;
+}
+
+/* Keep :visited and :hover INSIDE :where() so the pseudo-class doesn't raise
+   specificity to (0,1,0) — otherwise it ties with (and, being later, beats)
+   button classes like .btn, repainting visited buttons moss-on-moss. */
+:where(.site-main a:not(.link-card):not(.card):visited) {
+  color: var(--color-moss-ink);
+}
+
+/* Hover darkens to forest and warms the underline — the one place ember is
+   used as a line rather than a wash. */
+:where(.site-main a:not(.link-card):not(.card):hover) {
+  color: var(--color-forest);
+  text-decoration-color: var(--color-ember);
+}

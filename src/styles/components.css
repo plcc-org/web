@@ -1,6 +1,39 @@
 /* ======================================================================
+ * components.css — the shared, named pieces a page is assembled from.
+ *
+ * Everything here is styling for a specific component's markup, as opposed to
+ * layout.css (the grid and the page-level primitives every component sits in)
+ * and utilities.css (single-purpose classes with no component of their own).
+ *
+ * Sections, in file order — the order is the cascade, so keep related rules
+ * together rather than appending to the end:
+ *
+ *   Hero          Hero.astro            full-bleed media header
+ *   Split         Split.astro           asymmetric photo + text section
+ *   Cards         many                  the shared card surface, .card, .card--large
+ *   Card rows     CardRow.astro         an even grid of equal cards
+ *   Accent lists  AccentList.astro      moss-edged cards, 2 or 3 across
+ *   Moments       MomentsSection.astro  the staggered photo-tile grid
+ *   Youth moments YouthMoments.astro    photo cards + a dense list
+ *   Link cards    LinkCardSection       the wrapping row of navigational cards
+ *   Media         CaptionedPhotoMdx     framed photo, caption, aspect ratios
+ *   Letter        Letter.astro          prose column + sticky portrait
+ *   Roadmap       Roadmap.astro         the numbered step timeline
+ *   Events        EventsBoard/EventRow  What's On listings
+ *   Quotes        QuoteCarousel         the story-quote card and its carousel
+ *
+ * No component carries its own <style> block; all component CSS lives here, in
+ * blocks.css (the MDX block palette) or in pages.css (one-page styling). See
+ * §2 of docs/design-system.md for why.
+ * ==================================================================== */
+
+/* ======================================================================
  * Hero — full-bleed cinematic media header (see Hero.astro)
  * ==================================================================== */
+/* Breaks out of the shell to span the viewport and bottom-aligns its content,
+   so the headline sits in the dark end of the scrim. `isolation` keeps the
+   negative z-index layers below (media, scrim) inside this stacking context
+   rather than sliding behind the page background. */
 .hero {
   position: relative;
   width: 100vw;
@@ -13,6 +46,8 @@
   color: var(--color-on-dark);
 }
 
+/* The backdrop layer: holds whichever source the hero is using (photo strip,
+   video, or still) and paints the fallback beneath all of them. */
 .hero__media {
   position: absolute;
   inset: 0;
@@ -36,6 +71,9 @@
  * blur destroys detail long before resolution matters — the whole hero costs a
  * fraction of one video file. And only `transform` and `opacity` animate, so
  * the blur rasterizes once and the drift stays on the compositor. */
+/* Container for the stack of panes. `--pane-count` is set inline by Hero.astro
+   from the number of photos; the cycle length falls out of it, so adding a
+   photo lengthens the loop instead of speeding every pane up. */
 .hero__strip {
   position: absolute;
   inset: 0;
@@ -44,6 +82,8 @@
   --cycle: calc(var(--pane-hold) * var(--pane-count));
 }
 
+/* One photo in the stack. All panes share one animation and are separated only
+   by delay — `--pane-index` is set inline per pane. */
 .hero__pane {
   position: absolute;
   inset: 0;
@@ -71,6 +111,9 @@
   will-change: transform;
 }
 
+/* Each pane is visible for a quarter of the cycle, with a short overlap at
+   both ends so consecutive panes cross-fade rather than cut. The percentages
+   assume four panes; they are the one place pane count is baked in. */
 @keyframes hero-pane-fade {
   0%,
   100% {
@@ -85,6 +128,7 @@
   }
 }
 
+/* A slow push-in that runs the whole cycle, so the still never looks still. */
 @keyframes hero-pane-drift {
   0% {
     transform: scale(1.08) translate3d(-1%, -0.5%, 0);
@@ -119,6 +163,8 @@
   animation: hero-glow 6s ease-in-out infinite;
 }
 
+/* The video and the still photo occupy the same box and cover it; which one is
+   seen is decided by opacity in the state rules below. */
 .hero__video,
 .hero__img {
   position: absolute;
@@ -173,6 +219,9 @@
   }
 }
 
+/* The scrim. Dark at the very top so the header's white links hold, clear
+   through the middle where the subject usually is, then heavy at the bottom
+   where the headline sits. Sits above the media (z -1) and below content. */
 .hero::after {
   content: '';
   position: absolute;
@@ -187,6 +236,7 @@
   );
 }
 
+/* Re-contains the text at the shell width inside the full-bleed frame. */
 .hero__inner {
   width: 100%;
   max-width: var(--width-content);
@@ -195,6 +245,8 @@
   padding-block-end: clamp(2rem, 5vw, 3.5rem);
 }
 
+/* The entrance animation staggers this element's children (animations.css),
+   so eyebrow / title / subhead / CTA must stay direct children of it. */
 .hero__content {
   max-width: var(--measure-wide);
 }
@@ -203,6 +255,9 @@
   color: var(--color-on-dark);
 }
 
+/* Text shadows here are doing accessibility work, not decoration: a photo
+   backdrop can put a bright patch behind any word, and the scrim alone can't
+   guarantee contrast. */
 .hero__title {
   color: var(--color-white);
   font-size: var(--text-display);
@@ -225,6 +280,8 @@
   margin-top: 1.6rem;
 }
 
+/* Motion off: drop the video entirely and show the blurred still instead — a
+   looping background video is exactly what this preference is asking about. */
 @media (prefers-reduced-motion: reduce) {
   .hero__media::before {
     animation: none;
@@ -253,6 +310,11 @@
 
 /* ======================================================================
  * Split — asymmetric portrait photo + text (see Split.astro)
+ *
+ * A full-bleed two-column section: a photo running edge to edge on one side,
+ * a column of text on the other, held at the shell's inner edge so the type
+ * still lines up with the rest of the page. Tones mirror the band tones in
+ * layout.css so a Split and a Band can sit next to each other.
  * ==================================================================== */
 .split {
   display: grid;
@@ -272,6 +334,7 @@
   isolation: isolate;
 }
 
+/* Headings default to forest ink, which disappears on a forest ground. */
 .split--forest :is(h2, h3) {
   color: var(--color-white);
 }
@@ -280,6 +343,8 @@
   color: var(--color-on-dark);
 }
 
+/* The photo column. It has no intrinsic height (the image is positioned), so
+   the min-height is what actually sizes the section on a short body. */
 .split__media {
   position: relative;
   min-height: clamp(20rem, 40vw, 34rem);
@@ -310,11 +375,16 @@
   margin-top: 0;
 }
 
-/* Media left, text right (default) */
+/* Media left, text right (default). The `order` pair, not the source order, is
+   what decides the arrangement — the markup order stays fixed so the photo is
+   always first in the DOM and stacks on top on mobile. */
 .split:not(.split--reverse) .split__media {
   order: 1;
 }
 
+/* The outer padding is `max(gutter, half the leftover viewport)`, which lands
+   the text on the same vertical line as content inside `.canvas` while still
+   keeping a gutter once the viewport is narrower than the content width. */
 .split:not(.split--reverse) .split__body {
   order: 2;
   padding-inline: clamp(1.5rem, 4vw, 3rem) max(var(--gutter), calc((100vw - var(--width-content)) / 2));
@@ -331,10 +401,12 @@
   padding-inline: max(var(--gutter), calc((100vw - var(--width-content)) / 2)) clamp(1.5rem, 4vw, 3rem);
 }
 
+/* Push the narrow measure to the inner edge so it meets the photo. */
 .split--reverse .split__body-inner {
   margin-left: auto;
 }
 
+/* Below the two-column threshold, both variants stack photo-then-text. */
 @media (max-width: 860px) {
   .split {
     grid-template-columns: 1fr;
@@ -360,7 +432,12 @@
   }
 }
 
-/* Reusable content cards and grids */
+/* ======================================================================
+ * Cards
+ * ==================================================================== */
+
+/* An even grid of equal cards that reflows by available width rather than by
+   breakpoint. Used by CardRow and the MDX logo-cards block. */
 .card-grid {
   display: grid;
   gap: 1.5rem;
@@ -377,10 +454,9 @@
  *
  * Padding and layout stay with each component: a dense event row and a roomy
  * link card want different spacing, but they should read as the same material.
- * Some of these classes live in component-scoped \3c style> blocks, and a scoped
- * rule outranks this one — so those files must declare only what's genuinely
- * different (the accent list's moss edge, the moment card's clipped photo),
- * never a full surface of their own.
+ * Each of these classes is styled again further down, in its own section — those
+ * rules add only what's genuinely different (the accent list's moss edge, the
+ * moment card's clipped photo), never a full surface of their own.
  * -------------------------------------------------------------------- */
 .card,
 .link-card,
@@ -420,6 +496,8 @@ a.card:hover,
   border-color: var(--color-moss-line);
 }
 
+/* The plain card: the surface above plus padding. `display: block` and the
+   text-decoration reset are for when it's an <a>. */
 .card {
   display: block;
   padding: clamp(1.5rem, 2.2vw, 1.85rem);
@@ -454,8 +532,297 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
-/* Card links lift on hover; static card divs stay put */
+/* ----------------------------------------------------------------------
+ * Card rows (CardRow.astro) — the .card-grid above, with two opt-in variants.
+ * -------------------------------------------------------------------- */
 
+/* A capped column count (vs the default auto-fit) — e.g. four richer cards
+   wrapping 2×2. Collapses to a single column on narrow screens. */
+.card-grid--cols {
+  grid-template-columns: repeat(var(--card-cols), minmax(0, 1fr));
+}
+
+@media (max-width: 720px) {
+  .card-grid--cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* When a card carries a labelled CTA, lay it out as a column so the CTA can
+   sit at the foot regardless of body length, keeping a row of cards aligned. */
+.card--cta {
+  display: flex;
+  flex-direction: column;
+}
+
+.card__cta {
+  margin-top: auto;
+  padding-top: 1rem;
+  color: var(--color-moss-ink);
+  font-weight: 700;
+}
+
+/* ----------------------------------------------------------------------
+ * Accent lists (AccentList.astro) — cards with a moss edge, 2 or 3 across.
+ *
+ * The count is the variant: two across (beliefs) get roomier cards, three
+ * across (covenant) get tighter ones, and each steps down to fewer columns at
+ * its own breakpoint rather than a shared one.
+ * -------------------------------------------------------------------- */
+.accent-list {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  display: grid;
+}
+
+.accent-list--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.accent-list--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+/* Surface comes from the shared card recipe above; the moss edge is the only
+   thing that makes this an accent card. */
+.accent-card {
+  border-left: 4px solid var(--color-moss);
+}
+
+.accent-list--2 .accent-card {
+  padding: clamp(1.5rem, 2.4vw, 2rem);
+}
+
+.accent-list--3 .accent-card {
+  padding: clamp(1.25rem, 2vw, 1.6rem);
+}
+
+.accent-card__title {
+  font-size: var(--text-lg);
+}
+
+.accent-list--2 .accent-card__title {
+  margin: 0 0 0.5rem;
+}
+
+.accent-list--3 .accent-card__title {
+  margin: 0 0 0.4rem;
+}
+
+.accent-card p {
+  margin: 0;
+  color: var(--color-ink-soft);
+}
+
+/* Three across only: slightly smaller, tighter body copy */
+.accent-list--3 .accent-card p {
+  font-size: var(--text-ui);
+  line-height: 1.5;
+}
+
+@media (max-width: 860px) {
+  .accent-list--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .accent-list--2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .accent-list--3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ----------------------------------------------------------------------
+ * Moments (MomentsSection.astro) — a three-up grid of photo tiles, every
+ * other one nudged down so the row reads as editorial rather than tabular.
+ * -------------------------------------------------------------------- */
+.moments__head {
+  margin-bottom: var(--space-md);
+}
+
+.moments__heading {
+  margin: 0;
+}
+
+.moments-grid {
+  display: grid;
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+}
+
+.moments__tile {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background: var(--color-mist);
+}
+
+/* Gentle editorial stagger on wide viewports */
+.moments__tile--offset {
+  transform: translateY(clamp(0.75rem, 2.5vw, 2.25rem));
+}
+
+.moments__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.moments__tile:hover .moments__img {
+  transform: scale(1.04);
+}
+
+@media (max-width: 768px) {
+  .moments-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .moments__tile--offset {
+    transform: none;
+  }
+
+  /* On the 2-up mobile grid, an odd count leaves a lone trailing tile.
+     Drop that orphan so the grid always ends in a clean pair.
+     :not(:first-child) guards against hiding a lone single photo. */
+  .moments__tile:last-child:nth-child(odd):not(:first-child) {
+    display: none;
+  }
+}
+
+/* ----------------------------------------------------------------------
+ * Youth moments (YouthMoments.astro) — the same content in two densities: a
+ * three-up row of photo cards, and a two-up list with no photos beneath it.
+ * -------------------------------------------------------------------- */
+.youth-moments__head {
+  margin-bottom: var(--space-md);
+}
+
+.youth-moments__heading {
+  margin: 0;
+}
+
+.moment-cards {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Surface from the shared card recipe above; `overflow: hidden` is what's
+   specific — the photo has to be clipped to the card's radius. */
+.moment-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.moment-card__media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-mist);
+}
+
+.moment-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.moment-card__body {
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+}
+
+.moment-card__cadence {
+  margin: 0 0 0.35rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-moss-ink);
+}
+
+.moment-card__title {
+  margin: 0 0 0.5rem;
+}
+
+.moment-card__blurb {
+  margin: 0;
+  color: var(--color-clay-ink);
+}
+
+.moment-card__cta {
+  margin: 0.85rem 0 0;
+}
+
+.moment-list {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.moment-list__item {
+  padding: 1.1rem 1.25rem;
+}
+
+.moment-list__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.moment-list__title {
+  font-weight: 700;
+}
+
+.moment-list__cadence {
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-moss-ink);
+}
+
+.moment-list__blurb {
+  margin: 0;
+  color: var(--color-clay-ink);
+}
+
+@media (max-width: 860px) {
+  .moment-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .moment-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ----------------------------------------------------------------------
+ * Link cards (LinkCardSection.astro) — a centred row of navigational cards.
+ *
+ * Flex rather than grid, because the point is the last row: an odd card out
+ * should keep its siblings' width and sit centred, which `auto-fit` columns
+ * can't do. The width maths below is what makes that work.
+ * -------------------------------------------------------------------- */
 .link-grid {
   --gap: 1.5rem;
   /* Column count comes from LinkCardSection (set by item count); the fallback
@@ -467,6 +834,8 @@ a.card:hover,
   gap: var(--gap);
 }
 
+/* Column count is capped by width, not by the item count, once the row is too
+   narrow to hold the component's preference. */
 @media (max-width: 860px) {
   .link-grid {
     --cols: 2;
@@ -479,11 +848,6 @@ a.card:hover,
   }
 }
 
-@media (max-width: 640px) {
-  .section-callout {
-    padding: 1.5rem;
-  }
-}
 .link-card {
   display: block;
   /* Width for exactly --cols per row; max-width = basis so cards don't grow to
@@ -495,6 +859,8 @@ a.card:hover,
   text-decoration: none;
 }
 
+/* The card's title. A <strong> rather than a heading, because these cards are
+   navigation and shouldn't add levels to the page outline. */
 .link-card strong {
   display: block;
   font-family: var(--font-serif);
@@ -502,19 +868,26 @@ a.card:hover,
   margin-bottom: 0.5rem;
 }
 
+/* The supporting line under the title (time, place, one-line description). */
 .link-card__meta {
   font-size: var(--text-ui);
   color: var(--color-clay-ink);
 }
 
-.ratio-4x5 {
-  aspect-ratio: 4 / 5;
-}
-/* Media primitives: photos, video, embeds */
+/* ======================================================================
+ * Media primitives — framed photos, captions, embeds
+ *
+ * Used by CaptionedPhotoMdx, Letter, and the leadership portraits. `<Photo>`
+ * renders the <img>; these classes supply the frame around it.
+ * ==================================================================== */
+
+/* The outer block, carrying the vertical rhythm around a photo. */
 .media {
   margin: var(--space-m) 0;
 }
 
+/* The frame: a stone mat with a hairline and a lift, clipping whatever sits
+   inside it to the rounded corner. */
 .media__frame {
   width: 100%;
   border-radius: var(--radius-soft);
@@ -527,6 +900,9 @@ a.card:hover,
   position: relative;
 }
 
+/* The photo itself. The white border is the printed-photo mount, which is why
+   it's a border rather than padding on the frame — it hugs the image at its
+   natural height rather than the frame's. */
 .media__img {
   display: block;
   width: 100%;
@@ -535,6 +911,8 @@ a.card:hover,
   border: 4px solid var(--color-white);
 }
 
+/* Fill a fixed-ratio frame instead of setting the height. Drops the mount,
+   which would otherwise be cropped by the frame's own clipping. */
 .media__img--cover {
   height: 100%;
   object-fit: cover;
@@ -549,6 +927,186 @@ a.card:hover,
   font-style: italic;
 }
 
+/* Give a frame a fixed portrait ratio, so a row of photos agrees in height
+   whatever the images behind them are. Pairs with `.media__img--cover`, which
+   is what actually fills the resulting box. */
+.ratio-4x5 {
+  aspect-ratio: 4 / 5;
+}
+
+/* ======================================================================
+ * Letter (Letter.astro) — a reading column beside a sticky portrait.
+ *
+ * The portrait stays in view as the letter scrolls, then on narrow screens
+ * gives up the sticky position and moves *above* the prose (`order: -1`), so a
+ * phone reader meets the face before the words.
+ * ==================================================================== */
+.letter-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--space-m);
+  align-items: start;
+}
+
+/* No portrait: a single reading column. */
+.letter-layout--solo {
+  grid-template-columns: 1fr;
+}
+
+.letter {
+  max-width: var(--measure);
+}
+
+.letter p {
+  margin-bottom: 1.5rem;
+}
+
+.letter__footer {
+  margin-top: 3rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+.letter-sidebar {
+  position: sticky;
+  top: 2rem;
+}
+
+.letter-portrait {
+  background: var(--color-white);
+  padding: 1rem;
+  border-radius: var(--radius-soft);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-mist);
+}
+
+@media (max-width: 900px) {
+  .letter-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-s);
+  }
+
+  .letter-sidebar {
+    position: static;
+    order: -1;
+    max-width: 400px;
+  }
+}
+
+/* ======================================================================
+ * Roadmap (Roadmap.astro) — a numbered timeline of steps.
+ *
+ * The connecting line is a ::before on the list and the numbers are ::before
+ * on each item, driven by a CSS counter — so the markup stays a plain <ol> and
+ * the step numbers can't drift out of sync with it. The column count arrives as
+ * `--roadmap-cols` from the component. On narrow screens the line is dropped
+ * and the numbers move to the left margin, turning it into a vertical list.
+ * ==================================================================== */
+.roadmap-section {
+  max-width: 100%;
+}
+
+.roadmap {
+  position: relative;
+  counter-reset: roadmap-step;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(var(--roadmap-cols, 3), minmax(0, 1fr));
+  margin: var(--space-md) 0 0;
+  padding: 0.25rem 0;
+  list-style: none;
+}
+
+.roadmap::before {
+  content: '';
+  position: absolute;
+  top: 1.1rem;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(106, 149, 41, 0.3) 0%,
+    rgba(106, 149, 41, 0.75) 50%,
+    rgba(26, 46, 12, 0.45) 100%
+  );
+}
+
+.roadmap li {
+  position: relative;
+  padding-top: 2.25rem;
+  text-align: center;
+}
+
+.roadmap li::before {
+  content: counter(roadmap-step);
+  counter-increment: roadmap-step;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: var(--radius-pill);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--text-ui);
+  color: var(--color-white);
+  background: var(--color-moss-ink);
+  box-shadow: 0 6px 16px rgba(26, 46, 12, 0.2);
+}
+
+.roadmap strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  color: var(--color-forest);
+  line-height: 1.25;
+}
+
+.roadmap__desc {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: var(--text-ui);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 900px) {
+  .roadmap {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+    padding-left: 2rem;
+  }
+
+  .roadmap::before {
+    display: none;
+  }
+
+  .roadmap li {
+    padding-top: 0;
+    padding-left: 1.9rem;
+    text-align: left;
+  }
+
+  .roadmap li::before {
+    left: -1.15rem;
+    transform: none;
+  }
+}
+
+/* ======================================================================
+ * Events — What's On (EventsBoard.astro, EventRow.astro)
+ *
+ * Two presentations of the same data. The *card* (`.event-card` and its
+ * `.event-…` parts) is the featured, roomy form at the top of the page; the
+ * *row* (`.event-row__…`) is the dense list form used for everything after it
+ * and for the featured-events MDX block.
+ * ==================================================================== */
+
+/* The category filter above the board (chip styling is in utilities.css). */
 .chip-row {
   display: flex;
   gap: 0.5rem;
@@ -556,36 +1114,31 @@ a.card:hover,
   margin: 0.75rem 0 1rem;
 }
 
-.event-card__title {
-  margin: 0 0 0.25rem;
+/* ----------------------------------------------------------------------
+ * The card form — the featured events at the top of the board.
+ *
+ * Structure: `.event-grid` > `.event-card` > a floated `.event-date` (holding
+ * `.event-day` / `.event-md` / `.event-time`) beside an `.event-body` (holding
+ * `.event-card__title` and `.event-meta`), then `.event-card__summary` and
+ * `.event-card__cta` below.
+ * -------------------------------------------------------------------- */
+
+/* The featured cards. A wider minimum than `.card-grid` because an event card
+   carries a floated date block beside its text. */
+.event-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
 }
 
-.event-card__summary {
-  margin: 0.5rem 0 0;
-}
-
-.event-card__cta {
-  margin: 0.75rem 0 0;
-}
-
-.event-group {
-  margin: 1.25rem 0;
-}
-
-.event-group__label {
-  margin: 0 0 0.5rem;
-}
-
-/* Home/story visual grids */
-.rhythm-card__cta {
-  margin-top: 0.5rem;
-}
-
+/* `flow-root` contains the floated date block, so a short summary can't leave
+   the card shorter than its own date. */
 .event-card {
   display: flow-root;
   padding: 2rem;
 }
 
+/* The tear-off calendar block, floated so a long summary wraps around it. */
 .event-date {
   float: left;
   width: 100px;
@@ -598,6 +1151,7 @@ a.card:hover,
   border: 1px solid var(--color-mist);
 }
 
+/* Day-of-week, the largest line in the date block. */
 .event-day {
   font-weight: 800;
   font-size: var(--text-xl);
@@ -605,6 +1159,7 @@ a.card:hover,
   color: var(--color-moss-ink);
 }
 
+/* Month and day beneath it. (`md` is month/day, not the size token.) */
 .event-md {
   font-size: var(--text-xs);
   text-transform: uppercase;
@@ -612,23 +1167,24 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
-/* What's On: featured grid, coming-up list, rhythms */
-.event-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-}
-
+/* Start time, the last line of the date block. */
 .event-time {
   font-size: var(--text-xs);
   color: var(--color-clay-ink);
   margin-top: 0.15rem;
 }
 
+/* The text beside the floated date. `min-width: 0` lets a long unbroken title
+   wrap instead of pushing the card wide. */
 .event-body {
   min-width: 0;
 }
 
+.event-card__title {
+  margin: 0 0 0.25rem;
+}
+
+/* Category and location line under an event card's title. */
 .event-meta {
   font-size: var(--text-xs);
   text-transform: uppercase;
@@ -637,9 +1193,29 @@ a.card:hover,
   margin: 0.15rem 0 0.6rem;
 }
 
-.coming-empty {
-  color: var(--color-clay-ink);
-  font-style: italic;
+.event-card__summary {
+  margin: 0.5rem 0 0;
+}
+
+.event-card__cta {
+  margin: 0.75rem 0 0;
+}
+
+/* ----------------------------------------------------------------------
+ * The row form — the dense list below the featured cards.
+ *
+ * Structure: `.event-group` (a dated heading) > `.event-list` > `.event-row`,
+ * each row being a `.event-row__date-chip`, a `.event-row__main`, and a
+ * `.event-row__cta`.
+ * -------------------------------------------------------------------- */
+
+/* A dated group of rows ("This week", "Later this month"). */
+.event-group {
+  margin: 1.25rem 0;
+}
+
+.event-group__label {
+  margin: 0 0 0.5rem;
 }
 
 .event-list {
@@ -647,6 +1223,15 @@ a.card:hover,
   gap: 0.85rem;
 }
 
+/* Shown when a filter matches nothing — quiet, so it reads as an answer
+   rather than an error. */
+.coming-empty {
+  color: var(--color-clay-ink);
+  font-style: italic;
+}
+
+/* One row: date chip · title and meta · action. The middle column is the only
+   flexible one, so the chip and the button keep their size as the row narrows. */
 .event-row {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -655,6 +1240,7 @@ a.card:hover,
   padding: 1rem 1.35rem;
 }
 
+/* The row's compact date block — the list-form counterpart to `.event-date`. */
 .event-row__date-chip {
   display: grid;
   place-items: center;
@@ -667,6 +1253,7 @@ a.card:hover,
   line-height: 1.15;
 }
 
+/* Day of week, above the number. */
 .event-row__dow {
   font-size: var(--text-2xs);
   text-transform: uppercase;
@@ -674,6 +1261,7 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
+/* Day of month. */
 .event-row__dnum {
   font-family: var(--font-serif);
   font-size: var(--text-base);
@@ -681,10 +1269,14 @@ a.card:hover,
   color: var(--color-moss-ink);
 }
 
+/* The flexible middle column; `min-width: 0` for the same reason as
+   `.event-body`. */
 .event-row__main {
   min-width: 0;
 }
 
+/* Not a heading element — the row's accessible name comes from its link, and
+   a list of thirty <h3>s would bury the page outline. */
 .event-row__title {
   font-family: var(--font-serif);
   font-size: var(--text-md);
@@ -693,6 +1285,7 @@ a.card:hover,
   line-height: 1.2;
 }
 
+/* Time, place, and the category tag, wrapping as a group when space runs out. */
 .event-row__meta {
   display: flex;
   align-items: center;
@@ -709,24 +1302,8 @@ a.card:hover,
   white-space: nowrap;
 }
 
-.rhythm-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.rhythm-card {
-  padding: 1.5rem;
-}
-
-.rhythm-card strong {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: var(--text-md);
-  color: var(--color-forest);
-  margin-bottom: 0.35rem;
-}
-
+/* Phones: three columns won't fit, so the action drops to a full-width row of
+   its own beneath the date and title. */
 @media (max-width: 560px) {
   .event-row {
     grid-template-columns: auto 1fr;
@@ -743,7 +1320,41 @@ a.card:hover,
   }
 }
 
-/* Story/quote cards */
+/* ----------------------------------------------------------------------
+ * Rhythms — the recurring things at the foot of the board, which have no one
+ * date to show and so get neither a date block nor a place in the list.
+ * -------------------------------------------------------------------- */
+.rhythm-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.rhythm-card {
+  padding: 1.5rem;
+}
+
+/* The rhythm's name. A <strong> for the same outline reason as the row title. */
+.rhythm-card strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--text-md);
+  color: var(--color-forest);
+  margin-bottom: 0.35rem;
+}
+
+/* The "find out more" line at the foot of a rhythm card. */
+.rhythm-card__cta {
+  margin-top: 0.5rem;
+}
+
+/* ======================================================================
+ * Story quotes (QuoteCarousel.astro, QuoteMdx.astro)
+ *
+ * A card holding one person's words plus an attribution. Column flex so the
+ * footer sits on the card's bottom edge however long the quote runs, which
+ * keeps a row of quotes aligned.
+ * ==================================================================== */
 .story-quote {
   padding: clamp(1.75rem, 2.6vw, 2.4rem);
   display: flex;
@@ -762,6 +1373,8 @@ a.card:hover,
   margin-bottom: 1.15rem;
 }
 
+/* `flex-grow` pushes the attribution down; `max-width: none` opts out of the
+   reading measure below, since the card is already narrow. */
 .story-quote p {
   margin: 0;
   flex-grow: 1;
@@ -774,6 +1387,7 @@ a.card:hover,
   text-wrap: pretty;
 }
 
+/* The attribution — small caps-ish sans, deliberately unlike the quote. */
 .story-quote footer {
   margin-top: 1.25rem;
   font-family: var(--font-sans);
@@ -784,33 +1398,131 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
-.site-main p {
-  max-width: var(--measure);
+/* ----------------------------------------------------------------------
+ * The carousel (QuoteCarousel.astro) — one .story-quote at a time, rotating.
+ *
+ * Every slide occupies the same grid cell, so the viewport is as tall as the
+ * longest quote and the page never reflows as quotes rotate. Slides are hidden
+ * with opacity + visibility rather than `display`, so the height still counts
+ * and the fade has something to animate.
+ * -------------------------------------------------------------------- */
+.quote-carousel {
+  margin-top: var(--space-md);
 }
 
-/*
- * Default styling for in-content prose links. Wrapped in :where() so it carries
- * (almost) no specificity — any link that's also a button/pill/chip (which sets
- * its own color) overrides this instead of inheriting moss-on-moss text.
- */
-:where(.site-main a:not(.link-card):not(.card)) {
-  color: var(--color-moss-ink);
-  text-decoration-color: var(--color-mist);
-  text-underline-offset: 0.12em;
+.quote-carousel__viewport {
+  display: grid;
 }
 
-/* Keep :visited and :hover INSIDE :where() so the pseudo-class doesn't raise
-   specificity to (0,1,0) — otherwise it ties with (and, being later, beats)
-   button classes like .btn, repainting visited buttons moss-on-moss. */
-:where(.site-main a:not(.link-card):not(.card):visited) {
-  color: var(--color-moss-ink);
+/* Out of the card: let the quote sit in open space. Drop the paper panel,
+   border, and shadow inherited from .story-quote; keep the centered serif
+   type and the moss accent rule. */
+.quote-slide {
+  grid-area: 1 / 1;
+  max-width: var(--measure-wide);
+  margin-inline: auto;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  text-align: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out),
+    visibility 0s linear var(--duration-slow);
 }
 
-:where(.site-main a:not(.link-card):not(.card):hover) {
+/* The visibility delay is dropped on the way in so the active slide is
+   focusable immediately, and applied on the way out so it stays hit-testable
+   until the fade finishes. */
+.quote-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+/* Solo quote: larger and centered, with the accent rule centered too. */
+.quote-slide p {
+  font-size: var(--text-lg);
+}
+
+.quote-slide::before {
+  margin-inline: auto;
+}
+
+.quote-carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.quote-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
   color: var(--color-forest);
-  text-decoration-color: var(--color-ember);
+  font-size: var(--text-md);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 }
 
-.site-main .story-quote p {
-  max-width: none;
+.quote-nav:hover {
+  background: var(--color-white);
+  border-color: var(--color-moss);
+  transform: translateY(-1px);
+}
+
+.quote-nav:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 2px;
+}
+
+.quote-dots {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.quote-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-line);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.quote-dot:hover {
+  background: var(--color-clay);
+}
+
+.quote-dot.is-active {
+  background: var(--color-ember);
+  transform: scale(1.3);
+}
+
+.quote-dot:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 2px;
 }
