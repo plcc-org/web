@@ -71,7 +71,7 @@ export function churchGraph(origin: string, images: { logo?: string; image?: str
     address: postalAddress(),
     geo: place.geo,
     hasMap: church.mapUrl,
-    sameAs: [church.social.instagram, church.social.youtube],
+    sameAs: [church.social.instagram, church.social.youtube, church.social.podcast],
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',

@@ -50,6 +50,7 @@ export const church = {
   social: {
     instagram: 'https://www.instagram.com/pinelakecov/',
     youtube: 'https://www.youtube.com/@PineLkCovChurch',
+    podcast: 'https://podcasts.apple.com/us/podcast/pine-lake-covenant-church-podcast/id1771382825',
   },
   /**
    * The weekly gathering. `durationMinutes` matches the "about 75 minutes"

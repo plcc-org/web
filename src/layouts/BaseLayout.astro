@@ -6,6 +6,7 @@ import { brand } from '../config/church'
 import '../styles/global.css'
 import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
 import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
+import podcastIconUrl from '../assets/images/podcast_icon_white.svg?url'
 import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
 import socialImageSource from '../assets/images/plcc-social-card.png'
 import iconSource from '../assets/images/plcc-logo-icon.jpg'
@@ -253,6 +254,21 @@ const jsonLd = origin
               class="site-footer__social-icon site-footer__social-icon--youtube"
             />
             <span>YouTube</span>
+          </a>
+          <span class="site-footer__divider">|</span>
+          <a
+            href="https://podcasts.apple.com/us/podcast/pine-lake-covenant-church-podcast/id1771382825"
+            target="_blank"
+            rel="noopener"
+            class="site-footer__social-link"
+          >
+            <img
+              src={podcastIconUrl}
+              alt=""
+              aria-hidden="true"
+              class="site-footer__social-icon site-footer__social-icon--podcast"
+            />
+            <span>Podcast</span>
           </a>
         </div>
 

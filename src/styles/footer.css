@@ -228,6 +228,11 @@
   transform: translateY(0.01rem);
 }
 
+.site-footer__social-icon--podcast {
+  width: 0.92rem;
+  height: 0.92rem;
+}
+
 /* Copyright, set opposite the social links on the same row and the quietest
    text in the footer. */
 .site-footer__legal {

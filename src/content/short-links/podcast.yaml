@@ -1,0 +1,7 @@
+name: podcast
+from: /podcast
+destination: https://podcasts.apple.com/us/podcast/pine-lake-covenant-church-podcast/id1771382825
+kind: shortcut
+expires: 2027-07-31
+note: The church's Apple Podcasts listing. The show ID is stable, so this is a
+  routine confirm-and-extend at review time.
