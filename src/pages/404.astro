@@ -2,15 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageIntro from '../components/PageIntro.astro'
 import Band from '../components/Band.astro'
-import LinkCardSection from '../components/LinkCardSection.astro'
-import { getCollection } from 'astro:content'
 
-// The 404 reuses the home page's "start here" cards: whatever we'd point a
-// first-time visitor at is also the right list for someone who landed nowhere.
-const strayLinks = (await getCollection('startHereLinks'))
-  .filter((l) => l.data.group === 'home')
-  .sort((a, b) => a.data.order - b.data.order)
-  .map((l) => ({ href: l.data.href, title: l.data.title, meta: l.data.meta }))
+// Deliberately just a heading and the verse. The footer site map is the way
+// out, so a list of suggested pages here would only blunt the joke.
 ---
 
 <BaseLayout
@@ -19,19 +13,13 @@ const strayLinks = (await getCollection('startHereLinks'))
   noindex={true}
 >
   <div class="canvas">
-    <PageIntro
-      eyebrow="404"
-      title="Wandering in the fields"
-      subhead="The page you asked for isn’t here — moved, renamed, or never was. The links below are."
-    />
+    <PageIntro title="Page not found" />
 
-    <Band tone="sand" centered>
+    <Band tone="sand" centered flush>
       <blockquote class="verse">
         <p>And a man found him wandering in the fields. And the man asked him, “What are you seeking?”</p>
         <footer>Genesis 37:15</footer>
       </blockquote>
     </Band>
-
-    <LinkCardSection heading="Maybe one of these" links={strayLinks} />
   </div>
 </BaseLayout>
