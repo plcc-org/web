@@ -1,7 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageIntro from '../components/PageIntro.astro'
-import { withBase } from '../lib/url'
+import Band from '../components/Band.astro'
+import LinkCardSection from '../components/LinkCardSection.astro'
+import { getCollection } from 'astro:content'
+
+// The 404 reuses the home page's "start here" cards: whatever we'd point a
+// first-time visitor at is also the right list for someone who landed nowhere.
+const strayLinks = (await getCollection('startHereLinks'))
+  .filter((l) => l.data.group === 'home')
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((l) => ({ href: l.data.href, title: l.data.title, meta: l.data.meta }))
 ---
 
 <BaseLayout
@@ -10,12 +19,19 @@ import { withBase } from '../lib/url'
   noindex={true}
 >
   <div class="canvas">
-    <PageIntro title="Page not found" subhead="We could not find that page. It may have moved or been renamed." />
+    <PageIntro
+      eyebrow="404"
+      title="This page has wandered off"
+      subhead="Ninety-nine of our pages are right where they should be. This is the other one."
+    />
 
-    <section class="section">
-      <p>
-        Try <a href={withBase()}>Home</a> or <a href={withBase('new/')}>I’m New</a>.
-      </p>
-    </section>
+    <Band tone="sand" centered>
+      <blockquote class="verse">
+        <p>“I have strayed like a lost sheep. Seek your servant.”</p>
+        <footer>Psalm 119:176</footer>
+      </blockquote>
+    </Band>
+
+    <LinkCardSection heading="Try one of these" links={strayLinks} />
   </div>
 </BaseLayout>
