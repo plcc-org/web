@@ -77,6 +77,12 @@ failure than letting it run on. What the date buys you is a list you can actuall
 without one, nobody deletes anything, because nobody remembers what it was for. Builds print
 which links are due or overdue.
 
+The exception is a link to something the church simply has — the podcast, for instance.
+There's no date at which that stops being true, and a review that always ends in "yes, still"
+just trains people to ignore the list. Tick **"This link never needs reviewing"** and leave
+the date empty. Ticking it _and_ setting a date fails the build, because a later reader can't
+tell which one to believe.
+
 Both forms work — `plcc.org/camp` and `plcc.org/camp/` — so it doesn't matter which one
 gets printed. The redirect happens at Cloudflare's edge, so there's no page load in between.
 

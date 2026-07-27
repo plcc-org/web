@@ -175,14 +175,21 @@ export default config({
           ],
           defaultValue: 'shortcut',
         }),
+        permanent: fields.checkbox({
+          label: 'This link never needs reviewing',
+          description:
+            'Only for a link to something the church simply has — the podcast, the giving page. Leave this ' +
+            'unticked and set a date below for anything that could stop being true. If you tick it, leave the ' +
+            'date empty.',
+          defaultValue: false,
+        }),
         expires: fields.date({
           label: 'Review by',
           description:
             'Every short link gets a date so the list stays honest — otherwise nobody dares delete anything ' +
             'because nobody remembers what it was for. A sign-up shortcut: the date the thing it points at ends. ' +
             'A moved page: about a year, by which point search engines have caught up. The link keeps working ' +
-            'past this date; the date is a prompt to check, not a switch.',
-          validation: { isRequired: true },
+            'past this date; the date is a prompt to check, not a switch. Required unless the box above is ticked.',
         }),
         note: fields.text({
           label: 'What is this for?',
