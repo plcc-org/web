@@ -1,0 +1,54 @@
+---
+// MDX wrapper for the Video block: a YouTube or Vimeo embed in the same stone
+// frame as a captioned photo. The editor pastes the ordinary share link; the
+// embed URL is derived here at build time, on the privacy-friendly hosts
+// (youtube-nocookie, Vimeo dnt) so the page stays tracker-free until play.
+type Props = { url: string; title: string; caption?: string }
+const { url, title, caption } = Astro.props
+
+function embedFrom(raw: string): string | undefined {
+  let parsed: URL
+  try {
+    parsed = new URL(raw)
+  } catch {
+    return undefined
+  }
+  const host = parsed.hostname.replace(/^www\.|^m\./, '')
+  if (host === 'youtu.be') {
+    const id = parsed.pathname.split('/')[1]
+    return id ? `https://www.youtube-nocookie.com/embed/${id}` : undefined
+  }
+  if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
+    const id = parsed.searchParams.get('v') ?? parsed.pathname.match(/^\/(?:shorts|live|embed)\/([\w-]+)/)?.[1]
+    return id ? `https://www.youtube-nocookie.com/embed/${id}` : undefined
+  }
+  if (host === 'vimeo.com' || host === 'player.vimeo.com') {
+    const id = parsed.pathname.match(/\d+/)?.[0]
+    return id ? `https://player.vimeo.com/video/${id}?dnt=1` : undefined
+  }
+  return undefined
+}
+
+const embed = embedFrom(url)
+if (!embed) {
+  throw new Error(
+    `Video block: could not read a video from "${url}". ` +
+      'Paste a YouTube or Vimeo link, e.g. https://www.youtube.com/watch?v=… or https://vimeo.com/123456789.'
+  )
+}
+---
+
+<section class="section" data-reveal>
+  <figure class="media">
+    <div class="media__frame media__embed">
+      <iframe
+        src={embed}
+        title={title}
+        loading="lazy"
+        allow="fullscreen; picture-in-picture; encrypted-media; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen></iframe>
+    </div>
+    {caption && <figcaption class="media__caption">{caption}</figcaption>}
+  </figure>
+</section>

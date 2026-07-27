@@ -110,6 +110,7 @@ preview but not on the published site — so uncheck **Draft** to publish when i
 | **Photo & text (split)** | A photo beside text (left or right, tinted background) — show-and-tell.                                             |
 | **Photo**                | A single framed photo with an optional caption.                                                                     |
 | **Photo gallery**        | Several photos shown together as a visual break.                                                                    |
+| **Video**                | A YouTube or Vimeo video in a photo-style frame — paste the ordinary link, not an embed code.                       |
 | **Text cards**           | A row of small cards (title + a line) — a few parallel points.                                                      |
 | **Link cards**           | A grid of cards that link elsewhere — signposting to other pages.                                                   |
 | **Callout**              | A boxed aside that sets one point apart — a reassurance, a key fact.                                                |
@@ -150,6 +151,7 @@ Start here and take the first match:
 | A sequence where the order matters                 | **Roadmap**       |
 | A set of principles where the order doesn't        | **Key points**    |
 | A single photo that needs explaining               | **Photo**         |
+| A minute of video that says it better than a page  | **Video**         |
 | A moment of visual breathing room                  | **Photo gallery** |
 | The one thing you want the reader to do at the end | **Banner**        |
 | A personal note in someone's own voice             | **Letter**        |
@@ -235,8 +237,8 @@ come from the catalog via `<Photo filename>`.
   wrapper in **`src/components/blocks/mdx/`** (e.g. `Split` → `SplitMdx.astro`), which calls
   the real site component. So everything reuses the existing components and their styles.
 - Internal code names differ from editor labels (the label is what editors see): `Section` =
-  "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `PhotoBand` =
-  "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote",
+  "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `Video` = "Video",
+  `PhotoBand` = "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote",
   `FeaturedEvents` = "Featured events", `KeyPoints` = "Key points", `LogoCards` =
   "Logo cards", `Aside` = "Aside", `YouthMomentsBlock` = "Youth moments", `QuoteCarousel` =
   "Quotes carousel", `Roadmap` = "Roadmap", `Letter` = "Letter".

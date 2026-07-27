@@ -877,8 +877,8 @@ a.card:hover,
 /* ======================================================================
  * Media primitives — framed photos, captions, embeds
  *
- * Used by CaptionedPhotoMdx, Letter, and the leadership portraits. `<Photo>`
- * renders the <img>; these classes supply the frame around it.
+ * Used by CaptionedPhotoMdx, VideoMdx, Letter, and the leadership portraits.
+ * `<Photo>` renders the <img>; these classes supply the frame around it.
  * ==================================================================== */
 
 /* The outer block, carrying the vertical rhythm around a photo. */
@@ -916,6 +916,22 @@ a.card:hover,
 .media__img--cover {
   height: 100%;
   object-fit: cover;
+  border: 0;
+}
+
+/* A 16:9 video embed inside the stone frame. The ratio reserves the height up
+   front — an iframe has no intrinsic size — and the forest fill is what shows
+   until the player paints (and as letterboxing around off-ratio videos). */
+.media__embed {
+  aspect-ratio: 16 / 9;
+  background: var(--color-forest);
+}
+
+.media__embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   border: 0;
 }
 

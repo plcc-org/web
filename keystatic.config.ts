@@ -372,6 +372,26 @@ export default config({
                 caption: fields.text({ label: 'Caption', validation: { isRequired: false } }),
               },
             }),
+            Video: block({
+              label: 'Video',
+              description: 'A YouTube or Vimeo video in a photo-style frame — paste the link from your browser.',
+              ContentView: ({ value }) => preview('Video', value.title || value.url || '', null),
+              schema: {
+                url: fields.text({
+                  label: 'Video link',
+                  description:
+                    'The ordinary page address — https://www.youtube.com/watch?v=… or https://vimeo.com/… — not an embed code.',
+                  validation: { isRequired: true },
+                }),
+                title: fields.text({
+                  label: 'Video title',
+                  description:
+                    'A few words saying what the video is — screen readers announce it, like a photo description.',
+                  validation: { isRequired: true },
+                }),
+                caption: fields.text({ label: 'Caption', validation: { isRequired: false } }),
+              },
+            }),
             Cta: wrapper({
               label: 'Banner',
               description:

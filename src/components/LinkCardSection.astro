@@ -1,5 +1,5 @@
 ---
-import { withBase } from '../lib/url'
+import { resolveHref } from '../lib/url'
 
 export type LinkCardItem = {
   href: string
@@ -30,7 +30,7 @@ const cols = links.length === 5 ? 3 : Math.min(links.length, 4)
   <div class:list={['link-grid', reveal && 'reveal-staggered']} style={`--link-cols:${cols}`}>
     {
       links.map((link) => (
-        <a href={withBase(link.href)} class="link-card">
+        <a href={resolveHref(link.href)} class="link-card">
           <strong>{link.title}</strong>
           <div class="link-card__meta">{link.meta}</div>
         </a>

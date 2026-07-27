@@ -1,5 +1,5 @@
 name: old-momco
 from: /grow/momco/
-destination: /families/
+destination: /momco/
 kind: moved
 expires: 2027-07-31
