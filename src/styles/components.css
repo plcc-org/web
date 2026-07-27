@@ -886,6 +886,12 @@ a.card:hover,
   margin: var(--space-m) 0;
 }
 
+/* When the media block is a canvas section's whole content, the grid's
+   row-gap already provides the rhythm and the margin would stack on top. */
+.media--flush {
+  margin: 0;
+}
+
 /* The frame: a stone mat with a hairline and a lift, clipping whatever sits
    inside it to the rounded corner. */
 .media__frame {
