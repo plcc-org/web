@@ -1,75 +1,49 @@
 ---
-import { getCollection, render } from 'astro:content'
+import TinaIsland from '@tinacms/astro/TinaIsland.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { renderPlain } from '../lib/markdown'
-import PageHero from '../components/blocks/mdx/PageHero.astro'
-import Callout from '../components/Callout.astro'
-import Roadmap from '../components/Roadmap.astro'
-import SplitMdx from '../components/blocks/mdx/SplitMdx.astro'
-import CtaMdx from '../components/blocks/mdx/CtaMdx.astro'
-import CaptionedPhotoMdx from '../components/blocks/mdx/CaptionedPhotoMdx.astro'
-import VideoMdx from '../components/blocks/mdx/VideoMdx.astro'
-import SectionMdx from '../components/blocks/mdx/SectionMdx.astro'
-import PhotoBandMdx from '../components/blocks/mdx/PhotoBandMdx.astro'
-import CardRowMdx from '../components/blocks/mdx/CardRowMdx.astro'
-import LinkCardsMdx from '../components/blocks/mdx/LinkCardsMdx.astro'
-import QuoteMdx from '../components/blocks/mdx/QuoteMdx.astro'
-import FeaturedEventsMdx from '../components/blocks/mdx/FeaturedEventsMdx.astro'
-import KeyPointsMdx from '../components/blocks/mdx/KeyPointsMdx.astro'
-import LogoCardsMdx from '../components/blocks/mdx/LogoCardsMdx.astro'
-import AsideMdx from '../components/blocks/mdx/AsideMdx.astro'
-import YouthMomentsMdx from '../components/blocks/mdx/YouthMomentsMdx.astro'
-import QuoteCarouselMdx from '../components/blocks/mdx/QuoteCarouselMdx.astro'
-import LetterMdx from '../components/blocks/mdx/LetterMdx.astro'
+import PageBody from '../components/blocks/tina/PageBody.astro'
+import { getPage, listPages } from '../lib/tina/data'
+import { PAGE_WRAPPER } from '../lib/tina/islands'
 
-// Renders CMS-built pages from the `pages` collection. Each entry is an MDX file:
-// a structured hero in frontmatter plus an MDX body the editor composes in
-// Keystatic, inserting the components mapped below. The filename is the URL slug
-// (src/content/pages/church-life.mdx → /church-life/). Drafts show in dev and are
-// excluded from production builds.
+// Renders CMS-built pages. Each entry is an MDX file: a structured hero in
+// frontmatter plus a body the editor composes from the block palette. The
+// filename is the URL slug (src/content/pages/church-life.mdx → /church-life/).
+// Drafts show in dev and are excluded from production builds.
+//
+// Content comes from Tina's GraphQL client rather than getCollection() +
+// render(). That is what visual editing requires: the rendered DOM has to carry
+// the field metadata the editor bridge maps forms onto, which a compiled MDX
+// module can't provide. Two consequences worth knowing:
+//
+//   - `astro build` alone no longer works. getStaticPaths queries Tina, so the
+//     build must run inside `tinacms build` (see `build:tina`), which starts the
+//     data layer for the duration.
+//   - Astro no longer loads the `pages` collection, so its zod schema in
+//     src/content.config.ts no longer validates these files at build time.
+//     Required-field enforcement now lives in tina/config.ts instead.
 export async function getStaticPaths() {
-  const all = await getCollection('pages')
-  const pages = all.filter((page) => (import.meta.env.PROD ? !page.data.draft : true))
-  return pages.map((page) => ({ params: { slug: page.id }, props: { page } }))
+  const pages = await listPages()
+  const published = pages.filter((page) => (import.meta.env.PROD ? !page.draft : true))
+  return published.map((page) => ({
+    params: { slug: page.relativePath.replace(/\.mdx$/, '') },
+    props: { relativePath: page.relativePath },
+  }))
 }
 
-const { page } = Astro.props
-const { Content } = await render(page)
+const { relativePath } = Astro.props
+const result = await getPage(relativePath)
+const page = result.data?.pages
+if (!page) return new Response('Not Found', { status: 404 })
 
 // Hero ledes are authored as Markdown, so strip it before reusing one as the
 // meta description — a raw `_word_` in a search snippet is the tell that a
 // description was reused without being looked at.
-const description = page.data.seoDescription ?? renderPlain(page.data.hero.lede)
-
-// MDX component tags ↔ site components. Keys must match the component names in
-// the Keystatic `fields.mdx` config.
-const components = {
-  Split: SplitMdx,
-  // Callout and Roadmap need nothing from the MDX layer, so the Keystatic key
-  // maps straight to the component instead of a pass-through wrapper.
-  Callout: Callout,
-  Cta: CtaMdx,
-  CaptionedPhoto: CaptionedPhotoMdx,
-  Video: VideoMdx,
-  Section: SectionMdx,
-  PhotoBand: PhotoBandMdx,
-  CardRow: CardRowMdx,
-  LinkCards: LinkCardsMdx,
-  Quote: QuoteMdx,
-  FeaturedEvents: FeaturedEventsMdx,
-  KeyPoints: KeyPointsMdx,
-  LogoCards: LogoCardsMdx,
-  Aside: AsideMdx,
-  YouthMomentsBlock: YouthMomentsMdx,
-  QuoteCarousel: QuoteCarouselMdx,
-  Roadmap: Roadmap,
-  Letter: LetterMdx,
-}
+const description = page.seoDescription ?? renderPlain(page.hero?.lede ?? '')
 ---
 
-<BaseLayout title={`${page.data.title} | Pine Lake Covenant Church`} description={description}>
-  <div class="canvas">
-    <PageHero {...page.data.hero} title={page.data.title} />
-    <Content components={components} />
-  </div>
+<BaseLayout title={`${page.title} | Pine Lake Covenant Church`} description={description}>
+  <TinaIsland name="page" wrapper={PAGE_WRAPPER} params={{ relativePath }} primary>
+    <PageBody data={page} />
+  </TinaIsland>
 </BaseLayout>

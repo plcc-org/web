@@ -28,7 +28,7 @@
     "generate:social-card": "node scripts/generate-social-card.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "dev:tina": "ASTRO_DEV=1 TINA_PREVIEW=1 tinacms dev -c \"astro dev\"",
+    "dev:tina": "ASTRO_DEV=1 tinacms dev -c \"astro dev\"",
     "build:tina": "npm run clean:vite && node scripts/generate-redirects.mjs && tinacms build --local --skip-cloud-checks -c \"astro build\" && node scripts/prune-dist.mjs"
   },
   "dependencies": {

@@ -65,11 +65,11 @@ export default defineConfig({
         label: 'Pages',
         path: 'src/content/pages',
         format: 'mdx',
-        // Visual editing opens this URL in the admin iframe. It points at the
-        // Tina-rendered mirror route, not the live page: only that route carries
-        // the field metadata the bridge needs to map clicks onto form fields.
+        // Visual editing opens this URL in the admin iframe — the real page, now
+        // that src/pages/[...slug].astro renders through Tina and carries the
+        // field metadata the bridge maps clicks onto.
         ui: {
-          router: ({ document }) => `/tina-preview/${document._sys.breadcrumbs.join('/')}`,
+          router: ({ document }) => `/${document._sys.breadcrumbs.join('/')}/`,
         },
         fields: [
           { name: 'title', label: 'Title', type: 'string', isTitle: true, required: true },

@@ -57,12 +57,43 @@ real photo. The wiring:
 
 The significant one is the fourth. **Visual editing requires the page to be
 rendered from Tina's GraphQL result, not from a compiled MDX module** — the DOM
-has to carry the field metadata the bridge maps forms onto. Here that lives on a
-parallel `/tina-preview/` route, gated behind `TINA_PREVIEW` so it never ships
-(otherwise every page gets a duplicate URL and `check-site` fails on duplicate
-descriptions). A real adoption would instead rewrite `src/pages/[...slug].astro`
-itself to query Tina — which means the live site stops reading Astro content
-collections and starts depending on the Tina data layer at build time.
+has to carry the field metadata the bridge maps forms onto.
+
+That has since been done for real: `src/pages/[...slug].astro` now queries Tina
+instead of `getCollection()` + `render()`, and the parallel preview route is
+gone. Visual editing runs against the live URLs (`/visit/`, not a mirror).
+
+## The slug conversion: what it cost
+
+Verified against the pre-Tina baseline, across all 20 CMS pages:
+
+| Check                            | Result                                                                                                                                     |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Images, internal links, alt text | **identical on 20/20**                                                                                                                     |
+| Visible text                     | **identical on 19/20** — the 20th differs only in `<FeaturedEvents>` live event data, which also drifted on the hand-built `/events/` page |
+| `check-site`                     | 30 pages, 1031 links, 86 images, 376 asset refs — unchanged                                                                                |
+| Suite                            | `format:check`, `lint:css`, `check` (93 files, 0 errors), 51 tests, `build:tina` all green                                                 |
+
+Three things it changed, beyond the route itself:
+
+**Smart quotes were silently lost, and are now fixed at source.** Astro's MDX
+pipeline runs smartypants; Tina's renderer doesn't. Sixteen straight apostrophes
+in `visit.mdx` had been rendering as `’` and started rendering as `'`. Caught by
+diffing curly-quote counts (305 → 289 — exactly the 16). Fixed by normalising the
+source to real `’` characters, which is the better state anyway: it no longer
+depends on a render-time transform, and it survives whichever editor writes the
+file. Every other page already used curly characters.
+
+**Astro no longer validates the content.** Nothing loads the `pages` collection
+now, so the zod schema in `src/content.config.ts` — which caught the missing
+`hero` on a Tina-created page earlier in this spike — is inert for pages.
+Required-field enforcement has to move into `tina/config.ts`, where it is not
+type-checked (see the OOM above). That is the single biggest safety regression
+of the conversion.
+
+**Every page carries an inline bootstrap script.** `<TinaIsland>` emits a
+~10-line module that no-ops outside the admin iframe. Small, but it means the
+production HTML is no longer byte-identical to a Tina-free build.
 
 ## What adopting this actually costs
 
@@ -146,11 +177,10 @@ worth three structural changes:
 Against that: a genuinely better editing experience, and 454 commits a year of
 development instead of 40.
 
-If the next step is to keep going, the honest sequencing is to do (1) for real —
-convert `[...slug].astro` rather than keep a mirror route — and see what breaks,
-because that is the change that can't be undone cheaply. If the answer is to
-stop, the branch stands as a working reference of what Tina looks like on this
-site.
+Step (1) is now done, and it went better than expected: 20/20 pages identical in
+images, links and alt text, 19/20 identical in visible text. The open items it
+leaves are content validation moving to an unchecked config, and deciding
+whether a TinaCloud dependency at build time is acceptable.
 
 ## Reproducing
 
@@ -161,8 +191,8 @@ npm run dev:tina
 Then:
 
 - forms editor — `http://localhost:4321/admin/index.html`
-- visual editing — `http://localhost:4321/admin/index.html#/~/tina-preview/visit`
-  (click the hero; its form focuses in the sidebar)
+- visual editing — `http://localhost:4321/admin/index.html#/~/visit/`
+  (click the hero, or any block; its form focuses in the sidebar)
 
 Round-trip harness, no server needed:
 
