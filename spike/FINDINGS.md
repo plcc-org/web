@@ -1,10 +1,14 @@
-# TinaCMS spike — findings
+# Replacing Keystatic with TinaCMS — the record
 
-Run on branch `spike/cms-tina`, 2026-07-27, against the real site: 20 MDX pages,
-18 block components, 134 photos, 55 short links.
+Evaluated and adopted on `spike/cms-tina`, 2026-07-27, against the real site:
+20 MDX pages, 18 block components, 134 photos, 55 short links.
 
-The question was not "can Tina do this" in the abstract. Keystatic already does
-what we need; the question is whether Tina matches it, given that Keystatic
+**Status: decided.** Keystatic is removed from this branch and Tina renders the
+live pages. This document is the evidence trail and the list of what is still
+open; [docs/cms.md](../docs/cms.md) is the living documentation.
+
+The question was never "can Tina do this" in the abstract. Keystatic already did
+what we need; the question was whether Tina matches it, given that Keystatic
 shipped 40 commits in the last twelve months (mostly version bumps) against
 Tina's 454.
 
@@ -22,9 +26,10 @@ _not_ a casualty: zod still runs.
 > workerd only provides under `nodejs_compat`. The Cloudflare adapter prerenders
 > in workerd by default, so the middleware threw during prerendering and Astro
 > wrote **every page out as a 0-byte file** — with the build still exiting 0. The
-> missing images were a symptom of pages having no content at all. One adapter
-> option fixes it: `prerenderEnvironment: 'node'` — and a second, separate fix is
-> needed for the same root cause at _run_ time, see the starter comparison below.
+> missing images were a symptom of pages having no content at all. One cause, one
+> fix: `nodejs_compat` in the root `wrangler.jsonc`, which the canonical starter
+> ships and which we could only adopt once Keystatic was gone. Before that this
+> document described two separate workarounds; both are now deleted.
 
 ## Matches / beats / falls short
 
@@ -38,7 +43,7 @@ _not_ a casualty: zod still runs.
 | Body round-trip fidelity                         | reformats on first save, then stable | same — idempotent, zero churn after first save      | **matches**     |
 | Frontmatter round-trip                           | preserved                            | folded YAML scalars → long quoted lines             | **falls short** |
 | Media picker thumbnails                          | real thumbnails                      | real thumbnails, via a dev-only asset route         | **matches**     |
-| Image pipeline (sharp, responsive WebP)          | 314 optimised assets                 | 314 optimised assets, with `prerenderEnvironment`   | **matches**     |
+| Image pipeline (sharp, responsive WebP)          | 314 assets kept by prune-dist        | 314 — byte-for-byte the same set                    | **matches**     |
 | Visual click-to-edit on the real page            | none                                 | works — click a region, its form focuses, live      | **beats**       |
 | `astro check` (CI)                               | checks everything                    | OOMs unless `tina/` is excluded from the program    | **falls short** |
 | Build command                                    | `astro build`                        | must wrap in `tinacms build`; no network needed     | **falls short** |
@@ -50,13 +55,13 @@ It works. Clicking the hero on the rendered page focuses the Hero sub-form in th
 sidebar; typing in Eyebrow updates the page live, in the real design, with the
 real photo. The wiring:
 
-| Piece                                                              | What it does                                                                                                                                                                                         |
-| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `prerenderEnvironment: 'node'` + `scripts/inject-worker-flags.mjs` | `node:async_hooks` for Tina's AsyncLocalStorage — the first for prerendering, the second so the deployed island route doesn't 500                                                                    |
-| `src/components/blocks/tina/*.astro`                               | six wrapper adapters — under MDX a wrapper's prose arrives via `<slot />`, through Tina it's a `children` rich-text tree. The twelve self-closing blocks reuse their existing MDX adapters unchanged |
-| `src/lib/tina/islands.ts` + `src/pages/tina-island/[name].ts`      | the on-demand endpoint the bridge re-renders regions through. The only non-prerendered route — same shape as the two Keystatic already adds                                                          |
-| `src/pages/[...slug].astro`                                        | renders each page from Tina's GraphQL client with `tinaField()` markers, instead of `getCollection()` + `render()`                                                                                   |
-| `tinaAssetsDevPlugin` in `astro.config.mjs`                        | serves `src/assets/images` at `/assets/images/*` in dev so the media picker can show thumbnails                                                                                                      |
+| Piece                                                         | What it does                                                                                                                                                                                         |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `nodejs_compat` in `wrangler.jsonc`                           | `node:async_hooks` for Tina's AsyncLocalStorage — needed both to prerender and to keep the deployed island route from 500ing                                                                         |
+| `src/components/blocks/tina/*.astro`                          | six wrapper adapters — under MDX a wrapper's prose arrives via `<slot />`, through Tina it's a `children` rich-text tree. The twelve self-closing blocks reuse their existing MDX adapters unchanged |
+| `src/lib/tina/islands.ts` + `src/pages/tina-island/[name].ts` | the on-demand endpoint the bridge re-renders regions through. The site's only non-prerendered route                                                                                                  |
+| `src/pages/[...slug].astro`                                   | renders each page from Tina's GraphQL client with `tinaField()` markers, instead of `getCollection()` + `render()`                                                                                   |
+| `tinaAssetsDevPlugin` in `astro.config.mjs`                   | serves `src/assets/images` at `/assets/images/*` in dev so the media picker can show thumbnails                                                                                                      |
 
 The significant one is the fourth. **Visual editing requires the page to be
 rendered from Tina's GraphQL result, not from a compiled MDX module** — the DOM
@@ -74,8 +79,8 @@ Verified against the pre-Tina baseline, across all 20 CMS pages:
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Images, internal links, alt text | **identical on 20/20**                                                                                                                     |
 | Visible text                     | **identical on 19/20** — the 20th differs only in `<FeaturedEvents>` live event data, which also drifted on the hand-built `/events/` page |
-| `check-site`                     | 30 pages, 1031 links, 86 images, 376 asset refs — unchanged                                                                                |
-| Suite                            | `format:check`, `lint:css`, `check` (93 files, 0 errors), 51 tests, `build:tina` all green                                                 |
+| `check-site`                     | 1031 links, 86 images, 376 asset refs — unchanged                                                                                          |
+| Suite                            | `format:check`, `lint:css`, `check`, 51 tests, `build:tina` all green                                                                      |
 
 Three things it changed, beyond the route itself:
 
@@ -102,7 +107,7 @@ against its own field types, at save time and at index time. zod checks the
 file's shape whatever wrote it — a hand edit, a bad merge, a script — and it is
 what caught the missing `hero` on the page Tina itself created earlier in this
 spike. Keeping both is worth doing; the cost is the familiar one, that the two
-schemas can drift, which `docs/cms.md` already documents for Keystatic.
+schemas can drift — the same burden `docs/cms.md` documented under Keystatic.
 
 **Every page carries an inline bootstrap script.** `<TinaIsland>` emits a
 ~10-line module that no-ops outside the admin iframe. Small, but it means the
@@ -122,16 +127,15 @@ route's `node:async_hooks` needs". Our generated `dist/server/wrangler.json` had
 `compatibility_flags: []` while the Worker bundle imported `node:async_hooks`,
 so `prerenderEnvironment: 'node'` had fixed the _build_ and left the _runtime_
 broken. Silently: the build is green, and nothing fails until an editor opens
-the preview on the deployed site. Now fixed by
-`scripts/inject-worker-flags.mjs`.
+the preview on the deployed site.
 
-We can't use the canonical root `wrangler.jsonc` yet, and it's worth being
-precise about why: with `keystatic()` in the integrations it fails with
-`Could not resolve "virtual:keystatic-config"`; with `keystatic()` removed the
-same file builds cleanly and the flag lands. **So that constraint in
-`docs/cms.md` is a Keystatic constraint, not a Cloudflare one** — dropping
-Keystatic converts our post-build injection back into the sanctioned two-line
-config.
+Fixing it properly needed Keystatic gone. With `keystatic()` in the integrations
+a root `wrangler.jsonc` fails with `Could not resolve "virtual:keystatic-config"`;
+with it removed the same file builds cleanly and the flag lands. **So that
+constraint in `docs/cms.md` was a Keystatic constraint, not a Cloudflare one.**
+Once Keystatic was removed the two-line canonical config replaced both earlier
+workarounds — the post-build flag injection _and_ `prerenderEnvironment: 'node'`,
+since the flag now applies at build time as well.
 
 **Confirmed identical to canonical:** the island registry, the
 `/tina-island/[name]` route with `prerender = false`, `<TinaIsland>` wrapping a
@@ -214,7 +218,8 @@ applies when editing through the preview, not the plain forms list.
 **New pages don't validate.** A page created in Tina omits `hero`, which
 `src/content.config.ts` requires, and the Astro build rejects it. Fixable by
 marking hero subfields required in `tina/config.ts`, but it shows the
-two-schemas-must-agree burden documented in `docs/cms.md` doesn't go away.
+two-schemas-must-agree burden doesn't go away — it just changes file. **Still
+open.**
 
 ## What went right, and is worth remembering
 
@@ -230,34 +235,47 @@ object literals — `items={[{title: "A"}]}`, not the `items={[{"title":"A"}]}`
 Keystatic writes — and rejects bare boolean attributes like `reverse`. Both are
 surface syntax, not missing capability, and both are mechanical.
 
-## Recommendation
+## What was decided
 
-Tina clears the bar. Content model, round-trip fidelity, component palette and
-visual editing all work on this site with real content, and the whole suite is
-green: `format:check`, `lint:css`, `check` (94 files, 0 errors), 51 tests,
-`build:tina`, and `check-site` at 30 pages / 1031 links / 86 images / 307
-optimised WebP.
+Tina cleared the bar and has been adopted. Content model, round-trip fidelity,
+component palette and visual editing all work on this site with real content.
 
-The decision is therefore not "does it work" but whether the editing upgrade is
-worth three structural changes:
+Keystatic is removed from the branch: `keystatic.config.ts`, both `@keystatic/*`
+packages, the `patch-package` patch and its `postinstall`, and `@astrojs/react`
+(nothing in `src/` imports React — the site ships none, and `react`/`react-dom`
+survive only as devDependencies for the admin build). Its admin-route guards were
+repointed from `/keystatic` to `/admin` and `/tina-island` across `robots.txt.ts`,
+the sitemap filter, `check-site.mjs`, and the reserved short-link prefixes.
 
-1. `src/pages/[...slug].astro` stops using Astro content collections and starts
-   querying Tina's data layer, so the live site's render path depends on it.
-2. The build depends on a Tina data server — TinaCloud in production, i.e. the
-   same class of third-party dependency `docs/cms.md` already flags as temporary
-   for Keystatic Cloud, on a 2-user free tier vs Keystatic's 3.
-3. `tina/config.ts` leaves the type-checked program, so the CMS schema is the one
-   file CI can't verify.
+Three structural changes came with it:
 
-Against that: a genuinely better editing experience, and 454 commits a year of
-development instead of 40.
+1. `src/pages/[...slug].astro` renders from Tina's data layer rather than
+   `getCollection()` + `render()`. Measured cost: nil — 20/20 pages identical in
+   images, links and alt text, 19/20 in visible text.
+2. The build must run inside `tinacms build`. It reads local files and touches no
+   network, so this is a command change rather than a dependency.
+3. `tina/config.ts` leaves the type-checked program because it OOMs the compiler.
 
-Step (1) is now done, and it went better than expected: 20/20 pages identical in
-images, links and alt text, 19/20 identical in visible text. Content validation
-turned out not to be a casualty — zod still runs. The one open item is where the
-Tina backend lives: TinaCloud is the easy answer, self-hosting on Cloudflare is
-the independent one and is demonstrably possible, but nobody has done it on
-Astro yet.
+Against that: a materially better editing experience, and 454 commits a year of
+upstream development instead of 40.
+
+Suite on adoption: `format:check`, `lint:css`, `check` (92 files, 0 errors), 51
+tests, `build:tina`, and `check-site` fully green for the first time — 29 pages,
+1031 links, 86 images, 307 optimised WebP.
+
+## Still open
+
+Everything unresolved is about the _deployed_ editor. Local editing is done.
+
+| #   | Open question                                                                                                       | Why it matters                                                                                                  |
+| --- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 1   | **Who authenticates at `/admin`** — TinaCloud (2-user free tier, $24/mo beyond) or self-hosted auth on Workers + KV | The only remaining third-party question. Builds never touch it; sign-in does                                    |
+| 2   | **Production media**                                                                                                | The thumbnail route is dev-only, and Tina's FAQ lists git-backed media as TinaCloud-only. Unverified either way |
+| 3   | **CMS schema is unchecked**                                                                                         | `tina/` is excluded from `astro check`, and it's where a typo costs most                                        |
+| 4   | **Required fields don't agree**                                                                                     | A page created in the editor omits `hero`; zod catches it, but the editor should                                |
+
+(1) and (2) are the ones that gate a real deploy. (3) and (4) are papercuts with
+known shapes.
 
 ## Reproducing
 
