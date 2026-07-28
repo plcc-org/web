@@ -1,51 +1,9 @@
 {
-  "capturedAt": "2026-07-27T14:03:40.060Z",
+  "capturedAt": "2026-07-28T13:23:22.663Z",
   "links": {
-    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-07-27T00%3A00%3A00.000Z&where[starts_at][lte]=2026-09-21T14%3A03%3A39.000Z"
+    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-07-28T00%3A00%3A00.000Z&where[starts_at][lte]=2026-09-22T13%3A23%3A21.000Z"
   },
   "data": [
-    {
-      "type": "Event",
-      "id": "200873107",
-      "attributes": {
-        "all_day_event": false,
-        "description": "<div class=\"trix-content\">\n  <div>&nbsp;Join us for FIVE days of energizing fun!<br>&nbsp;<br>Children entering <strong>kindergarten through 5th grade in the fall</strong>--as well as <strong>4- &amp; 5-year-olds</strong>--are invited to participate in PLCC’s Sports Camp July 29-August 2. We’ll meet each day from 9:00am-12:00pm for energetic music, Bible lessons, and sports instruction from college athletes. Students can choose which sport they want to learn or improve their skills in: <strong><em>basketball</em></strong>, <strong><em>soccer </em></strong>or <strong><em>cheerleading</em></strong>. We will also have an <strong><em>art </em></strong>option (space is limited)!<br><br></div><ul><li>For <strong>4- and 5-year-olds</strong>, we have a special Kickstart program, which is an intro to sport skills and movement!</li><li>Every participant receives small-group instruction and encouragement as well as a cool SWAG bag!</li><li>Spaces are limited, so we encourage you to register early to save your child’s place.</li></ul><div><strong>Registration includes:</strong> Professional leadership from Base Sports; instruction from highly trained college athletes; healthy snacks; SWAG bag including t-shirt, water bottle, and fun treats!<br><br></div><div><strong>Cost</strong>:<br>Early Bird Price (through April 30) - $110 for first child<br>Starting May 1 - $125 for first child<br><em>$10 discount for each additional child</em></div>\n</div>\n",
-        "ends_at": "2026-07-27T20:00:00Z",
-        "featured": false,
-        "name": "Sports Camp",
-        "recurring": true,
-        "show_page_path": "/calendar/event/200873107",
-        "starts_at": "2026-07-27T17:00:00Z"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/events/200873107"
-      },
-      "relationships": {
-        "location": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/locations/11592248"
-          },
-          "data": {
-            "type": "Location",
-            "id": "11592248"
-          }
-        },
-        "category_tags": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/events/200873107/category_tags"
-          },
-          "data": [
-            {
-              "type": "CategoryTag",
-              "id": "241936"
-            }
-          ]
-        },
-        "event_registration_url": {
-          "data": null
-        }
-      }
-    },
     {
       "type": "Event",
       "id": "200873108",
@@ -1708,6 +1666,140 @@
           "data": null
         }
       }
+    },
+    {
+      "type": "Event",
+      "id": "167801643",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "ends_at": "2026-09-21T18:30:00Z",
+        "featured": false,
+        "name": "Community Playgroup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/167801643",
+        "starts_at": "2026-09-21T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/167801643"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+          },
+          "data": {
+            "type": "Location",
+            "id": "6158728"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/167801643/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419299"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "226271666",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  A time for ladies to take a break from the busy week and connect with one another!\n</div>\n",
+        "ends_at": "2026-09-21T18:30:00Z",
+        "featured": false,
+        "name": "Women's Coffee Break ",
+        "recurring": true,
+        "show_page_path": "/calendar/event/226271666",
+        "starts_at": "2026-09-21T17:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/226271666"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13062812"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13062812"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/226271666/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241935"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "220992310",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>BSF offers free, in-depth Bible studies in community for people of all ages around the world. <a href=\"https://www.bsfinternational.org/\">Learn more about BSF</a></div>\n</div>\n",
+        "ends_at": "2026-09-22T04:00:00Z",
+        "featured": false,
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "recurring": true,
+        "show_page_path": "/calendar/event/220992310",
+        "starts_at": "2026-09-22T01:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/220992310"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/12765808"
+          },
+          "data": {
+            "type": "Location",
+            "id": "12765808"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/220992310/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241935"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
     }
   ],
   "included": [
@@ -2002,11 +2094,29 @@
       "links": {
         "self": "https://api.churchcenter.com/calendar/v2/category_tags/241935"
       }
+    },
+    {
+      "type": "Location",
+      "id": "13062812",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/13062812"
+      }
     }
   ],
   "meta": {
-    "total_count": 38,
-    "count": 38,
+    "total_count": 40,
+    "count": 40,
     "can_order_by": [
       "featured",
       "visible_starts_at"
