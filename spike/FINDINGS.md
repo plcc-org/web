@@ -12,7 +12,9 @@ Tina's 454.
 
 **Tina matches Keystatic on content modelling and beats it on the editing
 experience. Visual editing works on this site, on real pages, in the real
-design.** What it costs is a heavier build and one lost safety net.
+design.** What it costs is a heavier build and one lost safety net —
+`astro check` can no longer type-check the CMS schema. Content validation is
+_not_ a casualty: zod still runs.
 
 > **Correction.** An earlier version of this document called the integration
 > "incompatible with our image pipeline". That was wrong, and the real cause was
@@ -84,12 +86,22 @@ source to real `’` characters, which is the better state anyway: it no longer
 depends on a render-time transform, and it survives whichever editor writes the
 file. Every other page already used curly characters.
 
-**Astro no longer validates the content.** Nothing loads the `pages` collection
-now, so the zod schema in `src/content.config.ts` — which caught the missing
-`hero` on a Tina-created page earlier in this spike — is inert for pages.
-Required-field enforcement has to move into `tina/config.ts`, where it is not
-type-checked (see the OOM above). That is the single biggest safety regression
-of the conversion.
+**Astro still validates the content — an earlier claim here that it didn't was
+wrong.** Astro's content layer syncs and validates every collection _defined_ in
+`src/content.config.ts`; it does not require a route to load one. Tested by
+committing deliberately broken pages:
+
+| Broken page                       | Caught by                                                                                 |
+| --------------------------------- | ----------------------------------------------------------------------------------------- |
+| `hero` key missing entirely       | **zod** — `InvalidContentEntryDataError`, build fails. Tina's indexer accepted it happily |
+| `title: 42`, `draft: "sometimes"` | **Tina's indexer** — `Unable to seed`, fails during `tinacms build` before Astro runs     |
+
+So the two layers are complementary rather than redundant. Tina checks values
+against its own field types, at save time and at index time. zod checks the
+file's shape whatever wrote it — a hand edit, a bad merge, a script — and it is
+what caught the missing `hero` on the page Tina itself created earlier in this
+spike. Keeping both is worth doing; the cost is the familiar one, that the two
+schemas can drift, which `docs/cms.md` already documents for Keystatic.
 
 **Every page carries an inline bootstrap script.** `<TinaIsland>` emits a
 ~10-line module that no-ops outside the admin iframe. Small, but it means the
@@ -107,10 +119,20 @@ of CI.
 **The build needs a Tina data server.** `astro build` alone now fails at
 prerendering with `fetch failed`, because `getStaticPaths` queries Tina's
 GraphQL. The build has to become `tinacms build -c "astro build"` (see
-`build:tina` in package.json), which starts the datalayer for the duration. In
-non-local mode that server is TinaCloud, so a deploy would depend on a
-third-party service being reachable — the same shape of dependency as Keystatic
-Cloud, which `docs/cms.md` already calls a temporary workaround.
+`build:tina` in package.json), which starts the datalayer for the duration.
+
+That server does **not** have to be TinaCloud. Self-hosting is a supported path
+with "bring your own" git provider, database adapter and auth provider, and
+there is a community starter,
+[ailabs-hq/tinacms-cloudflare](https://github.com/ailabs-hq/tinacms-cloudflare),
+running the whole thing on Cloudflare: Workers for the backend, Cloudflare KV as
+the database adapter, Auth.js for login, GitHub as the git provider, no TinaCloud
+at all. Two caveats before treating that as settled: the officially documented
+backend hosts are Next.js / Vercel / Netlify functions, so Cloudflare is
+community territory and that starter is Next.js rather than Astro; and Tina's
+FAQ lists git-backed media, dynamic branch switching and search as TinaCloud-only
+— the first of which matters here, and this spike has only exercised repo-based
+media locally, never self-hosted.
 
 **Stale-cache fragility.** Several builds failed until `node_modules/.vite` and
 `.astro` were cleared; the repo's `prebuild` already does the former for a
@@ -178,9 +200,11 @@ Against that: a genuinely better editing experience, and 454 commits a year of
 development instead of 40.
 
 Step (1) is now done, and it went better than expected: 20/20 pages identical in
-images, links and alt text, 19/20 identical in visible text. The open items it
-leaves are content validation moving to an unchecked config, and deciding
-whether a TinaCloud dependency at build time is acceptable.
+images, links and alt text, 19/20 identical in visible text. Content validation
+turned out not to be a casualty — zod still runs. The one open item is where the
+Tina backend lives: TinaCloud is the easy answer, self-hosting on Cloudflare is
+the independent one and is demonstrably possible, but nobody has done it on
+Astro yet.
 
 ## Reproducing
 
