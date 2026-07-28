@@ -15,7 +15,7 @@ for "What's On", see [events.md](./events.md).
 - **Styling:** Vanilla CSS with design tokens, split into partials under `src/styles/`
   (entry: `global.css`). See [design-system.md](./design-system.md).
 - **Images:** Astro's `<Image>` pipeline via the `<Photo>` wrapper component.
-- **CMS:** [Keystatic](https://keystatic.com), a Git-based editor at `/keystatic`. See
+- **CMS:** [TinaCMS](https://tina.io), a Git-based editor at `/admin`, with visual editing. See
   [cms.md](./cms.md).
 - **Host:** Cloudflare (Workers) via `@astrojs/cloudflare` (`imageService: 'compile'` keeps
   images optimized at build time). See [infrastructure.md](./infrastructure.md).
@@ -51,7 +51,7 @@ src/
   styles/           Design tokens + global CSS (entry: global.css)
 scripts/            Build and verification scripts (see "The build pipeline")
 test/               Vitest unit tests
-keystatic.config.ts Keystatic CMS config (collections/fields ↔ content.config.ts)
+tina/               TinaCMS config: config.ts (collections) + templates.mjs (block palette)
 public/             Static assets served as-is (favicon, manifest, _headers)
 docs/               Project documentation (you are here)
 nginx/, Dockerfile  Container image for serving the built site
@@ -133,9 +133,9 @@ the prune only ever removed unreachable files.
   validated in `src/content.config.ts`: `photos`, `youthMoments`, `leadership`, `quotes`,
   `startHereLinks`, `pages`. Query with `getCollection(...)` — don't hand-author lists in
   markup or add new `src/data/*.ts` arrays. Editing copy shouldn't mean touching layout.
-  Keep `keystatic.config.ts` in step (see [cms.md](./cms.md)).
+  Keep `tina/config.ts` in step (see [cms.md](./cms.md)).
 - **`short-links` is the one exception**, and deliberately so. It lives in
-  `src/content/` and is edited in Keystatic like everything else, but it is _not_ in
+  `src/content/` and is edited in the CMS like everything else, but it is _not_ in
   `content.config.ts`, because nothing renders it — it's build-time configuration read
   directly by `generate-redirects.mjs`. Registering it as an Astro collection would imply
   a page could query it, which is exactly backwards.
@@ -155,7 +155,7 @@ the prune only ever removed unreachable files.
 ### CMS-built pages
 
 Pages in the `pages` collection are **MDX files**, not block lists: a structured hero in
-frontmatter plus a body the editor composes in Keystatic's rich-text editor, inserting
+frontmatter plus a body the editor composes in the CMS's rich-text editor, inserting
 components. `src/pages/[...slug].astro` renders them, passing a **components map** that
 binds each MDX tag to a real site component. The filename is the URL slug
 (`src/content/pages/church-life.mdx` → `/church-life/`). Drafts render in dev and are
@@ -163,12 +163,12 @@ excluded from production builds.
 
 Adding a block type means touching **three** places, and they have to agree:
 
-1. `keystatic.config.ts` — the editor UI for the block.
+1. `tina/templates.mjs` — the editor UI for the block.
 2. `src/components/blocks/mdx/<Name>Mdx.astro` — a thin wrapper adapting the CMS's flat
    props to the real component. If a component needs no adaptation, skip this and map the
-   Keystatic key straight to it (`Callout` and `Roadmap` do exactly that).
+   CMS key straight to it (`Callout` and `Roadmap` do exactly that).
 3. The `components` map in `src/pages/[...slug].astro` — **the key must match the
-   component name used in the Keystatic config.**
+   component name used in the CMS config.**
 
 There is no Zod union of block types and no `Blocks.astro`. If a tag isn't in the map,
 MDX renders it as an unknown element rather than failing, so a mismatch between (1) and
@@ -201,7 +201,7 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
   `alt` explicitly to `<Photo>`. A decorative image needs **both** `alt=""` and
   `aria-hidden="true"` — the crawl treats `alt=""` on its own as an oversight and fails.
 - **CMS page blocks carry their own photos.** Blocks on CMS-built pages store an uploaded
-  image and its alt together via Keystatic `image()` fields, resolved at render time
+  image and its alt together via CMS image fields, resolved at render time
   through `imageFromRef` rather than Astro's `image()` helper — so a fixed
   `../../assets/images/…` reference works from both flat and nested pages. They don't
   touch the catalog.
@@ -221,7 +221,7 @@ hold — they drift back a little at a time, and each step looks harmless.
 | **`astro check`**           | Types and template diagnostics.                                                                                                                                                              |
 | **Vitest** (`test/`)        | Pure logic only — no `astro:` imports, so it stays unit-testable. Plus `styles.test.ts`, which pins CSS to `src/styles/`: no `<style>` block in any `.astro`, no `:global()` in any `.css`.  |
 | **`check-site.mjs`**        | Seven classes of post-build defect (below).                                                                                                                                                  |
-| **CI: 410 routes in sync**  | A `short-links` edit in Keystatic that never regenerated its route.                                                                                                                          |
+| **CI: 410 routes in sync**  | A `short-links` edit in the CMS that never regenerated its route.                                                                                                                            |
 | **CI: both deploy targets** | Environment-dependent output — `site`, sitemap, `robots.txt`.                                                                                                                                |
 
 ### The post-build crawl

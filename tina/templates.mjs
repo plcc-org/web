@@ -1,8 +1,8 @@
-// The page block palette, ported from keystatic.config.ts's `fields.mdx({ components })`.
+// The page block palette: every component an editor can insert into a page body.
 //
-// Keystatic's `wrapper()` (a component with MDX children) becomes a template with a
-// field named `children` of type `rich-text` — Tina's MDX parser treats that name
-// specially. Keystatic's `block()` (self-closing) is a template without one.
+// A block with prose inside it (a Split, a Callout) is a template with a field named
+// `children` of type `rich-text` — Tina's MDX parser treats that name specially and maps
+// it to the JSX element's children. A self-closing block is a template without one.
 //
 // Kept in .mjs so the round-trip harness can import it without a build step.
 

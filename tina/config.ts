@@ -2,9 +2,10 @@ import { defineConfig } from 'tinacms'
 // @ts-expect-error — plain-JS template palette, shared with the spike harness.
 import { templates } from './templates.mjs'
 
-// Spike configuration. Models the `pages` collection from keystatic.config.ts:
-// the same frontmatter shape (including the nested `hero` object) and the same
-// 18-component body palette, so the editor can be judged against the real thing.
+// CMS configuration. The `pages` collection carries the page frontmatter (including the
+// nested `hero` object) and an 18-component body palette; `leadership` and `shortLinks` are
+// YAML data files with no body. Must stay aligned with src/content.config.ts, which Astro
+// validates the same files against at build time — see docs/cms.md.
 export default defineConfig({
   branch: 'spike/cms-tina',
   clientId: null,

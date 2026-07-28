@@ -15,9 +15,9 @@ read the doc that matches your change before editing.
   layout, components. Read before any visual change.
 - **[docs/development.md](./docs/development.md)** — stack, project structure, build/run,
   conventions, the image system, CI.
-- **[docs/cms.md](./docs/cms.md)** — the Keystatic CMS: what's editable, the block palette,
-  which block to use, the photo model, and the Cloudflare + Keystatic Cloud setup. Read
-  before changing content collections, blocks, or `keystatic.config.ts`.
+- **[docs/cms.md](./docs/cms.md)** — the TinaCMS editor: what's editable, the block palette,
+  which block to use, the photo model, visual editing, and the Cloudflare setup. Read before
+  changing content collections, blocks, or `tina/config.ts`.
 - **[docs/events.md](./docs/events.md)** — how "What's On" gets its data: the provider
   seam, the nightly Church Center capture, and the Planning Center migration path. Read
   before touching anything under `src/lib/events/`.

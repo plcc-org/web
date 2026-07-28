@@ -2,7 +2,7 @@
 //
 // `src/lib/images.ts` registers every file in src/assets/images through
 // `import.meta.glob`, so the whole photo library enters the module graph — which
-// is what makes a photo selectable by filename, and what lets Keystatic's block
+// is what makes a photo selectable by filename, and what lets the CMS's block
 // images resolve. Vite emits an original for each registered image whether or
 // not a page ever renders it, so the deploy carries the entire library at full
 // size alongside the optimized variants it actually uses.
@@ -14,7 +14,7 @@
 //
 // Deciding by reference is safe because every public page is prerendered: the
 // built output is a complete description of what the site can serve. The only
-// runtime routes are Keystatic's admin, which reads images from the repo
+// runtime route is the CMS island endpoint, which reads images from the repo
 // through git, never from dist.
 //
 // Runs automatically after `npm run build` (see the `postbuild` script), so

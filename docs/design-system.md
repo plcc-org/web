@@ -440,9 +440,9 @@ Props reflect each component's actual `Props` type.
 ### The MDX block layer
 
 `src/components/blocks/mdx/` holds thin wrappers that expose the components above to
-CMS-authored MDX, adapting Keystatic's flat props to each component's real shape. They
+CMS-authored MDX, adapting the CMS's flat props to each component's real shape. They
 are **not** a second component system — each one delegates. Where no adaptation is needed
-the Keystatic key maps straight to the component (`Callout`, `Roadmap` do this).
+the CMS key maps straight to the component (`Callout`, `Roadmap` do this).
 
 `PageHero` is the one that isn't a pass-through: it renders every CMS page's `hero`
 frontmatter as a reversed sand `Split`, guaranteeing a consistent page opener. See

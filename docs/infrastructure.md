@@ -8,7 +8,7 @@ How the site is hosted and shipped. For the codebase and build scripts, see
 ## Environments
 
 Hosting is on **Cloudflare**, which builds from the GitHub repo on every push. The adapter
-(`@astrojs/cloudflare`) targets the **Workers** platform (static assets + the two Keystatic
+(`@astrojs/cloudflare`) targets the **Workers** platform (static assets + the one CMS
 function routes); it emits a `wrangler.json` under `dist/server/` at build time. The target
 is selected by the `DEPLOY_ENV` variable, resolved in `src/config/site.ts` (consumed by
 `astro.config.mjs`):
@@ -25,9 +25,9 @@ Everything is served from the root, so `base` is `/`. Internal links still go th
 `withBase()` helper (harmless at root, and it keeps the subpath option open) — see
 [development.md](./development.md).
 
-The site is **static** except for Keystatic's two admin routes (`/keystatic`,
-`/api/keystatic/*`), which run as Cloudflare functions. See [cms.md](./cms.md) for the CMS
-and its one-time Cloudflare + Keystatic Cloud setup.
+The site is **static** except for the CMS's visual-editing endpoint (`/tina-island/*`),
+which runs as a Cloudflare function. See [cms.md](./cms.md) for the CMS and its one-time
+Cloudflare setup.
 
 ---
 
@@ -59,25 +59,24 @@ Cloudflare rebuild. So the site redeploys daily even when nobody touches it, whi
 what ages past events off "What's On". If the calendar ever looks stale, check this workflow
 before anything else. See [events.md](./events.md).
 
-Cloudflare is the only host, and the site needs it to stay that way: Keystatic's admin
-depends on two function routes (`/keystatic`, `/api/keystatic/*`), so a static-only host
+Cloudflare is the only host, and the site needs it to stay that way: visual editing depends
+on one function route (`/tina-island/*`), so a static-only host
 can't serve the CMS. The production cutover (point `plcc.org` DNS at Cloudflare) is covered
 in [cms.md](./cms.md#3-cutover-and-production).
 
 ### Settings that live in the Cloudflare dashboard
 
 These can't be committed. `@astrojs/cloudflare` generates `dist/server/wrangler.json`
-itself, and a `wrangler.jsonc` at the repo root makes the build fail outright — the
-Cloudflare Vite plugin stops resolving Astro's virtual modules (`Could not resolve
-"virtual:keystatic-config"`). So the settings below are recorded here instead, because
-nothing in the repo can assert them:
+itself; the repo's root `wrangler.jsonc` only adds `nodejs_compat` on top of it (required —
+see [cms.md](./cms.md)). Everything else has to be set in the dashboard, so the settings
+below are recorded here because nothing in the repo can assert them:
 
-| Setting                 | Value                                | If it's wrong                                                                                                 |
-| ----------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| Build command           | `npm run build`                      | `postbuild` never runs, so the deploy carries ~15 MB of unreferenced images                                   |
-| `DEPLOY_ENV`            | `staging` (production: `production`) | Falls back to staging with a build-log warning; on the production Worker that means the site is never indexed |
-| Node version            | 25                                   | Build may fail on syntax or dependency support                                                                |
-| Keystatic Cloud secrets | per Keystatic Cloud project          | The CMS can't authenticate                                                                                    |
+| Setting              | Value                                | If it's wrong                                                                                                 |
+| -------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| Build command        | `npm run build:tina`                 | Without the CMS wrapper the build fails at prerendering with `fetch failed`                                   |
+| `DEPLOY_ENV`         | `staging` (production: `production`) | Falls back to staging with a build-log warning; on the production Worker that means the site is never indexed |
+| Node version         | 25                                   | Build may fail on syntax or dependency support                                                                |
+| CMS auth credentials | per the CMS backend (see cms.md)     | Editors can't sign in to /admin                                                                               |
 
 `DEPLOY_ENV` is the one with no safety net in the repo: it's read at build time by
 `astro.config.mjs`, and Workers Builds only takes build variables from the dashboard.

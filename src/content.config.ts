@@ -4,7 +4,7 @@ import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
 
 // quotes / start-here-links each live as a single YAML file,
-// but the Git CMS (Keystatic) edits them as an array field, which serializes to
+// but the Git CMS edits them as an array field, which serializes to
 // `{ <key>: [...] }`. Parse tolerantly so both the hand-authored bare-array form
 // and the CMS-wrapped form load, and give every item a stable `id` for the store.
 const yamlList =
@@ -17,7 +17,7 @@ const yamlList =
 
 // Content lives under src/content/. Two shapes, by a simple rule:
 //   • Things you add / remove / reorder, or that own an image → a folder of
-//     entries (glob), one YAML file each, so the Git CMS (Keystatic) manages
+//     entries (glob), one YAML file each, so the Git CMS manages
 //     them as a "folder collection" with a media library.
 //   • Short flat lists → a single YAML file (file), edited as a list.
 // Schemas (Zod) make alt text required and give editor + build-time validation.
@@ -58,7 +58,7 @@ const youthMoments = defineCollection({
   }),
 })
 
-// Pastors and staff. One YAML data file per person (Keystatic stores data-only
+// Pastors and staff. One YAML data file per person (the CMS stores data-only
 // collections as flat `<slug>.yaml`). The `bio` is a Markdown string field
 // rendered to HTML at build time; the portrait is co-located in src/assets/images.
 const leadership = defineCollection({
@@ -98,7 +98,7 @@ const startHereLinks = defineCollection({
 })
 
 // CMS-built pages. Each is an MDX file: a structured hero in frontmatter plus an
-// MDX body the editor composes in Keystatic's rich-text editor, inserting styled
+// MDX body the editor composes in the CMS's rich-text editor, inserting styled
 // components (Split, Callout, Photo band, …). The body's component tags map to
 // thin Astro wrappers at render time (see src/pages/[...slug].astro and
 // src/components/blocks/mdx/), so everything reuses the real site components.

@@ -2,13 +2,13 @@
 import SectionHeader from './SectionHeader.astro'
 
 // A numbered "roadmap": steps as nodes on a connecting line, each with a title
-// and a short description. Rendered as the CMS "Roadmap" block; the Keystatic
+// and a short description. Rendered as the CMS "Roadmap" block; the CMS
 // key maps straight here with no MDX wrapper. The connecting line + centered nodes assume a
 // single row (one column per step); it collapses to a vertical list on narrow
 // screens.
 type Step = { title: string; body: string }
 type Props = { eyebrow?: string; heading?: string; steps?: Step[] }
-// Defaulted so the Keystatic block maps straight to this component with no
+// Defaulted so the CMS block maps straight to this component with no
 // pass-through wrapper: an editor who adds the block before filling it in
 // sends no steps at all.
 const { eyebrow, heading, steps = [] } = Astro.props

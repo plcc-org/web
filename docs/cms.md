@@ -1,9 +1,9 @@
-# Editing the site (Keystatic CMS)
+# Editing the site (TinaCMS)
 
 The site has a built-in content editor so non-technical people can change copy, swap photos,
-and build new pages without touching code. It's [Keystatic](https://keystatic.com) — a free,
-Git-based CMS: every change an editor makes is committed to the GitHub repo, and the site
-rebuilds and deploys automatically.
+and build new pages without touching code. It's [TinaCMS](https://tina.io) — a Git-based CMS:
+every change an editor makes becomes a commit, and the site rebuilds and deploys
+automatically.
 
 For the stack and conventions, see [development.md](./development.md); for hosting, see
 [infrastructure.md](./infrastructure.md).
@@ -12,15 +12,17 @@ For the stack and conventions, see [development.md](./development.md); for hosti
 
 ## The big picture
 
-- The editor lives at **`/keystatic`**. In local development it reads and writes the files
-  in your working copy directly. On the deployed site editors sign in through **Keystatic
-  Cloud**, and their saves are committed to the GitHub repo.
+- The editor lives at **`/admin`**, and it works two ways. The **forms view** lists a page's
+  blocks and opens each one as a typed form. **Visual editing** shows the real rendered page
+  beside the form: click a heading or a photo on the page and its field focuses in the
+  sidebar, and typing updates the page live.
 - **The public site stays static.** Editing produces a Git commit; the commit triggers a
-  build; the build ships static HTML. Visitors never hit a server — only the two `/keystatic`
-  admin routes run on demand.
-- The config is **`keystatic.config.ts`** at the repo root. Its schemas must stay aligned
-  with the Astro content schemas in `src/content.config.ts` (Astro validates the same files
-  at build time). **Change one, change the other.**
+  build; the build ships static HTML. Visitors never hit a server — the only on-demand route
+  is `/tina-island/*`, which re-renders a region while an editor is typing.
+- The config is **`tina/config.ts`** (collections and fields) plus **`tina/templates.mjs`**
+  (the block palette). Its schemas must stay aligned with the Astro content schemas in
+  `src/content.config.ts` — Astro validates the same files at build time, and the two catch
+  different mistakes. **Change one, change the other.**
 
 ---
 
@@ -227,21 +229,28 @@ The full reference is [voice.md](./voice.md). At the moment of writing, five que
 
 ### Where uploaded photos go
 
-When you upload a photo into a block, Keystatic stores it under
-`src/assets/images/<page-slug>/…` and the build optimizes it (responsive WebP) like every
-other image — there's nothing to manage. Existing curated photos elsewhere on the site still
-come from the catalog via `<Photo filename>`.
+Photos live in `src/assets/images/`, and the media library reads that folder directly, so
+the build optimizes everything an editor picks (responsive WebP) like every other image —
+there's nothing to manage. Existing curated photos elsewhere on the site still come from the
+catalog via `<Photo filename>`.
 
 ---
 
 ## For developers: how a page renders
 
-- `src/pages/[...slug].astro` loads each `pages` entry, renders the hero with `PageHero`,
-  then renders the MDX body with `<Content components={…} />`.
-- The MDX body is authored via Keystatic's `fields.mdx` (`keystatic.config.ts`), whose
-  `components` are content-components (`block`/`wrapper`). Each maps by name to a thin Astro
-  wrapper in **`src/components/blocks/mdx/`** (e.g. `Split` → `SplitMdx.astro`), which calls
-  the real site component. So everything reuses the existing components and their styles.
+- `src/pages/[...slug].astro` fetches each page through Tina's GraphQL client
+  (`src/lib/tina/data.ts`), then renders it with `PageBody`, wrapped in `<TinaIsland>`.
+- **Content comes from Tina, not `getCollection()` + `render()`.** That is what visual
+  editing requires: the rendered DOM has to carry the `data-tina-field` markers the editor
+  bridge maps forms onto, which a compiled MDX module can't provide. `src/content.config.ts`
+  still declares the collection, so zod still validates the files at build time.
+- The body renders through `<TinaMarkdown>` with the component map in
+  **`src/components/blocks/tina/registry.ts`**. Wrapper blocks (those with prose inside —
+  `Section`, `Split`, `Callout`, `Cta`, `Aside`, `Letter`) need a Tina-specific adapter in
+  that folder, because their body arrives as a `children` rich-text tree rather than a
+  `<slot />`. The twelve self-closing blocks reuse their existing wrappers in
+  **`src/components/blocks/mdx/`** unchanged. Either way it's the real site component doing
+  the rendering.
 - Internal code names differ from editor labels (the label is what editors see): `Section` =
   "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `Video` = "Video",
   `PhotoBand` = "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote",
@@ -255,9 +264,12 @@ come from the catalog via `<Photo filename>`.
 - Block images arrive as path strings; the wrappers resolve them through `imageFromRef`
   (`src/lib/images.ts`), a recursive registry that handles the nested `<slug>/` uploads, and
   hand them to `<Photo>` for build-time optimization.
-- Adding a block = a content-component in `keystatic.config.ts` (with a `ContentView`
-  preview) **and** a matching wrapper in `src/components/blocks/mdx/` registered in the
-  `[...slug].astro` components map. Keep the two in step.
+- Adding a block = a template in `tina/templates.mjs` **and** a matching component
+  registered in `src/components/blocks/tina/registry.ts`. If the block has prose inside, give
+  its template a field named `children` of type `rich-text` — Tina's MDX parser treats that
+  name specially — and write an adapter that renders it via `TinaChildren`. Keep the two in
+  step: an unregistered name renders as a visible red placeholder rather than failing the
+  build.
 
 ### What becomes a CMS page or block (and what stays as code)
 
@@ -282,76 +294,76 @@ layout became the reusable **Letter** block.)
 ## Running the editor locally
 
 ```bash
-npm run dev      # then open http://localhost:4321/keystatic
+npm run dev:tina
 ```
 
+Then:
+
+- **forms editor** — `http://localhost:4321/admin/index.html`
+- **visual editing** — `http://localhost:4321/admin/index.html#/~/visit/` (any page path
+  after `#/~/`)
+
 Local mode writes straight to your working copy — edit, save, and the files change and the
-site hot-reloads. No login or cloud needed. (Dev intentionally runs without the Cloudflare
-adapter so the admin works on Node; see `astro.config.mjs`.)
+site hot-reloads. No login or cloud account needed. `npm run dev` still runs the site alone
+without the CMS.
+
+Two things worth knowing about dev:
+
+- Dev runs without the Cloudflare adapter (`ASTRO_DEV=1`), so routes run on Node.
+- A dev-only Vite route serves `src/assets/images` at `/assets/images/*`, because that's
+  where the media picker looks for thumbnails and Astro doesn't otherwise serve that folder.
+  See `tinaAssetsDevPlugin` in `astro.config.mjs`. Production needs its own answer here —
+  currently unresolved.
 
 ---
 
-## Deployed setup (one-time)
+## Deployed setup
 
-Editors sign in through **Keystatic Cloud** and their saves are committed to the repo. This
-needs a host that can run Keystatic's two server routes; the `@astrojs/cloudflare` adapter
-ships them as a Cloudflare **Worker** while the public pages stay static.
+The public site is static and needs nothing from Tina at build time: `npm run build:tina`
+wraps `astro build` in `tinacms build --local --skip-cloud-checks`, which reads content from
+the files on disk. **No account, no network, no third-party service is involved in a build.**
 
-> **⚠️ Keystatic Cloud is a temporary workaround, not the long-term choice.** We'd prefer
-> self-hosted **GitHub mode** (`storage: { kind: 'github' }`) — fully free, no third-party
-> service — but it's currently broken on Astro 6 + Cloudflare Workers: the OAuth login sets
-> no state cookie, so the callback 401s ([Thinkmill/keystatic#1497](https://github.com/Thinkmill/keystatic/issues/1497),
-> open/unfixed as of 2026-07). Cloud sidesteps it and is **free for our usage** — the free
-> tier covers up to **3 editors** with GitHub auth, and our images live in the repo (so we
-> never touch paid Cloud Images). **Revisit when #1497 is fixed, or if editors exceed 3**
-> (Cloud Pro is $10/mo + $5/user beyond 3). The switch is a one-line change in
-> `keystatic.config.ts`.
+What is still undecided is **auth for the live editor** — who is allowed to sign in at
+`/admin` on the deployed site and have their saves become commits. Two options:
 
-### 1. Cloudflare (staging → `plcc.dev`)
+- **TinaCloud.** Set `PUBLIC_TINA_CLIENT_ID` and `TINA_TOKEN`, and the admin compiles against
+  it. Free tier covers 2 editors; a team plan is $24/mo. This is the same shape of
+  third-party dependency we were trying to escape with Keystatic Cloud, on a tighter free
+  tier (Keystatic Cloud allowed 3).
+- **Self-hosted.** Tina supports bring-your-own git provider, database adapter and auth
+  provider. [ailabs-hq/tinacms-cloudflare](https://github.com/ailabs-hq/tinacms-cloudflare)
+  runs the whole backend on Cloudflare — Workers, KV as the database adapter, Auth.js for
+  login, GitHub as the git provider, no TinaCloud at all. That starter is Next.js, so the
+  handler wiring would need porting to Astro.
+
+Also unresolved: Tina's FAQ lists **git-backed media** as TinaCloud-only. Repo-based media
+works here, but has only ever been exercised locally.
+
+### Cloudflare (staging → `plcc.dev`)
 
 1. Cloudflare dashboard → **Workers & Pages → Create** → **Import a repository** (Workers
    Builds), pick `timsneath/plcc-web` and the deploy branch.
-2. Build settings: keep Cloudflare's defaults — **build command** `npm run build`, **deploy
-   command** `npx wrangler deploy`. `npm run build` runs `astro build` plus the `prebuild`
-   hook (clears a stale Vite cache) and depends on the install step's `postinstall`
-   (`patch-package`, which re-applies the Astro 6 fix — Workers Builds runs `npm ci` first, so
-   this happens automatically). The adapter emits the Worker config (`main`, `assets` from
-   `dist/client`, and the `SESSION` KV binding); `wrangler deploy` picks it up from the repo
-   root automatically. **Do not add a root `wrangler.jsonc`** — the `@cloudflare/vite-plugin`
-   treats it as authoritative and Keystatic's `virtual:keystatic-config` fails to build.
-3. **KV namespace (`SESSION`)**: the adapter enables Astro's session API against a `SESSION`
-   KV binding. Wrangler auto-provisions it on first deploy; if your CI can't do interactive
-   provisioning, create a KV namespace named `SESSION` in the dashboard first.
-4. **Environment variables**: set `DEPLOY_ENV=staging` (targets `plcc.dev`, `noindex`).
-   Set `NODE_VERSION` to a current LTS if Cloudflare's default lags.
-5. **Custom domain**: add `plcc.dev` to the Worker (the domain is already in the Cloudflare
-   account).
+2. Build settings: **build command** `npm run build:tina`, **deploy command**
+   `npx wrangler deploy`. The adapter emits the Worker config (`main`, `assets` from
+   `dist/client`, the `SESSION` KV binding); `wrangler deploy` picks it up automatically.
+3. **`wrangler.jsonc` at the repo root** sets `nodejs_compat`. This is required, not
+   optional: Tina keeps its per-request store in an `AsyncLocalStorage`, so the Worker bundle
+   imports `node:async_hooks`. Without the flag the build prerenders every page to a 0-byte
+   file _and_ the deployed `/tina-island` route 500s — both silently, with the build exiting 0. (A root config used to break `virtual:keystatic-config`; that constraint left with
+   Keystatic.)
+4. **KV namespace (`SESSION`)**: wrangler auto-provisions it on first deploy; if CI can't do
+   interactive provisioning, create a KV namespace named `SESSION` in the dashboard first.
+5. **Environment variables**: `DEPLOY_ENV=staging` (targets `plcc.dev`, `noindex`). Set
+   `NODE_VERSION` to a current LTS if Cloudflare's default lags.
+6. **Custom domain**: add `plcc.dev` to the Worker.
 
-A push to the connected branch builds and deploys; other branches get preview URLs. To
-deploy by hand instead: `npm run build && npx wrangler deploy` from the repo root.
+A push to the connected branch builds and deploys; other branches get preview URLs. To deploy
+by hand: `npm run build:tina && npx wrangler deploy`.
 
-> **`nodejs_compat`:** the adapter emits `compatibility_flags: []`, and a local `wrangler dev`
-> run served both `/keystatic` and `/api/keystatic/*` without it. If the _live_ editor hits a
-> Node-API error during sign-in or save, add `nodejs_compat` — but because a root
-> `wrangler.jsonc` breaks the build (above), inject it into `dist/server/wrangler.json` as a
-> post-build step in the deploy command rather than via a root config file.
+### Cutover and production
 
-### 2. Keystatic Cloud (auth for the live editor)
-
-`keystatic.config.ts` uses `storage: { kind: 'cloud' }` with `cloud.project` in production.
-
-1. Create the project at **[keystatic.cloud](https://keystatic.cloud)** and connect it to the
-   `timsneath/plcc-web` GitHub repo.
-2. Make sure `cloud.project` in `keystatic.config.ts` matches the project slug
-   (`<team>/<project>`).
-3. Invite editors to the Keystatic Cloud project. They then sign in at `/keystatic` on the
-   deployed site and their saves become commits. No GitHub App or `KEYSTATIC_GITHUB_*` secrets
-   are needed.
-
-### 3. Cutover and production
-
-Cloudflare is the only host; `plcc.dev` serves staging. The `plcc.org` production cutover
-is future work: add a Worker environment with `DEPLOY_ENV=production`, bind `plcc.org`, and
+Cloudflare is the only host; `plcc.dev` serves staging. The `plcc.org` production cutover is
+future work: add a Worker environment with `DEPLOY_ENV=production`, bind `plcc.org`, and
 point its DNS at Cloudflare. Redirects from the old site's URLs need to land in the same
 change, or every existing inbound link breaks.
 
@@ -359,22 +371,29 @@ change, or every existing inbound link breaks.
 
 ## Gotchas
 
-- **Astro 6 patch (`patch-package`).** `@keystatic/astro@5.2.0`'s server route reads
-  `Astro.locals.runtime.env`, which Astro 6 removed — under Cloudflare's workerd that throws
-  and makes every `/api/keystatic/*` request 500. `patches/@keystatic+astro+5.2.0.patch` wraps
-  that read so it falls back safely (verified under `wrangler dev`). It's re-applied on install
-  by the `postinstall: patch-package` script — don't remove that script, and re-generate the
-  patch (`npx patch-package @keystatic/astro`) if you bump `@keystatic/astro`.
-- **Keep the two schemas in sync** — a field in `keystatic.config.ts` with no counterpart in
+- **`nodejs_compat` is load-bearing.** See the deploy section — without it the build writes
+  every page out empty and the island route 500s, both while exiting 0.
+- **Keep the two schemas in sync** — a field in `tina/config.ts` with no counterpart in
   `src/content.config.ts` (or vice versa) will be invisible to the build or fail validation.
+  They catch different things and both are worth having: zod rejected a page Tina created
+  without a `hero`, and Tina's indexer rejects type mismatches zod would let through.
+- **`tina/` is excluded from `astro check`.** Type-checking `tina/config.ts` runs the
+  compiler out of memory — `defineConfig` from `tinacms` pulls in too large a type graph,
+  even at `--max-old-space-size=4096`. The CMS schema is therefore the one file CI can't
+  verify. See `tsconfig.json`.
 - **CMS pages are Prettier-ignored** (`src/content/pages/` in `.prettierignore`) — Prettier's
-  MDX reflow breaks block-component children. Keystatic owns their formatting.
-- **No raw HTML in page bodies** — an MDX body must be **Markdown plus the registered block
-  components only** (the capitalized components listed above). A raw HTML tag like `<br>`,
-  `<span>`, or `<div>` is treated by Keystatic's editor as a content-component that must be
-  registered, so the page fails to load with `Missing component definition`. For a line break,
-  use a **Markdown hard break** (two trailing spaces at the end of a line); Astro still renders
-  it as `<br>`.
+  MDX reflow breaks block-component children. The CMS owns their formatting.
+- **No _inline_ raw HTML in page bodies.** `<br>` inside a paragraph fails to parse and the
+  block renders as an "invalid markdown" node. Block-level HTML (a standalone `<div>…</div>`)
+  does round-trip, but there's rarely a reason to reach for it. For a line break, use a
+  **Markdown hard break** — two trailing spaces; the editor normalises it to a backslash and
+  Astro still renders `<br>`.
+- **Object props need identifier keys.** Tina's MDX parser accepts
+  `items={[{title: "A"}]}` but not `items={[{"title": "A"}]}`, and rejects bare boolean
+  attributes (`reverse` must be `reverse={true}`). The editor always writes the accepted
+  form; this only bites when hand-editing MDX. `spike/codemod.mjs` normalises a file.
+- **Smart quotes must be real characters.** Astro's MDX pipeline used to apply smartypants;
+  the CMS renderer doesn't, so a straight `'` now renders straight. Type the real `’`.
 - **`alt` is required** on every image field, so an image can't be saved without a
   description.
 - **The `pages` directory must exist** even when empty (kept via `.gitkeep`).
