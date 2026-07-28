@@ -52,7 +52,7 @@ real photo. The wiring:
 | `prerenderEnvironment: 'node'`                                | the fix for the 0-byte pages, above                                                                                                                                                                  |
 | `src/components/blocks/tina/*.astro`                          | six wrapper adapters — under MDX a wrapper's prose arrives via `<slot />`, through Tina it's a `children` rich-text tree. The twelve self-closing blocks reuse their existing MDX adapters unchanged |
 | `src/lib/tina/islands.ts` + `src/pages/tina-island/[name].ts` | the on-demand endpoint the bridge re-renders regions through. The only non-prerendered route — same shape as the two Keystatic already adds                                                          |
-| `src/pages/tina-preview/[...slug].astro`                      | renders a page from Tina's GraphQL client with `tinaField()` markers, instead of `getCollection()` + `render()`                                                                                      |
+| `src/pages/[...slug].astro`                                   | renders each page from Tina's GraphQL client with `tinaField()` markers, instead of `getCollection()` + `render()`                                                                                   |
 | `tinaAssetsDevPlugin` in `astro.config.mjs`                   | serves `src/assets/images` at `/assets/images/*` in dev so the media picker can show thumbnails                                                                                                      |
 
 The significant one is the fourth. **Visual editing requires the page to be
