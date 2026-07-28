@@ -27,7 +27,8 @@
     "scrape:events": "node scripts/scrape-events.mjs",
     "generate:social-card": "node scripts/generate-social-card.mjs",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "dev:tina": "ASTRO_DEV=1 tinacms dev -c \"astro dev\""
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",

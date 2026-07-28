@@ -27,3 +27,7 @@ pnpm-debug.log*
 
 # generated from src/content/short-links by scripts/generate-redirects.mjs
 public/_redirects
+
+# TinaCMS spike: generated client/types and the built admin SPA.
+tina/__generated__/
+public/admin/
