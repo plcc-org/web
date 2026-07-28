@@ -19,21 +19,37 @@ const report = []
 for (const rel of files) {
   const body = splitFrontmatter(readFileSync(rel, 'utf8'))
   totals.files++
-  let ast, out, err = null
+  let ast,
+    out,
+    err = null
   try {
     ast = parseMDX(body, bodyField, identity)
     out = serializeMDX(ast, bodyField, identity)
-  } catch (e) { err = e.message }
+  } catch (e) {
+    err = e.message
+  }
 
   const invalid = ast ? JSON.stringify(ast).includes('invalid_markdown') : false
   if (invalid) totals.invalid++
   const base = `${OUT}/${rel.replace(/\//g, '__')}`
-  if (err) { totals.threw++; report.push({ rel, status: 'THREW', detail: err }); continue }
-  if (out === body && !invalid) { totals.clean++; report.push({ rel, status: 'clean' }); continue }
+  if (err) {
+    totals.threw++
+    report.push({ rel, status: 'THREW', detail: err })
+    continue
+  }
+  if (out === body && !invalid) {
+    totals.clean++
+    report.push({ rel, status: 'clean' })
+    continue
+  }
   totals.changed++
   writeFileSync(`${base}.before`, body)
   writeFileSync(`${base}.after`, typeof out === 'string' ? out : JSON.stringify(out, null, 1))
-  report.push({ rel, status: invalid ? 'INVALID_MARKDOWN' : 'changed',
-    before: body.split('\n').length, after: String(out).split('\n').length })
+  report.push({
+    rel,
+    status: invalid ? 'INVALID_MARKDOWN' : 'changed',
+    before: body.split('\n').length,
+    after: String(out).split('\n').length,
+  })
 }
 console.log(JSON.stringify({ totals, report }, null, 1))

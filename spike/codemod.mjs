@@ -8,13 +8,24 @@ const BOOLS = ['reverse', 'flush', 'large']
 
 // Walk from an `={` and return the index just past the matching `}`, respecting strings.
 function matchBrace(s, open) {
-  let depth = 0, q = null
+  let depth = 0,
+    q = null
   for (let i = open; i < s.length; i++) {
     const c = s[i]
-    if (q) { if (c === '\\') i++; else if (c === q) q = null; continue }
-    if (c === '"' || c === "'") { q = c; continue }
+    if (q) {
+      if (c === '\\') i++
+      else if (c === q) q = null
+      continue
+    }
+    if (c === '"' || c === "'") {
+      q = c
+      continue
+    }
     if (c === '{') depth++
-    else if (c === '}') { depth--; if (!depth) return i + 1 }
+    else if (c === '}') {
+      depth--
+      if (!depth) return i + 1
+    }
   }
   return -1
 }
@@ -29,7 +40,9 @@ function emit(v) {
   return JSON.stringify(v)
 }
 
-let changed = 0, objProps = 0, bareBools = 0
+let changed = 0,
+  objProps = 0,
+  bareBools = 0
 for (const rel of globSync('src/content/pages/**/*.mdx').sort()) {
   const src = readFileSync(rel, 'utf8')
   let out = ''
@@ -39,16 +52,26 @@ for (const rel of globSync('src/content/pages/**/*.mdx').sort()) {
     const m = /([A-Za-z_$][\w$]*)=\{/g
     m.lastIndex = i
     const hit = m.exec(src)
-    if (!hit) { out += src.slice(i); break }
+    if (!hit) {
+      out += src.slice(i)
+      break
+    }
     const braceStart = hit.index + hit[0].length - 1
     const end = matchBrace(src, braceStart)
-    if (end < 0) { out += src.slice(i, hit.index + hit[0].length); i = hit.index + hit[0].length; continue }
+    if (end < 0) {
+      out += src.slice(i, hit.index + hit[0].length)
+      i = hit.index + hit[0].length
+      continue
+    }
     const inner = src.slice(braceStart + 1, end - 1)
     out += src.slice(i, hit.index) + hit[1] + '={'
     let payload = inner
     try {
       const parsed = JSON.parse(inner)
-      if (parsed !== null && typeof parsed === 'object') { payload = emit(parsed); objProps++ }
+      if (parsed !== null && typeof parsed === 'object') {
+        payload = emit(parsed)
+        objProps++
+      }
     } catch {}
     out += payload + '}'
     i = end
@@ -58,6 +81,9 @@ for (const rel of globSync('src/content/pages/**/*.mdx').sort()) {
   for (const b of BOOLS) out = out.replace(new RegExp(`(<[A-Z][\\w]*\\b[^>]*?\\s)${b}(\\s|>)`, 'g'), `$1${b}={true}$2`)
   if (out !== before) bareBools += (out.match(/=\{true\}/g) || []).length
 
-  if (out !== src) { writeFileSync(rel, out); changed++ }
+  if (out !== src) {
+    writeFileSync(rel, out)
+    changed++
+  }
 }
 console.log(`rewrote ${changed} files — ${objProps} object props re-keyed, ${bareBools} bare booleans made explicit`)

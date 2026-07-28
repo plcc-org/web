@@ -52,11 +52,7 @@ export const templates = [
   {
     name: 'CaptionedPhoto',
     label: 'Photo',
-    fields: [
-      image('image', 'Photo'),
-      text('alt', 'Photo description (alt text)'),
-      text('caption', 'Caption'),
-    ],
+    fields: [image('image', 'Photo'), text('alt', 'Photo description (alt text)'), text('caption', 'Caption')],
   },
   {
     name: 'Video',
