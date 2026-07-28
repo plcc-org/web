@@ -11,10 +11,11 @@ import { siteConfig } from '../config/site'
 // in scripts/check-site.mjs, because getting this wrong is invisible until the
 // site quietly drops out of search.
 
-// Paths that must stay out of the index even on production. Keystatic's admin
-// is behind Keystatic Cloud auth, so this isn't a security control — it stops a
-// 2.7 MB admin bundle showing up in results for the church's own name.
-const DISALLOWED = ['/keystatic', '/api/']
+// Paths that must stay out of the index even on production. The admin is behind
+// its own auth, so this isn't a security control — it stops a multi-megabyte
+// admin bundle showing up in results for the church's own name. /tina-island is
+// the editing endpoint; it renders page fragments and has no business in search.
+const DISALLOWED = ['/admin', '/tina-island', '/api/']
 
 export const GET: APIRoute = ({ site }) => {
   const lines = ['User-agent: *']

@@ -72,7 +72,16 @@ const PAGES_DIR = 'src/pages'
 const GONE_MARKER = '@generated-gone-route'
 
 /** Reserved because a short link that shadows one of these would hide real content. */
-const RESERVED = new Set(['_astro', '_headers', '_redirects', 'api', 'keystatic', 'robots.txt', 'sitemap-index.xml'])
+const RESERVED = new Set([
+  '_astro',
+  '_headers',
+  '_redirects',
+  'admin',
+  'api',
+  'robots.txt',
+  'sitemap-index.xml',
+  'tina-island',
+])
 
 if (!existsSync(SOURCE_DIR)) {
   console.log('generate-redirects: no short-links collection — nothing to do.')
