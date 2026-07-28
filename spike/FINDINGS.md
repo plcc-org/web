@@ -23,7 +23,8 @@ _not_ a casualty: zod still runs.
 > in workerd by default, so the middleware threw during prerendering and Astro
 > wrote **every page out as a 0-byte file** — with the build still exiting 0. The
 > missing images were a symptom of pages having no content at all. One adapter
-> option fixes it: `prerenderEnvironment: 'node'`.
+> option fixes it: `prerenderEnvironment: 'node'` — and a second, separate fix is
+> needed for the same root cause at _run_ time, see the starter comparison below.
 
 ## Matches / beats / falls short
 
@@ -40,7 +41,7 @@ _not_ a casualty: zod still runs.
 | Image pipeline (sharp, responsive WebP)          | 314 optimised assets                 | 314 optimised assets, with `prerenderEnvironment`   | **matches**     |
 | Visual click-to-edit on the real page            | none                                 | works — click a region, its form focuses, live      | **beats**       |
 | `astro check` (CI)                               | checks everything                    | OOMs unless `tina/` is excluded from the program    | **falls short** |
-| Build command                                    | `astro build`                        | must wrap in `tinacms build` — needs a data server  | **falls short** |
+| Build command                                    | `astro build`                        | must wrap in `tinacms build`; no network needed     | **falls short** |
 | Keeps CMS schema and `content.config.ts` in sync | manual                               | still manual                                        | **matches**     |
 
 ## Visual editing: what it took, and what it does
@@ -49,13 +50,13 @@ It works. Clicking the hero on the rendered page focuses the Hero sub-form in th
 sidebar; typing in Eyebrow updates the page live, in the real design, with the
 real photo. The wiring:
 
-| Piece                                                         | What it does                                                                                                                                                                                         |
-| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `prerenderEnvironment: 'node'`                                | the fix for the 0-byte pages, above                                                                                                                                                                  |
-| `src/components/blocks/tina/*.astro`                          | six wrapper adapters — under MDX a wrapper's prose arrives via `<slot />`, through Tina it's a `children` rich-text tree. The twelve self-closing blocks reuse their existing MDX adapters unchanged |
-| `src/lib/tina/islands.ts` + `src/pages/tina-island/[name].ts` | the on-demand endpoint the bridge re-renders regions through. The only non-prerendered route — same shape as the two Keystatic already adds                                                          |
-| `src/pages/[...slug].astro`                                   | renders each page from Tina's GraphQL client with `tinaField()` markers, instead of `getCollection()` + `render()`                                                                                   |
-| `tinaAssetsDevPlugin` in `astro.config.mjs`                   | serves `src/assets/images` at `/assets/images/*` in dev so the media picker can show thumbnails                                                                                                      |
+| Piece                                                              | What it does                                                                                                                                                                                         |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `prerenderEnvironment: 'node'` + `scripts/inject-worker-flags.mjs` | `node:async_hooks` for Tina's AsyncLocalStorage — the first for prerendering, the second so the deployed island route doesn't 500                                                                    |
+| `src/components/blocks/tina/*.astro`                               | six wrapper adapters — under MDX a wrapper's prose arrives via `<slot />`, through Tina it's a `children` rich-text tree. The twelve self-closing blocks reuse their existing MDX adapters unchanged |
+| `src/lib/tina/islands.ts` + `src/pages/tina-island/[name].ts`      | the on-demand endpoint the bridge re-renders regions through. The only non-prerendered route — same shape as the two Keystatic already adds                                                          |
+| `src/pages/[...slug].astro`                                        | renders each page from Tina's GraphQL client with `tinaField()` markers, instead of `getCollection()` + `render()`                                                                                   |
+| `tinaAssetsDevPlugin` in `astro.config.mjs`                        | serves `src/assets/images` at `/assets/images/*` in dev so the media picker can show thumbnails                                                                                                      |
 
 The significant one is the fourth. **Visual editing requires the page to be
 rendered from Tina's GraphQL result, not from a compiled MDX module** — the DOM
@@ -107,6 +108,55 @@ schemas can drift, which `docs/cms.md` already documents for Keystatic.
 ~10-line module that no-ops outside the admin iframe. Small, but it means the
 production HTML is no longer byte-identical to a Tina-free build.
 
+## Measured against the canonical starter
+
+[tinacms/tina-astro-starter](https://github.com/tinacms/tina-astro-starter) is
+the official Astro reference, and Cloudflare is first-class in it —
+`@astrojs/cloudflare` is a dependency, the adapter is auto-detected from
+`WORKERS_CI`/`CF_PAGES`, and a `wrangler.jsonc` ships in the repo. Reading it
+found one real bug in this spike and confirmed the rest of the wiring.
+
+**The bug: `/tina-island` would have 500'd in production.** The starter's
+`wrangler.jsonc` enables `nodejs_compat` and says why — "which the editing
+route's `node:async_hooks` needs". Our generated `dist/server/wrangler.json` had
+`compatibility_flags: []` while the Worker bundle imported `node:async_hooks`,
+so `prerenderEnvironment: 'node'` had fixed the _build_ and left the _runtime_
+broken. Silently: the build is green, and nothing fails until an editor opens
+the preview on the deployed site. Now fixed by
+`scripts/inject-worker-flags.mjs`.
+
+We can't use the canonical root `wrangler.jsonc` yet, and it's worth being
+precise about why: with `keystatic()` in the integrations it fails with
+`Could not resolve "virtual:keystatic-config"`; with `keystatic()` removed the
+same file builds cleanly and the flag lands. **So that constraint in
+`docs/cms.md` is a Keystatic constraint, not a Cloudflare one** — dropping
+Keystatic converts our post-build injection back into the sanctioned two-line
+config.
+
+**Confirmed identical to canonical:** the island registry, the
+`/tina-island/[name]` route with `prerender = false`, `<TinaIsland>` wrapping a
+body component, `tinaField()` markers, and rendering from
+`requestWithMetadata()`. The file layout matches (`src/lib/data.ts`,
+`src/lib/islands.ts`, an islands component) without having seen it first.
+
+**Adopted from it:** `vite.ssr.noExternal` for `@tinacms/astro` and
+`@tinacms/bridge`, which stops every `TinaMarkdown` import re-resolving and
+recompiling the package's `.astro` sources on a cold request.
+
+**Where we deliberately differ:** the starter's `src/content.config.ts` declares
+no content collections at all — "content is sourced from TinaCMS … these
+collections are unused at runtime". We keep ours, which is why zod still
+validates our pages (see below). That belt-and-braces is a deviation from
+canonical, and on the evidence it's the better call.
+
+**On TinaCloud, more precisely than before.** The starter's README splits the
+two things cleanly: content comes from local files (`--content=local`), while
+TinaCloud credentials are needed to compile the _admin's auth_. Building without
+them is `--local --skip-cloud-checks`, which is what `build:tina` does here and
+why our builds have never touched TinaCloud. So the dependency was never about
+content or about the build reaching a server — it is only about who is allowed
+to log in to `/admin`, and self-hosted auth replaces it.
+
 ## What adopting this actually costs
 
 **`astro check` runs out of memory.** Type-checking `tina/config.ts` — really
@@ -121,18 +171,21 @@ prerendering with `fetch failed`, because `getStaticPaths` queries Tina's
 GraphQL. The build has to become `tinacms build -c "astro build"` (see
 `build:tina` in package.json), which starts the datalayer for the duration.
 
-That server does **not** have to be TinaCloud. Self-hosting is a supported path
-with "bring your own" git provider, database adapter and auth provider, and
-there is a community starter,
-[ailabs-hq/tinacms-cloudflare](https://github.com/ailabs-hq/tinacms-cloudflare),
-running the whole thing on Cloudflare: Workers for the backend, Cloudflare KV as
-the database adapter, Auth.js for login, GitHub as the git provider, no TinaCloud
-at all. Two caveats before treating that as settled: the officially documented
-backend hosts are Next.js / Vercel / Netlify functions, so Cloudflare is
-community territory and that starter is Next.js rather than Astro; and Tina's
-FAQ lists git-backed media, dynamic branch switching and search as TinaCloud-only
-— the first of which matters here, and this spike has only exercised repo-based
-media locally, never self-hosted.
+That server does **not** have to be TinaCloud, and the build never reaches it:
+`build:tina` uses `--local --skip-cloud-checks`, so content is read from files on
+disk. TinaCloud's role is authenticating editors into `/admin`, nothing else.
+
+Self-hosting that auth is supported — bring your own git provider, database
+adapter and auth provider — and Cloudflare is a first-class target in the
+official Astro starter rather than community territory. For the auth backend
+specifically there is also
+[ailabs-hq/tinacms-cloudflare](https://github.com/ailabs-hq/tinacms-cloudflare):
+Workers, Cloudflare KV as the database adapter, Auth.js for login, GitHub as the
+git provider, no TinaCloud at all — though that one is Next.js, so the handler
+wiring would need porting.
+
+One caveat still unverified: Tina's FAQ lists git-backed media as TinaCloud-only.
+Repo-based media works here, but only ever exercised locally.
 
 **Stale-cache fragility.** Several builds failed until `node_modules/.vite` and
 `.astro` were cleared; the repo's `prebuild` already does the former for a

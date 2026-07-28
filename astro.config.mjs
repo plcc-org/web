@@ -67,11 +67,21 @@ export default defineConfig({
   // runtime can't supply the Node globals Keystatic's admin needs ("module is
   // not defined"). Dev serves every route fine without an adapter.
   //
-  // `prerenderEnvironment: 'node'` prerenders in real Node rather than workerd.
-  // Tina's middleware wraps every request in AsyncLocalStorage, which workerd
-  // only provides under `nodejs_compat`; without it the middleware throws during
-  // prerendering and Astro writes every page out empty — a 0-byte HTML file per
-  // route, with the build still exiting 0.
+  // Tina keeps its per-request store in an AsyncLocalStorage, so anything of
+  // its code that runs on workerd needs `node:async_hooks` — which workerd only
+  // exposes under the `nodejs_compat` flag. That bites in two separate places:
+  //
+  //   - Build time. Without it the middleware throws during prerendering and
+  //     Astro writes every page out empty — a 0-byte HTML file per route, with
+  //     the build still exiting 0. `prerenderEnvironment: 'node'` sidesteps it
+  //     by prerendering in real Node instead of workerd.
+  //   - Run time. The /tina-island route ships as a Worker function and imports
+  //     node:async_hooks, so it 500s without the flag — silently, since the
+  //     build is green. scripts/inject-worker-flags.mjs adds it post-build.
+  //
+  // tinacms/tina-astro-starter does both with a root wrangler.jsonc, which we
+  // can't use while Keystatic is installed (it breaks virtual:keystatic-config
+  // — verified). Removing Keystatic would let both workarounds go.
   adapter: process.env.ASTRO_DEV ? undefined : cloudflare({ imageService: 'compile', prerenderEnvironment: 'node' }),
   integrations: [
     react(),
@@ -159,6 +169,12 @@ export default defineConfig({
   },
   vite: {
     plugins: [tinaAssetsDevPlugin()],
+    // Bundle Tina's Astro package into the SSR build rather than resolving it
+    // per-module on every cold request — otherwise each import of
+    // `@tinacms/astro/TinaMarkdown.astro` triggers a full Vite resolve and
+    // Astro-plugin compile of the package's source .astro files on first hit.
+    // From tinacms/tina-astro-starter.
+    ssr: { noExternal: ['@tinacms/astro', '@tinacms/bridge'] },
     define: {
       // The prerender bundle runs against an empty `process.env` shim (the
       // Cloudflare adapter targets workerd), so src/config/site.ts can't read
