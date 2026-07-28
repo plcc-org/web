@@ -1,0 +1,12 @@
+---
+import SectionHeader from '../../SectionHeader.astro'
+import TinaChildren from './TinaChildren.astro'
+
+type Props = { eyebrow?: string; heading?: string; children?: unknown }
+const { eyebrow, heading, children } = Astro.props
+---
+
+<section class="section" data-reveal>
+  {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
+  <div class="measure"><TinaChildren content={children as never} /></div>
+</section>

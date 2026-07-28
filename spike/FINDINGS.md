@@ -11,12 +11,17 @@ Tina's 454.
 ## Verdict
 
 **Tina matches Keystatic on content modelling and beats it on the editing
-experience — but its Astro integration is incompatible with our image pipeline,
-and that's a blocker, not a rough edge.**
+experience. Visual editing works on this site, on real pages, in the real
+design.** What it costs is a heavier build and one lost safety net.
 
-Everything up to and including "edit a Split's prose and save" works well. The
-break is at the integration layer: adding `tina()` to `astro.config.mjs` costs
-us every optimised image on the site.
+> **Correction.** An earlier version of this document called the integration
+> "incompatible with our image pipeline". That was wrong, and the real cause was
+> worse: Tina's middleware wraps every request in `AsyncLocalStorage`, which
+> workerd only provides under `nodejs_compat`. The Cloudflare adapter prerenders
+> in workerd by default, so the middleware threw during prerendering and Astro
+> wrote **every page out as a 0-byte file** — with the build still exiting 0. The
+> missing images were a symptom of pages having no content at all. One adapter
+> option fixes it: `prerenderEnvironment: 'node'`.
 
 ## Matches / beats / falls short
 
@@ -29,57 +34,76 @@ us every optimised image on the site.
 | YAML data files, no body                         | 3 collections, 2 singletons          | indexes all of them, nested `link` included         | **matches**     |
 | Body round-trip fidelity                         | reformats on first save, then stable | same — idempotent, zero churn after first save      | **matches**     |
 | Frontmatter round-trip                           | preserved                            | folded YAML scalars → long quoted lines             | **falls short** |
-| Media picker thumbnails                          | real thumbnails                      | broken images unless `src/assets/images` is served  | **falls short** |
-| Image pipeline (sharp, responsive WebP)          | intact                               | **destroyed by the `tina()` integration**           | **blocker**     |
-| Visual click-to-edit on the real page            | none                                 | advertised; untested — blocked by the above         | **unknown**     |
+| Media picker thumbnails                          | real thumbnails                      | real thumbnails, via a dev-only asset route         | **matches**     |
+| Image pipeline (sharp, responsive WebP)          | 314 optimised assets                 | 314 optimised assets, with `prerenderEnvironment`   | **matches**     |
+| Visual click-to-edit on the real page            | none                                 | works — click a region, its form focuses, live      | **beats**       |
+| `astro check` (CI)                               | checks everything                    | OOMs unless `tina/` is excluded from the program    | **falls short** |
+| Build command                                    | `astro build`                        | must wrap in `tinacms build` — needs a data server  | **falls short** |
 | Keeps CMS schema and `content.config.ts` in sync | manual                               | still manual                                        | **matches**     |
 
-## The blocker, precisely
+## Visual editing: what it took, and what it does
 
-`@tinacms/astro`'s integration forces on-demand rendering, because the editor
-refetches regions from `/tina-island/[name]`. Measured against a 314-image
-baseline:
+It works. Clicking the hero on the rendered page focuses the Hero sub-form in the
+sidebar; typing in Eyebrow updates the page live, in the real design, with the
+real photo. The wiring:
 
-| Configuration                 | Result                                                                                |
-| ----------------------------- | ------------------------------------------------------------------------------------- |
-| no `tina()` (baseline)        | `prune-dist: removed 44 … 314 kept` — build green                                     |
-| `tina()` + Cloudflare adapter | `prune-dist: removed 121 … **0 kept**` — build "succeeds", every optimised image gone |
-| `tina()`, no adapter          | build fails: `NoAdapterInstalled`                                                     |
+| Piece                                                         | What it does                                                                                                                                                                                         |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `prerenderEnvironment: 'node'`                                | the fix for the 0-byte pages, above                                                                                                                                                                  |
+| `src/components/blocks/tina/*.astro`                          | six wrapper adapters — under MDX a wrapper's prose arrives via `<slot />`, through Tina it's a `children` rich-text tree. The twelve self-closing blocks reuse their existing MDX adapters unchanged |
+| `src/lib/tina/islands.ts` + `src/pages/tina-island/[name].ts` | the on-demand endpoint the bridge re-renders regions through. The only non-prerendered route — same shape as the two Keystatic already adds                                                          |
+| `src/pages/tina-preview/[...slug].astro`                      | renders a page from Tina's GraphQL client with `tinaField()` markers, instead of `getCollection()` + `render()`                                                                                      |
+| `tinaAssetsDevPlugin` in `astro.config.mjs`                   | serves `src/assets/images` at `/assets/images/*` in dev so the media picker can show thumbnails                                                                                                      |
 
-The failure is quiet. The build exits 0. `astro.config.mjs` sets
-`imageService: 'compile'` specifically to pre-optimise images at build time
-rather than defer them to Cloudflare's paid runtime image endpoint; the
-integration undoes that, and nothing in the build complains.
+The significant one is the fourth. **Visual editing requires the page to be
+rendered from Tina's GraphQL result, not from a compiled MDX module** — the DOM
+has to carry the field metadata the bridge maps forms onto. Here that lives on a
+parallel `/tina-preview/` route, gated behind `TINA_PREVIEW` so it never ships
+(otherwise every page gets a duplicate URL and `check-site` fails on duplicate
+descriptions). A real adoption would instead rewrite `src/pages/[...slug].astro`
+itself to query Tina — which means the live site stops reading Astro content
+collections and starts depending on the Tina data layer at build time.
 
-Tina's own README says `output: 'static'` is supported _if_ every editable
-region is wrapped in `<TinaIsland>` with a registered island and only the island
-route stays on-demand. That's the configuration worth trying next — but it means
-wiring an island registry and a `tina-island/[name].ts` route, and rewriting
-`[...slug].astro` to query the GraphQL client instead of `getCollection()` +
-`render()`. That is a substantially bigger change than swapping a CMS, and it
-was not attempted here.
+## What adopting this actually costs
 
-## The other real costs
+**`astro check` runs out of memory.** Type-checking `tina/config.ts` — really
+`defineConfig` from `tinacms` — exhausts the compiler even at
+`--max-old-space-size=4096`. The workaround is excluding `tina/` from the
+TypeScript program, which leaves the CMS schema as the one unchecked file in the
+repo, and that is precisely where a typo costs the most. `npm run check` is part
+of CI.
 
-**Media previews.** Repo-based media _can_ point at `src/assets/images` —
-`imageFromRef` (`src/lib/images.ts:36`) strips everything up to `assets/images/`,
-so stored paths resolve with no code change, and the build stays green. But the
-picker requests `/assets/images/<file>`, which 404s because the folder isn't
-publicly served, so an editor choosing a photo sees a grid of broken images
-labelled `463487542_1814552…`. Symlinking `public/assets/images` fixes the
-preview immediately — verified — but then `public/` is copied into `dist/`,
-adding 41 MB of unoptimised originals beside the optimised ones.
+**The build needs a Tina data server.** `astro build` alone now fails at
+prerendering with `fetch failed`, because `getStaticPaths` queries Tina's
+GraphQL. The build has to become `tinacms build -c "astro build"` (see
+`build:tina` in package.json), which starts the datalayer for the duration. In
+non-local mode that server is TinaCloud, so a deploy would depend on a
+third-party service being reachable — the same shape of dependency as Keystatic
+Cloud, which `docs/cms.md` already calls a temporary workaround.
+
+**Stale-cache fragility.** Several builds failed until `node_modules/.vite` and
+`.astro` were cleared; the repo's `prebuild` already does the former for a
+reason, and adding Tina makes it matter more.
+
+## The smaller costs
+
+**Media.** Repo-based media points at `src/assets/images` and works: stored paths
+resolve through `imageFromRef` (`src/lib/images.ts:36`) with no code change. The
+picker requests `/assets/images/<file>`, which isn't publicly served, so
+thumbnails 404 by default. `tinaAssetsDevPlugin` serves them in dev — real
+thumbnails, folders and all. A `public/` symlink also works but copies 41 MB of
+unoptimised originals into `dist/`. Production would need a deliberate answer
+here; dev is solved.
 
 **Frontmatter reflow.** Saving any page rewrites folded YAML block scalars as
 single long quoted lines. Cosmetic and one-time, but it makes future diffs on
 `lede` and `seoDescription` worse.
 
-**Wrapper prose is one level down.** Keystatic shows a `<Split>`'s markdown
-inline, so a page reads top-to-bottom in the editor. Tina shows seven opaque
-bars; reaching the prose is card → ⋮ → Edit → Content. For "open a page, edit
-the text on a Split" — one of the two workflows that matter — that's worse,
-and the promised compensation (click-to-edit on the rendered page) is exactly
-what the blocker prevents testing.
+**Wrapper prose is one level down in the forms view.** Keystatic shows a
+`<Split>`'s markdown inline, so a page reads top-to-bottom in the editor. Tina's
+forms view shows seven opaque bars; reaching the prose is card → ⋮ → Edit →
+Content. Visual editing is the compensation, and it is a real one — but it only
+applies when editing through the preview, not the plain forms list.
 
 **New pages don't validate.** A page created in Tina omits `hero`, which
 `src/content.config.ts` requires, and the Astro build rejects it. Fixable by
@@ -102,22 +126,48 @@ surface syntax, not missing capability, and both are mechanical.
 
 ## Recommendation
 
-Don't migrate on this evidence. The content model ports cleanly and the round-trip
-is sound, so Tina isn't ruled out — but the integration currently costs us the
-image pipeline, and the one thing that would justify the move (click-to-edit on
-the real page) is behind that same wall.
+Tina clears the bar. Content model, round-trip fidelity, component palette and
+visual editing all work on this site with real content, and the whole suite is
+green: `format:check`, `lint:css`, `check` (94 files, 0 errors), 51 tests,
+`build:tina`, and `check-site` at 30 pages / 1031 links / 86 images / 307
+optimised WebP.
 
-The next cheap experiment, if this stays interesting, is the `<TinaIsland>`
-static-editing path on a single page: wire one island, keep `output: 'static'`,
-and confirm `prune-dist` still reports 314 kept. If that works, visual editing
-becomes testable and the calculus changes. If it doesn't, Tina is out on
-infrastructure grounds regardless of how good the editor is.
+The decision is therefore not "does it work" but whether the editing upgrade is
+worth three structural changes:
+
+1. `src/pages/[...slug].astro` stops using Astro content collections and starts
+   querying Tina's data layer, so the live site's render path depends on it.
+2. The build depends on a Tina data server — TinaCloud in production, i.e. the
+   same class of third-party dependency `docs/cms.md` already flags as temporary
+   for Keystatic Cloud, on a 2-user free tier vs Keystatic's 3.
+3. `tina/config.ts` leaves the type-checked program, so the CMS schema is the one
+   file CI can't verify.
+
+Against that: a genuinely better editing experience, and 454 commits a year of
+development instead of 40.
+
+If the next step is to keep going, the honest sequencing is to do (1) for real —
+convert `[...slug].astro` rather than keep a mirror route — and see what breaks,
+because that is the change that can't be undone cheaply. If the answer is to
+stop, the branch stands as a working reference of what Tina looks like on this
+site.
 
 ## Reproducing
+
+```bash
+npm run dev:tina
+```
+
+Then:
+
+- forms editor — `http://localhost:4321/admin/index.html`
+- visual editing — `http://localhost:4321/admin/index.html#/~/tina-preview/visit`
+  (click the hero; its form focuses in the sidebar)
+
+Round-trip harness, no server needed:
 
 ```bash
 node spike/roundtrip.mjs   # parse + serialize every page, report churn
 node spike/idem.mjs        # confirm the serializer is idempotent
 node spike/codemod.mjs     # normalise MDX to the subset Tina's parser accepts
-npm run dev:tina           # admin at /admin/index.html, no account needed
 ```

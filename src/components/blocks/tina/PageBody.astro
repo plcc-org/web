@@ -1,0 +1,26 @@
+---
+import TinaMarkdown from '@tinacms/astro/TinaMarkdown.astro'
+import { tinaField } from '@tinacms/astro/tina-field'
+import PageHero from '../mdx/PageHero.astro'
+import { tinaComponents } from './registry'
+
+// A CMS page rendered from Tina's GraphQL result rather than from a compiled
+// MDX module, so the bridge can wire each region to its form.
+//
+// `data-tina-field` is what makes a region clickable in the admin iframe:
+// clicking it focuses the matching field in the sidebar. The markers are coarse
+// on purpose — one for the hero, one for the body — because clicking any node
+// inside a rich-text region focuses that whole field anyway.
+type Props = { data: Record<string, any> }
+const { data } = Astro.props
+const hero = data.hero ?? {}
+---
+
+<div class="canvas">
+  <div data-tina-field={tinaField(data, 'hero')}>
+    <PageHero {...hero} title={data.title} />
+  </div>
+  <div data-tina-field={tinaField(data, 'content')}>
+    <TinaMarkdown content={data.content} components={tinaComponents} />
+  </div>
+</div>

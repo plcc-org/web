@@ -1,0 +1,17 @@
+---
+import type { ImageMetadata } from 'astro'
+import Letter from '../../Letter.astro'
+import { imageFromRef } from '../../../lib/images'
+import TinaChildren from './TinaChildren.astro'
+
+// Tina counterpart of LetterMdx.
+type Props = { image?: string; alt?: string; signoffName?: string; signoffRole?: string; children?: unknown }
+const { image, alt, signoffName, signoffRole, children } = Astro.props
+const img = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined
+---
+
+<section class="to-wide" data-reveal>
+  <Letter image={img} alt={alt} signoffName={signoffName} signoffRole={signoffRole}>
+    <TinaChildren content={children as never} />
+  </Letter>
+</section>

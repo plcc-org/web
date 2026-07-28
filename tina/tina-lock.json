@@ -163,6 +163,7 @@
         "label": "Pages",
         "path": "src/content/pages",
         "format": "mdx",
+        "ui": {},
         "fields": [
           {
             "name": "title",

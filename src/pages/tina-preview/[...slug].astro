@@ -1,0 +1,41 @@
+---
+import TinaIsland from '@tinacms/astro/TinaIsland.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import PageBody from '../../components/blocks/tina/PageBody.astro'
+import { getPage, listPagePaths } from '../../lib/tina/data'
+import { PAGE_WRAPPER } from '../../lib/tina/islands'
+import { renderPlain } from '../../lib/markdown'
+
+// Spike: the Tina-rendered mirror of src/pages/[...slug].astro. Same pages, same
+// block components, but the content comes from Tina's GraphQL client instead of
+// getCollection() + render(), which is what visual editing requires — the
+// rendered DOM has to carry the field metadata the bridge maps forms onto.
+//
+// It lives on a parallel route so the real site keeps rendering through Astro's
+// content collections and nothing about production depends on the spike.
+// Gated behind TINA_PREVIEW (set by `npm run dev:tina`). Shipping the mirror
+// would publish a second copy of every page — duplicate descriptions, duplicate
+// URLs for crawlers — and check-site rightly fails the build for it. A real
+// adoption would render the actual route through Tina rather than keep a mirror.
+export async function getStaticPaths() {
+  if (!process.env.TINA_PREVIEW) return []
+  const paths = await listPagePaths()
+  return paths.map((relativePath) => ({
+    params: { slug: relativePath.replace(/\.mdx$/, '') },
+    props: { relativePath },
+  }))
+}
+
+const { relativePath } = Astro.props
+const result = await getPage(relativePath)
+const page = result.data?.pages
+if (!page) return new Response('Not Found', { status: 404 })
+
+const description = page.seoDescription ?? renderPlain(page.hero?.lede ?? '')
+---
+
+<BaseLayout title={page.title} description={description}>
+  <TinaIsland name="page" wrapper={PAGE_WRAPPER} params={{ relativePath }} primary>
+    <PageBody data={page} />
+  </TinaIsland>
+</BaseLayout>

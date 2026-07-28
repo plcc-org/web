@@ -1,0 +1,14 @@
+---
+import Callout from '../../Callout.astro'
+import TinaChildren from './TinaChildren.astro'
+
+// Tina counterpart of the Callout block. Under MDX the site component is mapped
+// straight through and its prose arrives in the default slot; here it arrives as
+// a `children` rich-text tree instead.
+type Props = { heading?: string; children?: unknown }
+const { heading, children } = Astro.props
+---
+
+<Callout heading={heading}>
+  <TinaChildren content={children as never} />
+</Callout>

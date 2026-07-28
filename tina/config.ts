@@ -65,6 +65,12 @@ export default defineConfig({
         label: 'Pages',
         path: 'src/content/pages',
         format: 'mdx',
+        // Visual editing opens this URL in the admin iframe. It points at the
+        // Tina-rendered mirror route, not the live page: only that route carries
+        // the field metadata the bridge needs to map clicks onto form fields.
+        ui: {
+          router: ({ document }) => `/tina-preview/${document._sys.breadcrumbs.join('/')}`,
+        },
         fields: [
           { name: 'title', label: 'Title', type: 'string', isTitle: true, required: true },
           { name: 'seoDescription', label: 'SEO description', type: 'string' },

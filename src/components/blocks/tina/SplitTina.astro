@@ -1,0 +1,30 @@
+---
+import Split from '../../Split.astro'
+import { imageFromRef } from '../../../lib/images'
+import TinaChildren from './TinaChildren.astro'
+
+type Props = {
+  image?: string
+  alt: string
+  reverse?: boolean
+  tone?: 'paper' | 'sand' | 'forest'
+  eyebrow?: string
+  heading?: string
+  children?: unknown
+}
+const { image, alt, reverse = false, tone = 'sand', eyebrow, heading, children } = Astro.props
+const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
+---
+
+<Split
+  class="to-full"
+  image={resolved}
+  alt={alt}
+  reverse={reverse}
+  tone={tone}
+  eyebrow={eyebrow}
+  heading={heading}
+  reveal
+>
+  <TinaChildren content={children as never} />
+</Split>

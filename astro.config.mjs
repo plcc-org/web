@@ -5,7 +5,45 @@ import react from '@astrojs/react'
 import keystatic from '@keystatic/astro'
 import mdx from '@astrojs/mdx'
 import cloudflare from '@astrojs/cloudflare'
+import tina from '@tinacms/astro/integration'
 import { siteConfig } from './src/config/site.ts'
+import { createReadStream, existsSync, statSync } from 'node:fs'
+import { extname, join, normalize } from 'node:path'
+
+// Spike, dev only. Tina's media picker requests photos at /assets/images/<file>,
+// but our bytes live in src/assets/images so Astro's sharp pipeline can process
+// them — outside anything the dev server serves, so every thumbnail 404s and the
+// picker shows a wall of broken images. Serving them here keeps the canonical
+// location (and the build) untouched; the alternative, a public/ symlink, copies
+// 41 MB of unoptimized originals into dist.
+function tinaAssetsDevPlugin() {
+  const root = new URL('./src/assets/images/', import.meta.url).pathname
+  /** @type {Record<string, string>} */
+  const TYPES = {
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.png': 'image/png',
+    '.webp': 'image/webp',
+    '.avif': 'image/avif',
+    '.svg': 'image/svg+xml',
+  }
+  return {
+    name: 'plcc:tina-assets-dev',
+    apply: /** @type {const} */ ('serve'),
+    /** @param {{ middlewares: { use: (fn: (req: any, res: any, next: () => void) => void) => void } }} server */
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const path = decodeURIComponent((req.url || '').split('?')[0])
+        if (!path.startsWith('/assets/images/')) return next()
+        const file = normalize(join(root, path.slice('/assets/images/'.length)))
+        if (!file.startsWith(root) || !existsSync(file) || !statSync(file).isFile()) return next()
+        res.setHeader('Content-Type', TYPES[extname(file).toLowerCase()] ?? 'application/octet-stream')
+        res.setHeader('Cache-Control', 'no-cache')
+        createReadStream(file).pipe(res)
+      })
+    },
+  }
+}
 
 // https://astro.build/config
 // `site` and `base` are resolved per environment (development | staging | production)
@@ -28,11 +66,18 @@ export default defineConfig({
   // skip the adapter so SSR routes run on Node: the Cloudflare workerd dev
   // runtime can't supply the Node globals Keystatic's admin needs ("module is
   // not defined"). Dev serves every route fine without an adapter.
-  adapter: process.env.ASTRO_DEV ? undefined : cloudflare({ imageService: 'compile' }),
+  //
+  // `prerenderEnvironment: 'node'` prerenders in real Node rather than workerd.
+  // Tina's middleware wraps every request in AsyncLocalStorage, which workerd
+  // only provides under `nodejs_compat`; without it the middleware throws during
+  // prerendering and Astro writes every page out empty — a 0-byte HTML file per
+  // route, with the build still exiting 0.
+  adapter: process.env.ASTRO_DEV ? undefined : cloudflare({ imageService: 'compile', prerenderEnvironment: 'node' }),
   integrations: [
     react(),
     keystatic(),
     mdx(),
+    tina(),
     // SSR-only routes are already excluded, so /keystatic doesn't appear today.
     // The filter is a guard: if Keystatic ever prerenders its shell, or another
     // admin route is added, it would otherwise be advertised to crawlers
@@ -113,6 +158,7 @@ export default defineConfig({
     },
   },
   vite: {
+    plugins: [tinaAssetsDevPlugin()],
     define: {
       // The prerender bundle runs against an empty `process.env` shim (the
       // Cloudflare adapter targets workerd), so src/config/site.ts can't read
