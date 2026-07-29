@@ -1,0 +1,19 @@
+diff --git a/node_modules/@tinacms/cli/dist/index.js b/node_modules/@tinacms/cli/dist/index.js
+index 31bddc5..3b2b429 100644
+--- a/node_modules/@tinacms/cli/dist/index.js
++++ b/node_modules/@tinacms/cli/dist/index.js
+@@ -3650,7 +3650,13 @@ ${dangerText(e.message)}
+         });
+       }
+     }
+-    await buildProductionSpa(configManager, database, codegen2.productionUrl);
++    if (process.env.TINA_PUBLISH_ADMIN === "true") {
++      await buildProductionSpa(configManager, database, codegen2.productionUrl);
++    } else {
++      logger.info(
++        "Skipping the admin SPA bundle (TINA_PUBLISH_ADMIN is not 'true') — see patches/ and scripts/prune-admin.mjs."
++      );
++    }
+     await fs10.outputFile(
+       configManager.outputGitignorePath,
+       "index.html\nassets/"
