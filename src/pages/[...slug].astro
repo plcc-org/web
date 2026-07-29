@@ -19,9 +19,11 @@ import { PAGE_WRAPPER } from '../lib/tina/islands'
 //   - `astro build` alone no longer works. getStaticPaths queries Tina, so the
 //     build must run inside `tinacms build` (see `build:tina`), which starts the
 //     data layer for the duration.
-//   - Astro no longer loads the `pages` collection, so its zod schema in
-//     src/content.config.ts no longer validates these files at build time.
-//     Required-field enforcement now lives in tina/config.ts instead.
+//   - Nothing here calls getCollection('pages') any more, but the collection in
+//     src/content.config.ts is still load-bearing: Astro's content layer syncs
+//     and zod-validates every *declared* collection whether or not a route loads
+//     it. That check is what catches a page saved without a `hero` — the CMS
+//     schema and zod catch different mistakes, so both are worth keeping.
 export async function getStaticPaths() {
   const pages = await listPages()
   const published = pages.filter((page) => (import.meta.env.PROD ? !page.draft : true))

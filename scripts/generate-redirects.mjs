@@ -226,7 +226,7 @@ for (const { path, note, expires, permanent } of gone) {
 mkdirSync('public', { recursive: true })
 const header = [
   '# Generated from src/content/short-links — do not edit.',
-  '# Add or change these in Keystatic under "Short links".',
+  '# Add or change these in the CMS at /admin, under "Short links".',
   '',
 ]
 writeFileSync(OUT, [...header, ...rules].join('\n'))

@@ -4,7 +4,7 @@ import Letter from '../../Letter.astro'
 import { imageFromRef } from '../../../lib/images'
 import TinaChildren from './TinaChildren.astro'
 
-// Tina counterpart of LetterMdx.
+// The Letter block: flowing prose beside an optional portrait, with a signature.
 type Props = { image?: string; alt?: string; signoffName?: string; signoffRole?: string; children?: unknown }
 const { image, alt, signoffName, signoffRole, children } = Astro.props
 const img = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined

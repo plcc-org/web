@@ -104,8 +104,14 @@ const startHereLinks = defineCollection({
 // CMS-built pages. Each is an MDX file: a structured hero in frontmatter plus an
 // MDX body the editor composes in the CMS's rich-text editor, inserting styled
 // components (Split, Callout, Photo band, …). The body's component tags map to
-// thin Astro wrappers at render time (see src/pages/[...slug].astro and
-// src/components/blocks/mdx/), so everything reuses the real site components.
+// thin Astro wrappers at render time (see src/components/blocks/tina/registry.ts),
+// so everything reuses the real site components.
+//
+// Nothing calls getCollection('pages') — src/pages/[...slug].astro renders from
+// the CMS's GraphQL client. Do not delete this collection anyway: Astro syncs and
+// validates every *declared* collection regardless, and this schema is the only
+// thing that catches a page saved without a `hero`. Verified by test, not by
+// assumption.
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
   // Hero/block images are stored as path strings and resolved at render time via

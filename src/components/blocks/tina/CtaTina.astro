@@ -3,8 +3,8 @@ import Band from '../../Band.astro'
 import { resolveHref } from '../../../lib/url'
 import TinaChildren from './TinaChildren.astro'
 
-// Tina counterpart of CtaMdx: identical output, but the band's prose arrives as
-// a `children` rich-text tree on the node's props rather than through a slot.
+// The Banner block: a tonal closing band with an optional button. Its prose
+// arrives as a `children` rich-text tree on the node's props, not through a slot.
 type Props = {
   tone?: 'forest' | 'sand' | 'paper'
   eyebrow?: string

@@ -160,23 +160,25 @@ the prune only ever removed unreachable files.
 
 Pages in the `pages` collection are **MDX files**, not block lists: a structured hero in
 frontmatter plus a body the editor composes in the CMS's rich-text editor, inserting
-components. `src/pages/[...slug].astro` renders them, passing a **components map** that
-binds each MDX tag to a real site component. The filename is the URL slug
+components. `src/pages/[...slug].astro` fetches each page through the CMS's GraphQL client
+and renders the body with `<TinaMarkdown>`, using the component map in
+`src/components/blocks/tina/registry.ts`. The filename is the URL slug
 (`src/content/pages/church-life.mdx` → `/church-life/`). Drafts render in dev and are
 excluded from production builds.
 
-Adding a block type means touching **three** places, and they have to agree:
+Adding a block type means touching **two** places, and they have to agree — see
+[cms.md](./cms.md) for the detail:
 
 1. `tina/templates.mjs` — the editor UI for the block.
-2. `src/components/blocks/mdx/<Name>Mdx.astro` — a thin wrapper adapting the CMS's flat
-   props to the real component. If a component needs no adaptation, skip this and map the
-   CMS key straight to it (`Callout` and `Roadmap` do exactly that).
-3. The `components` map in `src/pages/[...slug].astro` — **the key must match the
-   component name used in the CMS config.**
+2. `src/components/blocks/tina/registry.ts` — **the key must match the template `name`.**
+   A block with prose inside needs an adapter in `src/components/blocks/tina/`, because its
+   body arrives as a `children` rich-text tree rather than a slot; a self-closing block can
+   reuse its existing wrapper in `src/components/blocks/mdx/` or map straight to the real
+   component (`Callout` and `Roadmap` do exactly that).
 
-There is no Zod union of block types and no `Blocks.astro`. If a tag isn't in the map,
-MDX renders it as an unknown element rather than failing, so a mismatch between (1) and
-(3) is silent — check both.
+If a name isn't in the registry, the renderer emits a visible red placeholder rather than
+failing the build, so a mismatch between (1) and (2) shows up on the page, not in CI —
+check both.
 
 ---
 

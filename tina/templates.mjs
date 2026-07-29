@@ -1,3 +1,4 @@
+// @ts-check
 // The page block palette: every component an editor can insert into a page body.
 //
 // A block with prose inside it (a Split, a Callout) is a template with a field named
@@ -12,8 +13,14 @@
 // Kept in .mjs so the round-trip harness (spike/roundtrip.mjs) can import it without a
 // build step.
 
+/** @typedef {Record<string, unknown>} FieldOpts */
+
 const children = { name: 'children', label: 'Content', type: 'rich-text' }
+
+/** @type {(name: string, label: string, opts?: FieldOpts) => Record<string, unknown>} */
 const text = (name, label, opts = {}) => ({ name, label, type: 'string', ...opts })
+
+/** @type {(name: string, label: string, opts?: FieldOpts) => Record<string, unknown>} */
 const textarea = (name, label, opts = {}) => ({
   name,
   label,
@@ -21,7 +28,11 @@ const textarea = (name, label, opts = {}) => ({
   ui: { component: 'textarea' },
   ...opts,
 })
+
+/** @type {(name: string, label: string, opts?: FieldOpts) => Record<string, unknown>} */
 const image = (name, label, opts = {}) => ({ name, label, type: 'image', ...opts })
+
+/** @type {(name: string, label: string, defaultValue?: boolean, opts?: FieldOpts) => Record<string, unknown>} */
 const bool = (name, label, defaultValue = false, opts = {}) => ({
   name,
   label,
@@ -37,6 +48,7 @@ const TONE = {
   forest: { label: 'Forest (dark)', value: 'forest' },
   none: { label: 'Plain (no band)', value: 'none' },
 }
+/** @type {(options: (keyof typeof TONE)[], defaultValue: string, opts?: FieldOpts) => Record<string, unknown>} */
 const tone = (options, defaultValue, opts = {}) => ({
   name: 'tone',
   label: 'Background',
@@ -47,7 +59,12 @@ const tone = (options, defaultValue, opts = {}) => ({
 })
 
 /** Label a list's collapsed rows by one of its own fields, so a gallery isn't N identical bars. */
-const itemProps = (key, fallback) => ({ itemProps: (item) => ({ label: item?.[key] || fallback }) })
+/** @type {(key: string, fallback: string) => Record<string, unknown>} */
+const itemProps = (key, fallback) => ({
+  itemProps: (/** @type {Record<string, string> | undefined} */ item) => ({
+    label: item?.[key] || fallback,
+  }),
+})
 
 export const templates = [
   {

@@ -4,7 +4,7 @@ import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
 import TinaChildren from './TinaChildren.astro'
 
-// Tina counterpart of AsideMdx.
+// The Aside block: a tinted note, prose beside an optional small logo.
 type Props = { eyebrow?: string; logo?: string; logoAlt?: string; children?: unknown }
 const { eyebrow, logo, logoAlt, children } = Astro.props
 const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined

@@ -5,13 +5,11 @@
   },
   "include": [".astro/types.d.ts", "**/*"],
   "// spike-note": [
-    "`tina/` is excluded because type-checking tina/config.ts runs the compiler",
-    "out of memory: defineConfig from `tinacms` pulls in a type graph large",
-    "enough that `astro check` dies with 'Ineffective mark-compacts near heap",
-    "limit', even at --max-old-space-size=4096. Cost: the CMS schema is the one",
-    "file left unchecked, which is where a typo is most expensive.",
-    "`public/admin/` is Tina's built admin SPA — 10 MB of minified vendor",
-    "bundles that astro check would otherwise walk and report warnings from."
+    "tina/config.ts is excluded because type-checking it runs the compiler out of memory:",
+    "defineConfig from `tinacms` pulls in a type graph large enough that `astro check` dies",
+    "with 'Ineffective mark-compacts near heap limit', even at --max-old-space-size=4096.",
+    "config.prebuild.jsx is the generated copy of the same thing. Everything else under",
+    "tina/ is checked. public/admin/ is the built admin SPA \u2014 megabytes of vendor bundles."
   ],
-  "exclude": ["dist", "tina", "public/admin"]
+  "exclude": ["dist", "public/admin", "tina/config.ts", "tina/__generated__/config.prebuild.jsx"]
 }

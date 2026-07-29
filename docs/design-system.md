@@ -437,12 +437,17 @@ Props reflect each component's actual `Props` type.
 | **`EventsBoard`** / **`EventRow`** | "What's On": chips, featured grid, weekly list, rhythms. See [events.md](./events.md).                                                                                                                                  |
 | **`Photo`**                        | See §9.                                                                                                                                                                                                                 |
 
-### The MDX block layer
+### The block layer
 
-`src/components/blocks/mdx/` holds thin wrappers that expose the components above to
-CMS-authored MDX, adapting the CMS's flat props to each component's real shape. They
-are **not** a second component system — each one delegates. Where no adaptation is needed
-the CMS key maps straight to the component (`Callout`, `Roadmap` do this).
+Two folders hold thin wrappers that expose the components above to the CMS, adapting its
+flat props to each component's real shape. They are **not** a second component system —
+each one delegates.
+
+`src/components/blocks/tina/` holds the six blocks with prose inside them (`Section`,
+`Split`, `Callout`, `Cta`, `Aside`, `Letter`), whose body arrives as a `children` rich-text
+tree and is rendered by `TinaChildren`. `src/components/blocks/mdx/` holds the twelve
+self-closing ones, which take plain props. Where no adaptation is needed at all the CMS key
+maps straight to the component (`Callout`, `Roadmap` do this). `registry.ts` is the map.
 
 `PageHero` is the one that isn't a pass-through: it renders every CMS page's `hero`
 frontmatter as a reversed sand `Split`, guaranteeing a consistent page opener. See
