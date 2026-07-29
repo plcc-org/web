@@ -138,12 +138,17 @@ parts of that are load-bearing:
 
 ### `postbuild`
 
-`scripts/prune-admin.mjs` keeps the CMS admin out of the published site. `tinacms build`
-always compiles the admin SPA into `public/admin`, which is right locally — `dev:tina`
-serves a data layer beside it — but a deployed static site has no data layer, so the SPA
-would load and fail every call it makes. Publishing it is opt-in via `TINA_PUBLISH_ADMIN=true`,
-once the editor has an auth backend (see [cms.md](./cms.md)). Local dev is untouched: it
-serves `/admin` from `public/`, which this never looks at.
+`scripts/prune-admin.mjs` keeps the CMS admin out of the published site. A deployed static
+site has no data layer, so the admin SPA would load and fail every call it makes.
+Publishing it is opt-in via `TINA_PUBLISH_ADMIN=true`, once the editor has an auth backend
+(see [cms.md](./cms.md)). Local dev is untouched: it serves `/admin` from `public/`, which
+this never looks at.
+
+That same flag now also decides whether the SPA is **compiled** at all — see
+[the admin SPA is not built unless it ships](#the-admin-spa-is-not-built-unless-it-ships).
+So on a clean build there is usually nothing left to prune. The script still runs because
+`public/admin` is a working directory, not a build output: a local `dev:tina` session
+leaves one behind, and `astro build` would copy it into `dist/`.
 
 `scripts/prune-dist.mjs` deletes emitted image originals that nothing references.
 `src/lib/images.ts` registers the entire photo library through `import.meta.glob` (which
@@ -152,6 +157,54 @@ registered image whether or not a page renders it. Without the prune the deploy 
 roughly 15 MB of images no page can reach. It refuses to run if it finds no HTML, and
 `check-site.mjs` verifies every remaining asset reference resolves — which is what proves
 the prune only ever removed unreachable files.
+
+### The admin SPA is not built unless it ships
+
+`patches/@tinacms+cli+2.5.6.patch` (applied by `postinstall`, via `patch-package`) makes
+`tinacms build` compile the admin bundle only when `TINA_PUBLISH_ADMIN=true`. Stock, it
+compiles unconditionally.
+
+That bundle is the single largest cost in the whole pipeline, and until the editor has an
+auth backend it is thrown away every time. Measured on a 4-core Linux container — a Mac is
+roughly 4× faster, but the proportions hold:
+
+| Stage                                     | Stock  | Patched | Note                     |
+| ----------------------------------------- | ------ | ------- | ------------------------ |
+| `tinacms build` (codegen only, CI step 1) | 70.4s  | 7.8s    | 61s was the admin bundle |
+| `npm run build` — staging, cold images    | 105.3s | 49.5s   |                          |
+| `npm run build` — production, warm images | 90.2s  | 32.7s   |                          |
+| **CI `verify`, all stages after install** | 287.6s | 111.7s  | **−61%**                 |
+
+The gate is unchanged: both deploy targets are still built and crawled, and `dist/client`
+— every byte a visitor receives — is byte-identical to a stock build. (`dist/server` chunk
+hashes differ, but they differ between two _stock_ builds too; Vite's chunk naming is not
+deterministic here.)
+
+Two things this is **not**, both checked before landing:
+
+- **Not indexing.** Tina's content indexing costs under a second on this site.
+  `--skip-indexing`, `--partial-reindex` and a plain run all land within noise of each
+  other (7.3–8.3s). The indexing spinner is simply what is on screen while the bundle
+  compiles behind it.
+- **Not search.** `--skip-search-index` does nothing here: `tina/config.ts` has no `search`
+  block, and that code path is skipped for `--local` builds anyway. The `searchable: true`
+  fields on `shortLinks` are untouched, so the findability mitigation in
+  [cms.md](./cms.md) still stands.
+
+Re-generate the patch with `npx patch-package @tinacms/cli` if you bump the CLI, and drop
+it entirely if Tina ever grows a flag for this — there is none as of 2.5.6.
+
+### What is still slow
+
+`npm ci` is now the largest single item: ~2m30s on Cloudflare, and it is not a broken
+cache. `node_modules` is **1.8 GB across ~99,000 files**, most of it Tina's admin UI tree
+(`@tinacms/app`, `monaco-editor`, `mermaid`, `react-icons`, `react-aria`). Restoring that
+much from any cache costs minutes.
+
+Nothing safe cuts it. `@tinacms/app` is a hard dependency of `@tinacms/cli`, which is
+needed for codegen, so the tree comes along even though the deploy never compiles the
+admin. An `overrides` stub would shrink it and break `npm run dev:tina`, which is the
+point of having a CMS. This is Tina's dependency graph to fix, not ours.
 
 ---
 

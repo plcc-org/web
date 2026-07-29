@@ -3,6 +3,8 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "_comment_postinstall": "Applies patches/@tinacms+cli+2.5.6.patch, which makes `tinacms build` compile the 11 MB admin SPA only when TINA_PUBLISH_ADMIN=true. Stock, it compiles unconditionally — 60s of every build, on a bundle scripts/prune-admin.mjs then deletes, because a deployed static site has no data layer to serve it. That is 60s CI never needed and 60s Cloudflare never needed. `tinacms dev` is untouched (it serves the admin from Vite, not this bundle), so local editing is unaffected. REMOVE when the CLI grows a flag for this — tinacms/tinacms has no equivalent as of 2.5.6; re-generate with `npx patch-package @tinacms/cli` if you bump the version.",
+    "postinstall": "patch-package",
     "dev": "ASTRO_DEV=1 astro dev",
     "dev:container": "container run --name plcc-dev --detach --rm --env ASTRO_CONTAINER_DEV=1 --publish 4321:4321 --mount type=bind,source=\"$PWD\",target=/workspace --tmpfs /workspace/node_modules --workdir /workspace docker.io/library/node:lts sh -lc \"npm ci && npm run dev -- --host 0.0.0.0 --port 4321\"",
     "dev:container:stop": "container stop plcc-dev",
@@ -48,6 +50,7 @@
     "@tinacms/astro": "^0.6.1",
     "@tinacms/cli": "^2.5.6",
     "@types/node": "^25.9.3",
+    "patch-package": "^8.0.1",
     "playwright": "^1.61.1",
     "postcss-html": "^1.8.1",
     "prettier": "^3.8.4",
