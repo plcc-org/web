@@ -66,7 +66,8 @@ Requires Node.js (LTS — CI uses 25) and npm.
 ```bash
 npm install
 npm run dev          # local dev server at http://localhost:4321/
-npm run build        # production build to dist/ (runs prebuild + postbuild)
+npm run dev:tina     # dev server + the CMS at /admin (see cms.md)
+npm run build:tina   # production build to dist/ (the CMS compiles the client first)
 npm run preview      # preview the production build locally
 ```
 
@@ -78,7 +79,7 @@ npm run format:check  # Prettier — verify only
 npm run lint:css      # Stylelint — enforces tokens-first
 npm run check         # astro check (type + template diagnostics)
 npm test              # Vitest unit tests
-npm run build         # then:
+npm run build:tina    # then:
 npm run test:site     # post-build crawl of dist/
 ```
 
@@ -90,7 +91,10 @@ npm run test:site     # post-build crawl of dist/
 
 ## The build pipeline
 
-`npm run build` is three steps, not one.
+`npm run build:tina` wraps `astro build` in `tinacms build`, which compiles the CMS
+schema and generates the GraphQL client that `src/pages/[...slug].astro` queries at build
+time. Plain `astro build` fails at prerendering with `fetch failed` — nothing is listening.
+The Astro build itself is three steps, not one.
 
 ### `prebuild`
 

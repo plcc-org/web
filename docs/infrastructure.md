@@ -44,7 +44,7 @@ Cloudflare setup.
 
 **Cloudflare** builds and deploys on every push (via Cloudflare's Git integration / Workers
 Builds): the connected branch publishes to `plcc.dev`, other branches get preview URLs. The
-build command is `npm run build`; the adapter needs the `nodejs_compat` compatibility flag
+build command is `npm run build:tina`; the adapter needs the `nodejs_compat` compatibility flag
 (see [cms.md](./cms.md)).
 
 `.github/workflows/ci.yml` runs the checks on every pull request and every push to `main`
