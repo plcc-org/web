@@ -394,9 +394,37 @@ on course to break the nightly deploy — `scrape-events.yml` commits what the
 scraper writes, `format:check` would fail it, and that daily commit is what
 triggers the Cloudflare rebuild.
 
-The pattern across all five: **every one is a setting that lives outside the code,
-or a rule the code states but doesn't enforce.** The two that are now enforced —
-the build command and the Node version — are the two that can't recur.
+**Then the build OOMed.** With the command and Node version fixed it got further
+and died in `Indexing local files`: _"Ineffective mark-compacts near heap limit"_ at
+~2 GB. Not Astro and not the server bundle — `npx tinacms build` on its own
+reproduces it, before Astro prints a line. Capping the heap at 2048 locally
+reproduces it exactly; it completes at 3072. `--skip-search-index` changes nothing,
+so it is the content indexer itself — for 20 pages, 55 short links and 124 photos.
+
+That is worth stating plainly as a cost of this CMS: **Tina's indexer needs more
+than 2 GB to index a site this small**, and 2 GB is what Node defaults to in a
+build container. `NODE_OPTIONS=--max-old-space-size=4096` lives in the build script,
+not a dashboard variable, so the requirement travels with the tool that has it.
+[SSWConsulting/SSW.Website.Global#3](https://github.com/SSWConsulting/SSW.Website.Global/pull/3)
+hit the same wall on Cloudflare and landed on the same number — useful
+confirmation, since Cloudflare doesn't publish the build container's RAM, so
+nothing else told us 4096 was affordable rather than just a different way to die.
+
+The pattern across all six: **every one is a setting that lives outside the code,
+or a rule the code states but doesn't enforce.** Three are now enforced in the repo
+— the build command, the Node version, and the heap size — and those three can't
+recur. Worth remembering the shape of the sequence, too: each fix revealed the next
+failure, because every one of them aborted the build before the next could show
+itself. There was no way to find them in one pass.
+
+**Separately, and still open:** the Worker bundle is 2.6 MB gzipped against main's
+321 KB, an 8× increase, with a 3 MB limit on the Workers free plan. Almost all of it
+is Shiki syntax-highlighting grammars — `emacs-lisp` 762 KB, `cpp` 612 KB, a 456 KB
+Oniguruma wasm — for code this site never renders. `markdown: { syntaxHighlight: false }`
+changes it by 60 bytes, so they don't come from Astro's markdown config; the likely
+path is the two block adapters that import `astro:content`, which drags the content
+pipeline into the island route. Unrelated to the OOM, not urgent, and a real
+constraint on any future server-side work.
 
 ## Still open
 
