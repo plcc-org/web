@@ -39,6 +39,11 @@ jobs:
       # content from the repo and needs no credentials; see docs/cms.md.
       - name: Generate the CMS client
         run: npx tinacms build --local --skip-cloud-checks
+        env:
+          # Tina's indexer needs more than the 2GB heap Node defaults to in a
+          # small container. Runners are roomy enough today, but the requirement
+          # belongs to the tool, not the host — see the note in package.json.
+          NODE_OPTIONS: --max-old-space-size=4096
 
       # Environment-independent: formatting, tokens, types, unit tests.
       - run: npm run format:check
