@@ -263,19 +263,45 @@ Suite on adoption: `format:check`, `lint:css`, `check` (92 files, 0 errors), 51
 tests, `build:tina`, and `check-site` fully green for the first time — 29 pages,
 1031 links, 86 images, 307 optimised WebP.
 
+## Hardening pass
+
+A review against the official [tina-astro-starter](https://github.com/tinacms/tina-astro-starter)
+found that the port carried the schema's _shape_ faithfully and its _guidance_ not
+at all, plus one thing nothing local caught. All fixed:
+
+|                         | Was                                                                                                                                         | Now                                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **CI**                  | `tina/__generated__` is gitignored but statically imported, and CI ran plain `astro build` — the branch could not build on a clean checkout | codegen step after `npm ci`; both targets use `build:tina`                                    |
+| **New pages**           | published the moment they were created                                                                                                      | `defaultItem: { draft: true }`, as before the migration                                       |
+| **Alt text**            | every image field optional                                                                                                                  | `required` on the 14 the old CMS marked, checked against real content first                   |
+| **Guidance**            | 115 fields, 0 descriptions                                                                                                                  | all 48 transcribed verbatim; `itemProps` on all 6 lists; 8 selects show labels not raw values |
+| **Missing collections** | youth-moments, quotes and start-here-links unmodelled while the docs advertised them                                                        | all three modelled; the two YAML lists as `ui.global` one-document collections                |
+| **Edit granularity**    | 2 markers per page — clicking any block focused the whole body                                                                              | one marker per block; the breadcrumb names it and its own form opens                          |
+| **Type checking**       | all of `tina/` excluded                                                                                                                     | only `config.ts` and its generated twin; `templates.mjs` type-checked via `@ts-check`         |
+
+Two latent re-render bugs were closed at the same time: the scroll-reveal
+observer snapshots `[data-reveal]` once, so re-rendered blocks would sit at
+opacity 0 (the iframe guard closes it — now documented as load-bearing rather
+than aesthetic), and `QuoteCarousel` leaked an interval and a document-level
+listener per init.
+
 ## Still open
 
 Everything unresolved is about the _deployed_ editor. Local editing is done.
 
-| #   | Open question                                                                                                       | Why it matters                                                                                                  |
-| --- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| 1   | **Who authenticates at `/admin`** — TinaCloud (2-user free tier, $24/mo beyond) or self-hosted auth on Workers + KV | The only remaining third-party question. Builds never touch it; sign-in does                                    |
-| 2   | **Production media**                                                                                                | The thumbnail route is dev-only, and Tina's FAQ lists git-backed media as TinaCloud-only. Unverified either way |
-| 3   | **CMS schema is unchecked**                                                                                         | `tina/` is excluded from `astro check`, and it's where a typo costs most                                        |
-| 4   | **Required fields don't agree**                                                                                     | A page created in the editor omits `hero`; zod catches it, but the editor should                                |
+| #   | Open question                                                                                                       | Why it matters                                                                                                                         |
+| --- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Who authenticates at `/admin`** — TinaCloud (2-user free tier, $24/mo beyond) or self-hosted auth on Workers + KV | The only remaining third-party question. Builds never touch it; sign-in does                                                           |
+| 2   | **Production media**                                                                                                | The thumbnail route is dev-only, and Tina's FAQ lists git-backed media as TinaCloud-only. Unverified either way                        |
+| 3   | **`tina/config.ts` is unchecked**                                                                                   | `defineConfig` OOMs the compiler, so the collection schema is the one file CI can't verify. `templates.mjs` — the larger half — now is |
+| 4   | **No list-view columns**                                                                                            | Tina has no equivalent; 55 short links show as filenames. Mitigated with `searchable`, not fixed                                       |
 
-(1) and (2) are the ones that gate a real deploy. (3) and (4) are papercuts with
-known shapes.
+(1) and (2) gate a real deploy. (3) and (4) are papercuts with known shapes.
+
+Not worth re-filing as regressions: the old CMS's 18 `ContentView` block previews
+(Tina renders blocks in its own editor and in the live preview, which is better),
+and block `description` strings, which are in the schema but which Tina's insert
+menu doesn't surface.
 
 ## Reproducing
 
