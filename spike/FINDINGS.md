@@ -437,6 +437,10 @@ two-week-old fix for a bug that hangs builds is exactly the responsiveness quest
 this evaluation set out to answer. It doesn't change the conclusion, since Tina still
 ships an order of magnitude more than Keystatic, but it belongs in the record.
 
+**With the heap fix, Cloudflare built green** — on Node 25, before the pin to 22. So
+the race above did not bite on that run, and the Node pin is risk-reduction rather
+than a fix: the heap was the last real blocker.
+
 The pattern across all six: **every one is a setting that lives outside the code,
 or a rule the code states but doesn't enforce.** Three are now enforced in the repo
 — the build command, the Node version, and the heap size — and those three can't
