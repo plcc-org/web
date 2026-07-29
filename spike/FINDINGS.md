@@ -80,7 +80,7 @@ Verified against the pre-Tina baseline, across all 20 CMS pages:
 | Images, internal links, alt text | **identical on 20/20**                                                                                                                     |
 | Visible text                     | **identical on 19/20** — the 20th differs only in `<FeaturedEvents>` live event data, which also drifted on the hand-built `/events/` page |
 | `check-site`                     | 1031 links, 86 images, 376 asset refs — unchanged                                                                                          |
-| Suite                            | `format:check`, `lint:css`, `check`, 51 tests, `build:tina` all green                                                                      |
+| Suite                            | `format:check`, `lint:css`, `check`, 51 tests, `build` all green                                                                           |
 
 Three things it changed, beyond the route itself:
 
@@ -156,7 +156,7 @@ canonical, and on the evidence it's the better call.
 **On TinaCloud, more precisely than before.** The starter's README splits the
 two things cleanly: content comes from local files (`--content=local`), while
 TinaCloud credentials are needed to compile the _admin's auth_. Building without
-them is `--local --skip-cloud-checks`, which is what `build:tina` does here and
+them is `--local --skip-cloud-checks`, which is what `build` does here and
 why our builds have never touched TinaCloud. So the dependency was never about
 content or about the build reaching a server — it is only about who is allowed
 to log in to `/admin`, and self-hosted auth replaces it.
@@ -173,10 +173,10 @@ of CI.
 **The build needs a Tina data server.** `astro build` alone now fails at
 prerendering with `fetch failed`, because `getStaticPaths` queries Tina's
 GraphQL. The build has to become `tinacms build -c "astro build"` (see
-`build:tina` in package.json), which starts the datalayer for the duration.
+`build` in package.json), which starts the datalayer for the duration.
 
 That server does **not** have to be TinaCloud, and the build never reaches it:
-`build:tina` uses `--local --skip-cloud-checks`, so content is read from files on
+`build` uses `--local --skip-cloud-checks`, so content is read from files on
 disk. TinaCloud's role is authenticating editors into `/admin`, nothing else.
 
 Self-hosting that auth is supported — bring your own git provider, database
@@ -273,7 +273,7 @@ Against that: a materially better editing experience, and 454 commits a year of
 upstream development instead of 40.
 
 Suite on adoption: `format:check`, `lint:css`, `check` (92 files, 0 errors), 51
-tests, `build:tina`, and `check-site` fully green for the first time — 29 pages,
+tests, `build`, and `check-site` fully green for the first time — 29 pages,
 1031 links, 86 images, 307 optimised WebP.
 
 ## Hardening pass
@@ -284,7 +284,7 @@ at all, plus one thing nothing local caught. All fixed:
 
 |                         | Was                                                                                                                                         | Now                                                                                           |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **CI**                  | `tina/__generated__` is gitignored but statically imported, and CI ran plain `astro build` — the branch could not build on a clean checkout | codegen step after `npm ci`; both targets use `build:tina`                                    |
+| **CI**                  | `tina/__generated__` is gitignored but statically imported, and CI ran plain `astro build` — the branch could not build on a clean checkout | codegen step after `npm ci`; both targets use `build`                                         |
 | **New pages**           | published the moment they were created                                                                                                      | `defaultItem: { draft: true }`, as before the migration                                       |
 | **Alt text**            | every image field optional                                                                                                                  | `required` on the 14 the old CMS marked, checked against real content first                   |
 | **Guidance**            | 115 fields, 0 descriptions                                                                                                                  | all 48 transcribed verbatim; `itemProps` on all 6 lists; 8 selects show labels not raw values |
@@ -406,7 +406,7 @@ the dependencies this branch removed; create it once:
 git worktree add --detach ../../../plcc-web-baseline main && (cd ../../../plcc-web-baseline && npm ci && npm run build)
 ```
 
-Then, after `npm run build:tina`:
+Then, after `npm run build`:
 
 ```bash
 npm run compare              # diff both builds; exits 1 on any difference

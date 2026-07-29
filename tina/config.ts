@@ -12,7 +12,9 @@ import { templates } from './templates.mjs'
 // checked against the real content first. On a rich-text *template* field (tina/templates.mjs)
 // it's editor-side validation only, with no build risk.
 export default defineConfig({
-  branch: 'spike/cms-tina',
+  // Only consulted when the editor talks to a hosted backend; local builds read
+  // the working tree. Keep it pointed at the branch a deployed editor commits to.
+  branch: 'main',
   clientId: null,
   token: null,
   localContentPath: undefined,

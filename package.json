@@ -12,8 +12,9 @@
     "clean": "rm -rf node_modules/.vite node_modules/.astro .astro dist",
     "_comment_prebuild": "Clears the stale dep cache, then generates public/_redirects from the short-links collection so astro build copies it into the deploy.",
     "prebuild": "npm run clean:vite && node scripts/generate-redirects.mjs",
-    "build": "astro build",
-    "postbuild": "node scripts/prune-dist.mjs",
+    "_comment_build": "There is no plain `astro build` any more: getStaticPaths queries the CMS, so the build must run inside `tinacms build`, which starts the data layer for its duration. This is `build` rather than a separate `build:tina` on purpose — Cloudflare's build command lives in a dashboard the repo can't assert, and when it said `npm run build` the deploy failed on the unresolvable generated client. The correct build has to be the one behind the obvious name. NODE_ENV=production is also not redundant: `tinacms build` sets NODE_ENV=development for the command it wraps, which makes import.meta.env.PROD false and silently flips both PROD branches we have — events fall back to the curated list instead of the Church Center snapshot, and draft pages get published.",
+    "build": "tinacms build --local --skip-cloud-checks -c \"NODE_ENV=production astro build\"",
+    "postbuild": "node scripts/prune-dist.mjs && node scripts/prune-admin.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "precheck": "npm run clean:vite",
@@ -29,9 +30,7 @@
     "dev:tina": "ASTRO_DEV=1 tinacms dev -c \"astro dev\"",
     "_comment_compare": "Regression check for the Tina migration: renders both builds down to what a reader sees and diffs them. Needs a built baseline in the sibling worktree — see spike/compare-builds.mjs. `compare:serve` puts the two builds on adjacent ports for a side-by-side look.",
     "compare": "node spike/compare-builds.mjs",
-    "compare:serve": "node spike/serve-builds.mjs",
-    "_comment_build:tina": "NODE_ENV=production is not redundant: `tinacms build` sets NODE_ENV=development for the command it wraps, which makes import.meta.env.PROD false inside `astro build`. That silently flips both PROD branches we have — events fall back to the curated list instead of the Church Center snapshot, and draft pages get published.",
-    "build:tina": "npm run clean:vite && node scripts/generate-redirects.mjs && tinacms build --local --skip-cloud-checks -c \"NODE_ENV=production astro build\" && node scripts/prune-dist.mjs"
+    "compare:serve": "node spike/serve-builds.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",

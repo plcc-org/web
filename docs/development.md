@@ -67,7 +67,7 @@ Requires Node.js (LTS — CI uses 25) and npm.
 npm install
 npm run dev          # local dev server at http://localhost:4321/
 npm run dev:tina     # dev server + the CMS at /admin (see cms.md)
-npm run build:tina   # production build to dist/ (the CMS compiles the client first)
+npm run build        # production build to dist/ (the CMS compiles the client first)
 npm run preview      # preview the production build locally
 ```
 
@@ -79,7 +79,7 @@ npm run format:check  # Prettier — verify only
 npm run lint:css      # Stylelint — enforces tokens-first
 npm run check         # astro check (type + template diagnostics)
 npm test              # Vitest unit tests
-npm run build:tina    # then:
+npm run build         # then:
 npm run test:site     # post-build crawl of dist/
 ```
 
@@ -91,10 +91,17 @@ npm run test:site     # post-build crawl of dist/
 
 ## The build pipeline
 
-`npm run build:tina` wraps `astro build` in `tinacms build`, which compiles the CMS
+`npm run build` wraps `astro build` in `tinacms build`, which compiles the CMS
 schema and generates the GraphQL client that `src/pages/[...slug].astro` queries at build
 time. Plain `astro build` fails at prerendering with `fetch failed` — nothing is listening.
-The Astro build itself is three steps, not one.
+The Astro build itself is four steps, not one.
+
+> **Why this is `build` and not `build:tina`.** It was a separate script once, and a
+> Cloudflare deploy failed because the dashboard's build command still said `npm run build`
+> — which ran a bare `astro build` and died on the unresolvable generated client. The
+> dashboard is a setting the repo cannot assert, so the fix is not to document the right
+> command harder: it's to make the obvious name be the correct build. There is no valid
+> use of a plain `astro build` in this repo.
 
 ### `prebuild`
 
@@ -112,7 +119,11 @@ rm -rf node_modules/.vite && node scripts/generate-redirects.mjs
 
 ### `build`
 
-`NODE_ENV=production astro build`. Both of those are load-bearing:
+`tinacms build --local --skip-cloud-checks -c "NODE_ENV=production astro build"`. Three
+parts of that are load-bearing:
+
+- **`--local --skip-cloud-checks`** reads content from the files on disk. No account, no
+  network, no third party is involved in a build.
 
 - **`NODE_ENV=production` is not redundant.** `tinacms build` sets `NODE_ENV=development`
   for the command it wraps, which makes `import.meta.env.PROD` false inside the Astro
@@ -123,6 +134,13 @@ rm -rf node_modules/.vite && node scripts/generate-redirects.mjs
   [infrastructure.md](./infrastructure.md).
 
 ### `postbuild`
+
+`scripts/prune-admin.mjs` keeps the CMS admin out of the published site. `tinacms build`
+always compiles the admin SPA into `public/admin`, which is right locally — `dev:tina`
+serves a data layer beside it — but a deployed static site has no data layer, so the SPA
+would load and fail every call it makes. Publishing it is opt-in via `TINA_PUBLISH_ADMIN=true`,
+once the editor has an auth backend (see [cms.md](./cms.md)). Local dev is untouched: it
+serves `/admin` from `public/`, which this never looks at.
 
 `scripts/prune-dist.mjs` deletes emitted image originals that nothing references.
 `src/lib/images.ts` registers the entire photo library through `import.meta.glob` (which
@@ -263,7 +281,7 @@ links, images, structure, text) and diffs them page by page, so anything that ch
 shouldn't have shows up as a hit with no rule needed in advance.
 
 ```bash
-npm run build:tina
+npm run build
 npm run compare              # exits 1 on any difference
 npm run compare -- --detail  # and show them (name pages to narrow it)
 npm run compare:serve        # baseline on :4101, this build on :4102

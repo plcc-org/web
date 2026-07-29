@@ -61,11 +61,11 @@ jobs:
       # robots.txt matches DEPLOY_ENV, but only for the target in front of it,
       # so both have to be built for the assertion to mean anything.
       - name: Verify staging target
-        run: npm run build:tina && npm run test:site
+        run: npm run build && npm run test:site
         env:
           DEPLOY_ENV: staging
 
       - name: Verify production target
-        run: npm run build:tina && npm run test:site
+        run: npm run build && npm run test:site
         env:
           DEPLOY_ENV: production

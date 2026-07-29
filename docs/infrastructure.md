@@ -44,7 +44,7 @@ Cloudflare setup.
 
 **Cloudflare** builds and deploys on every push (via Cloudflare's Git integration / Workers
 Builds): the connected branch publishes to `plcc.dev`, other branches get preview URLs. The
-build command is `npm run build:tina`; the adapter needs the `nodejs_compat` compatibility flag
+build command is `npm run build`; the adapter needs the `nodejs_compat` compatibility flag
 (see [cms.md](./cms.md)).
 
 `.github/workflows/ci.yml` runs the checks on every pull request and every push to `main`
@@ -73,7 +73,7 @@ below are recorded here because nothing in the repo can assert them:
 
 | Setting              | Value                                | If it's wrong                                                                                                 |
 | -------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| Build command        | `npm run build:tina`                 | Without the CMS wrapper the build fails at prerendering with `fetch failed`                                   |
+| Build command        | `npm run build`                      | Without the CMS wrapper the build fails at prerendering with `fetch failed`                                   |
 | `DEPLOY_ENV`         | `staging` (production: `production`) | Falls back to staging with a build-log warning; on the production Worker that means the site is never indexed |
 | Node version         | 25                                   | Build may fail on syntax or dependency support                                                                |
 | CMS auth credentials | per the CMS backend (see cms.md)     | Editors can't sign in to /admin                                                                               |

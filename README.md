@@ -13,7 +13,7 @@ Requires Node.js (LTS) and npm.
 npm install
 npm run dev      # local dev server at http://localhost:4321/
 npm run dev:tina # dev server + the CMS at /admin
-npm run build:tina # production build to dist/
+npm run build # production build to dist/
 npm run preview  # preview the production build locally
 ```
 
@@ -23,7 +23,7 @@ Other scripts:
 npm run check         # astro check (type + template diagnostics)
 npm run lint:css      # Stylelint — enforces the design tokens
 npm test              # Vitest unit tests
-npm run test:site     # crawl the built site (run after npm run build:tina)
+npm run test:site     # crawl the built site (run after npm run build)
 npm run format        # Prettier — write
 npm run format:check  # Prettier — verify only
 ```

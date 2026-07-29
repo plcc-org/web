@@ -321,7 +321,7 @@ Two things worth knowing about dev:
 
 ## Deployed setup
 
-The public site is static and needs nothing from Tina at build time: `npm run build:tina`
+The public site is static and needs nothing from Tina at build time: `npm run build`
 wraps `astro build` in `tinacms build --local --skip-cloud-checks`, which reads content from
 the files on disk. **No account, no network, no third-party service is involved in a build.**
 
@@ -345,7 +345,7 @@ works here, but has only ever been exercised locally.
 
 1. Cloudflare dashboard → **Workers & Pages → Create** → **Import a repository** (Workers
    Builds), pick `timsneath/plcc-web` and the deploy branch.
-2. Build settings: **build command** `npm run build:tina`, **deploy command**
+2. Build settings: **build command** `npm run build`, **deploy command**
    `npx wrangler deploy`. The adapter emits the Worker config (`main`, `assets` from
    `dist/client`, the `SESSION` KV binding); `wrangler deploy` picks it up automatically.
 3. **`wrangler.jsonc` at the repo root** sets `nodejs_compat`. This is required, not
@@ -360,7 +360,7 @@ works here, but has only ever been exercised locally.
 6. **Custom domain**: add `plcc.dev` to the Worker.
 
 A push to the connected branch builds and deploys; other branches get preview URLs. To deploy
-by hand: `npm run build:tina && npx wrangler deploy`.
+by hand: `npm run build && npx wrangler deploy`.
 
 ### Cutover and production
 
