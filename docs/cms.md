@@ -373,6 +373,15 @@ change, or every existing inbound link breaks.
 
 ## Gotchas
 
+- **The build needs a 4 GB heap, and Node 22.** Both are pinned in the repo (`build` in
+  `package.json`, `.node-version`) rather than left to a host's defaults, because both
+  failures land in the same place — the CMS's `Indexing local files` step — and neither
+  looks like a CMS problem. The heap: the indexer needs more than the 2 GB Node defaults
+  to in a build container, and dies with _"Ineffective mark-compacts near heap limit"_.
+  The Node version: on 25, a race in the CMS's datalayer client makes it connect before
+  its own server is listening, and every query then queues forever
+  ([tinacms/tinacms#7295](https://github.com/tinacms/tinacms/pull/7295), unfixed as of
+  `@tinacms/graphql@2.4.9`). **Don't "modernise" either one** without reading that PR.
 - **`nodejs_compat` is load-bearing.** See the deploy section — without it the build writes
   every page out empty and the island route 500s, both while exiting 0.
 - **Keep the two schemas in sync** — a field in `tina/config.ts` with no counterpart in

@@ -410,6 +410,33 @@ hit the same wall on Cloudflare and landed on the same number — useful
 confirmation, since Cloudflare doesn't publish the build container's RAM, so
 nothing else told us 4096 was affordable rather than just a different way to die.
 
+**A live upstream bug sits right next to that OOM**, and it is worth knowing about
+even though it doesn't appear to be ours.
+[tinacms/tinacms#7295](https://github.com/tinacms/tinacms/pull/7295) describes a race
+in `TinaLevelClient.openConnection()`: the client connects to the datalayer without
+waiting for the server's `listen()`, and on `ECONNREFUSED` `many-level` queues every
+database operation **forever**, so the build hangs at `Indexing local files` — the
+same phase we died in. Node 25 sets up connections fast enough that it fires "almost
+every run"; Node 22 is less consistent.
+
+Two things follow. First, **the fix is not released**: the PR has been open since
+2026-07-16, and `@tinacms/graphql@2.4.9` — the latest published, and what we install
+— still contains the unguarded `openConnection()`. Verified by reading
+`node_modules`, not by comparing version numbers, which suggested the opposite.
+Second, the initial `.node-version` pin to 25 was chosen only to silence an
+`EBADENGINE` warning the build ran straight past, and it put us on the worst Node
+major for an unfixed hang. Pinned to Node 22 LTS instead, which clears that warning
+too.
+
+Our OOM is probably _not_ this race: the race hangs indefinitely, and no heap size
+cures a hang, whereas ours fails at 2048 and succeeds deterministically at 3072
+with output that passes both the crawl and the render comparison.
+
+As a maintenance signal it cuts against the verdict slightly — an unmerged
+two-week-old fix for a bug that hangs builds is exactly the responsiveness question
+this evaluation set out to answer. It doesn't change the conclusion, since Tina still
+ships an order of magnitude more than Keystatic, but it belongs in the record.
+
 The pattern across all six: **every one is a setting that lives outside the code,
 or a rule the code states but doesn't enforce.** Three are now enforced in the repo
 — the build command, the Node version, and the heap size — and those three can't

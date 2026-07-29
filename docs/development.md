@@ -61,7 +61,10 @@ nginx/, Dockerfile  Container image for serving the built site
 
 ## Building and running
 
-Requires Node.js (LTS — CI uses 25) and npm.
+Requires Node.js and npm. The version is pinned in `.node-version` (22 LTS), which CI and
+Cloudflare both read — deliberately not the newest release: on Node 25 an unfixed race in
+the CMS's datalayer client hangs builds at "Indexing local files"
+([tinacms/tinacms#7295](https://github.com/tinacms/tinacms/pull/7295)).
 
 ```bash
 npm install
