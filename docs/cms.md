@@ -338,6 +338,15 @@ What is still undecided is **auth for the live editor** — who is allowed to si
   login, GitHub as the git provider, no TinaCloud at all. That starter is Next.js, so the
   handler wiring would need porting to Astro.
 
+**That decision gates visual editing, not just sign-in.** Measured on the deployed
+staging site: `/tina-island` returns 500 (`Island render failed`). The Worker itself is
+healthy — it enforces its own guards first, so `nodejs_compat` is doing its job — but
+`tinacms build --local` generates a client pointed at `http://localhost:4001/graphql`,
+which is the datalayer that exists only while a build is running. Nothing answers there
+once deployed. The public site is unaffected (every page is prerendered, the client is
+read only at build time, and nothing but the admin bridge ever calls that route), but
+**this is the first thing to re-test once a backend exists** — before the login.
+
 Also unresolved: Tina's FAQ lists **git-backed media** as TinaCloud-only. Repo-based media
 works here, but has only ever been exercised locally.
 

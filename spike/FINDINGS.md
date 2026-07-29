@@ -441,6 +441,26 @@ ships an order of magnitude more than Keystatic, but it belongs in the record.
 the race above did not bite on that run, and the Node pin is risk-reduction rather
 than a fix: the heap was the last real blocker.
 
+Measured against the deployed staging site, and all four hold: `robots.txt` is
+`Disallow: /` (so `DEPLOY_ENV=staging` reached the build — the setting with no safety
+net), `/admin` 404s (the `TINA_PUBLISH_ADMIN` gate held), and pages render with their
+full-bleed heroes and live `tel:` links.
+
+The fourth is the interesting one. **`/tina-island` returns 500, and that is
+expected.** `nodejs_compat` is fine — the Worker loads Tina's middleware and runs our
+route, which is why it answers with its own guards (405 without POST, 404 without
+`application/x-tina-preview+json`) and its own `Island render failed` rather than
+crashing. What it can't do is render: `tinacms build --local` generates a client
+pointed at `http://localhost:4001/graphql`, the datalayer that exists only for the
+duration of a build. Nothing answers there in a deployed Worker.
+
+So the backend question is bigger than sign-in — **it gates visual editing itself**,
+not just who may use it. The public site is untouched by this: every page is
+prerendered, the client is consulted only at build time, and no visitor ever reaches
+`/tina-island` (it is disallowed in `robots.txt` and used only by the admin bridge).
+Which is the point of shipping the site with the editor dark — but it does mean the
+first thing to re-test after the backend lands is this route, not the login.
+
 The pattern across all six: **every one is a setting that lives outside the code,
 or a rule the code states but doesn't enforce.** Three are now enforced in the repo
 — the build command, the Node version, and the heap size — and those three can't
@@ -463,7 +483,7 @@ Everything unresolved is about the _deployed_ editor. Local editing is done.
 
 | #   | Open question                                                                                                       | Why it matters                                                                                                                         |
 | --- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Who authenticates at `/admin`** — TinaCloud (2-user free tier, $24/mo beyond) or self-hosted auth on Workers + KV | The only remaining third-party question. Builds never touch it; sign-in does                                                           |
+| 1   | **Who authenticates at `/admin`** — TinaCloud (2-user free tier, $24/mo beyond) or self-hosted auth on Workers + KV | Bigger than sign-in: it also gates `/tina-island`, so visual editing is inert on the deployed site until it lands (measured below)     |
 | 2   | **Production media**                                                                                                | The thumbnail route is dev-only, and Tina's FAQ lists git-backed media as TinaCloud-only. Unverified either way                        |
 | 3   | **`tina/config.ts` is unchecked**                                                                                   | `defineConfig` OOMs the compiler, so the collection schema is the one file CI can't verify. `templates.mjs` — the larger half — now is |
 | 4   | **No list-view columns**                                                                                            | Tina has no equivalent; 55 short links show as filenames. Mitigated with `searchable`, not fixed                                       |
