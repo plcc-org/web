@@ -259,8 +259,8 @@ production build that isn't indexable looks perfect and simply never appears in 
 
 Everything above checks one build against a rule. `npm run compare` checks a build against
 _another build_ — it reduces each to what a reader sees (title, description, headings,
-links, images, text) and diffs them page by page, so anything that changed but shouldn't
-have shows up as a hit with no rule needed in advance.
+links, images, structure, text) and diffs them page by page, so anything that changed but
+shouldn't have shows up as a hit with no rule needed in advance.
 
 ```bash
 npm run build:tina
@@ -272,8 +272,9 @@ npm run compare:serve        # baseline on :4101, this build on :4102
 The baseline is a second worktree, so it can hold whichever dependencies that revision
 needs; `spike/compare-builds.mjs` documents the one-time setup. This was built to prove
 the CMS migration changed nothing, and earned its keep immediately: it caught `tel:` links
-rendering as `#` and a production build silently running as development — both invisible
-to every check above, because each looks perfectly consistent on its own.
+rendering as `#`, a production build silently running as development, and a wrapper div
+that dropped every full-bleed block out of the `.canvas` layout rules — all invisible to
+every check above, because each build looks perfectly consistent on its own.
 
 ### Unit tests
 

@@ -7,20 +7,24 @@ import { tinaComponents } from './registry'
 // A CMS page rendered from Tina's GraphQL result rather than from a compiled
 // MDX module, so the bridge can wire each region to its form.
 //
-// `data-tina-field` is what makes a region clickable in the admin iframe:
-// clicking it focuses the matching field in the sidebar. The markers are coarse
-// on purpose — one for the hero, one for the body — because clicking any node
-// inside a rich-text region focuses that whole field anyway.
+// Nothing may come between `.canvas` and a block. `.canvas` is a full-bleed grid
+// that places its children by column, and layout.css addresses them as direct
+// children — `.canvas > *`, `.canvas > .to-full`, `.canvas:has(> .is-flush)`.
+// A wrapper div around a block silently drops it out of every one of those rules,
+// so a full-bleed hero or a flush closing band renders inset instead. It looks
+// like a margin bug and nothing fails.
+//
+// So `data-tina-field` goes *on* the element, never on a wrapper around it: the
+// hero passes its marker down to whichever root it renders, and each block sets
+// its own (see src/lib/tina/block-field.ts). There is deliberately no marker for
+// the body as a whole — a wrapper is the only way to express one, and per-block
+// markers are better anyway, since clicking a block opens that block's form.
 type Props = { data: Record<string, any> }
 const { data } = Astro.props
 const hero = data.hero ?? {}
 ---
 
 <div class="canvas">
-  <div data-tina-field={tinaField(data, 'hero')}>
-    <PageHero {...hero} title={data.title} />
-  </div>
-  <div data-tina-field={tinaField(data, 'content')}>
-    <TinaMarkdown content={data.content} components={tinaComponents} />
-  </div>
+  <PageHero {...hero} title={data.title} tinaField={tinaField(data, 'hero')} />
+  <TinaMarkdown content={data.content} components={tinaComponents} />
 </div>

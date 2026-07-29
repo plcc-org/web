@@ -6,7 +6,9 @@
 import type { CustomComponentsMap } from '@tinacms/astro/types'
 
 import RichTextLink from './RichTextLink.astro'
+import RichTextListItemContent from './RichTextListItemContent.astro'
 
 export const inlineComponents: CustomComponentsMap = {
   a: RichTextLink,
+  lic: RichTextListItemContent,
 }

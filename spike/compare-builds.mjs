@@ -6,9 +6,9 @@
 //   node spike/compare-builds.mjs --detail visit kids   # only those pages
 //   node spike/compare-builds.mjs --baseline ../elsewhere/dist
 //
-// Both builds are reduced by spike/snapshot-build.mjs to six per-page signals —
-// title, description, headings, links, images, text — and the snapshots are what
-// gets compared. See that file for why raw HTML is the wrong thing to diff.
+// Both builds are reduced by spike/snapshot-build.mjs to seven per-page signals —
+// title, description, headings, links, images, structure, text — and the snapshots
+// are what gets compared. See that file for why raw HTML is the wrong thing to diff.
 //
 // Exits 1 if anything differs, so it can gate a merge.
 
@@ -75,7 +75,7 @@ for (const f of added) console.log(`+ new in tina build       /${f.replace(/\.tx
 // Which of the five sections a page's differences fall in. Reported separately
 // because they carry very different weight: a link or image difference is almost
 // always a defect, while a text difference is often a deliberate copy edit.
-const SECTIONS = ['title/desc', 'headings', 'links', 'images', 'text']
+const SECTIONS = ['title/desc', 'headings', 'links', 'images', 'structure', 'text']
 
 // Which section each line of a snapshot belongs to, by line number. A changed line
 // has to be attributed from this rather than from the hunk it appears in — a hunk

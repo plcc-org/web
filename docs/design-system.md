@@ -343,6 +343,14 @@ second layout system, and there shouldn't be.**
   **not** sibling margins. That's what makes any component work as a direct child
   regardless of order, and it's the property to protect when adding one.
 
+**Never wrap a block.** Every rule above is written as a direct child — `.canvas > *`,
+`.canvas > .to-full`, `.canvas:has(> .is-flush)` — so one element between `.canvas` and a
+block drops it out of all of them: a full-bleed hero renders inset, a flush closing band
+reopens the gap above the footer. Nothing errors, no build fails, and every automated check
+still passes; it just looks wrong. If a block needs an attribute (an editor marker, an
+analytics hook), put it **on** the block, passing it through as a prop where the root is a
+shared component. This has bitten us once, on all 20 CMS pages at the same time.
+
 `.section` is a **semantic marker with no CSS of its own**. It exists to make the
 document structure readable; spacing comes from the canvas.
 

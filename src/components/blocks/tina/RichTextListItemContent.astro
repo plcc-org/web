@@ -1,0 +1,12 @@
+---
+// Renders the contents of a list item with no wrapper element.
+//
+// The CMS models a list item as `li > lic` (list-item content), and its default
+// renderer emits `lic` as a `<div>`. Astro's MDX pipeline puts the text straight
+// inside the `<li>`, so without this override every bullet on the site gains a
+// block-level div the hand-built pages don't have. Nothing currently styles a
+// content `<li>`, so the two render alike today — this keeps them alike, rather
+// than leaving a difference for the first `li > *` rule to turn into a bug.
+---
+
+<slot />

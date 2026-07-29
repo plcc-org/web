@@ -316,10 +316,33 @@ override (the supported hook, checked by `LinkNode.astro` before its own
 rendering) over a tested allowlist that adds `tel:` and nothing else —
 `src/lib/tina/rich-text-href.ts`, `test/rich-text-href.test.ts`.
 
-With both fixed, all 29 pages are identical to production across every signal:
-1299 links, 187 images, every heading and sentence. That is the strongest evidence
-in this document that the migration is content-safe — stronger than the round-trip
-harness, which only proves the MDX survives a save, not that it renders the same.
+**Every CMS page's full-bleed layout was broken** — found by eye, not by the
+harness, which is what prompted adding a seventh signal. `PageBody` wrapped the
+hero and the body in `data-tina-field` divs. But `.canvas` is a grid that places
+its children by column, and layout.css addresses them as _direct_ children —
+`.canvas > *`, `.canvas > .to-full`, `.canvas:has(> .is-flush)`. A wrapper drops a
+block out of all of them, so full-bleed heroes and flush closing bands rendered
+inset. All 20 CMS pages were affected; 17 had visibly mislaid elements.
+
+The content signals could never have caught it: every word, link and image was
+identical. So the snapshot now also records the element tree, and the rule is that
+`data-tina-field` goes _on_ the element and never on a wrapper around it — the hero
+passes its marker down to whichever root it renders, and each block already sets
+its own. Confirmed the new signal fires on the broken build (20 pages) before
+fixing it. The whole-body marker is simply gone: a wrapper was the only way to
+express one, and per-block markers are better anyway.
+
+One further structural difference surfaced once the signal existed: the CMS models
+a list item as `li > lic` and renders `lic` as a `div`, which Astro's MDX pipeline
+does not. Measured as visually inert — identical item heights, identical page
+height — but removed anyway with a pass-through override, so the two builds stay
+byte-comparable and no future `li > *` rule can turn it into a bug.
+
+With all of it fixed, all 29 pages are identical to production across every
+signal: 1299 links, 187 images, every heading, sentence and element. That is the
+strongest evidence in this document that the migration is content-safe — stronger
+than the round-trip harness, which only proves the MDX survives a save, not that
+it renders the same.
 
 Worth keeping after the migration lands: `npm run compare` is a general answer to
 "did this change anything a reader would notice", and its baseline is just a second
