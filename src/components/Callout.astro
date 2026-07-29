@@ -3,23 +3,25 @@ import { renderMarkdown } from '../lib/markdown'
 
 // A bordered "aside" panel — sand background, moss left-accent — for a single
 // emphasized point (safety note, a reassurance, an FYI). Rendered as the CMS
-// "Callout" block; the Keystatic key maps straight here with no MDX wrapper.
+// "Callout" block; the CMS key maps straight here with no MDX wrapper.
 //
 // Two content paths: the default slot (what MDX children arrive as, and the one
 // in use) preserves inline markup — lists, <strong>, links. `body` takes a
 // Markdown string instead, for any caller that has one rather than children.
 
 type Props = {
+  /** Visual-editor block marker; see src/lib/tina/block-field.ts. */
+  tinaField?: string
   heading?: string
   body?: string
   class?: string
 }
 
-const { heading, body, class: className } = Astro.props
+const { heading, body, class: className, tinaField } = Astro.props
 const hasBody = typeof body === 'string' && body.trim().length > 0
 ---
 
-<section class:list={['section', 'section-callout', className]} data-reveal>
+<section class:list={['section', 'section-callout', className]} data-reveal data-tina-field={tinaField}>
   {heading && <h2>{heading}</h2>}
   {hasBody ? <div set:html={renderMarkdown(body)} /> : <slot />}
 </section>

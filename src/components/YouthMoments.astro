@@ -14,18 +14,20 @@ type Moment = {
 }
 
 type Props = {
+  /** Visual-editor block marker; see src/lib/tina/block-field.ts. */
+  tinaField?: string
   moments: Moment[]
   eyebrow?: string
   heading?: string
 }
 
-const { moments, eyebrow = 'Through the year', heading = 'Big moments worth planning around' } = Astro.props
+const { moments, eyebrow = 'Through the year', heading = 'Big moments worth planning around', tinaField } = Astro.props
 
 const featured = moments.filter((m) => m.featured)
 const rest = moments.filter((m) => !m.featured)
 ---
 
-<section class="section youth-moments" data-reveal>
+<section class="section youth-moments" data-reveal data-tina-field={tinaField}>
   <div class="youth-moments__head">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     {heading && <h2 class="youth-moments__heading">{heading}</h2>}

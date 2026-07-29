@@ -1,0 +1,13 @@
+---
+import SectionHeader from '../../SectionHeader.astro'
+import TinaChildren from './TinaChildren.astro'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
+
+type Props = { eyebrow?: string; heading?: string; children?: unknown } & BlockProps
+const { eyebrow, heading, children } = Astro.props
+---
+
+<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
+  {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
+  <div class="measure"><TinaChildren content={children as never} /></div>
+</section>

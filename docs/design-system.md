@@ -343,6 +343,14 @@ second layout system, and there shouldn't be.**
   **not** sibling margins. That's what makes any component work as a direct child
   regardless of order, and it's the property to protect when adding one.
 
+**Never wrap a block.** Every rule above is written as a direct child — `.canvas > *`,
+`.canvas > .to-full`, `.canvas:has(> .is-flush)` — so one element between `.canvas` and a
+block drops it out of all of them: a full-bleed hero renders inset, a flush closing band
+reopens the gap above the footer. Nothing errors, no build fails, and every automated check
+still passes; it just looks wrong. If a block needs an attribute (an editor marker, an
+analytics hook), put it **on** the block, passing it through as a prop where the root is a
+shared component. This has bitten us once, on all 20 CMS pages at the same time.
+
 `.section` is a **semantic marker with no CSS of its own**. It exists to make the
 document structure readable; spacing comes from the canvas.
 
@@ -437,12 +445,17 @@ Props reflect each component's actual `Props` type.
 | **`EventsBoard`** / **`EventRow`** | "What's On": chips, featured grid, weekly list, rhythms. See [events.md](./events.md).                                                                                                                                  |
 | **`Photo`**                        | See §9.                                                                                                                                                                                                                 |
 
-### The MDX block layer
+### The block layer
 
-`src/components/blocks/mdx/` holds thin wrappers that expose the components above to
-CMS-authored MDX, adapting Keystatic's flat props to each component's real shape. They
-are **not** a second component system — each one delegates. Where no adaptation is needed
-the Keystatic key maps straight to the component (`Callout`, `Roadmap` do this).
+Two folders hold thin wrappers that expose the components above to the CMS, adapting its
+flat props to each component's real shape. They are **not** a second component system —
+each one delegates.
+
+`src/components/blocks/tina/` holds the six blocks with prose inside them (`Section`,
+`Split`, `Callout`, `Cta`, `Aside`, `Letter`), whose body arrives as a `children` rich-text
+tree and is rendered by `TinaChildren`. `src/components/blocks/mdx/` holds the twelve
+self-closing ones, which take plain props. Where no adaptation is needed at all the CMS key
+maps straight to the component (`Callout`, `Roadmap` do this). `registry.ts` is the map.
 
 `PageHero` is the one that isn't a pass-through: it renders every CMS page's `hero`
 frontmatter as a reversed sand `Split`, guaranteeing a consistent page opener. See

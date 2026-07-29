@@ -27,10 +27,26 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 25
+          # Match .node-version, so CI exercises the Node the deploy uses. On 25,
+          # an unfixed race in Tina's datalayer client hangs builds at "Indexing
+          # local files" — see tinacms/tinacms#7295 and the note in FINDINGS.
+          node-version-file: .node-version
           cache: npm
 
       - run: npm ci
+
+      # tina/__generated__ is gitignored, and src/lib/tina/data.ts imports the
+      # generated GraphQL client statically — so on a clean checkout nothing
+      # type-checks or builds until the CMS schema is compiled. `tinacms build`
+      # with no `-c` runs codegen and exits. --local --skip-cloud-checks reads
+      # content from the repo and needs no credentials; see docs/cms.md.
+      - name: Generate the CMS client
+        run: npx tinacms build --local --skip-cloud-checks
+        env:
+          # Tina's indexer needs more than the 2GB heap Node defaults to in a
+          # small container. Runners are roomy enough today, but the requirement
+          # belongs to the tool, not the host — see the note in package.json.
+          NODE_OPTIONS: --max-old-space-size=4096
 
       # Environment-independent: formatting, tokens, types, unit tests.
       - run: npm run format:check
@@ -38,7 +54,7 @@ jobs:
 
       # The 410 routes are generated from the short-links collection but
       # committed, so `astro check` and code review can see them. Assert they
-      # match, or an edit in Keystatic silently stops taking effect.
+      # match, or a short-link edit in the CMS silently stops taking effect.
       - name: Generated 410 routes are in sync
         run: |
           node scripts/generate-redirects.mjs

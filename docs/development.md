@@ -15,7 +15,7 @@ for "What's On", see [events.md](./events.md).
 - **Styling:** Vanilla CSS with design tokens, split into partials under `src/styles/`
   (entry: `global.css`). See [design-system.md](./design-system.md).
 - **Images:** Astro's `<Image>` pipeline via the `<Photo>` wrapper component.
-- **CMS:** [Keystatic](https://keystatic.com), a Git-based editor at `/keystatic`. See
+- **CMS:** [TinaCMS](https://tina.io), a Git-based editor at `/admin`, with visual editing. See
   [cms.md](./cms.md).
 - **Host:** Cloudflare (Workers) via `@astrojs/cloudflare` (`imageService: 'compile'` keeps
   images optimized at build time). See [infrastructure.md](./infrastructure.md).
@@ -51,7 +51,7 @@ src/
   styles/           Design tokens + global CSS (entry: global.css)
 scripts/            Build and verification scripts (see "The build pipeline")
 test/               Vitest unit tests
-keystatic.config.ts Keystatic CMS config (collections/fields ↔ content.config.ts)
+tina/               TinaCMS config: config.ts (collections) + templates.mjs (block palette)
 public/             Static assets served as-is (favicon, manifest, _headers)
 docs/               Project documentation (you are here)
 nginx/, Dockerfile  Container image for serving the built site
@@ -61,12 +61,16 @@ nginx/, Dockerfile  Container image for serving the built site
 
 ## Building and running
 
-Requires Node.js (LTS — CI uses 25) and npm.
+Requires Node.js and npm. The version is pinned in `.node-version` (22 LTS), which CI and
+Cloudflare both read — deliberately not the newest release: on Node 25 an unfixed race in
+the CMS's datalayer client hangs builds at "Indexing local files"
+([tinacms/tinacms#7295](https://github.com/tinacms/tinacms/pull/7295)).
 
 ```bash
 npm install
 npm run dev          # local dev server at http://localhost:4321/
-npm run build        # production build to dist/ (runs prebuild + postbuild)
+npm run dev:tina     # dev server + the CMS at /admin (see cms.md)
+npm run build        # production build to dist/ (the CMS compiles the client first)
 npm run preview      # preview the production build locally
 ```
 
@@ -90,7 +94,17 @@ npm run test:site     # post-build crawl of dist/
 
 ## The build pipeline
 
-`npm run build` is three steps, not one.
+`npm run build` wraps `astro build` in `tinacms build`, which compiles the CMS
+schema and generates the GraphQL client that `src/pages/[...slug].astro` queries at build
+time. Plain `astro build` fails at prerendering with `fetch failed` — nothing is listening.
+The Astro build itself is four steps, not one.
+
+> **Why this is `build` and not `build:tina`.** It was a separate script once, and a
+> Cloudflare deploy failed because the dashboard's build command still said `npm run build`
+> — which ran a bare `astro build` and died on the unresolvable generated client. The
+> dashboard is a setting the repo cannot assert, so the fix is not to document the right
+> command harder: it's to make the obvious name be the correct build. There is no valid
+> use of a plain `astro build` in this repo.
 
 ### `prebuild`
 
@@ -108,10 +122,28 @@ rm -rf node_modules/.vite && node scripts/generate-redirects.mjs
 
 ### `build`
 
-`astro build`. Note that `astro.config.mjs` pins `import.meta.env.DEPLOY_ENV` through
-`vite.define`. That's load-bearing — see [infrastructure.md](./infrastructure.md).
+`tinacms build --local --skip-cloud-checks -c "NODE_ENV=production astro build"`. Three
+parts of that are load-bearing:
+
+- **`--local --skip-cloud-checks`** reads content from the files on disk. No account, no
+  network, no third party is involved in a build.
+
+- **`NODE_ENV=production` is not redundant.** `tinacms build` sets `NODE_ENV=development`
+  for the command it wraps, which makes `import.meta.env.PROD` false inside the Astro
+  build. That inverts both `PROD` branches in the codebase at once: events fall back to
+  the curated list instead of the Church Center snapshot, and draft pages get published.
+  Nothing fails; you just get a development build under a production name.
+- **`astro.config.mjs` pins `import.meta.env.DEPLOY_ENV`** through `vite.define` — see
+  [infrastructure.md](./infrastructure.md).
 
 ### `postbuild`
+
+`scripts/prune-admin.mjs` keeps the CMS admin out of the published site. `tinacms build`
+always compiles the admin SPA into `public/admin`, which is right locally — `dev:tina`
+serves a data layer beside it — but a deployed static site has no data layer, so the SPA
+would load and fail every call it makes. Publishing it is opt-in via `TINA_PUBLISH_ADMIN=true`,
+once the editor has an auth backend (see [cms.md](./cms.md)). Local dev is untouched: it
+serves `/admin` from `public/`, which this never looks at.
 
 `scripts/prune-dist.mjs` deletes emitted image originals that nothing references.
 `src/lib/images.ts` registers the entire photo library through `import.meta.glob` (which
@@ -133,9 +165,9 @@ the prune only ever removed unreachable files.
   validated in `src/content.config.ts`: `photos`, `youthMoments`, `leadership`, `quotes`,
   `startHereLinks`, `pages`. Query with `getCollection(...)` — don't hand-author lists in
   markup or add new `src/data/*.ts` arrays. Editing copy shouldn't mean touching layout.
-  Keep `keystatic.config.ts` in step (see [cms.md](./cms.md)).
+  Keep `tina/config.ts` in step (see [cms.md](./cms.md)).
 - **`short-links` is the one exception**, and deliberately so. It lives in
-  `src/content/` and is edited in Keystatic like everything else, but it is _not_ in
+  `src/content/` and is edited in the CMS like everything else, but it is _not_ in
   `content.config.ts`, because nothing renders it — it's build-time configuration read
   directly by `generate-redirects.mjs`. Registering it as an Astro collection would imply
   a page could query it, which is exactly backwards.
@@ -155,24 +187,26 @@ the prune only ever removed unreachable files.
 ### CMS-built pages
 
 Pages in the `pages` collection are **MDX files**, not block lists: a structured hero in
-frontmatter plus a body the editor composes in Keystatic's rich-text editor, inserting
-components. `src/pages/[...slug].astro` renders them, passing a **components map** that
-binds each MDX tag to a real site component. The filename is the URL slug
+frontmatter plus a body the editor composes in the CMS's rich-text editor, inserting
+components. `src/pages/[...slug].astro` fetches each page through the CMS's GraphQL client
+and renders the body with `<TinaMarkdown>`, using the component map in
+`src/components/blocks/tina/registry.ts`. The filename is the URL slug
 (`src/content/pages/church-life.mdx` → `/church-life/`). Drafts render in dev and are
 excluded from production builds.
 
-Adding a block type means touching **three** places, and they have to agree:
+Adding a block type means touching **two** places, and they have to agree — see
+[cms.md](./cms.md) for the detail:
 
-1. `keystatic.config.ts` — the editor UI for the block.
-2. `src/components/blocks/mdx/<Name>Mdx.astro` — a thin wrapper adapting the CMS's flat
-   props to the real component. If a component needs no adaptation, skip this and map the
-   Keystatic key straight to it (`Callout` and `Roadmap` do exactly that).
-3. The `components` map in `src/pages/[...slug].astro` — **the key must match the
-   component name used in the Keystatic config.**
+1. `tina/templates.mjs` — the editor UI for the block.
+2. `src/components/blocks/tina/registry.ts` — **the key must match the template `name`.**
+   A block with prose inside needs an adapter in `src/components/blocks/tina/`, because its
+   body arrives as a `children` rich-text tree rather than a slot; a self-closing block can
+   reuse its existing wrapper in `src/components/blocks/mdx/` or map straight to the real
+   component (`Callout` and `Roadmap` do exactly that).
 
-There is no Zod union of block types and no `Blocks.astro`. If a tag isn't in the map,
-MDX renders it as an unknown element rather than failing, so a mismatch between (1) and
-(3) is silent — check both.
+If a name isn't in the registry, the renderer emits a visible red placeholder rather than
+failing the build, so a mismatch between (1) and (2) shows up on the page, not in CI —
+check both.
 
 ---
 
@@ -201,7 +235,7 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
   `alt` explicitly to `<Photo>`. A decorative image needs **both** `alt=""` and
   `aria-hidden="true"` — the crawl treats `alt=""` on its own as an oversight and fails.
 - **CMS page blocks carry their own photos.** Blocks on CMS-built pages store an uploaded
-  image and its alt together via Keystatic `image()` fields, resolved at render time
+  image and its alt together via CMS image fields, resolved at render time
   through `imageFromRef` rather than Astro's `image()` helper — so a fixed
   `../../assets/images/…` reference works from both flat and nested pages. They don't
   touch the catalog.
@@ -221,7 +255,7 @@ hold — they drift back a little at a time, and each step looks harmless.
 | **`astro check`**           | Types and template diagnostics.                                                                                                                                                              |
 | **Vitest** (`test/`)        | Pure logic only — no `astro:` imports, so it stays unit-testable. Plus `styles.test.ts`, which pins CSS to `src/styles/`: no `<style>` block in any `.astro`, no `:global()` in any `.css`.  |
 | **`check-site.mjs`**        | Seven classes of post-build defect (below).                                                                                                                                                  |
-| **CI: 410 routes in sync**  | A `short-links` edit in Keystatic that never regenerated its route.                                                                                                                          |
+| **CI: 410 routes in sync**  | A `short-links` edit in the CMS that never regenerated its route.                                                                                                                            |
 | **CI: both deploy targets** | Environment-dependent output — `site`, sitemap, `robots.txt`.                                                                                                                                |
 
 ### The post-build crawl
@@ -242,11 +276,34 @@ hold — they drift back a little at a time, and each step looks harmless.
 Several of these exist because the failure has **no symptom on the rendered page**. A
 production build that isn't indexable looks perfect and simply never appears in search.
 
+### Comparing two builds
+
+Everything above checks one build against a rule. `npm run compare` checks a build against
+_another build_ — it reduces each to what a reader sees (title, description, headings,
+links, images, structure, text) and diffs them page by page, so anything that changed but
+shouldn't have shows up as a hit with no rule needed in advance.
+
+```bash
+npm run build
+npm run compare              # exits 1 on any difference
+npm run compare -- --detail  # and show them (name pages to narrow it)
+npm run compare:serve        # baseline on :4101, this build on :4102
+```
+
+The baseline is a second worktree, so it can hold whichever dependencies that revision
+needs; `spike/compare-builds.mjs` documents the one-time setup. This was built to prove
+the CMS migration changed nothing, and earned its keep immediately: it caught `tel:` links
+rendering as `#`, a production build silently running as development, and a wrapper div
+that dropped every full-bleed block out of the `.canvas` layout rules — all invisible to
+every check above, because each build looks perfectly consistent on its own.
+
 ### Unit tests
 
 `test/*.test.ts`, run by `npm test`:
 
 - `url.test.ts` — `withBase()` / `resolveHref()`
+- `rich-text-href.test.ts` — the href allowlist for CMS rich text, on both sides: the
+  schemes the site uses keep working, and script-bearing ones stay blocked
 - `events.test.ts` — `mapCategory`, `normalizeUpcoming`
 - `churchcenter-map.test.ts` — HTML stripping and word-boundary truncation
 - `markdown.test.ts` — `renderPlain`, including entity decoding

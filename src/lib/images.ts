@@ -20,7 +20,7 @@ export function imageLoader(filename: string): (() => Promise<ImageModule>) | un
   return byFilename.get(filename)
 }
 
-// CMS page-block images. Keystatic nests an entry's uploads under
+// CMS page-block images. The CMS nests an entry's uploads under
 // src/assets/images/<page-slug>/…, so we also index every image recursively by
 // its path relative to assets/images (e.g. "church-life/sunset"). The MDX
 // block wrappers resolve their stored reference ("…/assets/images/<key>")

@@ -19,8 +19,13 @@ if (!existsSync(DIST)) {
   process.exit(1)
 }
 
+// The CMS admin is a prebuilt SPA shell copied from public/admin. It is not a
+// page of the site — no meta description, no internal links worth crawling —
+// and it is disallowed in robots.txt, so hold it to none of the checks below.
+const isAdminShell = (f) => f === 'admin/index.html' || f.startsWith('admin/')
+
 const htmlFiles = readdirSync(DIST, { recursive: true })
-  .filter((f) => typeof f === 'string' && f.endsWith('.html'))
+  .filter((f) => typeof f === 'string' && f.endsWith('.html') && !isAdminShell(f))
   .map((f) => `${DIST}/${f}`)
 
 // Astro's `base` prefixes URLs in the HTML but not the dist folder layout, so
@@ -150,7 +155,7 @@ if (!existsSync(robotsPath)) {
   if (isProduction) {
     if (!/^Allow: \/$/m.test(robots)) errors.push('robots.txt: production build is not indexable')
     if (!/^Sitemap: https?:\/\//m.test(robots)) errors.push('robots.txt: production build has no Sitemap line')
-    for (const path of ['/keystatic', '/api/']) {
+    for (const path of ['/admin', '/tina-island', '/api/']) {
       if (!robots.includes(`Disallow: ${path}`)) errors.push(`robots.txt: production build does not disallow ${path}`)
     }
   } else if (!/^Disallow: \/$/m.test(robots)) {

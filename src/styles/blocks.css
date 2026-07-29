@@ -13,7 +13,7 @@
  * Sections, in file order:
  *
  *   Pull quotes   QuoteMdx.astro      the un-carded quote, and the verse band
- *   Aside notes   AsideMdx.astro      tinted prose + optional logo
+ *   Aside notes   AsideTina.astro     tinted prose + optional logo
  *   Block logos   PageHero/LogoCards  logos rendered through <Photo>
  * ==================================================================== */
 
@@ -71,7 +71,7 @@
 }
 
 /* ======================================================================
- * Aside notes (AsideMdx.astro) — tinted prose beside an optional small logo.
+ * Aside notes (AsideTina.astro) — tinted prose beside an optional small logo.
  *
  * Two columns on wide screens, stacked on narrow. The logo column is `auto`,
  * so it takes only the width the logo asks for and the prose gets the rest.

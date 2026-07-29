@@ -12,7 +12,8 @@ Requires Node.js (LTS) and npm.
 ```bash
 npm install
 npm run dev      # local dev server at http://localhost:4321/
-npm run build    # production build to dist/
+npm run dev:tina # dev server + the CMS at /admin
+npm run build # production build to dist/
 npm run preview  # preview the production build locally
 ```
 
@@ -37,7 +38,7 @@ Start with the [docs index](./docs/README.md), or jump straight in:
 
 - **[Philosophy & guardrails](./docs/philosophy.md)** — why the site exists and what belongs on it.
 - **[Editorial voice](./docs/voice.md)** — tone and word choices.
-- **[Editing the site](./docs/cms.md)** — the Keystatic CMS: pages, blocks, photos, short links.
+- **[Editing the site](./docs/cms.md)** — the TinaCMS editor: pages, blocks, photos, short links.
 - **[Design system](./docs/design-system.md)** — visual language, tokens, layout, components.
 - **[Development & architecture](./docs/development.md)** — stack, structure, conventions, the image system.
 - **[The events subsystem](./docs/events.md)** — how "What's On" gets its data.

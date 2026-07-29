@@ -72,7 +72,16 @@ const PAGES_DIR = 'src/pages'
 const GONE_MARKER = '@generated-gone-route'
 
 /** Reserved because a short link that shadows one of these would hide real content. */
-const RESERVED = new Set(['_astro', '_headers', '_redirects', 'api', 'keystatic', 'robots.txt', 'sitemap-index.xml'])
+const RESERVED = new Set([
+  '_astro',
+  '_headers',
+  '_redirects',
+  'admin',
+  'api',
+  'robots.txt',
+  'sitemap-index.xml',
+  'tina-island',
+])
 
 if (!existsSync(SOURCE_DIR)) {
   console.log('generate-redirects: no short-links collection — nothing to do.')
@@ -217,7 +226,7 @@ for (const { path, note, expires, permanent } of gone) {
 mkdirSync('public', { recursive: true })
 const header = [
   '# Generated from src/content/short-links — do not edit.',
-  '# Add or change these in Keystatic under "Short links".',
+  '# Add or change these in the CMS at /admin, under "Short links".',
   '',
 ]
 writeFileSync(OUT, [...header, ...rules].join('\n'))

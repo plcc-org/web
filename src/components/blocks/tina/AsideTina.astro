@@ -2,20 +2,20 @@
 import type { ImageMetadata } from 'astro'
 import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
+import TinaChildren from './TinaChildren.astro'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
-// MDX wrapper for the Aside block — a tinted two-column note: formatted prose
-// (the MDX children) beside an optional small logo. Generalizes the Beliefs
-// "creed-note"; stacks on mobile.
-type Props = { eyebrow?: string; logo?: string; logoAlt?: string }
-const { eyebrow, logo, logoAlt } = Astro.props
+// The Aside block: a tinted note, prose beside an optional small logo.
+type Props = { eyebrow?: string; logo?: string; logoAlt?: string; children?: unknown } & BlockProps
+const { eyebrow, logo, logoAlt, children } = Astro.props
 const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined
 ---
 
-<section class="section" data-reveal>
+<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
   <div class:list={['aside-note', !logoImg && 'aside-note--solo']}>
     <div class="aside-note__text">
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-      <slot />
+      <TinaChildren content={children as never} />
     </div>
     {
       logoImg && (

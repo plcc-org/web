@@ -8,14 +8,16 @@ export type LinkCardItem = {
 }
 
 type Props = {
+  /** Visual-editor block marker; see src/lib/tina/block-field.ts. */
+  tinaField?: string
   heading?: string
   links: LinkCardItem[]
   reveal?: boolean
 }
 
-// Keystatic sends '' for an empty text field, not undefined — a default
+// The CMS sends '' for an empty text field, not undefined — a default
 // parameter alone lets that through and renders a bare <h2>.
-const { heading: headingProp, links, reveal = false } = Astro.props
+const { heading: headingProp, links, reveal = false, tinaField } = Astro.props
 const heading = headingProp?.trim() || 'Start here'
 
 // Pick a column count from the item count: as many columns as cards (capped at
@@ -24,7 +26,7 @@ const heading = headingProp?.trim() || 'Start here'
 const cols = links.length === 5 ? 3 : Math.min(links.length, 4)
 ---
 
-<section {...reveal && { 'data-reveal': true }} class="section">
+<section {...reveal && { 'data-reveal': true }} class="section" data-tina-field={tinaField}>
   <h2>{heading}</h2>
 
   <div class:list={['link-grid', reveal && 'reveal-staggered']} style={`--link-cols:${cols}`}>

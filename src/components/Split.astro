@@ -11,6 +11,8 @@ import Photo from './Photo.astro'
 // resolved `image` + `alt` (e.g. a CMS-uploaded image from a page block).
 
 type Props = {
+  /** Visual-editor block marker; see src/lib/tina/block-field.ts. */
+  tinaField?: string
   filename?: string
   image?: ImageMetadata
   // Omit for catalogued photos (alt is looked up by filename); pass otherwise.
@@ -37,10 +39,12 @@ const {
   imgClass,
   id,
   reveal = false,
+  tinaField,
 } = Astro.props
 ---
 
 <section
+  data-tina-field={tinaField}
   id={id}
   {...reveal && { 'data-reveal': true }}
   class:list={['split', `split--${tone}`, reverse && 'split--reverse', className]}

@@ -1,18 +1,19 @@
 ---
 import Band from '../../Band.astro'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // MDX wrapper for a single featured pull-quote — a testimonial or short
 // quotation set apart from the prose. (For the rotating home band, see
 // QuoteCarousel.) With no tone it sits in open space with a moss accent and
 // centered serif type; with a tone it renders inside a colored Band — the
 // "verse band" treatment for a scripture line or epigraph.
-type Props = { quote: string; attribution?: string; tone?: 'none' | 'sand' | 'forest' | 'paper' }
+type Props = { quote: string; attribution?: string; tone?: 'none' | 'sand' | 'forest' | 'paper' } & BlockProps
 const { quote, attribution, tone = 'none' } = Astro.props
 ---
 
 {
   tone === 'none' ? (
-    <section class="section" data-reveal>
+    <section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
       <blockquote class="story-quote pull-quote">
         <p>{quote}</p>
         {attribution && <footer>— {attribution}</footer>}

@@ -25,8 +25,11 @@ type Props = {
   buttonLabel?: string
   buttonHref?: string
   flush?: boolean
+  /** Visual-editor marker; see src/lib/tina/block-field.ts. Absent on hand-built pages. */
+  tinaField?: string
 }
-const { image, alt, eyebrow, title, subhead, lede, logo, logoAlt, buttonLabel, buttonHref, flush } = Astro.props
+const { image, alt, eyebrow, title, subhead, lede, logo, logoAlt, buttonLabel, buttonHref, flush, tinaField } =
+  Astro.props
 const heroImg = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined
 const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined
 ---
@@ -40,6 +43,7 @@ const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata
       reverse
       tone="sand"
       eyebrow={eyebrow}
+      tinaField={tinaField}
     >
       {logoImg ? (
         <Fragment>
@@ -69,7 +73,7 @@ const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata
       )}
     </Split>
   ) : (
-    <header class="section page-intro">
+    <header class="section page-intro" data-tina-field={tinaField}>
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
       <h1 class="display">{title}</h1>
       {subhead && <p class="subhead">{subhead}</p>}

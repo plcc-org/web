@@ -1,0 +1,12 @@
+{
+  // Cloudflare Workers config. `nodejs_compat` exposes node:async_hooks, which
+  // Tina's visual-editing island route needs — its per-request store is an
+  // AsyncLocalStorage. Without the flag the build prerenders every page empty
+  // and the deployed /tina-island route 500s, both silently.
+  //
+  // Only read when deploying to Cloudflare; other hosts ignore it. Matches
+  // tinacms/tina-astro-starter.
+  "name": "plcc-web",
+  "compatibility_date": "2026-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+}

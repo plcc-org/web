@@ -3,10 +3,14 @@ import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
 
-// quotes / start-here-links each live as a single YAML file,
-// but the Git CMS (Keystatic) edits them as an array field, which serializes to
-// `{ <key>: [...] }`. Parse tolerantly so both the hand-authored bare-array form
-// and the CMS-wrapped form load, and give every item a stable `id` for the store.
+// quotes / start-here-links are each a single YAML file holding one array. The
+// CMS edits them as a list field, which serializes to `{ <key>: [...] }`. Parse
+// tolerantly so both the hand-authored bare-array form and the CMS-wrapped form
+// load, and give every item a stable `id` for the store.
+//
+// Each lives in its own directory so the CMS can model it as a one-document
+// collection — Tina has no singleton type, and pointing a collection at a
+// directory containing exactly one file is how its own starter does this.
 const yamlList =
   (key: string) =>
   (text: string): Array<Record<string, unknown>> => {
@@ -17,7 +21,7 @@ const yamlList =
 
 // Content lives under src/content/. Two shapes, by a simple rule:
 //   • Things you add / remove / reorder, or that own an image → a folder of
-//     entries (glob), one YAML file each, so the Git CMS (Keystatic) manages
+//     entries (glob), one YAML file each, so the Git CMS manages
 //     them as a "folder collection" with a media library.
 //   • Short flat lists → a single YAML file (file), edited as a list.
 // Schemas (Zod) make alt text required and give editor + build-time validation.
@@ -58,7 +62,7 @@ const youthMoments = defineCollection({
   }),
 })
 
-// Pastors and staff. One YAML data file per person (Keystatic stores data-only
+// Pastors and staff. One YAML data file per person (the CMS stores data-only
 // collections as flat `<slug>.yaml`). The `bio` is a Markdown string field
 // rendered to HTML at build time; the portrait is co-located in src/assets/images.
 const leadership = defineCollection({
@@ -76,7 +80,7 @@ const leadership = defineCollection({
 })
 
 const quotes = defineCollection({
-  loader: file('src/content/quotes.yaml', { parser: yamlList('quotes') }),
+  loader: file('src/content/quotes/quotes.yaml', { parser: yamlList('quotes') }),
   schema: z.object({
     id: z.string(),
     order: z.number().default(0),
@@ -86,7 +90,7 @@ const quotes = defineCollection({
 })
 
 const startHereLinks = defineCollection({
-  loader: file('src/content/start-here-links.yaml', { parser: yamlList('links') }),
+  loader: file('src/content/start-here-links/start-here-links.yaml', { parser: yamlList('links') }),
   schema: z.object({
     id: z.string(),
     group: z.enum(['home', 'im-new']),
@@ -98,10 +102,16 @@ const startHereLinks = defineCollection({
 })
 
 // CMS-built pages. Each is an MDX file: a structured hero in frontmatter plus an
-// MDX body the editor composes in Keystatic's rich-text editor, inserting styled
+// MDX body the editor composes in the CMS's rich-text editor, inserting styled
 // components (Split, Callout, Photo band, …). The body's component tags map to
-// thin Astro wrappers at render time (see src/pages/[...slug].astro and
-// src/components/blocks/mdx/), so everything reuses the real site components.
+// thin Astro wrappers at render time (see src/components/blocks/tina/registry.ts),
+// so everything reuses the real site components.
+//
+// Nothing calls getCollection('pages') — src/pages/[...slug].astro renders from
+// the CMS's GraphQL client. Do not delete this collection anyway: Astro syncs and
+// validates every *declared* collection regardless, and this schema is the only
+// thing that catches a page saved without a `hero`. Verified by test, not by
+// assumption.
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
   // Hero/block images are stored as path strings and resolved at render time via
