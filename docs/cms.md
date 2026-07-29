@@ -338,31 +338,42 @@ Two things worth knowing about dev:
 
 ## Deployed setup
 
-The public site is static and needs nothing from Tina at build time: `npm run build`
-wraps `astro build` in `tinacms build --local --skip-cloud-checks`, which reads content from
-the files on disk. **No account, no network, no third-party service is involved in a build.**
+**Every build reads content from the files on disk** — no network, no third party. What
+changes with credentials is only the client the build emits, and `scripts/build.mjs` picks
+between them:
 
-What is still undecided is **auth for the live editor** — who is allowed to sign in at
-`/admin` on the deployed site and have their saves become commits. Two options:
+| Environment                            | CMS flags                     | The deployed client                             |
+| -------------------------------------- | ----------------------------- | ----------------------------------------------- |
+| No credentials (CI, a fresh clone)     | `--local --skip-cloud-checks` | Points at `localhost:4001` — dead once deployed |
+| `PUBLIC_TINA_CLIENT_ID` + `TINA_TOKEN` | `--content=local`             | Talks to TinaCloud                              |
 
-- **TinaCloud.** Set `PUBLIC_TINA_CLIENT_ID` and `TINA_TOKEN`, and the admin compiles against
-  it. Free tier covers 2 editors; a team plan is $24/mo. This is the same shape of
-  third-party dependency we were trying to escape with Keystatic Cloud, on a tighter free
-  tier (Keystatic Cloud allowed 3).
-- **Self-hosted.** Tina supports bring-your-own git provider, database adapter and auth
-  provider. [ailabs-hq/tinacms-cloudflare](https://github.com/ailabs-hq/tinacms-cloudflare)
-  runs the whole backend on Cloudflare — Workers, KV as the database adapter, Auth.js for
-  login, GitHub as the git provider, no TinaCloud at all. That starter is Next.js, so the
-  handler wiring would need porting to Astro.
+The HTML is identical either way, which is why CI still verifies what deploys despite
+building without credentials. Only the client URL baked into the bundle differs.
 
-**That decision gates visual editing, not just sign-in.** Measured on the deployed
-staging site: `/tina-island` returns 500 (`Island render failed`). The Worker itself is
-healthy — it enforces its own guards first, so `nodejs_compat` is doing its job — but
-`tinacms build --local` generates a client pointed at `http://localhost:4001/graphql`,
-which is the datalayer that exists only while a build is running. Nothing answers there
-once deployed. The public site is unaffected (every page is prerendered, the client is
-read only at build time, and nothing but the admin bridge ever calls that route), but
-**this is the first thing to re-test once a backend exists** — before the login.
+Whether `/admin` is compiled and shipped is a **separate** switch, `TINA_PUBLISH_ADMIN`.
+Credentials alone don't ship the editor, deliberately — the two answer different questions,
+and a deploy can reasonably want the island route live without the editor on it. All three
+are Cloudflare build variables; `TINA_TOKEN` is a secret, the client ID is public by design
+(it ships inside the admin bundle), and neither belongs in the repo.
+
+**The backend is TinaCloud**, chosen over self-hosting. The free tier covers 2 editors, Team
+is $24/mo for 3–10. The alternative — bring-your-own git provider, database adapter and auth
+provider, per [Tina's self-hosted docs](https://tina.io/docs/self-hosted/overview) — is real
+but a build: `TinaNodeBackend` expects Node's `(req, res)` and Workers speak Fetch, and the
+reference Cloudflare implementation
+([ailabs-hq/tinacms-cloudflare](https://github.com/ailabs-hq/tinacms-cloudflare)) bridges
+that with ~50 untyped lines in a Next.js demo, alongside Auth.js and a KV adapter.
+
+**Git remains the source of truth either way**, so this is reversible: content is MDX in the
+repo, and moving to a self-hosted backend later changes the backend, not the content. That
+is what makes starting on TinaCloud low-risk rather than a lock-in.
+
+**Verify `/tina-island` before the login.** On staging without credentials it returned 500
+(`Island render failed`) — the Worker was healthy and enforcing its own guards, so
+`nodejs_compat` was fine, but the client pointed at `http://localhost:4001/graphql`, the
+datalayer that only exists while a build runs. `--content=local` is the flag that fixes it.
+It is the first thing to re-test after a credentials change, because it proves the deployed
+backend is actually reachable; a working login does not.
 
 Also unresolved: Tina's FAQ lists **git-backed media** as TinaCloud-only. Repo-based media
 works here, but has only ever been exercised locally.
