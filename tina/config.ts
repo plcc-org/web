@@ -3,9 +3,14 @@ import { defineConfig } from 'tinacms'
 import { templates } from './templates.mjs'
 
 // CMS configuration. The `pages` collection carries the page frontmatter (including the
-// nested `hero` object) and an 18-component body palette; `leadership` and `shortLinks` are
-// YAML data files with no body. Must stay aligned with src/content.config.ts, which Astro
-// validates the same files against at build time — see docs/cms.md.
+// nested `hero` object) and an 18-component body palette; the other four are YAML data
+// files with no body. Must stay aligned with src/content.config.ts, which Astro validates
+// the same files against at build time — see docs/cms.md.
+//
+// Collection order is the sidebar order, and it is the running order in docs/cms.md's
+// "What's editable" table: `pages` first because it's what an editor is nearly always
+// here for, then the shared lists that feed page blocks, then `shortLinks` — routing
+// config rather than content, and the least often touched.
 //
 // A note on `required`: on a collection field it becomes a non-null GraphQL field, so the
 // indexer rejects any existing document missing it and the build fails. Every one below was
@@ -30,6 +35,112 @@ export default defineConfig({
   },
   schema: {
     collections: [
+      {
+        name: 'pages',
+        label: 'Pages',
+        path: 'src/content/pages',
+        format: 'mdx',
+        // Visual editing opens this URL in the admin iframe — the real page, now
+        // that src/pages/[...slug].astro renders through Tina and carries the
+        // field metadata the bridge maps clicks onto.
+        ui: {
+          router: ({ document }) => `/${document._sys.breadcrumbs.join('/')}/`,
+        },
+        // New pages start unpublished, as they did under the previous CMS. Without
+        // this a page goes live the moment it's created.
+        defaultItem: () => ({ draft: true }),
+        fields: [
+          {
+            name: 'title',
+            label: 'Title',
+            type: 'string',
+            isTitle: true,
+            required: true,
+            description: 'Also the page address — "MOMCo" → /momco/.',
+          },
+          {
+            name: 'seoDescription',
+            label: 'SEO description',
+            type: 'string',
+            description: 'A one-sentence summary for search results and link previews.',
+          },
+          {
+            name: 'draft',
+            label: 'Draft',
+            type: 'boolean',
+            description:
+              "New pages start as drafts — they're visible in preview but not published. Untick to publish when ready.",
+          },
+          {
+            name: 'hero',
+            label: 'Hero',
+            type: 'object',
+            fields: [
+              {
+                name: 'image',
+                label: 'Hero photo',
+                type: 'image',
+                description: 'Optional — leave blank for a calm, text-only header (no photo).',
+              },
+              {
+                name: 'alt',
+                label: 'Photo description (alt text)',
+                type: 'string',
+                description:
+                  'Required only when a hero photo is set. Say what someone who can’t see it would need — ' +
+                  '“A volunteer making coffee before the service”, not “coffee”.',
+              },
+              {
+                name: 'eyebrow',
+                label: 'Eyebrow',
+                type: 'string',
+                description: 'Optional — a small label shown above the heading.',
+              },
+              {
+                name: 'lede',
+                label: 'Intro line',
+                type: 'string',
+                ui: { component: 'textarea' },
+                description:
+                  'A one- or two-sentence opening. The heading comes from the page title. If it could describe ' +
+                  'any church, rewrite it with something only true of Pine Lake.',
+              },
+              {
+                name: 'subhead',
+                label: 'Subhead',
+                type: 'string',
+                description: 'Optional — a line between the heading and the intro.',
+              },
+              {
+                name: 'logo',
+                label: 'Wordmark logo',
+                type: 'image',
+                description: 'Optional — a wordmark shown instead of the heading (e.g. Pine Lake Kids).',
+              },
+              {
+                name: 'logoAlt',
+                label: 'Logo description (alt text)',
+                type: 'string',
+                description: 'Required only when a wordmark logo is set.',
+              },
+              { name: 'buttonLabel', label: 'Hero button label', type: 'string', description: 'Optional.' },
+              { name: 'buttonHref', label: 'Hero button link', type: 'string', description: 'Optional.' },
+            ],
+          },
+          {
+            name: 'content',
+            label: 'Body',
+            type: 'rich-text',
+            isBody: true,
+            templates,
+            description:
+              'Type prose; use the insert menu to add styled blocks. Two habits carry most of the voice: start ' +
+              'with the reader’s situation rather than our programme (“When life is overwhelming…”, not “We have ' +
+              'a meals ministry”), and keep anything that changes — dates, times, one-off events — on What’s On ' +
+              'rather than here.',
+          },
+        ],
+      },
       {
         name: 'leadership',
         label: 'Leadership',
@@ -120,14 +231,20 @@ export default defineConfig({
       },
       // Two short ordered lists, each one YAML file holding one array. Tina has no
       // singleton type, so each sits in its own directory and is modelled as a
-      // one-document collection — the shape its own starter uses for site-wide
-      // settings. `global` puts it in the sidebar rather than a list of one.
+      // one-document collection: `allowedActions` removes create and delete, so the
+      // one file is the only file and an editor can't add a second or remove it.
+      //
+      // Deliberately NOT `ui.global`. That flag moves a collection out of the sidebar
+      // list into a separate settings area, which is right for the site configuration
+      // it marks in Tina's own starter and wrong for these — they're content that
+      // happens to live in one file each, and splitting the sidebar in two hid half
+      // the editable lists from the people who edit them. See docs/cms.md.
       {
         name: 'homeQuotes',
         label: 'Homepage quotes',
         path: 'src/content/quotes',
         format: 'yaml',
-        ui: { global: true, allowedActions: { create: false, delete: false } },
+        ui: { allowedActions: { create: false, delete: false } },
         fields: [
           {
             name: 'quotes',
@@ -155,7 +272,7 @@ export default defineConfig({
         label: 'Start-here links',
         path: 'src/content/start-here-links',
         format: 'yaml',
-        ui: { global: true, allowedActions: { create: false, delete: false } },
+        ui: { allowedActions: { create: false, delete: false } },
         fields: [
           {
             name: 'links',
@@ -265,112 +382,6 @@ export default defineConfig({
             searchable: true,
             ui: { component: 'textarea' },
             description: 'A line for whoever looks at this next — including what would need to change to renew it.',
-          },
-        ],
-      },
-      {
-        name: 'pages',
-        label: 'Pages',
-        path: 'src/content/pages',
-        format: 'mdx',
-        // Visual editing opens this URL in the admin iframe — the real page, now
-        // that src/pages/[...slug].astro renders through Tina and carries the
-        // field metadata the bridge maps clicks onto.
-        ui: {
-          router: ({ document }) => `/${document._sys.breadcrumbs.join('/')}/`,
-        },
-        // New pages start unpublished, as they did under the previous CMS. Without
-        // this a page goes live the moment it's created.
-        defaultItem: () => ({ draft: true }),
-        fields: [
-          {
-            name: 'title',
-            label: 'Title',
-            type: 'string',
-            isTitle: true,
-            required: true,
-            description: 'Also the page address — "MOMCo" → /momco/.',
-          },
-          {
-            name: 'seoDescription',
-            label: 'SEO description',
-            type: 'string',
-            description: 'A one-sentence summary for search results and link previews.',
-          },
-          {
-            name: 'draft',
-            label: 'Draft',
-            type: 'boolean',
-            description:
-              "New pages start as drafts — they're visible in preview but not published. Untick to publish when ready.",
-          },
-          {
-            name: 'hero',
-            label: 'Hero',
-            type: 'object',
-            fields: [
-              {
-                name: 'image',
-                label: 'Hero photo',
-                type: 'image',
-                description: 'Optional — leave blank for a calm, text-only header (no photo).',
-              },
-              {
-                name: 'alt',
-                label: 'Photo description (alt text)',
-                type: 'string',
-                description:
-                  'Required only when a hero photo is set. Say what someone who can’t see it would need — ' +
-                  '“A volunteer making coffee before the service”, not “coffee”.',
-              },
-              {
-                name: 'eyebrow',
-                label: 'Eyebrow',
-                type: 'string',
-                description: 'Optional — a small label shown above the heading.',
-              },
-              {
-                name: 'lede',
-                label: 'Intro line',
-                type: 'string',
-                ui: { component: 'textarea' },
-                description:
-                  'A one- or two-sentence opening. The heading comes from the page title. If it could describe ' +
-                  'any church, rewrite it with something only true of Pine Lake.',
-              },
-              {
-                name: 'subhead',
-                label: 'Subhead',
-                type: 'string',
-                description: 'Optional — a line between the heading and the intro.',
-              },
-              {
-                name: 'logo',
-                label: 'Wordmark logo',
-                type: 'image',
-                description: 'Optional — a wordmark shown instead of the heading (e.g. Pine Lake Kids).',
-              },
-              {
-                name: 'logoAlt',
-                label: 'Logo description (alt text)',
-                type: 'string',
-                description: 'Required only when a wordmark logo is set.',
-              },
-              { name: 'buttonLabel', label: 'Hero button label', type: 'string', description: 'Optional.' },
-              { name: 'buttonHref', label: 'Hero button link', type: 'string', description: 'Optional.' },
-            ],
-          },
-          {
-            name: 'content',
-            label: 'Body',
-            type: 'rich-text',
-            isBody: true,
-            templates,
-            description:
-              'Type prose; use the insert menu to add styled blocks. Two habits carry most of the voice: start ' +
-              'with the reader’s situation rather than our programme (“When life is overwhelming…”, not “We have ' +
-              'a meals ministry”), and keep anything that changes — dates, times, one-off events — on What’s On ' +
-              'rather than here.',
           },
         ],
       },

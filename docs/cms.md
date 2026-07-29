@@ -32,6 +32,12 @@ A guiding principle keeps editing simple: **a collection or singleton earns its 
 when its data is reused across the site, or referenced from inside content.** Otherwise it's
 just a page's content and belongs in that page's editor.
 
+This table is also the **sidebar order**, top to bottom — `tina/config.ts` lists the
+collections in exactly this sequence, and Tina renders them in schema order. Pages comes
+first because it's what an editor is nearly always here for; the shared lists that feed
+page blocks follow; Short links sits last, being routing config rather than content and
+the least often touched.
+
 | In the CMS           | What it is                                    | Kind      |
 | -------------------- | --------------------------------------------- | --------- |
 | **Pages**            | CMS-built pages (hero + a body of blocks)     | content   |
@@ -41,9 +47,19 @@ just a page's content and belongs in that page's editor.
 | **Start-here links** | Homepage link cards                           | page data |
 | **Short links**      | Vanity URLs pointing off-site                 | routing   |
 
-> **Homepage quotes** and **Start-here links** are each one YAML file holding one list, so
-> they appear in the CMS sidebar as a single always-there form rather than a collection you
-> add to. **Start-here links** remains because the homepage (still hand-built; see below)
+All six sit under one **Collections** heading. Two of them — **Homepage quotes** and
+**Start-here links** — are each one YAML file holding one list, so clicking them skips the
+list view and opens that single form directly. Neither offers "add" or "delete" at the file
+level (`allowedActions` in `tina/config.ts`): the one file is the only file. Adding and
+removing entries _within_ the list is the normal thing to do and works as usual.
+
+They are deliberately not marked `ui.global`. That flag exists for genuine site
+configuration and moves a collection out of the Collections list into the **Site** section
+next to Media Manager — which, copied from Tina's own starter, split the sidebar in two and
+hid half the editable lists from the people who edit them. These are content that happens
+to live in one file each, so they belong in the list with everything else.
+
+> **Start-here links** remains because the homepage (still hand-built; see below)
 > renders its `home` group. Page-specific cards that used to be stored as data now live inline in the
 > page that shows them: the `new` page folded its links into a **Link cards** block, and the
 > `neighbors` "common starting points" doors are now **Text cards** (with a labelled link)
