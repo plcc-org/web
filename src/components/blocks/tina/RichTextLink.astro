@@ -1,0 +1,11 @@
+---
+import { richTextHref } from '../../../lib/tina/rich-text-href'
+
+// Overrides the link node in CMS rich text so that `tel:` survives rendering.
+// The reasoning, and why this is an override rather than a patch, is in
+// src/lib/tina/rich-text-href.ts.
+type Props = { url?: unknown }
+const { url } = Astro.props
+---
+
+<a href={richTextHref(url)}><slot /></a>

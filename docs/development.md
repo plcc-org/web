@@ -112,8 +112,15 @@ rm -rf node_modules/.vite && node scripts/generate-redirects.mjs
 
 ### `build`
 
-`astro build`. Note that `astro.config.mjs` pins `import.meta.env.DEPLOY_ENV` through
-`vite.define`. That's load-bearing — see [infrastructure.md](./infrastructure.md).
+`NODE_ENV=production astro build`. Both of those are load-bearing:
+
+- **`NODE_ENV=production` is not redundant.** `tinacms build` sets `NODE_ENV=development`
+  for the command it wraps, which makes `import.meta.env.PROD` false inside the Astro
+  build. That inverts both `PROD` branches in the codebase at once: events fall back to
+  the curated list instead of the Church Center snapshot, and draft pages get published.
+  Nothing fails; you just get a development build under a production name.
+- **`astro.config.mjs` pins `import.meta.env.DEPLOY_ENV`** through `vite.define` — see
+  [infrastructure.md](./infrastructure.md).
 
 ### `postbuild`
 
@@ -248,11 +255,33 @@ hold — they drift back a little at a time, and each step looks harmless.
 Several of these exist because the failure has **no symptom on the rendered page**. A
 production build that isn't indexable looks perfect and simply never appears in search.
 
+### Comparing two builds
+
+Everything above checks one build against a rule. `npm run compare` checks a build against
+_another build_ — it reduces each to what a reader sees (title, description, headings,
+links, images, text) and diffs them page by page, so anything that changed but shouldn't
+have shows up as a hit with no rule needed in advance.
+
+```bash
+npm run build:tina
+npm run compare              # exits 1 on any difference
+npm run compare -- --detail  # and show them (name pages to narrow it)
+npm run compare:serve        # baseline on :4101, this build on :4102
+```
+
+The baseline is a second worktree, so it can hold whichever dependencies that revision
+needs; `spike/compare-builds.mjs` documents the one-time setup. This was built to prove
+the CMS migration changed nothing, and earned its keep immediately: it caught `tel:` links
+rendering as `#` and a production build silently running as development — both invisible
+to every check above, because each looks perfectly consistent on its own.
+
 ### Unit tests
 
 `test/*.test.ts`, run by `npm test`:
 
 - `url.test.ts` — `withBase()` / `resolveHref()`
+- `rich-text-href.test.ts` — the href allowlist for CMS rich text, on both sides: the
+  schemes the site uses keep working, and script-bearing ones stay blocked
 - `events.test.ts` — `mapCategory`, `normalizeUpcoming`
 - `churchcenter-map.test.ts` — HTML stripping and word-boundary truncation
 - `markdown.test.ts` — `renderPlain`, including entity decoding

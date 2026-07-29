@@ -396,6 +396,13 @@ change, or every existing inbound link breaks.
   form; this only bites when hand-editing MDX. `spike/codemod.mjs` normalises a file.
 - **Smart quotes must be real characters.** Astro's MDX pipeline used to apply smartypants;
   the CMS renderer doesn't, so a straight `'` now renders straight. Type the real `’`.
+- **Link hrefs go through an allowlist.** The CMS renderer rewrites any href it doesn't
+  recognise to `#`, silently. Its own list is relative paths, `http(s)` and `mailto:` —
+  which dropped every `tel:` link on the site until we overrode it. Relative, `http(s)`,
+  `mailto:` and `tel:` all work; anything else needs adding to
+  `src/lib/tina/rich-text-href.ts`, and it's an allowlist on purpose, because a
+  `javascript:` href typed into a page body would be stored XSS. `scripts/check-site.mjs`
+  is no help here — it skips these schemes, having no way to resolve them against `dist`.
 - **`alt` is required** on every image field, so an image can't be saved without a
   description. `scripts/check-site.mjs` stays the backstop — it catches an image that was
   already saved, which is the case field validation can't reach. The two hero alt fields are

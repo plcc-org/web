@@ -285,6 +285,46 @@ opacity 0 (the iframe guard closes it — now documented as load-bearing rather
 than aesthetic), and `QuoteCarousel` leaked an interval and a document-level
 listener per init.
 
+## Side-by-side against production
+
+The hardening pass was a review of the _config_. This was a review of the _output_:
+build `main` and this branch, reduce both to what a reader actually sees — title,
+description, headings, links, images, text — and diff them page by page. It found
+two defects that every other gate we have was structurally unable to see.
+
+**Production builds ran as development.** `tinacms build` sets `NODE_ENV=development`
+for the command it wraps, so `import.meta.env.PROD` was false inside `astro build`.
+Both of the codebase's two `PROD` branches inverted:
+
+- **Events** fell back to the hand-maintained curated list instead of the nightly
+  Church Center snapshot — the site would have shipped placeholder events.
+- **Drafts were published.** `[...slug].astro` filters drafts only when `PROD`.
+  This silently cancelled the safety rail restored one pass earlier, so a new page
+  would have gone live the moment an editor created it — the exact failure
+  `defaultItem: { draft: true }` exists to prevent.
+
+Neither shows up in a build log, a type check, or a crawl of a single build. Both
+surfaced instantly as unexplained content differences against main. Fixed by
+running the wrapped command as `NODE_ENV=production astro build`.
+
+**`tel:` links rendered as `href="#"`.** `@tinacms/astro`'s link node sanitizes
+hrefs against an allowlist of relative paths, `http(s)` and `mailto:` — `tel:` is
+not on it, so all seven phone numbers in `src/content/pages` became dead links.
+`scripts/check-site.mjs` cannot catch this: it skips `tel:`/`mailto:`/`#` hrefs by
+design, having no way to resolve them against `dist`. Fixed with a `components.a`
+override (the supported hook, checked by `LinkNode.astro` before its own
+rendering) over a tested allowlist that adds `tel:` and nothing else —
+`src/lib/tina/rich-text-href.ts`, `test/rich-text-href.test.ts`.
+
+With both fixed, all 29 pages are identical to production across every signal:
+1299 links, 187 images, every heading and sentence. That is the strongest evidence
+in this document that the migration is content-safe — stronger than the round-trip
+harness, which only proves the MDX survives a save, not that it renders the same.
+
+Worth keeping after the migration lands: `npm run compare` is a general answer to
+"did this change anything a reader would notice", and its baseline is just a second
+worktree.
+
 ## Still open
 
 Everything unresolved is about the _deployed_ editor. Local editing is done.
@@ -321,4 +361,19 @@ Round-trip harness, no server needed:
 node spike/roundtrip.mjs   # parse + serialize every page, report churn
 node spike/idem.mjs        # confirm the serializer is idempotent
 node spike/codemod.mjs     # normalise MDX to the subset Tina's parser accepts
+```
+
+Side-by-side against production. The baseline is a second worktree so it can keep
+the dependencies this branch removed; create it once:
+
+```bash
+git worktree add --detach ../../../plcc-web-baseline main && (cd ../../../plcc-web-baseline && npm ci && npm run build)
+```
+
+Then, after `npm run build:tina`:
+
+```bash
+npm run compare              # diff both builds; exits 1 on any difference
+npm run compare -- --detail  # and show them (name pages to narrow it)
+npm run compare:serve        # baseline on :4101, Tina on :4102
 ```

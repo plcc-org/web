@@ -7,6 +7,7 @@
 // and no slot, so its existing MDX adapter is reused unchanged.
 import type { CustomComponentsMap } from '@tinacms/astro/types'
 
+import { inlineComponents } from './inline'
 import SectionTina from './SectionTina.astro'
 import SplitTina from './SplitTina.astro'
 import CalloutTina from './CalloutTina.astro'
@@ -28,6 +29,8 @@ import QuoteCarouselMdx from '../mdx/QuoteCarouselMdx.astro'
 import Roadmap from '../../Roadmap.astro'
 
 export const tinaComponents: CustomComponentsMap = {
+  ...inlineComponents,
+
   Section: SectionTina,
   Split: SplitTina,
   Callout: CalloutTina,

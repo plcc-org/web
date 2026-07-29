@@ -31,3 +31,6 @@ public/_redirects
 # TinaCMS spike: generated client/types and the built admin SPA.
 tina/__generated__/
 public/admin/
+
+# Per-page snapshots written by spike/compare-builds.mjs.
+spike/.compare/

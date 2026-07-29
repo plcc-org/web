@@ -1,16 +1,18 @@
 ---
 import TinaMarkdown from '@tinacms/astro/TinaMarkdown.astro'
 import type { TinaRichTextContent } from '@tinacms/astro/types'
+import { inlineComponents } from './inline'
 
 // Renders a wrapper block's body. Under MDX these arrive through `<slot />`;
 // through Tina they arrive as a `children` rich-text tree on the node's props,
 // so wrapper adapters delegate here instead of using a slot.
 //
-// No custom components are passed down: every wrapper in src/content/pages
-// contains prose only, never another block. Nesting one would need a shared
-// component map, which the adapters can't import without a cycle.
+// No *blocks* are passed down: every wrapper in src/content/pages contains prose
+// only, never another block. Nesting one would need the full component map, which
+// the adapters can't import without a cycle. The inline overrides are safe to pass
+// — they're leaves — and have to be, since most of the prose lives inside a block.
 type Props = { content?: TinaRichTextContent }
 const { content } = Astro.props
 ---
 
-{content && <TinaMarkdown content={content} />}
+{content && <TinaMarkdown content={content} components={inlineComponents} />}

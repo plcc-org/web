@@ -27,7 +27,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dev:tina": "ASTRO_DEV=1 tinacms dev -c \"astro dev\"",
-    "build:tina": "npm run clean:vite && node scripts/generate-redirects.mjs && tinacms build --local --skip-cloud-checks -c \"astro build\" && node scripts/prune-dist.mjs"
+    "_comment_compare": "Regression check for the Tina migration: renders both builds down to what a reader sees and diffs them. Needs a built baseline in the sibling worktree — see spike/compare-builds.mjs. `compare:serve` puts the two builds on adjacent ports for a side-by-side look.",
+    "compare": "node spike/compare-builds.mjs",
+    "compare:serve": "node spike/serve-builds.mjs",
+    "_comment_build:tina": "NODE_ENV=production is not redundant: `tinacms build` sets NODE_ENV=development for the command it wraps, which makes import.meta.env.PROD false inside `astro build`. That silently flips both PROD branches we have — events fall back to the curated list instead of the Church Center snapshot, and draft pages get published.",
+    "build:tina": "npm run clean:vite && node scripts/generate-redirects.mjs && tinacms build --local --skip-cloud-checks -c \"NODE_ENV=production astro build\" && node scripts/prune-dist.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",
