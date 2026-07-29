@@ -5,12 +5,13 @@ import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
 import { renderMarkdown } from '../../../lib/markdown'
 import { resolveHref } from '../../../lib/url'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // MDX wrapper for the Logo cards block — a row of cards, each topped by a
 // program/partner logo, with a short Markdown body and an optional link (the
 // "Pine Lake Kids / Youth" card grid). Each logo resolves through imageFromRef.
 type Card = { image?: string; alt: string; body?: string; linkLabel?: string; href?: string }
-type Props = { eyebrow?: string; heading?: string; cards?: Card[] }
+type Props = { eyebrow?: string; heading?: string; cards?: Card[] } & BlockProps
 const { eyebrow, heading, cards = [] } = Astro.props
 
 const items: { image?: ImageMetadata; alt: string; body?: string; linkLabel?: string; href?: string }[] = []
@@ -20,7 +21,7 @@ for (const c of cards) {
 }
 ---
 
-<section class="section" data-reveal>
+<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
   {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
   <div class="card-grid">
     {

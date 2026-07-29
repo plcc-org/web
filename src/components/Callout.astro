@@ -10,16 +10,18 @@ import { renderMarkdown } from '../lib/markdown'
 // Markdown string instead, for any caller that has one rather than children.
 
 type Props = {
+  /** Visual-editor block marker; see src/lib/tina/block-field.ts. */
+  tinaField?: string
   heading?: string
   body?: string
   class?: string
 }
 
-const { heading, body, class: className } = Astro.props
+const { heading, body, class: className, tinaField } = Astro.props
 const hasBody = typeof body === 'string' && body.trim().length > 0
 ---
 
-<section class:list={['section', 'section-callout', className]} data-reveal>
+<section class:list={['section', 'section-callout', className]} data-reveal data-tina-field={tinaField}>
   {heading && <h2>{heading}</h2>}
   {hasBody ? <div set:html={renderMarkdown(body)} /> : <slot />}
 </section>

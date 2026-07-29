@@ -2,6 +2,7 @@
 import Split from '../../Split.astro'
 import { imageFromRef } from '../../../lib/images'
 import TinaChildren from './TinaChildren.astro'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 type Props = {
   image?: string
@@ -11,12 +12,13 @@ type Props = {
   eyebrow?: string
   heading?: string
   children?: unknown
-}
+} & BlockProps
 const { image, alt, reverse = false, tone = 'sand', eyebrow, heading, children } = Astro.props
 const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
 ---
 
 <Split
+  tinaField={blockField(Astro.props)}
   class="to-full"
   image={resolved}
   alt={alt}

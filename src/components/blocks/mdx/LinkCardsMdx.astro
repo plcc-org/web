@@ -1,9 +1,10 @@
 ---
 import LinkCardSection from '../../LinkCardSection.astro'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // MDX wrapper for the Link cards block — a grid of link cards.
-type Props = { links?: { title: string; meta: string; href: string }[]; heading?: string }
+type Props = { links?: { title: string; meta: string; href: string }[]; heading?: string } & BlockProps
 const { links = [], heading } = Astro.props
 ---
 
-<LinkCardSection heading={heading || undefined} links={links} reveal />
+<LinkCardSection tinaField={blockField(Astro.props)} heading={heading || undefined} links={links} reveal />

@@ -1,14 +1,15 @@
 ---
 import Callout from '../../Callout.astro'
 import TinaChildren from './TinaChildren.astro'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // Tina counterpart of the Callout block. Under MDX the site component is mapped
 // straight through and its prose arrives in the default slot; here it arrives as
 // a `children` rich-text tree instead.
-type Props = { heading?: string; children?: unknown }
+type Props = { heading?: string; children?: unknown } & BlockProps
 const { heading, children } = Astro.props
 ---
 
-<Callout heading={heading}>
+<Callout tinaField={blockField(Astro.props)} heading={heading}>
   <TinaChildren content={children as never} />
 </Callout>

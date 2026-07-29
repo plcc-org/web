@@ -315,10 +315,20 @@ const jsonLd = origin
   // Scroll reveal — arm only when JS is present and motion is welcome, so
   // content stays visible without JS or under prefers-reduced-motion.
   //
-  // Also skipped inside an iframe. A reveal starts at opacity 0 and waits for
-  // the IntersectionObserver; in a CMS preview pane that observer never fires
-  // for anything below the fold, so the whole page body stays invisible and the
-  // editor looks broken. An editing surface wants the content, not the entrance.
+  // Also skipped inside an iframe, and this guard is load-bearing — not just a
+  // preference. Two reasons:
+  //
+  //   1. A reveal starts at opacity 0 and waits for the IntersectionObserver. In
+  //      a CMS preview pane that observer never fires for anything below the
+  //      fold, so the page body stays invisible and the editor looks broken.
+  //   2. The observer snapshots [data-reveal] once, here. The CMS re-renders a
+  //      block on every keystroke, and the replacement elements are never
+  //      observed — so they would stay at opacity 0 for good. The editor bridge
+  //      dispatches no post-swap event, so there is nothing to re-arm against
+  //      short of a MutationObserver.
+  //
+  // (2) is why relaxing this guard needs more than deleting the condition. An
+  // editing surface wants the content, not the entrance.
   const inPreviewFrame = window.self !== window.top
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const revealables = document.querySelectorAll('[data-reveal]')

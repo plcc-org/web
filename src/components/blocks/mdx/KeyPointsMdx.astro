@@ -1,6 +1,7 @@
 ---
 import SectionHeader from '../../SectionHeader.astro'
 import AccentList from '../../AccentList.astro'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // MDX wrapper for the Key points block — a moss-accented grid of titled point
 // cards (the Beliefs tenets / Covenant emphases treatment), with an optional
@@ -10,7 +11,7 @@ type Props = {
   heading?: string
   columns?: number | string
   items?: { title: string; body: string }[]
-}
+} & BlockProps
 const { eyebrow, heading, columns, items = [] } = Astro.props
 const cols = Number(columns) === 3 ? 3 : 2
 
@@ -20,7 +21,7 @@ const cols = Number(columns) === 3 ? 3 : 2
 const headingLevel = heading ? 3 : 2
 ---
 
-<section class="section" data-reveal>
+<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
   {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
   <AccentList items={items} columns={cols} headingLevel={headingLevel} />
 </section>

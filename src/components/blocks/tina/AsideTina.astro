@@ -3,14 +3,15 @@ import type { ImageMetadata } from 'astro'
 import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
 import TinaChildren from './TinaChildren.astro'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // The Aside block: a tinted note, prose beside an optional small logo.
-type Props = { eyebrow?: string; logo?: string; logoAlt?: string; children?: unknown }
+type Props = { eyebrow?: string; logo?: string; logoAlt?: string; children?: unknown } & BlockProps
 const { eyebrow, logo, logoAlt, children } = Astro.props
 const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined
 ---
 
-<section class="section" data-reveal>
+<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
   <div class:list={['aside-note', !logoImg && 'aside-note--solo']}>
     <div class="aside-note__text">
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}

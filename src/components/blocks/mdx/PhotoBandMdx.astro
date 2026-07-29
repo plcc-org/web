@@ -2,6 +2,7 @@
 import type { ImageMetadata } from 'astro'
 import MomentsSection from '../../MomentsSection.astro'
 import { imageFromRef } from '../../../lib/images'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // MDX wrapper for the Photo band block. Each photo's uploaded reference resolves
 // through imageFromRef to optimized ImageMetadata, then renders via the existing
@@ -10,7 +11,7 @@ type Props = {
   photos?: { image: string; alt: string }[]
   heading?: string
   eyebrow?: string
-}
+} & BlockProps
 const { photos = [], heading, eyebrow } = Astro.props
 
 const images: { image: ImageMetadata; alt: string }[] = []
@@ -20,4 +21,11 @@ for (const p of photos) {
 }
 ---
 
-<MomentsSection images={images} heading={heading || null} eyebrow={eyebrow || null} sectionClass="to-wide" reveal />
+<MomentsSection
+  tinaField={blockField(Astro.props)}
+  images={images}
+  heading={heading || null}
+  eyebrow={eyebrow || null}
+  sectionClass="to-wide"
+  reveal
+/>

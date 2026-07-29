@@ -2007,19 +2007,9 @@
   "meta": {
     "total_count": 38,
     "count": 38,
-    "can_order_by": [
-      "featured",
-      "visible_starts_at"
-    ],
-    "can_query_by": [
-      "starts_at",
-      "ends_at"
-    ],
-    "can_filter": [
-      "upcoming_first_occurrence",
-      "upcoming",
-      "first_occurrence"
-    ],
+    "can_order_by": ["featured", "visible_starts_at"],
+    "can_query_by": ["starts_at", "ends_at"],
+    "can_filter": ["upcoming_first_occurrence", "upcoming", "first_occurrence"],
     "parent": {
       "id": "65711",
       "type": "Organization"

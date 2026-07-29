@@ -11,6 +11,8 @@
 // - eyebrow / heading: optional; rendered at the top of the band.
 
 type Props = {
+  /** Visual-editor block marker; see src/lib/tina/block-field.ts. */
+  tinaField?: string
   tone?: 'forest' | 'sand' | 'paper'
   flush?: boolean
   narrow?: boolean
@@ -30,10 +32,12 @@ const {
   heading,
   class: className,
   reveal = false,
+  tinaField,
 } = Astro.props
 ---
 
 <section
+  data-tina-field={tinaField}
   {...reveal && { 'data-reveal': true }}
   class:list={[
     'band',

@@ -94,6 +94,8 @@ const { quotes } = Astro.props
     }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // Everything bound below this point is torn down together if the root goes away.
+    const controller = new AbortController()
 
     const start = () => {
       if (prefersReducedMotion || timer) return
@@ -130,11 +132,32 @@ const { quotes } = Astro.props
     root.addEventListener('focusout', start)
 
     // ...and while the tab is in the background, where rotating burns a timer
-    // wake-up every 7s to animate something nobody is looking at.
-    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()))
+    // wake-up every 7s to animate something nobody is looking at. Dropped when
+    // the root leaves the document: the CMS replaces a block's DOM on every
+    // keystroke, and a document-level listener per init would otherwise
+    // accumulate, each holding a closure over detached nodes and a live interval.
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()), {
+      signal: controller.signal,
+    })
+    new MutationObserver(() => {
+      if (root.isConnected) return
+      stop()
+      controller.abort()
+    }).observe(document.body, { childList: true, subtree: true })
 
     start()
   }
 
-  document.querySelectorAll<HTMLElement>('[data-quote-carousel]').forEach((el) => initQuoteCarousel(el))
+  // Init is idempotent: the CMS re-renders a block in place, so this runs again
+  // against DOM that may already be wired. Without the guard each pass would add
+  // another interval and another set of listeners.
+  const initAll = () =>
+    document.querySelectorAll<HTMLElement>('[data-quote-carousel]').forEach((el) => {
+      if (el.dataset.quoteCarouselReady) return
+      el.dataset.quoteCarouselReady = 'true'
+      initQuoteCarousel(el)
+    })
+
+  initAll()
+  document.addEventListener('astro:page-load', initAll)
 </script>

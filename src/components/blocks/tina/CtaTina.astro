@@ -2,6 +2,7 @@
 import Band from '../../Band.astro'
 import { resolveHref } from '../../../lib/url'
 import TinaChildren from './TinaChildren.astro'
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // The Banner block: a tonal closing band with an optional button. Its prose
 // arrives as a `children` rich-text tree on the node's props, not through a slot.
@@ -13,11 +14,11 @@ type Props = {
   buttonHref?: string
   flush?: boolean
   children?: unknown
-}
+} & BlockProps
 const { tone = 'forest', eyebrow, heading, buttonLabel, buttonHref, flush, children } = Astro.props
 ---
 
-<Band tone={tone} narrow flush={flush} eyebrow={eyebrow} heading={heading} reveal>
+<Band tinaField={blockField(Astro.props)} tone={tone} narrow flush={flush} eyebrow={eyebrow} heading={heading} reveal>
   <TinaChildren content={children as never} />
   {
     buttonHref && (

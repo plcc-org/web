@@ -1,9 +1,10 @@
 ---
+import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 // MDX wrapper for the Video block: a YouTube or Vimeo embed in the same stone
 // frame as a captioned photo. The editor pastes the ordinary share link; the
 // embed URL is derived here at build time, on the privacy-friendly hosts
 // (youtube-nocookie, Vimeo dnt) so the page stays tracker-free until play.
-type Props = { url: string; title: string; caption?: string }
+type Props = { url: string; title: string; caption?: string } & BlockProps
 const { url, title, caption } = Astro.props
 
 function embedFrom(raw: string): string | undefined {
@@ -38,7 +39,7 @@ if (!embed) {
 }
 ---
 
-<section class="section" data-reveal>
+<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
   <figure class="media media--flush">
     <div class="media__frame media__embed">
       <iframe

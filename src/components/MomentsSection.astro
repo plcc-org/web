@@ -7,6 +7,8 @@ import Photo from './Photo.astro'
 // CMS-uploaded "photo band" page block).
 type ImageItem = { image: ImageMetadata; alt: string }
 type Props = {
+  /** Visual-editor block marker; see src/lib/tina/block-field.ts. */
+  tinaField?: string
   heading?: string | null
   eyebrow?: string | null
   photos?: string[]
@@ -22,6 +24,7 @@ const {
   images,
   sectionClass = 'section',
   reveal = false,
+  tinaField,
 } = Astro.props
 
 // Normalize to a single tile list <Photo> can consume either way.
@@ -29,7 +32,7 @@ const tiles: Array<{ filename?: string; image?: ImageMetadata; alt?: string }> =
   images ?? photos.map((filename) => ({ filename }))
 ---
 
-<section {...reveal && { 'data-reveal': true }} class:list={['moments', sectionClass]}>
+<section data-tina-field={tinaField} {...reveal && { 'data-reveal': true }} class:list={['moments', sectionClass]}>
   {
     (eyebrow || heading) && (
       <div class="moments__head">
