@@ -47,8 +47,10 @@ Even if you don't open the docs, never violate these:
   → [development.md](./docs/development.md)
 - **Content lives in `src/content/` collections** (defined in `src/content.config.ts`),
   queried with `getCollection()` — don't hand-author lists in markup or add `src/data/*.ts`
-  arrays. `short-links` is the one exception: it's build-time routing config, not
-  renderable content. → [development.md](./docs/development.md)
+  arrays. A collection is earned by data that's reused across the site or referenced from
+  inside content; a single hand-built page's own one-off list stays in that page.
+  `short-links` is the other exception: it's build-time routing config, not renderable
+  content. → [development.md](./docs/development.md)
 - **Tokens are enforced, not requested.** `npm run lint:css` rejects non-token colours,
   type sizes and radii. The full-strength accents (`--color-moss`, `--color-clay`) are
   rejected as text colours — use `--color-moss-ink` / `--color-clay-ink` for anything

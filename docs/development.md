@@ -43,7 +43,7 @@ src/
     youth-moments/  Youth photo captions
     short-links/    Redirects + 410s (NOT an Astro collection — see below)
     photos.json     The photo catalog: filename → alt
-    quotes.yaml, start-here-links.yaml, events-snapshot.json
+    quotes.yaml, events-snapshot.json
   content.config.ts Collection definitions + Zod schemas
   layouts/          BaseLayout.astro (head, header, footer, skip link, JSON-LD)
   lib/              Image registry, photo catalog, URL/markdown helpers, events, messages
@@ -216,9 +216,16 @@ point of having a CMS. This is Tina's dependency graph to fix, not ours.
   field — use `resolveHref()`, which passes those through untouched.
 - **Content collections.** Editable content lives under `src/content/`, defined and
   validated in `src/content.config.ts`: `photos`, `youthMoments`, `leadership`, `quotes`,
-  `startHereLinks`, `pages`. Query with `getCollection(...)` — don't hand-author lists in
-  markup or add new `src/data/*.ts` arrays. Editing copy shouldn't mean touching layout.
-  Keep `tina/config.ts` in step (see [cms.md](./cms.md)).
+  `pages`. Query with `getCollection(...)` — don't hand-author lists in markup or add new
+  `src/data/*.ts` arrays. Editing copy shouldn't mean touching layout. Keep
+  `tina/config.ts` in step (see [cms.md](./cms.md)).
+  - **What earns a collection**: data reused across the site, or referenced from inside
+    content. A single hand-built page's own one-off list is that page's content, and
+    belongs in the page — a collection of one, read by one file, buys nothing and costs a
+    sidebar entry. The homepage's four "Start here" cards are an array in
+    `src/pages/index.astro` for exactly that reason. This is not licence to inline
+    anything an editor should be able to change: if the page is a CMS page, the list goes
+    in a block; if the data has a second reader, it goes in a collection.
 - **`short-links` is the one exception**, and deliberately so. It lives in
   `src/content/` and is edited in the CMS like everything else, but it is _not_ in
   `content.config.ts`, because nothing renders it — it's build-time configuration read
