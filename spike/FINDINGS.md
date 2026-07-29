@@ -361,6 +361,43 @@ Worth keeping after the migration lands: `npm run compare` is a general answer t
 "did this change anything a reader would notice", and its baseline is just a second
 worktree.
 
+## The first real deploy
+
+Cloudflare's build log settled several things a local build never could.
+
+**The deploy failed on `Could not resolve "../../../tina/__generated__/client"`.**
+The dashboard's build command was `npm run build`, which ran a bare `astro build`;
+the generated client is gitignored and only `build:tina` created it. Exactly the
+failure CI hit, from the same cause — the correct build lived behind a name the
+deploy didn't know. The fix isn't a better-documented command, because the
+dashboard is a setting the repo can't assert: `build` now _is_ the Tina-wrapped
+production build, and `build:tina` is gone. There was never a valid use of a plain
+`astro build` here.
+
+**Three more things would have gone wrong on the first _successful_ deploy:**
+
+- **The admin would have shipped.** `tinacms build` always compiles the 11 MB SPA
+  into the output. Loading it from the built output confirms it renders a login and
+  fails `getUser` / `isAuthenticated` / `getBillingState` — there is no data layer
+  on a static deploy. `postbuild` now drops it unless `TINA_PUBLISH_ADMIN=true`.
+  The site and the editor turn out to be fully separable, which is what makes it
+  safe to ship the site before the auth question is answered.
+- **Node was 22.16.0**, old enough that `posthog-node` raised `EBADENGINE`. Added
+  `.node-version` so the toolchain comes from the repo, not another dashboard field.
+- **`tina/config.ts` still pinned `branch` to `spike/cms-tina`.**
+
+**And one the merge exposed:** a missing newline in `.prettierignore` had
+concatenated the `events-snapshot.json` entry with the following comment, leaving a
+pattern that matches nothing and silently un-ignoring both that file and
+`tina-lock.json`. That is what reformatted the snapshot in this branch, and it was
+on course to break the nightly deploy — `scrape-events.yml` commits what the
+scraper writes, `format:check` would fail it, and that daily commit is what
+triggers the Cloudflare rebuild.
+
+The pattern across all five: **every one is a setting that lives outside the code,
+or a rule the code states but doesn't enforce.** The two that are now enforced —
+the build command and the Node version — are the two that can't recur.
+
 ## Still open
 
 Everything unresolved is about the _deployed_ editor. Local editing is done.
