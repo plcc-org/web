@@ -38,33 +38,34 @@ first because it's what an editor is nearly always here for; the shared lists th
 page blocks follow; Short links sits last, being routing config rather than content and
 the least often touched.
 
-| In the CMS           | What it is                                    | Kind      |
-| -------------------- | --------------------------------------------- | --------- |
-| **Pages**            | CMS-built pages (hero + a body of blocks)     | content   |
-| **Leadership**       | Pastors & staff — reusable people entities    | shared    |
-| **Youth moments**    | Signature youth trips/retreats (curated)      | shared    |
-| **Homepage quotes**  | Rotating testimonials (reusable social proof) | shared    |
-| **Start-here links** | Homepage link cards                           | page data |
-| **Short links**      | Vanity URLs pointing off-site                 | routing   |
+| In the CMS          | What it is                                    | Kind    |
+| ------------------- | --------------------------------------------- | ------- |
+| **Pages**           | CMS-built pages (hero + a body of blocks)     | content |
+| **Leadership**      | Pastors & staff — reusable people entities    | shared  |
+| **Youth moments**   | Signature youth trips/retreats (curated)      | shared  |
+| **Homepage quotes** | Rotating testimonials (reusable social proof) | shared  |
+| **Short links**     | Vanity URLs pointing off-site                 | routing |
 
-All six sit under one **Collections** heading. Two of them — **Homepage quotes** and
-**Start-here links** — are each one YAML file holding one list, so clicking them skips the
-list view and opens that single form directly. Neither offers "add" or "delete" at the file
-level (`allowedActions` in `tina/config.ts`): the one file is the only file. Adding and
-removing entries _within_ the list is the normal thing to do and works as usual.
+All five sit under one **Collections** heading. One of them — **Homepage quotes** — is a
+single YAML file holding one list, so clicking it skips the list view and opens that form
+directly. It offers no "add" or "delete" at the file level (`allowedActions` in
+`tina/config.ts`): the one file is the only file. Adding and removing quotes _within_ the
+list is the normal thing to do and works as usual.
 
-They are deliberately not marked `ui.global`. That flag exists for genuine site
-configuration and moves a collection out of the Collections list into the **Site** section
-next to Media Manager — which, copied from Tina's own starter, split the sidebar in two and
-hid half the editable lists from the people who edit them. These are content that happens
-to live in one file each, so they belong in the list with everything else.
+It is deliberately not marked `ui.global`. That flag exists for genuine site configuration
+and moves a collection out of the Collections list into the **Site** section next to Media
+Manager — which, copied from Tina's own starter, split the sidebar in two and hid half the
+editable lists from the people who edit them. This is content that happens to live in one
+file, so it belongs in the list with everything else.
 
-> **Start-here links** remains because the homepage (still hand-built; see below)
-> renders its `home` group. Page-specific cards that used to be stored as data now live inline in the
-> page that shows them: the `new` page folded its links into a **Link cards** block, and the
-> `neighbors` "common starting points" doors are now **Text cards** (with a labelled link)
-> in the page itself — they were only ever used on that one page, so they're content, not
-> shared data.
+> **Link cards are page content, not data.** Every set of them now lives inline in the page
+> that shows it: the `new` page folded its links into a **Link cards** block, the
+> `neighbors` "common starting points" doors became **Text cards** (with a labelled link),
+> and the homepage's four "Start here" doors are an array in `src/pages/index.astro`. Each
+> set had exactly one reader, so by the rule above none of them earned a collection. The
+> homepage's are in code rather than the CMS because the homepage itself is hand-built (see
+> [What becomes a CMS page or block](#what-becomes-a-cms-page-or-block-and-what-stays-as-code))
+> — changing them is a code change.
 
 **Photos are deliberately not a collection.** The 110-entry catalog (`src/content/photos.json`)
 is build-time infrastructure for the hand-built pages. Editors add photos by **uploading them

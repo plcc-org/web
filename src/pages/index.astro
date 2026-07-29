@@ -13,10 +13,16 @@ const homeQuotes = (await getCollection('quotes'))
   .sort((a, b) => a.data.order - b.data.order)
   .map((q) => ({ text: q.data.text, by: q.data.by }))
 
-const homeLinks = (await getCollection('startHereLinks'))
-  .filter((l) => l.data.group === 'home')
-  .sort((a, b) => a.data.order - b.data.order)
-  .map((l) => ({ href: l.data.href, title: l.data.title, meta: l.data.meta }))
+// The four doors off the homepage. Inline rather than a collection: they're this
+// page's content and appear nowhere else, which is the same call the `new` and
+// `neighbors` pages made when their link cards moved into the page that shows
+// them. See docs/cms.md.
+const homeLinks = [
+  { href: '/about/pastors-letter/', title: 'A Welcome from our Pastor', meta: 'A personal letter from Austin Bailey.' },
+  { href: '/visit/', title: 'Plan a Visit', meta: 'What Sundays are like.' },
+  { href: '/families/', title: 'Families', meta: 'Kids, youth, and community.' },
+  { href: '/messages/', title: 'Messages', meta: 'Watch a recent service.' },
+]
 
 const homeMoments = [
   '718553950_18207937192338056_7548100352354445130_n.jpg',

@@ -3,14 +3,16 @@ import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
 
-// quotes / start-here-links are each a single YAML file holding one array. The
-// CMS edits them as a list field, which serializes to `{ <key>: [...] }`. Parse
-// tolerantly so both the hand-authored bare-array form and the CMS-wrapped form
-// load, and give every item a stable `id` for the store.
+// quotes is a single YAML file holding one array. The CMS edits it as a list
+// field, which serializes to `{ <key>: [...] }`. Parse tolerantly so both the
+// hand-authored bare-array form and the CMS-wrapped form load, and give every
+// item a stable `id` for the store.
 //
-// Each lives in its own directory so the CMS can model it as a one-document
+// It lives in its own directory so the CMS can model it as a one-document
 // collection — Tina has no singleton type, and pointing a collection at a
 // directory containing exactly one file is how its own starter does this.
+// (The helper is generic because start-here-links used it too, until those
+// links moved inline into the homepage that was their only reader.)
 const yamlList =
   (key: string) =>
   (text: string): Array<Record<string, unknown>> => {
@@ -89,18 +91,6 @@ const quotes = defineCollection({
   }),
 })
 
-const startHereLinks = defineCollection({
-  loader: file('src/content/start-here-links/start-here-links.yaml', { parser: yamlList('links') }),
-  schema: z.object({
-    id: z.string(),
-    group: z.enum(['home', 'im-new']),
-    title: z.string(),
-    meta: z.string(),
-    href: z.string(),
-    order: z.number().default(0),
-  }),
-})
-
 // CMS-built pages. Each is an MDX file: a structured hero in frontmatter plus an
 // MDX body the editor composes in the CMS's rich-text editor, inserting styled
 // components (Split, Callout, Photo band, …). The body's component tags map to
@@ -139,4 +129,4 @@ const pages = defineCollection({
   }),
 })
 
-export const collections = { photos, youthMoments, leadership, quotes, startHereLinks, pages }
+export const collections = { photos, youthMoments, leadership, quotes, pages }

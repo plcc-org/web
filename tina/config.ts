@@ -3,7 +3,7 @@ import { defineConfig } from 'tinacms'
 import { templates } from './templates.mjs'
 
 // CMS configuration. The `pages` collection carries the page frontmatter (including the
-// nested `hero` object) and an 18-component body palette; the other four are YAML data
+// nested `hero` object) and an 18-component body palette; the other three are YAML data
 // files with no body. Must stay aligned with src/content.config.ts, which Astro validates
 // the same files against at build time — see docs/cms.md.
 //
@@ -229,16 +229,16 @@ export default defineConfig({
           },
         ],
       },
-      // Two short ordered lists, each one YAML file holding one array. Tina has no
-      // singleton type, so each sits in its own directory and is modelled as a
-      // one-document collection: `allowedActions` removes create and delete, so the
-      // one file is the only file and an editor can't add a second or remove it.
+      // One short ordered list in one YAML file. Tina has no singleton type, so it
+      // sits in its own directory and is modelled as a one-document collection:
+      // `allowedActions` removes create and delete, so the one file is the only file
+      // and an editor can't add a second or remove it.
       //
       // Deliberately NOT `ui.global`. That flag moves a collection out of the sidebar
       // list into a separate settings area, which is right for the site configuration
-      // it marks in Tina's own starter and wrong for these — they're content that
-      // happens to live in one file each, and splitting the sidebar in two hid half
-      // the editable lists from the people who edit them. See docs/cms.md.
+      // it marks in Tina's own starter and wrong for this — it's content that happens
+      // to live in one file, and splitting the sidebar in two hid half the editable
+      // lists from the people who edit them. See docs/cms.md.
       {
         name: 'homeQuotes',
         label: 'Homepage quotes',
@@ -263,41 +263,6 @@ export default defineConfig({
                 ui: { component: 'textarea' },
               },
               { name: 'by', label: 'Attribution', type: 'string' },
-            ],
-          },
-        ],
-      },
-      {
-        name: 'startHereLinks',
-        label: 'Start-here links',
-        path: 'src/content/start-here-links',
-        format: 'yaml',
-        ui: { allowedActions: { create: false, delete: false } },
-        fields: [
-          {
-            name: 'links',
-            label: 'Links',
-            type: 'object',
-            list: true,
-            ui: {
-              itemProps: (item) => ({ label: `${item?.title ?? 'Link'} (${item?.group ?? 'home'})` }),
-            },
-            fields: [
-              { name: 'id', label: 'ID', type: 'string', required: true },
-              {
-                name: 'group',
-                label: 'Group',
-                type: 'string',
-                options: [
-                  { label: 'Homepage', value: 'home' },
-                  { label: "I'm New page", value: 'im-new' },
-                ],
-                ui: { defaultValue: 'home' },
-              },
-              { name: 'order', label: 'Order', type: 'number' },
-              { name: 'title', label: 'Title', type: 'string', required: true },
-              { name: 'meta', label: 'Meta', type: 'string', required: true },
-              { name: 'href', label: 'URL', type: 'string', required: true },
             ],
           },
         ],
