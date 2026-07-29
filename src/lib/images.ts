@@ -32,6 +32,26 @@ for (const [path, loader] of Object.entries(allLoaders)) {
   byPath.set(path.replace('../assets/images/', ''), loader)
 }
 
+// The catalog key for a stored image reference. The CMS hands us two different
+// shapes for the same photo, and both have to resolve:
+//
+//   ../../assets/images/visit/hero/image.jpg   what a local build reads from the file
+//   /visit/hero/image.jpg                      what TinaCloud returns
+//
+// TinaCloud normalises media paths against `media.tina.mediaRoot` ('assets/images'),
+// so the prefix this used to strip simply isn't there, and the leading slash meant
+// every lookup missed. That is a deployed-only failure: locally the raw file value
+// resolves fine, so every hero on the site rendered its photo in dev and its
+// text-only fallback in production, with nothing failing. Exported for testing.
+export function imageKey(ref: string): string {
+  return ref.replace(/^.*assets\/images\//, '').replace(/^\/+/, '')
+}
+
 export function imageFromRef(ref: string): (() => Promise<ImageModule>) | undefined {
-  return byPath.get(ref.replace(/^.*assets\/images\//, ''))
+  const loader = byPath.get(imageKey(ref))
+  // A miss renders as a missing photo, not an error — <Photo> is optional almost
+  // everywhere and PageHero silently falls back to its text-only header. Say so,
+  // or the next path-shape change costs another live regression to notice.
+  if (!loader) console.warn(`[images] no image for reference "${ref}" (looked up "${imageKey(ref)}")`)
+  return loader
 }

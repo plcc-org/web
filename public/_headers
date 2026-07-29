@@ -16,14 +16,21 @@
 # attribute — trading a real failure mode (a blank page months from now when
 # someone adds a block) for a threat this site doesn't carry. frame-ancestors
 # is here because it costs nothing and stops clickjacking.
+#
+# It is `self`, not `none`, because the CMS's visual editing embeds the real page
+# in an iframe inside /admin. `none` blocks framing by *anyone*, same origin
+# included, so the preview pane comes up blank on the deployed site while working
+# perfectly in local dev — where this file isn't applied at all, since Cloudflare
+# is what reads it. `self` keeps the protection that mattered (another site
+# framing ours) and allows the one framer that has to work.
 
 /*
   # Don't let a browser guess a type we didn't send.
   X-Content-Type-Options: nosniff
   # Send the origin to other sites, the full path only to ourselves.
   Referrer-Policy: strict-origin-when-cross-origin
-  # Nobody should be able to frame the site.
-  Content-Security-Policy: frame-ancestors 'none'
+  # No other site may frame ours; /admin's visual editing must be able to.
+  Content-Security-Policy: frame-ancestors 'self'
   # Nothing here needs any of these; deny by default.
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   # Six months, without includeSubDomains or preload: both are effectively
