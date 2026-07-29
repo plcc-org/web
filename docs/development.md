@@ -122,11 +122,14 @@ rm -rf node_modules/.vite && node scripts/generate-redirects.mjs
 
 ### `build`
 
-`tinacms build --local --skip-cloud-checks -c "NODE_ENV=production astro build"`. Three
-parts of that are load-bearing:
+`scripts/build.mjs`, which wraps `NODE_ENV=production astro build` in `tinacms build` and
+picks the CMS flags from the environment. Three parts are load-bearing:
 
-- **`--local --skip-cloud-checks`** reads content from the files on disk. No account, no
-  network, no third party is involved in a build.
+- **The flag choice.** Without TinaCloud credentials it uses
+  `--local --skip-cloud-checks`; with them, `--content=local`. Both read content from the
+  files on disk — no account, no network, no third party is involved in a build — but only
+  the second emits a client that a **deployed** site can talk to. See
+  [cms.md](./cms.md#deployed-setup) for why that matters and what breaks without it.
 
 - **`NODE_ENV=production` is not redundant.** `tinacms build` sets `NODE_ENV=development`
   for the command it wraps, which makes `import.meta.env.PROD` false inside the Astro

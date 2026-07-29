@@ -17,11 +17,19 @@ import { templates } from './templates.mjs'
 // checked against the real content first. On a rich-text *template* field (tina/templates.mjs)
 // it's editor-side validation only, with no build risk.
 export default defineConfig({
-  // Only consulted when the editor talks to a hosted backend; local builds read
-  // the working tree. Keep it pointed at the branch a deployed editor commits to.
-  branch: 'main',
-  clientId: null,
-  token: null,
+  // Credentials come from the environment, never the repo. With both present,
+  // scripts/build.mjs switches to `--content=local` and the deployed admin and
+  // /tina-island talk to TinaCloud; with neither, the build emits a local client
+  // and everything still works offline — which is what CI and a fresh clone get.
+  // TINA_TOKEN is a secret and must stay one; the client ID is public by design
+  // (it ships inside the admin bundle).
+  //
+  // `branch` is the branch a deployed editor commits to, and the one TinaCloud
+  // indexes. It only matters when talking to the cloud; local builds read the
+  // working tree.
+  branch: process.env.TINA_BRANCH || 'main',
+  clientId: process.env.PUBLIC_TINA_CLIENT_ID || null,
+  token: process.env.TINA_TOKEN || null,
   localContentPath: undefined,
   build: { outputFolder: 'admin', publicFolder: 'public' },
   media: {
