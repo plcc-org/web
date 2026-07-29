@@ -32,19 +32,28 @@ for (const [path, loader] of Object.entries(allLoaders)) {
   byPath.set(path.replace('../assets/images/', ''), loader)
 }
 
-// The catalog key for a stored image reference. The CMS hands us two different
-// shapes for the same photo, and both have to resolve:
+// The catalog key for a stored image reference. The photo is the same file on disk
+// either way, but what the CMS hands us depends on which client the build used:
 //
-//   ../../assets/images/visit/hero/image.jpg   what a local build reads from the file
-//   /visit/hero/image.jpg                      what TinaCloud returns
+//   ../../assets/images/church-life/sunset.jpg          a local build, i.e. the file's own value
+//   https://assets.tina.io/<clientId>../../sunset.jpg   TinaCloud
 //
-// TinaCloud normalises media paths against `media.tina.mediaRoot` ('assets/images'),
-// so the prefix this used to strip simply isn't there, and the leading slash meant
-// every lookup missed. That is a deployed-only failure: locally the raw file value
-// resolves fine, so every hero on the site rendered its photo in dev and its
-// text-only fallback in production, with nothing failing. Exported for testing.
+// TinaCloud assumes media lives in *its* asset store, so it rewrites every reference
+// to its CDN — gluing the stored relative path straight onto the client ID, missing
+// slash and all. Our photos aren't there; they're in src/assets/images, where Astro's
+// sharp pipeline needs them. So the rewrite has to be undone rather than followed.
+//
+// Both prefixes are stripped, then any `../`, then the mediaRoot, then leading
+// slashes — leaving the catalog key. Deliberately tolerant: this is the third path
+// shape the CMS has produced, every change of shape has been invisible until
+// deployed, and a photo that fails to resolve doesn't error, it just disappears.
+// Exported so the shapes can be asserted directly.
 export function imageKey(ref: string): string {
-  return ref.replace(/^.*assets\/images\//, '').replace(/^\/+/, '')
+  return ref
+    .replace(/^https?:\/\/assets\.tina\.io\/[^/]*/, '')
+    .replace(/^.*\.\.\//, '')
+    .replace(/^.*assets\/images\//, '')
+    .replace(/^\/+/, '')
 }
 
 export function imageFromRef(ref: string): (() => Promise<ImageModule>) | undefined {
