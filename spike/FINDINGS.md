@@ -235,6 +235,19 @@ object literals — `items={[{title: "A"}]}`, not the `items={[{"title":"A"}]}`
 Keystatic writes — and rejects bare boolean attributes like `reverse`. Both are
 surface syntax, not missing capability, and both are mechanical.
 
+That codemod, plus 16 straight apostrophes on one page, is the _whole_ content
+change: **45 insertions and 55 deletions across 19 files**, most of them a line
+or two. An earlier version of this branch also pre-applied the serializer's
+reflow — re-indenting every block's prose — for a content diff of 794/293. That
+was reverted, because it bought nothing: `roundtrip.mjs` reports 0 of 20 files
+clean either way, so the first CMS save of a page reformats it regardless. All
+pre-applying did was move unavoidable churn out of the commit that causes it and
+into the migration PR, where it buried the 45 lines that actually matter.
+
+The rule that falls out: **only commit content changes the renderer needs.**
+The test for "needs" is `npm run compare` — revert a change, rebuild, and see
+whether any page moves. That is how the 45 lines were isolated from the 1,087.
+
 ## What was decided
 
 Tina cleared the bar and has been adopted. Content model, round-trip fidelity,
