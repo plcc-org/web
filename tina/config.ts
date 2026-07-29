@@ -69,6 +69,121 @@ export default defineConfig({
         ],
       },
       {
+        name: 'youthMoments',
+        label: 'Youth moments',
+        path: 'src/content/youth-moments',
+        format: 'yaml',
+        defaultItem: () => ({ featured: false, order: 0 }),
+        fields: [
+          { name: 'title', label: 'Title', type: 'string', isTitle: true, required: true },
+          {
+            name: 'when',
+            label: 'When',
+            type: 'string',
+            required: true,
+            description: 'A human label — a date range ("August 10–17, 2026") or a cadence ("Each spring").',
+          },
+          {
+            name: 'blurb',
+            label: 'Blurb',
+            type: 'string',
+            required: true,
+            ui: { component: 'textarea' },
+          },
+          {
+            name: 'photo',
+            label: 'Photo filename',
+            type: 'string',
+            description:
+              'A filename from the photo catalog (src/content/photos.json) — not an upload. ' +
+              'Leave blank and the moment renders as a compact card.',
+          },
+          {
+            name: 'featured',
+            label: 'Featured',
+            type: 'boolean',
+            description: 'Featured moments get a large card; the rest fall into a compact list.',
+          },
+          { name: 'order', label: 'Order', type: 'number' },
+          {
+            name: 'link',
+            label: 'Link (optional)',
+            type: 'object',
+            fields: [
+              { name: 'label', label: 'Link label', type: 'string' },
+              { name: 'href', label: 'Link URL', type: 'string' },
+            ],
+          },
+        ],
+      },
+      // Two short ordered lists, each one YAML file holding one array. Tina has no
+      // singleton type, so each sits in its own directory and is modelled as a
+      // one-document collection — the shape its own starter uses for site-wide
+      // settings. `global` puts it in the sidebar rather than a list of one.
+      {
+        name: 'homeQuotes',
+        label: 'Homepage quotes',
+        path: 'src/content/quotes',
+        format: 'yaml',
+        ui: { global: true, allowedActions: { create: false, delete: false } },
+        fields: [
+          {
+            name: 'quotes',
+            label: 'Quotes',
+            type: 'object',
+            list: true,
+            ui: { itemProps: (item) => ({ label: item?.by || item?.id || 'Quote' }) },
+            fields: [
+              { name: 'id', label: 'ID', type: 'string', required: true },
+              { name: 'order', label: 'Order', type: 'number' },
+              {
+                name: 'text',
+                label: 'Quote',
+                type: 'string',
+                required: true,
+                ui: { component: 'textarea' },
+              },
+              { name: 'by', label: 'Attribution', type: 'string' },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'startHereLinks',
+        label: 'Start-here links',
+        path: 'src/content/start-here-links',
+        format: 'yaml',
+        ui: { global: true, allowedActions: { create: false, delete: false } },
+        fields: [
+          {
+            name: 'links',
+            label: 'Links',
+            type: 'object',
+            list: true,
+            ui: {
+              itemProps: (item) => ({ label: `${item?.title ?? 'Link'} (${item?.group ?? 'home'})` }),
+            },
+            fields: [
+              { name: 'id', label: 'ID', type: 'string', required: true },
+              {
+                name: 'group',
+                label: 'Group',
+                type: 'string',
+                options: [
+                  { label: 'Homepage', value: 'home' },
+                  { label: "I'm New page", value: 'im-new' },
+                ],
+                ui: { defaultValue: 'home' },
+              },
+              { name: 'order', label: 'Order', type: 'number' },
+              { name: 'title', label: 'Title', type: 'string', required: true },
+              { name: 'meta', label: 'Meta', type: 'string', required: true },
+              { name: 'href', label: 'URL', type: 'string', required: true },
+            ],
+          },
+        ],
+      },
+      {
         name: 'shortLinks',
         label: 'Short links',
         path: 'src/content/short-links',

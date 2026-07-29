@@ -41,8 +41,10 @@ just a page's content and belongs in that page's editor.
 | **Start-here links** | Homepage link cards                           | page data |
 | **Short links**      | Vanity URLs pointing off-site                 | routing   |
 
-> **Start-here links** remains because the homepage (still hand-built; see below) renders its
-> `home` group. Page-specific cards that used to be stored as data now live inline in the
+> **Homepage quotes** and **Start-here links** are each one YAML file holding one list, so
+> they appear in the CMS sidebar as a single always-there form rather than a collection you
+> add to. **Start-here links** remains because the homepage (still hand-built; see below)
+> renders its `home` group. Page-specific cards that used to be stored as data now live inline in the
 > page that shows them: the `new` page folded its links into a **Link cards** block, and the
 > `neighbors` "common starting points" doors are now **Text cards** (with a labelled link)
 > in the page itself — they were only ever used on that one page, so they're content, not
@@ -395,5 +397,14 @@ change, or every existing inbound link breaks.
 - **Smart quotes must be real characters.** Astro's MDX pipeline used to apply smartypants;
   the CMS renderer doesn't, so a straight `'` now renders straight. Type the real `’`.
 - **`alt` is required** on every image field, so an image can't be saved without a
-  description.
+  description. `scripts/check-site.mjs` stays the backstop — it catches an image that was
+  already saved, which is the case field validation can't reach. The two hero alt fields are
+  deliberately _not_ required: the CMS has no conditional-required, and enforcing them would
+  block every text-only hero page.
+- **The short-links list has no columns.** The CMS has no list-view column configuration, so
+  55 entries show as filenames. `from`, `destination` and `note` are marked searchable, so
+  search the list by the address printed on the flyer rather than scrolling it.
+- **Block descriptions don't show in the insert menu.** They're in the schema and worth
+  keeping, but the menu renders labels only — the "which block do I use?" table above is the
+  substitute.
 - **The `pages` directory must exist** even when empty (kept via `.gitkeep`).

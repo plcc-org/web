@@ -3,10 +3,14 @@ import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
 
-// quotes / start-here-links each live as a single YAML file,
-// but the Git CMS edits them as an array field, which serializes to
-// `{ <key>: [...] }`. Parse tolerantly so both the hand-authored bare-array form
-// and the CMS-wrapped form load, and give every item a stable `id` for the store.
+// quotes / start-here-links are each a single YAML file holding one array. The
+// CMS edits them as a list field, which serializes to `{ <key>: [...] }`. Parse
+// tolerantly so both the hand-authored bare-array form and the CMS-wrapped form
+// load, and give every item a stable `id` for the store.
+//
+// Each lives in its own directory so the CMS can model it as a one-document
+// collection — Tina has no singleton type, and pointing a collection at a
+// directory containing exactly one file is how its own starter does this.
 const yamlList =
   (key: string) =>
   (text: string): Array<Record<string, unknown>> => {
@@ -76,7 +80,7 @@ const leadership = defineCollection({
 })
 
 const quotes = defineCollection({
-  loader: file('src/content/quotes.yaml', { parser: yamlList('quotes') }),
+  loader: file('src/content/quotes/quotes.yaml', { parser: yamlList('quotes') }),
   schema: z.object({
     id: z.string(),
     order: z.number().default(0),
@@ -86,7 +90,7 @@ const quotes = defineCollection({
 })
 
 const startHereLinks = defineCollection({
-  loader: file('src/content/start-here-links.yaml', { parser: yamlList('links') }),
+  loader: file('src/content/start-here-links/start-here-links.yaml', { parser: yamlList('links') }),
   schema: z.object({
     id: z.string(),
     group: z.enum(['home', 'im-new']),
