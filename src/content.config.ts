@@ -106,8 +106,15 @@ const pages = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
   // Hero/block images are stored as path strings and resolved at render time via
   // imageFromRef (src/lib/images.ts) — a nesting-agnostic registry — rather than
-  // Astro's image() helper, so a fixed "../../assets/images/…" reference works
-  // from both flat (church-life.mdx) and nested (about/covenant.mdx) pages.
+  // Astro's image() helper, so one reference works from both flat
+  // (church-life.mdx) and nested (about/covenant.mdx) pages.
+  //
+  // The form is "/assets/images/…", and that exact shape matters: it is the only
+  // one the CMS round-trips unchanged. Its cloud resolver strips `mediaRoot` by
+  // substring, so a relative "../../assets/images/x.jpg" comes back as
+  // "/assets/images../../x.jpg" and the photo silently disappears. Leadership
+  // portraits are the deliberate exception — they go through Astro's image(),
+  // which needs a path relative to the file. See test/image-ref.test.ts.
   schema: z.object({
     title: z.string(),
     seoDescription: z.string().optional(),

@@ -94,3 +94,36 @@ describe('CMS page image references', () => {
     expect(files.length).toBeGreaterThan(10)
   })
 })
+
+// Pins the stored form, which is the actual fix for the mangling rather than a
+// tolerance for it.
+//
+// The CMS's cloud resolver strips `mediaRoot` from a path by substring, not by
+// prefix (@tinacms/graphql, resolveMediaRelativeToCloud). Traced against the two
+// forms:
+//
+//   "../../assets/images/x.jpg"  →  read as ".../<id>../../x.jpg"  →  written back
+//                                   as "/assets/images../../x.jpg"   ✗ mangled
+//   "/assets/images/x.jpg"       →  read as ".../<id>/x.jpg"        →  written back
+//                                   as "/assets/images/x.jpg"        ✓ unchanged
+//
+// So the absolute form is the only one an editor's save preserves. Observed twice in
+// the wild before the migration: commits f077628 and 8a2deef both broke a hero.
+describe('CMS pages store images in the form the CMS round-trips', () => {
+  const PAGES = 'src/content/pages'
+  const files = (readdirSync(PAGES, { recursive: true }) as string[]).filter((f) => f.endsWith('.mdx'))
+
+  const wrong: Record<string, string> = {}
+  for (const file of files) {
+    for (const m of readFileSync(`${PAGES}/${file}`, 'utf-8').matchAll(
+      /image:\s*"?([^"\n,}]+\.(?:jpg|jpeg|png|webp))"?/gi
+    )) {
+      const ref = m[1].trim()
+      if (!ref.startsWith('/assets/images/')) wrong[ref] = file
+    }
+  }
+
+  it('uses /assets/images/… everywhere, never a relative or mangled path', () => {
+    expect(wrong).toEqual({})
+  })
+})

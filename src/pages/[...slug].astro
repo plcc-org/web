@@ -41,7 +41,11 @@ if (!page) return new Response('Not Found', { status: 404 })
 // Hero ledes are authored as Markdown, so strip it before reusing one as the
 // meta description — a raw `_word_` in a search snippet is the tell that a
 // description was reused without being looked at.
-const description = page.seoDescription ?? renderPlain(page.hero?.lede ?? '')
+// `||`, not `??`: the CMS writes an untouched optional string as '' rather than
+// omitting it, and an empty description is exactly as useless as a missing one —
+// it just isn't nullish, so `??` kept it and the page shipped with no description
+// at all. Seen on /families/ after an editor saved a page they hadn't given one.
+const description = page.seoDescription || renderPlain(page.hero?.lede ?? '')
 ---
 
 <BaseLayout title={`${page.title} | Pine Lake Covenant Church`} description={description}>
