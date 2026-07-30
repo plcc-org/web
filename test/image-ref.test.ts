@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { readdirSync, readFileSync, existsSync } from 'node:fs'
 import { imageKey } from '../src/lib/images'
 
 // Guards the function that turns a stored photo reference into a catalog key.
@@ -37,6 +38,15 @@ describe('imageKey', () => {
     expect(imageKey(`https://assets.tina.io/${ID}/church-life/sunset.jpg`)).toBe('church-life/sunset.jpg')
   })
 
+  // What the deployed editor *writes back* when it saves a page. Same missing
+  // slash, in reverse: mediaRoot re-prefixed onto the relative path it read. Real,
+  // from commit f077628 — an editor changed some text and the hero image broke.
+  it('resolves the mangled path a CMS save writes into the file', () => {
+    expect(imageKey('/assets/images../../715550230_18207937264338056_8366812198487572303_n.jpg')).toBe(
+      '715550230_18207937264338056_8366812198487572303_n.jpg'
+    )
+  })
+
   it('accepts the relative path a local build reads from the file', () => {
     expect(imageKey('../../assets/images/visit/hero/image.jpg')).toBe('visit/hero/image.jpg')
     expect(imageKey('../assets/images/visit/hero/image.jpg')).toBe('visit/hero/image.jpg')
@@ -52,5 +62,68 @@ describe('imageKey', () => {
   it('leaves a top-level filename alone', () => {
     expect(imageKey('hero.jpg')).toBe('hero.jpg')
     expect(imageKey('/hero.jpg')).toBe('hero.jpg')
+  })
+})
+
+// Every photo referenced by a CMS page has to resolve to a file we actually have.
+//
+// assets.test.ts can't cover this: it matches bare filenames, and its extension
+// filter excludes .mdx, so the pages the CMS writes are invisible to it. That is
+// how a save mangled a hero path in commit f077628 and reached production — the
+// basename was still valid, the file existed, and the page rendered without its
+// photo. Resolving through imageKey is the check that matters, because imageKey is
+// what the renderer uses.
+describe('CMS page image references', () => {
+  const PAGES = 'src/content/pages'
+  const files = (readdirSync(PAGES, { recursive: true }) as string[]).filter((f) => f.endsWith('.mdx'))
+
+  const unresolved: Record<string, string> = {}
+  for (const file of files) {
+    const text = readFileSync(`${PAGES}/${file}`, 'utf-8')
+    for (const m of text.matchAll(/image:\s*"?([^"\n,}]+\.(?:jpg|jpeg|png|webp))"?/gi)) {
+      const ref = m[1].trim()
+      if (!existsSync(`src/assets/images/${imageKey(ref)}`)) unresolved[ref] = file
+    }
+  }
+
+  it('all resolve to a file in src/assets/images', () => {
+    expect(unresolved).toEqual({})
+  })
+
+  it('scans the pages at all', () => {
+    expect(files.length).toBeGreaterThan(10)
+  })
+})
+
+// Pins the stored form, which is the actual fix for the mangling rather than a
+// tolerance for it.
+//
+// The CMS's cloud resolver strips `mediaRoot` from a path by substring, not by
+// prefix (@tinacms/graphql, resolveMediaRelativeToCloud). Traced against the two
+// forms:
+//
+//   "../../assets/images/x.jpg"  →  read as ".../<id>../../x.jpg"  →  written back
+//                                   as "/assets/images../../x.jpg"   ✗ mangled
+//   "/assets/images/x.jpg"       →  read as ".../<id>/x.jpg"        →  written back
+//                                   as "/assets/images/x.jpg"        ✓ unchanged
+//
+// So the absolute form is the only one an editor's save preserves. Observed twice in
+// the wild before the migration: commits f077628 and 8a2deef both broke a hero.
+describe('CMS pages store images in the form the CMS round-trips', () => {
+  const PAGES = 'src/content/pages'
+  const files = (readdirSync(PAGES, { recursive: true }) as string[]).filter((f) => f.endsWith('.mdx'))
+
+  const wrong: Record<string, string> = {}
+  for (const file of files) {
+    for (const m of readFileSync(`${PAGES}/${file}`, 'utf-8').matchAll(
+      /image:\s*"?([^"\n,}]+\.(?:jpg|jpeg|png|webp))"?/gi
+    )) {
+      const ref = m[1].trim()
+      if (!ref.startsWith('/assets/images/')) wrong[ref] = file
+    }
+  }
+
+  it('uses /assets/images/… everywhere, never a relative or mangled path', () => {
+    expect(wrong).toEqual({})
   })
 })

@@ -299,9 +299,11 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
   `aria-hidden="true"` — the crawl treats `alt=""` on its own as an oversight and fails.
 - **CMS page blocks carry their own photos.** Blocks on CMS-built pages store an uploaded
   image and its alt together via CMS image fields, resolved at render time
-  through `imageFromRef` rather than Astro's `image()` helper — so a fixed
-  `../../assets/images/…` reference works from both flat and nested pages. They don't
-  touch the catalog.
+  through `imageFromRef` rather than Astro's `image()` helper — so one reference works
+  from both flat and nested pages. They don't touch the catalog. The stored form is
+  **`/assets/images/…`**, and that shape is load-bearing: it is the only one the CMS
+  round-trips unchanged, and a relative path comes back mangled with the photo silently
+  gone. See [cms.md](./cms.md#gotchas).
 - **Favour portrait imagery** (see [design-system.md](./design-system.md)).
 
 ---
