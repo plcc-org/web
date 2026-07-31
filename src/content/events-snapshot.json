@@ -1,97 +1,9 @@
 {
-  "capturedAt": "2026-07-30T13:20:11.322Z",
+  "capturedAt": "2026-07-31T13:24:15.572Z",
   "links": {
-    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-07-30T00%3A00%3A00.000Z&where[starts_at][lte]=2026-09-24T13%3A20%3A10.000Z"
+    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-07-31T00%3A00%3A00.000Z&where[starts_at][lte]=2026-09-25T13%3A24%3A14.000Z"
   },
   "data": [
-    {
-      "type": "Event",
-      "id": "228134731",
-      "attributes": {
-        "all_day_event": false,
-        "description": "<div class=\"trix-content\">\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
-        "ends_at": "2026-07-30T02:00:00Z",
-        "featured": false,
-        "name": "Summer Meetup",
-        "recurring": true,
-        "show_page_path": "/calendar/event/228134731",
-        "starts_at": "2026-07-30T00:30:00Z"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/events/228134731"
-      },
-      "relationships": {
-        "location": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/locations/13175406"
-          },
-          "data": {
-            "type": "Location",
-            "id": "13175406"
-          }
-        },
-        "category_tags": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/events/228134731/category_tags"
-          },
-          "data": [
-            {
-              "type": "CategoryTag",
-              "id": "241923"
-            },
-            {
-              "type": "CategoryTag",
-              "id": "419298"
-            }
-          ]
-        },
-        "event_registration_url": {
-          "data": null
-        }
-      }
-    },
-    {
-      "type": "Event",
-      "id": "200873110",
-      "attributes": {
-        "all_day_event": false,
-        "description": "<div class=\"trix-content\">\n  <div>&nbsp;Join us for FIVE days of energizing fun!<br>&nbsp;<br>Children entering <strong>kindergarten through 5th grade in the fall</strong>--as well as <strong>4- &amp; 5-year-olds</strong>--are invited to participate in PLCC’s Sports Camp July 29-August 2. We’ll meet each day from 9:00am-12:00pm for energetic music, Bible lessons, and sports instruction from college athletes. Students can choose which sport they want to learn or improve their skills in: <strong><em>basketball</em></strong>, <strong><em>soccer </em></strong>or <strong><em>cheerleading</em></strong>. We will also have an <strong><em>art </em></strong>option (space is limited)!<br><br></div><ul><li>For <strong>4- and 5-year-olds</strong>, we have a special Kickstart program, which is an intro to sport skills and movement!</li><li>Every participant receives small-group instruction and encouragement as well as a cool SWAG bag!</li><li>Spaces are limited, so we encourage you to register early to save your child’s place.</li></ul><div><strong>Registration includes:</strong> Professional leadership from Base Sports; instruction from highly trained college athletes; healthy snacks; SWAG bag including t-shirt, water bottle, and fun treats!<br><br></div><div><strong>Cost</strong>:<br>Early Bird Price (through April 30) - $110 for first child<br>Starting May 1 - $125 for first child<br><em>$10 discount for each additional child</em></div>\n</div>\n",
-        "ends_at": "2026-07-30T20:00:00Z",
-        "featured": false,
-        "name": "Sports Camp",
-        "recurring": true,
-        "show_page_path": "/calendar/event/200873110",
-        "starts_at": "2026-07-30T17:00:00Z"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/events/200873110"
-      },
-      "relationships": {
-        "location": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/locations/11592248"
-          },
-          "data": {
-            "type": "Location",
-            "id": "11592248"
-          }
-        },
-        "category_tags": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/events/200873110/category_tags"
-          },
-          "data": [
-            {
-              "type": "CategoryTag",
-              "id": "241936"
-            }
-          ]
-        },
-        "event_registration_url": {
-          "data": null
-        }
-      }
-    },
     {
       "type": "Event",
       "id": "200873111",
@@ -1008,6 +920,43 @@
     },
     {
       "type": "Event",
+      "id": "227516862",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>This is for anyone newer to Pine Lake Covenant Church. Come find out who we are and what we are all about!</div>\n</div>\n",
+        "ends_at": "2026-08-30T19:30:00Z",
+        "featured": false,
+        "name": "Newcomers Brunch",
+        "recurring": false,
+        "show_page_path": "/calendar/event/227516862",
+        "starts_at": "2026-08-30T18:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/227516862"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13143446"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13143446"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/227516862/category_tags"
+          },
+          "data": []
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
       "id": "228130654",
       "attributes": {
         "all_day_event": false,
@@ -1721,44 +1670,6 @@
   "included": [
     {
       "type": "Location",
-      "id": "13175406",
-      "attributes": {
-        "additional_address_info": "Meet at restroom pavilion between Library and City Hall",
-        "approximation": null,
-        "display_on_church_center": true,
-        "full_formatted_address": "801 228th Ave SE\nMeet at restroom pavilion between Library and City Hall\nSammamish, WA 98074",
-        "latitude": 47.60107360000001,
-        "longitude": -122.0365113,
-        "name": "Sammamish Farmers Market, Upper Sammamish Commons",
-        "type": "Custom",
-        "url": null
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/locations/13175406"
-      }
-    },
-    {
-      "type": "CategoryTag",
-      "id": "241923",
-      "attributes": {
-        "name": "Community Event"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241923"
-      }
-    },
-    {
-      "type": "CategoryTag",
-      "id": "419298",
-      "attributes": {
-        "name": "Summer Meetups"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419298"
-      }
-    },
-    {
-      "type": "Location",
       "id": "11592248",
       "attributes": {
         "additional_address_info": null,
@@ -1842,6 +1753,26 @@
       }
     },
     {
+      "type": "CategoryTag",
+      "id": "241923",
+      "attributes": {
+        "name": "Community Event"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241923"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "419298",
+      "attributes": {
+        "name": "Summer Meetups"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419298"
+      }
+    },
+    {
       "type": "Location",
       "id": "6158728",
       "attributes": {
@@ -1867,6 +1798,24 @@
       },
       "links": {
         "self": "https://api.churchcenter.com/calendar/v2/category_tags/419299"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "13175406",
+      "attributes": {
+        "additional_address_info": "Meet at restroom pavilion between Library and City Hall",
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "801 228th Ave SE\nMeet at restroom pavilion between Library and City Hall\nSammamish, WA 98074",
+        "latitude": 47.60107360000001,
+        "longitude": -122.0365113,
+        "name": "Sammamish Farmers Market, Upper Sammamish Commons",
+        "type": "Custom",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/13175406"
       }
     },
     {
@@ -1903,6 +1852,24 @@
       },
       "links": {
         "self": "https://api.churchcenter.com/calendar/v2/locations/9654054"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "13143446",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/13143446"
       }
     },
     {
@@ -2031,8 +1998,8 @@
     }
   ],
   "meta": {
-    "total_count": 38,
-    "count": 38,
+    "total_count": 37,
+    "count": 37,
     "can_order_by": [
       "featured",
       "visible_starts_at"
