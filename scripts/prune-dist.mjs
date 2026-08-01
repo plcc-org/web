@@ -13,9 +13,19 @@
 // validates. So the glob stays and the emitted originals are pruned here.
 //
 // Deciding by reference is safe because every public page is prerendered: the
-// built output is a complete description of what the site can serve. The only
-// runtime route is the CMS island endpoint, which reads images from the repo
-// through git, never from dist.
+// built output is a complete description of what the site can serve — with one
+// exception, which is why this script knows about the CMS at all.
+//
+// The CMS preview re-renders a region through /tina-island, the one on-demand
+// route. It cannot use <Image> (see the note in src/components/Photo.astro), so
+// it points at the unoptimised original instead — a file that appears in no
+// HTML and would therefore be pruned as unreferenced. The preview would then
+// show broken images while the live pages stayed perfect.
+//
+// So when the editor ships, the originals behind CMS page images are kept too.
+// That is ~12 MB for 48 images, spent only where somebody is editing: with
+// TINA_PUBLISH_ADMIN unset there is no deployed editor, nothing requests the
+// island, and the originals go as before.
 //
 // Runs automatically after `npm run build` (see the `postbuild` script), so
 // Cloudflare gets the pruned output too.
@@ -56,13 +66,37 @@ if (htmlCount === 0) {
   process.exit(1)
 }
 
+// Stems ("hero" from "hero.jpg") of every photo a CMS page references, so their
+// emitted originals survive for the preview. Empty unless the editor ships.
+const previewStems = new Set()
+if (process.env.TINA_PUBLISH_ADMIN === 'true' && existsSync('src/content/pages')) {
+  for (const f of readdirSync('src/content/pages', { recursive: true })) {
+    if (typeof f !== 'string' || !f.endsWith('.mdx')) continue
+    const text = readFileSync(join('src/content/pages', f), 'utf-8')
+    for (const m of text.matchAll(/image:\s*"?([^"\n,}]+\.(?:jpg|jpeg|png|webp))"?/gi)) {
+      const base = m[1].trim().split('/').pop()
+      previewStems.add(base.slice(0, base.lastIndexOf('.')))
+    }
+  }
+}
+const neededForPreview = (name) => {
+  const dot = name.indexOf('.')
+  return dot > 0 && previewStems.has(name.slice(0, dot))
+}
+
 let removed = 0
 let bytes = 0
+let forPreview = 0
 const kept = []
 for (const name of readdirSync(ASSETS)) {
   if (!IMAGE_EXT.has(extname(name).toLowerCase())) continue
   if (haystack.includes(name)) {
     kept.push(name)
+    continue
+  }
+  if (neededForPreview(name)) {
+    kept.push(name)
+    forPreview++
     continue
   }
   const path = join(ASSETS, name)
@@ -72,8 +106,9 @@ for (const name of readdirSync(ASSETS)) {
 }
 
 const mb = (bytes / 1048576).toFixed(1)
+const preview = forPreview ? ` ${forPreview} of those kept for the CMS preview.` : ''
 console.log(
   removed === 0
-    ? `prune-dist: nothing to remove (${kept.length} image assets, all referenced).`
-    : `prune-dist: removed ${removed} unreferenced image asset(s), ${mb} MB. ${kept.length} kept.`
+    ? `prune-dist: nothing to remove (${kept.length} image assets, all referenced).${preview}`
+    : `prune-dist: removed ${removed} unreferenced image asset(s), ${mb} MB. ${kept.length} kept.${preview}`
 )

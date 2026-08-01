@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets'
+import { Image, getImage } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 import { imageLoader } from '../lib/images'
 import { photoAlt } from '../lib/photos'
@@ -39,25 +39,57 @@ const {
 } = Astro.props
 
 const loader = !image && filename ? imageLoader(filename) : undefined
-const src = image ?? loader?.()
+const src = image ?? (loader ? (await loader()).default : undefined)
 if (!src && filename) {
   console.warn(`[Photo] image not found in src/assets/images: ${filename}`)
 }
 const resolvedAlt = alt ?? (filename ? await photoAlt(filename) : '')
+
+// Fall back to the unoptimised original when no image service is available.
+//
+// `imageService: 'compile'` gives Astro's build-time sharp service to prerendered
+// routes only. The CMS preview re-renders a region through /tina-island, the
+// site's one on-demand route, where there is no service — so <Image> emits the
+// generic /_image endpoint URL, which a static deploy never generates. It 404s,
+// and the preview shows broken images while the live page is perfect.
+//
+// This tests for that outcome rather than for the context. Detecting the island
+// directly isn't possible: it renders through Astro's Container API without a
+// request, so `Astro.url` is not the island's URL. Asking what `getImage` would
+// produce works wherever the component is used, including anywhere on-demand we
+// add later. `import.meta.env.PROD` keeps dev on the normal path — dev serves
+// /_image happily, and we want dev exercising what production does.
+//
+// The original is bigger than the WebP a live page serves, which is the right
+// trade for a preview one editor sees at a time. prune-dist keeps those files
+// when the editor ships; see the note there.
+const built = src ? await getImage({ src, widths, sizes, format }) : undefined
+const unoptimised = import.meta.env.PROD && built?.src.startsWith('/_image') ? src : undefined
 ---
 
 {
-  src && (
-    <Image
-      src={src}
-      alt={resolvedAlt}
-      class={className}
-      widths={widths}
-      sizes={sizes}
-      loading={loading}
-      decoding="async"
-      fetchpriority={fetchpriority}
-      format={format}
-    />
-  )
+  src &&
+    (unoptimised ? (
+      <img
+        src={unoptimised.src}
+        alt={resolvedAlt}
+        class={className}
+        width={unoptimised.width}
+        height={unoptimised.height}
+        loading={loading}
+        decoding="async"
+      />
+    ) : (
+      <Image
+        src={src}
+        alt={resolvedAlt}
+        class={className}
+        widths={widths}
+        sizes={sizes}
+        loading={loading}
+        decoding="async"
+        fetchpriority={fetchpriority}
+        format={format}
+      />
+    ))
 }
