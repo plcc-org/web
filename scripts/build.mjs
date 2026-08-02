@@ -4,7 +4,7 @@
 // This is a script rather than a line in package.json because the flag choice is a
 // real decision with a real consequence, and it needs explaining:
 //
-//   No credentials  → --local
+//   No credentials  → --local --skip-cloud-checks
 //     Reads content from disk and emits a client pointed at http://localhost:4001,
 //     the datalayer that only exists while a build runs. Correct for CI and for a
 //     fresh clone — neither has credentials, and neither should need them. But a
@@ -22,23 +22,6 @@
 // The output HTML is the same either way, so CI still verifies what deploys even
 // though it builds by the first path. Only the client URL baked into the bundle
 // differs.
-//
-// `--skip-cloud-checks` is passed on both paths, and on the credentialed one it is
-// load-bearing. The check it disables SHA-compares the local `_schema.json` against
-// the schema TinaCloud last indexed for this branch, and fails the build when they
-// differ. TinaCloud indexes from the GitHub push; Cloudflare builds from the same
-// push. So on any deploy that changes `tina/config.ts`, the build reaches the check
-// before TinaCloud has re-indexed and dies on ERR_CLOUD_CHECK_FAILED — a race the
-// site loses roughly as often as it wins. The CLI's `waitForDB` does not cover this:
-// it polls only while indexing is *in progress*, so a TinaCloud that hasn't started
-// on the new commit reports 'complete' for the previous one and the check proceeds
-// against a stale schema.
-//
-// Skipping it costs nothing that a deploy needs. Codegen runs before the check and
-// is unaffected by it, so the emitted client is byte-identical either way; the check
-// is a pre-flight warning, not a build input. What it would have told us — that
-// TinaCloud is briefly behind — is true by construction on every schema change and
-// resolves itself within minutes, with nothing to act on in the meantime.
 //
 // Whether /admin is compiled and published is a separate switch, TINA_PUBLISH_ADMIN
 // — see scripts/prune-admin.mjs and the patch under patches/. Credentials alone do
@@ -60,7 +43,7 @@
 import { spawnSync } from 'node:child_process'
 
 const cloud = Boolean(process.env.PUBLIC_TINA_CLIENT_ID && process.env.TINA_TOKEN)
-const flags = cloud ? ['--content=local'] : ['--local']
+const flags = cloud ? ['--content=local'] : ['--local', '--skip-cloud-checks']
 
 console.log(
   cloud
@@ -68,9 +51,7 @@ console.log(
     : 'build: no TinaCloud credentials — emitting a local client. Correct for CI and local builds; a deploy made this way has no working /tina-island.'
 )
 
-const args = ['build', ...flags, '--skip-cloud-checks', '-c', 'NODE_ENV=production astro build']
-
-const result = spawnSync('tinacms', args, {
+const result = spawnSync('tinacms', ['build', ...flags, '-c', 'NODE_ENV=production astro build'], {
   stdio: 'inherit',
   env: { ...process.env, NODE_OPTIONS: '--max-old-space-size=4096' },
   shell: process.platform === 'win32',

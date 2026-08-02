@@ -125,12 +125,11 @@ rm -rf node_modules/.vite && node scripts/generate-redirects.mjs
 `scripts/build.mjs`, which wraps `NODE_ENV=production astro build` in `tinacms build` and
 picks the CMS flags from the environment. Three parts are load-bearing:
 
-- **The flag choice.** Without TinaCloud credentials it uses `--local`; with them,
-  `--content=local`. Both read content from the files on disk — no account, no network, no
-  third party is involved in a build — but only the second emits a client that a
-  **deployed** site can talk to. Both also pass `--skip-cloud-checks`, which keeps a
-  TinaCloud that hasn't yet indexed the commit being built from failing the deploy. See
-  [cms.md](./cms.md#deployed-setup) for why both matter and what breaks without them.
+- **The flag choice.** Without TinaCloud credentials it uses
+  `--local --skip-cloud-checks`; with them, `--content=local`. Both read content from the
+  files on disk — no account, no network, no third party is involved in a build — but only
+  the second emits a client that a **deployed** site can talk to. See
+  [cms.md](./cms.md#deployed-setup) for why that matters and what breaks without it.
 
 - **`NODE_ENV=production` is not redundant.** `tinacms build` sets `NODE_ENV=development`
   for the command it wraps, which makes `import.meta.env.PROD` false inside the Astro
@@ -161,6 +160,13 @@ registered image whether or not a page renders it. Without the prune the deploy 
 roughly 15 MB of images no page can reach. It refuses to run if it finds no HTML, and
 `check-site.mjs` verifies every remaining asset reference resolves — which is what proves
 the prune only ever removed unreachable files.
+
+`scripts/check-tina-lock.mjs` fails the build when `tina/tina-lock.json` no longer matches
+`tina/config.ts`. That file is the compiled schema TinaCloud indexes, and only `tinacms dev`
+regenerates it — so a config change made without running `npm run dev:tina` leaves it stale,
+and the consequence surfaces as a failed deploy or a broken editor with a message that
+blames neither. `npm run tina:lock` regenerates it. See
+[cms.md](./cms.md#the-lock-file-is-the-schema-tinacloud-sees).
 
 ### The admin SPA is not built unless it ships
 
