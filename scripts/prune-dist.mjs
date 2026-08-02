@@ -23,9 +23,24 @@
 // show broken images while the live pages stayed perfect.
 //
 // So when the editor ships, the originals behind CMS page images are kept too.
-// That is ~12 MB for 48 images, spent only where somebody is editing: with
+// That is ~15 MB for 63 images, spent only where somebody is editing: with
 // TINA_PUBLISH_ADMIN unset there is no deployed editor, nothing requests the
 // island, and the originals go as before.
+//
+// Which images those are is read straight out of the MDX, and the reading is
+// deliberately loose: any token ending in an image extension counts, whatever
+// names it. Keying on prop syntax is what broke this the first time — the
+// pattern matched `image:` and so found the object form inside `<PhotoBand
+// photos={[{ image: "…" }]}` while missing the attribute form on
+// `<CaptionedPhoto image="…" />`, silently pruning 14 originals and 404ing them
+// in the editor. Prop names are not a fixed set either: `hero` and `logo` carry
+// images too, and a new block can add another without touching this file.
+//
+// The two failures are not symmetric, which is what settles the trade. Matching
+// something that isn't a live reference keeps a file nobody asks for — a few
+// hundred KB, invisible. Missing one deletes a file the editor requests, and
+// the only symptom is a broken image in front of an editor, on a route no
+// automated check exercises. So this errs toward keeping.
 //
 // Runs automatically after `npm run build` (see the `postbuild` script), so
 // Cloudflare gets the pruned output too.
@@ -73,8 +88,8 @@ if (process.env.TINA_PUBLISH_ADMIN === 'true' && existsSync('src/content/pages')
   for (const f of readdirSync('src/content/pages', { recursive: true })) {
     if (typeof f !== 'string' || !f.endsWith('.mdx')) continue
     const text = readFileSync(join('src/content/pages', f), 'utf-8')
-    for (const m of text.matchAll(/image:\s*"?([^"\n,}]+\.(?:jpg|jpeg|png|webp))"?/gi)) {
-      const base = m[1].trim().split('/').pop()
+    for (const m of text.matchAll(/[\w./-]+\.(?:jpg|jpeg|png|webp)/gi)) {
+      const base = m[0].split('/').pop()
       previewStems.add(base.slice(0, base.lastIndexOf('.')))
     }
   }
