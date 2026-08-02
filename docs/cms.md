@@ -378,13 +378,27 @@ Two things worth knowing about dev:
 changes with credentials is only the client the build emits, and `scripts/build.mjs` picks
 between them:
 
-| Environment                            | CMS flags                     | The deployed client                             |
-| -------------------------------------- | ----------------------------- | ----------------------------------------------- |
-| No credentials (CI, a fresh clone)     | `--local --skip-cloud-checks` | Points at `localhost:4001` — dead once deployed |
-| `PUBLIC_TINA_CLIENT_ID` + `TINA_TOKEN` | `--content=local`             | Talks to TinaCloud                              |
+| Environment                            | CMS flags         | The deployed client                             |
+| -------------------------------------- | ----------------- | ----------------------------------------------- |
+| No credentials (CI, a fresh clone)     | `--local`         | Points at `localhost:4001` — dead once deployed |
+| `PUBLIC_TINA_CLIENT_ID` + `TINA_TOKEN` | `--content=local` | Talks to TinaCloud                              |
 
 The HTML is identical either way, which is why CI still verifies what deploys despite
 building without credentials. Only the client URL baked into the bundle differs.
+
+**Both paths pass `--skip-cloud-checks`, deliberately.** The check it disables compares the
+schema a build generated against the one TinaCloud has indexed — and TinaCloud gets its
+schema by indexing `tina/tina-lock.json`. So it is asking whether the committed lock file is
+in step with `tina/config.ts`, one round trip removed, at deploy time.
+[`check-tina-lock.mjs`](#the-lock-file-is-the-schema-tinacloud-sees) asks that directly, in
+CI, without credentials, naming the file. What the cloud check adds is two ways to fail
+while nothing is wrong: it always checks `main` (`TINA_BRANCH` is unset), so a preview build
+of a branch whose schema differs from main's fails however correct it is; and on the deploy
+that lands a schema change it races TinaCloud's re-index of the new lock file.
+
+The case that trade gives up is TinaCloud indexing something genuinely different, or failing
+to index at all. That still surfaces — in the editor, as "GraphQL Schema Mismatch", which is
+where a problem with the editor belongs. The public site does not stop deploying for it.
 
 Whether `/admin` is compiled and shipped is a **separate** switch, `TINA_PUBLISH_ADMIN`.
 Credentials alone don't ship the editor, deliberately — the two answer different questions,
