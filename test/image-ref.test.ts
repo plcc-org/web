@@ -25,10 +25,13 @@ describe('imageKey', () => {
     )
   })
 
-  it('keeps the sub-directory a CMS upload lands in', () => {
-    expect(
-      imageKey(`https://assets.tina.io/${ID}../../church-life/474748731_1030392515795404_2521947271930024728_n.jpg`)
-    ).toBe('church-life/474748731_1030392515795404_2521947271930024728_n.jpg')
+  // No ref in the repo carries a sub-directory any more: Tina uploads flat, into
+  // `mediaRoot: 'assets/images'`. The nesting these cases cover is Keystatic's,
+  // removed from content in the commit that added this note. Kept because
+  // imageKey still resolves a nested key and should — a stray one must degrade to
+  // a missing photo, not to a path that silently resolves somewhere else.
+  it('still resolves a nested key, though nothing writes one now', () => {
+    expect(imageKey(`https://assets.tina.io/${ID}../../church-life/sunset.jpg`)).toBe('church-life/sunset.jpg')
   })
 
   // The shape a photo uploaded through the *deployed* editor would take: a real
@@ -48,15 +51,15 @@ describe('imageKey', () => {
   })
 
   it('accepts the relative path a local build reads from the file', () => {
-    expect(imageKey('../../assets/images/visit/hero/image.jpg')).toBe('visit/hero/image.jpg')
-    expect(imageKey('../assets/images/visit/hero/image.jpg')).toBe('visit/hero/image.jpg')
+    expect(imageKey('../../assets/images/visit-welcome-cafe.jpg')).toBe('visit-welcome-cafe.jpg')
+    expect(imageKey('../assets/images/visit-welcome-cafe.jpg')).toBe('visit-welcome-cafe.jpg')
   })
 
   it('accepts the absolute, mediaRoot-relative and bare forms', () => {
-    expect(imageKey('/assets/images/visit/hero/image.jpg')).toBe('visit/hero/image.jpg')
-    expect(imageKey('src/assets/images/visit/hero/image.jpg')).toBe('visit/hero/image.jpg')
-    expect(imageKey('/visit/hero/image.jpg')).toBe('visit/hero/image.jpg')
-    expect(imageKey('visit/hero/image.jpg')).toBe('visit/hero/image.jpg')
+    expect(imageKey('/assets/images/visit-welcome-cafe.jpg')).toBe('visit-welcome-cafe.jpg')
+    expect(imageKey('src/assets/images/visit-welcome-cafe.jpg')).toBe('visit-welcome-cafe.jpg')
+    expect(imageKey('/visit-welcome-cafe.jpg')).toBe('visit-welcome-cafe.jpg')
+    expect(imageKey('visit-welcome-cafe.jpg')).toBe('visit-welcome-cafe.jpg')
   })
 
   it('leaves a top-level filename alone', () => {
@@ -64,6 +67,19 @@ describe('imageKey', () => {
     expect(imageKey('/hero.jpg')).toBe('hero.jpg')
   })
 })
+
+// Every syntax these pages write an image path in: `image:`/`logo:` bare in
+// frontmatter, `image: "…"` in the object form inside a block prop, and
+// `image="…"` as a JSX attribute. The prop name is matched loosely rather than
+// listed, because listing it is what went wrong: both checks below keyed on
+// `image:` — the colon — so they saw the object form inside `<PhotoBand
+// photos={[{ image: "…" }]} />` and missed the attribute form on
+// `<CaptionedPhoto image="…" />`. That is 14 of the 67 refs on these pages
+// unchecked, by the two tests whose whole job is checking them, including the one
+// guarding the path shape that has broken production twice. `hero` and `logo`
+// carry images too, and a new block can introduce another name without anyone
+// thinking to come back here.
+const IMAGE_REF = /\w+\s*[:=]\s*"?([\w./-]+\.(?:jpg|jpeg|png|webp))"?/gi
 
 // Every photo referenced by a CMS page has to resolve to a file we actually have.
 //
@@ -80,8 +96,8 @@ describe('CMS page image references', () => {
   const unresolved: Record<string, string> = {}
   for (const file of files) {
     const text = readFileSync(`${PAGES}/${file}`, 'utf-8')
-    for (const m of text.matchAll(/image:\s*"?([^"\n,}]+\.(?:jpg|jpeg|png|webp))"?/gi)) {
-      const ref = m[1].trim()
+    for (const m of text.matchAll(IMAGE_REF)) {
+      const ref = m[1]
       if (!existsSync(`src/assets/images/${imageKey(ref)}`)) unresolved[ref] = file
     }
   }
@@ -115,10 +131,8 @@ describe('CMS pages store images in the form the CMS round-trips', () => {
 
   const wrong: Record<string, string> = {}
   for (const file of files) {
-    for (const m of readFileSync(`${PAGES}/${file}`, 'utf-8').matchAll(
-      /image:\s*"?([^"\n,}]+\.(?:jpg|jpeg|png|webp))"?/gi
-    )) {
-      const ref = m[1].trim()
+    for (const m of readFileSync(`${PAGES}/${file}`, 'utf-8').matchAll(IMAGE_REF)) {
+      const ref = m[1]
       if (!ref.startsWith('/assets/images/')) wrong[ref] = file
     }
   }
