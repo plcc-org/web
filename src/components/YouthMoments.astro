@@ -1,14 +1,11 @@
 ---
-import Photo from './Photo.astro'
-
 // The big, recurring tentpoles of the youth program (from the `youthMoments`
-// collection). Featured moments render as large photo cards for special
-// attention; the rest fall into a compact list beneath them.
+// collection). Featured moments render as large cards for special attention;
+// the rest fall into a compact list beneath them.
 type Moment = {
   title: string
   when?: string
   blurb: string
-  photo?: string
   link?: { label?: string; href?: string }
   featured: boolean
 }
@@ -38,16 +35,6 @@ const rest = moments.filter((m) => !m.featured)
       <div class="moment-cards">
         {featured.map((m) => (
           <article class="moment-card">
-            {m.photo && (
-              <div class="moment-card__media">
-                <Photo
-                  filename={m.photo}
-                  class="moment-card__img"
-                  widths={[400, 700, 1000]}
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
-            )}
             <div class="moment-card__body">
               {m.when && <p class="moment-card__cadence">{m.when}</p>}
               <h3 class="moment-card__title">{m.title}</h3>

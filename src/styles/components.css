@@ -14,7 +14,7 @@
  *   Card rows     CardRow.astro         an even grid of equal cards
  *   Accent lists  AccentList.astro      moss-edged cards, 2 or 3 across
  *   Moments       MomentsSection.astro  the staggered photo-tile grid
- *   Youth moments YouthMoments.astro    photo cards + a dense list
+ *   Youth moments YouthMoments.astro    featured cards + a dense list
  *   Link cards    LinkCardSection       the wrapping row of navigational cards
  *   Media         CaptionedPhotoMdx     framed photo, caption, aspect ratios
  *   Letter        Letter.astro          prose column + sticky portrait
@@ -455,8 +455,8 @@
  * Padding and layout stay with each component: a dense event row and a roomy
  * link card want different spacing, but they should read as the same material.
  * Each of these classes is styled again further down, in its own section — those
- * rules add only what's genuinely different (the accent list's moss edge, the
- * moment card's clipped photo), never a full surface of their own.
+ * rules add only what's genuinely different (the accent list's moss edge),
+ * never a full surface of their own.
  * -------------------------------------------------------------------- */
 .card,
 .link-card,
@@ -721,25 +721,11 @@ a.card:hover,
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-/* Surface from the shared card recipe above; `overflow: hidden` is what's
-   specific — the photo has to be clipped to the card's radius. */
+/* Surface from the shared card recipe above; the column layout is what's
+   specific, so a featured moment's body fills the card. */
 .moment-card {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-}
-
-.moment-card__media {
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  background: var(--color-mist);
-}
-
-.moment-card__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 
 .moment-card__body {

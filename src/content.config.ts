@@ -48,16 +48,14 @@ const photos = defineCollection({
 // retreats, annual service). These are curated content with their own copy and
 // dates, kept here rather than in the dated events feed (which only looks ~8
 // weeks ahead) so they always show. `when` is a human label — a date range like
-// "October 9–11, 2026" or a cadence like "Each spring". `photo` is a filename in
-// the photo catalog (alt resolved by <Photo>). `featured` gives the biggest
-// moments large cards; the rest fall into a compact list.
+// "October 9–11, 2026" or a cadence like "Each spring". `featured` gives the
+// biggest moments large cards; the rest fall into a compact list.
 const youthMoments = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/youth-moments' }),
   schema: z.object({
     title: z.string(),
     when: z.string().optional(),
     blurb: z.string().min(1),
-    photo: z.string().optional(),
     link: z.object({ label: z.string(), href: z.string() }).optional(),
     featured: z.boolean().default(false),
     order: z.number().default(0),

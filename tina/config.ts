@@ -212,14 +212,6 @@ export default defineConfig({
             ui: { component: 'textarea' },
           },
           {
-            name: 'photo',
-            label: 'Photo filename',
-            type: 'string',
-            description:
-              'A filename from the photo catalog (src/content/photos.json) — not an upload. ' +
-              'Leave blank and the moment renders as a compact card.',
-          },
-          {
             name: 'featured',
             label: 'Featured',
             type: 'boolean',
