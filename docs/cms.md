@@ -342,13 +342,22 @@ Two things worth knowing about dev:
 changes with credentials is only the client the build emits, and `scripts/build.mjs` picks
 between them:
 
-| Environment                            | CMS flags                     | The deployed client                             |
-| -------------------------------------- | ----------------------------- | ----------------------------------------------- |
-| No credentials (CI, a fresh clone)     | `--local --skip-cloud-checks` | Points at `localhost:4001` — dead once deployed |
-| `PUBLIC_TINA_CLIENT_ID` + `TINA_TOKEN` | `--content=local`             | Talks to TinaCloud                              |
+| Environment                            | CMS flags         | The deployed client                             |
+| -------------------------------------- | ----------------- | ----------------------------------------------- |
+| No credentials (CI, a fresh clone)     | `--local`         | Points at `localhost:4001` — dead once deployed |
+| `PUBLIC_TINA_CLIENT_ID` + `TINA_TOKEN` | `--content=local` | Talks to TinaCloud                              |
 
 The HTML is identical either way, which is why CI still verifies what deploys despite
 building without credentials. Only the client URL baked into the bundle differs.
+
+Both paths also pass `--skip-cloud-checks`, and on the credentialed one that is not
+housekeeping. The check it disables compares the local schema against the one TinaCloud
+last indexed, and TinaCloud indexes from the same GitHub push Cloudflare builds from — so
+any deploy that changes `tina/config.ts` is a race between the two, and the build loses it
+about as often as it wins. It cost us a production deploy on a commit that only _removed_ a
+field. Skipping it changes no output: codegen runs before the check, so the emitted client
+is byte-identical, and the only thing the check reports — that TinaCloud is a few minutes
+behind — is true by construction on every schema change and fixes itself.
 
 Whether `/admin` is compiled and shipped is a **separate** switch, `TINA_PUBLISH_ADMIN`.
 Credentials alone don't ship the editor, deliberately — the two answer different questions,
