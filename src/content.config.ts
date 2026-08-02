@@ -67,13 +67,21 @@ const youthMoments = defineCollection({
 // Pastors and staff. One YAML data file per person (the CMS stores data-only
 // collections as flat `<slug>.yaml`). The `bio` is a Markdown string field
 // rendered to HTML at build time; the portrait is co-located in src/assets/images.
+// `portrait` is a path string resolved through imageFromRef, not Astro's image()
+// helper, for the same reason the pages collection is: the CMS rewrites media
+// paths, and only "/assets/images/…" survives a round-trip unchanged. image()
+// requires a path relative to the file, which the CMS mangles into
+// "/assets/images../../x.jpg" on save — and unlike a page image, which merely
+// disappears, that fails the build outright with [ImageNotFound]. Verified by
+// mangling one and building. Keeping both collections on one form also means one
+// rule to remember rather than an exception.
 const leadership = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/leadership' }),
-  schema: ({ image }) =>
+  schema: () =>
     z.object({
       name: z.string(),
       title: z.string(),
-      portrait: image(),
+      portrait: z.string().min(1),
       portraitAlt: z.string().min(1),
       bio: z.string().min(1),
       order: z.number().default(0),

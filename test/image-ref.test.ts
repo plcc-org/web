@@ -127,3 +127,31 @@ describe('CMS pages store images in the form the CMS round-trips', () => {
     expect(wrong).toEqual({})
   })
 })
+
+// Leadership portraits are held to the same form, and for a sharper reason: they
+// used Astro's image() helper, which needs a path relative to the file — exactly
+// what the CMS mangles on save. A mangled page image quietly disappears; a
+// mangled portrait fails the build outright with [ImageNotFound], so a single
+// edit to a leader would block every deploy until someone hand-fixed the YAML.
+// Verified by mangling one and building before changing it.
+describe('leadership portraits use the same form', () => {
+  const DIR = 'src/content/leadership'
+  const files = readdirSync(DIR).filter((f) => f.endsWith('.yaml'))
+
+  const wrong: Record<string, string> = {}
+  for (const file of files) {
+    const m = readFileSync(`${DIR}/${file}`, 'utf-8').match(/portrait:\s*(\S+)/)
+    if (!m) continue
+    const ref = m[1].trim()
+    if (!ref.startsWith('/assets/images/')) wrong[ref] = file
+    else if (!existsSync(`src/assets/images/${imageKey(ref)}`)) wrong[ref] = `${file} (no such file)`
+  }
+
+  it('are /assets/images/… and resolve to a real file', () => {
+    expect(wrong).toEqual({})
+  })
+
+  it('scans the leaders at all', () => {
+    expect(files.length).toBeGreaterThan(2)
+  })
+})

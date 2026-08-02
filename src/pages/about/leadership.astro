@@ -4,9 +4,20 @@ import PageIntro from '../../components/PageIntro.astro'
 import Photo from '../../components/Photo.astro'
 import { getCollection } from 'astro:content'
 import { renderMarkdown } from '../../lib/markdown'
+import { imageFromRef } from '../../lib/images'
 import { withBase } from '../../lib/url'
 
-const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order)
+// Portraits are stored as path strings and resolved here, the same way the CMS
+// block wrappers resolve theirs — see the note on the collection in
+// src/content.config.ts for why they aren't Astro's image() helper.
+const leaders = await Promise.all(
+  (await getCollection('leadership'))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (leader) => ({
+      ...leader,
+      portrait: (await imageFromRef(leader.data.portrait)?.())?.default,
+    }))
+)
 ---
 
 <BaseLayout
@@ -36,7 +47,7 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
                 <span class="leader-card__photo" data-portrait>
                   <span class="media__frame ratio-4x5">
                     <Photo
-                      image={leader.data.portrait}
+                      image={leader.portrait}
                       alt={leader.data.portraitAlt}
                       class="media__img media__img--cover"
                       widths={[280, 560]}
@@ -65,7 +76,7 @@ const leaders = (await getCollection('leadership')).sort((a, b) => a.data.order 
               <div class="leader-detail__photo" data-portrait>
                 <div class="media__frame ratio-4x5">
                   <Photo
-                    image={leader.data.portrait}
+                    image={leader.portrait}
                     alt={leader.data.portraitAlt}
                     class="media__img media__img--cover"
                     widths={[480, 960]}
