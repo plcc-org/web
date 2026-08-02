@@ -23,22 +23,31 @@
 // though it builds by the first path. Only the client URL baked into the bundle
 // differs.
 //
-// `--skip-cloud-checks` is passed on both paths, and on the credentialed one it is
-// load-bearing. The check it disables SHA-compares the local `_schema.json` against
-// the schema TinaCloud last indexed for this branch, and fails the build when they
-// differ. TinaCloud indexes from the GitHub push; Cloudflare builds from the same
-// push. So on any deploy that changes `tina/config.ts`, the build reaches the check
-// before TinaCloud has re-indexed and dies on ERR_CLOUD_CHECK_FAILED — a race the
-// site loses roughly as often as it wins. The CLI's `waitForDB` does not cover this:
-// it polls only while indexing is *in progress*, so a TinaCloud that hasn't started
-// on the new commit reports 'complete' for the previous one and the check proceeds
-// against a stale schema.
+// `--skip-cloud-checks` goes on both paths, and on the credentialed one that is a
+// judgement call worth stating. The check it disables compares the schema this build
+// generated against the one TinaCloud has indexed — and TinaCloud gets its schema by
+// indexing `tina/tina-lock.json` out of the GitHub repo. So the check is really
+// asking "is the committed lock file in step with tina/config.ts?", one round trip
+// removed, on a machine that can only answer at deploy time.
 //
-// Skipping it costs nothing that a deploy needs. Codegen runs before the check and
-// is unaffected by it, so the emitted client is byte-identical either way; the check
-// is a pre-flight warning, not a build input. What it would have told us — that
-// TinaCloud is briefly behind — is true by construction on every schema change and
-// resolves itself within minutes, with nothing to act on in the meantime.
+// `scripts/check-tina-lock.mjs` asks that question directly: same defect, caught in
+// GitHub CI without credentials, naming the file. That leaves the cloud check adding
+// only the two ways it can fail while nothing is wrong:
+//
+//   - It always checks `branch` — `main` here, since TINA_BRANCH is unset. A preview
+//     build of a branch whose schema differs from main's therefore fails by
+//     construction, however correct that branch is. PR #34's own build failed this
+//     way, on the commit that fixed the lock file.
+//   - On the deploy that lands a schema change, the build and TinaCloud's re-index
+//     start from the same push. Beat the indexer and the check fails on a state that
+//     is seconds from being right; retry and it passes.
+//
+// Skipping costs no output: codegen runs before the check and is unaffected by it, so
+// the emitted client is byte-identical. What it does cost is the one case the lock
+// guard can't see — TinaCloud indexed something genuinely different, or failed to
+// index at all. That surfaces in the editor as "GraphQL Schema Mismatch", which is
+// where it belongs. A static site for a church should not stop deploying because a
+// third party's indexer is behind.
 //
 // Whether /admin is compiled and published is a separate switch, TINA_PUBLISH_ADMIN
 // — see scripts/prune-admin.mjs and the patch under patches/. Credentials alone do
