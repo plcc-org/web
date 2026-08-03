@@ -390,7 +390,9 @@ every check above, because each build looks perfectly consistent on its own.
 `.github/dependabot.yml` watches npm and the workflow actions. Version bumps arrive on
 Monday mornings — Astro and its integrations in one PR, Tina in another, every other
 minor and patch batched into a third; majors come alone, because those are the ones worth
-reading a changelog for. Security advisories don't wait for Monday and aren't batched.
+reading a changelog for. Security advisories don't wait for Monday; they arrive as a
+single PR covering every open alert Dependabot can fix, because advisories that resolve
+through the same dependency tree otherwise open near-duplicate PRs.
 
 Merging a bump is a deploy: Cloudflare publishes whatever lands on `main` and runs none
 of these checks, so CI is the whole gate. Green, then merge.

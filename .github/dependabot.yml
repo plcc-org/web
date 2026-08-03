@@ -5,9 +5,9 @@ version: 2
 # lands on `main` and runs none of the checks, so ci.yml is the only gate — a
 # merged bump is a deploy. Never merge one that CI hasn't gone green on.
 #
-# Security fixes for a vulnerable dependency arrive as their own PR the moment
-# GitHub learns about the advisory, independent of the schedules below. They're
-# deliberately left ungrouped so they land alone and can be merged alone.
+# Security fixes for a vulnerable dependency arrive the moment GitHub learns
+# about the advisory, independent of the schedules below, and all of them ride
+# in one PR — see the `security` group.
 #
 # There's no `docker` entry, and that's intentional: the Dockerfile pins nothing
 # to pin — `node:lts` and `nginx:alpine` are floating tags that pick up new
@@ -57,6 +57,21 @@ updates:
           - minor
           - patch
 
+      # Advisories aren't independent of each other. Two that resolve through
+      # the same dependency tree produce two PRs that are near-copies — the
+      # sharp and astro alerts both routed through the same Astro major, and
+      # one PR was a strict subset of the other. One PR for all of them keeps
+      # that from happening. The cost: a single failing check holds up every
+      # fix in the batch, so a fix blocked by an unrelated failure has to be
+      # applied by hand.
+      #
+      # The three groups above don't apply here — a security update is only
+      # matched against groups marked `applies-to: security-updates`.
+      security:
+        applies-to: security-updates
+        patterns:
+          - '*'
+
   # ── GitHub Actions ──────────────────────────────────────────────────────────
   # Only two workflows, both pinned to major tags (`actions/checkout@v6`), so
   # this is quiet by design — it fires when a major ships or an action is found
@@ -72,5 +87,9 @@ updates:
       prefix: chore(ci)
     groups:
       actions:
+        patterns:
+          - '*'
+      actions-security:
+        applies-to: security-updates
         patterns:
           - '*'
