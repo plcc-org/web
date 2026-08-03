@@ -97,11 +97,8 @@ file, so it belongs in the list with everything else.
 > **Link cards are page content, not data.** Every set of them now lives inline in the page
 > that shows it: the `new` page folded its links into a **Link cards** block, the
 > `neighbors` "common starting points" doors became **Text cards** (with a labelled link),
-> and the homepage's four "Start here" doors are an array in `src/pages/index.astro`. Each
-> set had exactly one reader, so by the rule above none of them earned a collection. The
-> homepage's are in code rather than the CMS because the homepage itself is hand-built (see
-> [What becomes a CMS page or block](#what-becomes-a-cms-page-or-block-and-what-stays-as-code))
-> — changing them is a code change.
+> and the homepage's four "Start here" doors are a **Link cards** block on the home page.
+> Each set had exactly one reader, so by the rule above none of them earned a collection.
 
 **Photos are deliberately not a collection.** The 110-entry catalog (`src/content/photos.json`)
 is build-time infrastructure for the hand-built pages. Editors add photos by **uploading them
@@ -152,10 +149,21 @@ a year out — one list to review rather than two places to forget about.
 
 A page has two parts:
 
-1. **A hero** (in the page's form): an eyebrow, the page title (its `<h1>`), an optional
-   subhead, an intro line, and optionally a photo. Leave the photo blank for a calm,
-   text-only header (used by reading pages like Contact). A wordmark **logo** and a hero
-   **button** are also available. Every page gets a hero.
+1. **A hero** (in the page's form). Every page gets one, and it always carries the page
+   title as the page's single `<h1>`. Pick the **kind** of hero first and the form shows
+   only that kind's fields:
+
+   | Hero             | What it is                                                            |
+   | ---------------- | --------------------------------------------------------------------- |
+   | **Photo & text** | A portrait photo beside the title and intro. The default.             |
+   | **Text only**    | A calm header with no photo — for reading pages like Contact.         |
+   | **Logo & photo** | A programme wordmark in place of the heading — Pine Lake Kids, Youth. |
+   | **Cinematic**    | A full-width stack of photos drifting behind the headline. Home only. |
+
+   All four share an eyebrow, a subhead, and an optional button; the first three also take
+   an intro line. Cinematic doesn't — its photos need the space more than another sentence
+   does.
+
 2. **A body** — a **rich-text editor** where you type formatted prose and insert **blocks**
    from the "+" / insert menu. Each block is a pre-styled section, so anything you build
    stays on-brand. Blocks show inline as labelled cards (with a photo thumbnail where
@@ -177,7 +185,7 @@ preview but not on the published site — so uncheck **Draft** to publish when i
 | **Text cards**           | A row of small cards (title + a line) — a few parallel points.                                                      |
 | **Link cards**           | A grid of cards that link elsewhere — signposting to other pages.                                                   |
 | **Callout**              | A boxed aside that sets one point apart — a reassurance, a key fact.                                                |
-| **Banner**               | A full-width colored band that makes a statement, with an optional button.                                          |
+| **Closing banner**       | The dark band that ends a page against the footer, with an optional button — a parting invitation.                  |
 | **Quote**                | A single featured pull-quote — a testimonial, quotation, or verse. A background color renders it as a "verse band." |
 | **Featured events**      | A short list of upcoming events, pulled live from the events feed.                                                  |
 | **Key points**           | A moss-accented grid of titled points — core tenets, emphases, principles.                                          |
@@ -203,21 +211,21 @@ The palette above tells you what each block _is_. This is the question you actua
 
 Start here and take the first match:
 
-| If what you have is…                               | Reach for         |
-| -------------------------------------------------- | ----------------- |
-| A few paragraphs that just need to be read         | **Rich text**     |
-| Something better _shown_ than described            | **Photo & text**  |
-| One point you don't want people to skim past       | **Callout**       |
-| One sentence someone said, worth its own space     | **Quote**         |
-| Three or four parallel things, each a line or two  | **Text cards**    |
-| Three or four places to go next                    | **Link cards**    |
-| A sequence where the order matters                 | **Roadmap**       |
-| A set of principles where the order doesn't        | **Key points**    |
-| A single photo that needs explaining               | **Photo**         |
-| A minute of video that says it better than a page  | **Video**         |
-| A moment of visual breathing room                  | **Photo gallery** |
-| The one thing you want the reader to do at the end | **Banner**        |
-| A personal note in someone's own voice             | **Letter**        |
+| If what you have is…                               | Reach for          |
+| -------------------------------------------------- | ------------------ |
+| A few paragraphs that just need to be read         | **Rich text**      |
+| Something better _shown_ than described            | **Photo & text**   |
+| One point you don't want people to skim past       | **Callout**        |
+| One sentence someone said, worth its own space     | **Quote**          |
+| Three or four parallel things, each a line or two  | **Text cards**     |
+| Three or four places to go next                    | **Link cards**     |
+| A sequence where the order matters                 | **Roadmap**        |
+| A set of principles where the order doesn't        | **Key points**     |
+| A single photo that needs explaining               | **Photo**          |
+| A minute of video that says it better than a page  | **Video**          |
+| A moment of visual breathing room                  | **Photo gallery**  |
+| The one thing you want the reader to do at the end | **Closing banner** |
+| A personal note in someone's own voice             | **Letter**         |
 
 Three rules of thumb behind that table:
 
@@ -226,24 +234,24 @@ Three rules of thumb behind that table:
   a lie about how to read them.
 - **Cards are for parallel things.** If your three cards aren't the same _kind_ of thing,
   they should be prose.
-- **One Banner per page, at the end.** It's the loudest block. A second one in the middle
-  makes both quieter.
+- **One Closing banner per page, and it goes last.** It's the loudest block, and it closes
+  flush against the footer — put a second one mid-page and both go quiet.
 
 ### A page, block by block
 
 `/visit/` — the page a first-time guest actually reads. Why each block is what it is:
 
-| Block             | On the page                               | Why this one                                                                                                                                        |
-| ----------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| _(hero)_          | "Plan a Visit" + a reassuring lede        | Every page gets one. The lede does the emotional work before any logistics.                                                                         |
-| **Rich text**     | "Sundays at 10:00am" — when & where       | Facts someone may be scanning for. Prose, not a card — they need to be _read_, and cards invite skimming.                                           |
-| **Photo**         | The building, captioned                   | "What am I looking for when I arrive?" A caption can say the thing a photo can't — where to park.                                                   |
-| **Photo & text**  | "What happens on a Sunday"                | Show-and-tell: the description is more believable next to the photo of it happening.                                                                |
-| **Callout**       | "Will I stand out or be put on the spot?" | The single biggest fear, answered where it can't be skimmed past. This is what a Callout is for — not decoration, but the one point that must land. |
-| **Photo & text**  | "We make Sundays smooth for parents"      | Same pattern, second audience. The alternating tint (`paper` then `sand`) is what keeps two adjacent splits from reading as one long block.         |
-| **Rich text**     | "What should I wear?"                     | A short practical answer. Doesn't need a photo, doesn't need a box.                                                                                 |
-| **Photo gallery** | Three photos, no words                    | Breathing room before the close, and the last impression is faces rather than logistics.                                                            |
-| **Banner**        | "A place to belong" + the CTA             | One action, at the end, on a dark band so it reads as the page's conclusion.                                                                        |
+| Block              | On the page                               | Why this one                                                                                                                                        |
+| ------------------ | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| _(hero)_           | "Plan a Visit" + a reassuring lede        | Every page gets one. The lede does the emotional work before any logistics.                                                                         |
+| **Rich text**      | "Sundays at 10:00am" — when & where       | Facts someone may be scanning for. Prose, not a card — they need to be _read_, and cards invite skimming.                                           |
+| **Photo**          | The building, captioned                   | "What am I looking for when I arrive?" A caption can say the thing a photo can't — where to park.                                                   |
+| **Photo & text**   | "What happens on a Sunday"                | Show-and-tell: the description is more believable next to the photo of it happening.                                                                |
+| **Callout**        | "Will I stand out or be put on the spot?" | The single biggest fear, answered where it can't be skimmed past. This is what a Callout is for — not decoration, but the one point that must land. |
+| **Photo & text**   | "We make Sundays smooth for parents"      | Same pattern, second audience. The alternating tint (`paper` then `sand`) is what keeps two adjacent splits from reading as one long block.         |
+| **Rich text**      | "What should I wear?"                     | A short practical answer. Doesn't need a photo, doesn't need a box.                                                                                 |
+| **Photo gallery**  | Three photos, no words                    | Breathing room before the close, and the last impression is faces rather than logistics.                                                            |
+| **Closing banner** | "A place to belong" + the CTA             | One action, at the end, on a dark band so it reads as the page's conclusion.                                                                        |
 
 The shape underneath: **reassure → orient → show → answer the fear → show again → practical
 detail → breathe → invite.** Most guest-facing pages want roughly that arc. You're not
@@ -301,14 +309,15 @@ catalog via `<Photo filename>`.
   still declares the collection, so zod still validates the files at build time.
 - The body renders through `<TinaMarkdown>` with the component map in
   **`src/components/blocks/tina/registry.ts`**. Wrapper blocks (those with prose inside —
-  `Section`, `Split`, `Callout`, `Cta`, `Aside`, `Letter`) need a Tina-specific adapter in
+  `Section`, `Split`, `Callout`, `Closing`, `Aside`, `Letter`) need a Tina-specific adapter in
   that folder, because their body arrives as a `children` rich-text tree rather than a
   `<slot />`. The twelve self-closing blocks reuse their existing wrappers in
   **`src/components/blocks/mdx/`** unchanged. Either way it's the real site component doing
   the rendering.
 - Internal code names differ from editor labels (the label is what editors see): `Section` =
   "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `Video` = "Video",
-  `PhotoBand` = "Photo gallery", `CardRow` = "Text cards", `Cta` = "Banner", `Quote` = "Quote",
+  `PhotoBand` = "Photo gallery", `CardRow` = "Text cards", `Closing` = "Closing banner",
+  `Quote` = "Quote",
   `FeaturedEvents` = "Featured events", `KeyPoints` = "Key points", `LogoCards` =
   "Logo cards", `Aside` = "Aside", `YouthMomentsBlock` = "Youth moments", `QuoteCarousel` =
   "Quotes carousel", `Roadmap` = "Roadmap", `Letter` = "Letter".
@@ -338,11 +347,42 @@ different decisions:
    compose it anywhere. Every block in the "+" menu is a promise it's safe to insert on any
    page, so a one-off block makes the editor worse for the pages that aren't it.
 
-By this rule, these stay **hand-built `.astro`**, not CMS pages: `index` (home — a bespoke
-full-bleed hero with a drifting photo stack), `events/*` (the `EventsBoard` _is_ the page),
-`messages` (live video archive), and `about/leadership` (modal + view-transition morph). They're already
-components; they just aren't editor surface. (The pastor's letter _was_ here until its
-layout became the reusable **Letter** block.)
+By this rule, these stay **hand-built `.astro`**, not CMS pages: `events/*` (the
+`EventsBoard` _is_ the page), `messages` (live video archive), and `about/leadership` (modal
+
+- view-transition morph). They're already
+  components; they just aren't editor surface. (The pastor's letter _was_ here until its
+  layout became the reusable **Letter** block. Home was here too, until its drifting hero
+  became the **Cinematic** hero template.)
+
+### Variants, not more fields
+
+A fourth decision sits under those three: when a thing has to do more than one job, does it
+grow an option or split into named shapes?
+
+Split into shapes. Tina has no conditional field visibility — a field is either on the form
+or it isn't — so every option you add is one every editor reads on every page, including the
+pages it can't apply to. Options also don't say what they're _for_: an editor faced with a
+tickbox has to reconstruct the intent behind it, and will sometimes get it wrong.
+
+Two places show the difference:
+
+- **The hero** was one object with nine optional fields, and which of the three heroes you
+  got depended on which of them you'd filled in. A photo hero saved without a photo silently
+  became a text-only header, and nothing could flag it, because nothing had been declared.
+  As four named templates, the choice is explicit, the form is 5–7 fields instead of 9, and
+  the schema can tell a half-filled hero from an intentional one.
+- **Closing banner** was "Banner", a general tonal band with `tone` and `flush` options. All
+  five uses were a page's last block, all five were forest, and two had missed the `flush`
+  tick its own description asked for. Three fields carrying no information, one already got
+  wrong. Narrowed to the job it actually did, it's five fields and no layout choices.
+
+Both got _smaller_. That's the usual outcome, and it's the tell: if splitting a block leaves
+you with two nearly identical entries in the "+" menu, the split was wrong and the option
+was real.
+
+The corollary is that a genuinely new shape earns a new template, not a flag on an old one —
+and an option that has never been set to anything but its default has earned deletion.
 
 ---
 
@@ -501,9 +541,12 @@ change, or every existing inbound link breaks.
   is no help here — it skips these schemes, having no way to resolve them against `dist`.
 - **`alt` is required** on every image field, so an image can't be saved without a
   description. `scripts/check-site.mjs` stays the backstop — it catches an image that was
-  already saved, which is the case field validation can't reach. The two hero alt fields are
-  deliberately _not_ required: the CMS has no conditional-required, and enforcing them would
-  block every text-only hero page.
+  already saved, which is the case field validation can't reach. The hero's own alt fields
+  are the exception, and for a different reason than they used to be: hero fields belong to
+  a _collection_, where `required` becomes a non-null GraphQL field and the indexer then
+  rejects any already-saved page missing it (see the note at the top of `tina/config.ts`).
+  The cinematic hero's photo list is the one safe case — no page had one before it existed —
+  so its alt is required.
 - **The short-links list has no columns.** The CMS has no list-view column configuration, so
   55 entries show as filenames. `from`, `destination` and `note` are marked searchable, so
   search the list by the address printed on the flyer rather than scrolling it.

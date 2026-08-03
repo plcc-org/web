@@ -234,10 +234,12 @@ point of having a CMS. This is Tina's dependency graph to fix, not ours.
   - **What earns a collection**: data reused across the site, or referenced from inside
     content. A single hand-built page's own one-off list is that page's content, and
     belongs in the page — a collection of one, read by one file, buys nothing and costs a
-    sidebar entry. The homepage's four "Start here" cards are an array in
-    `src/pages/index.astro` for exactly that reason. This is not licence to inline
-    anything an editor should be able to change: if the page is a CMS page, the list goes
-    in a block; if the data has a second reader, it goes in a collection.
+    sidebar entry. `about/leadership.astro`'s modal ordering is its own, for that reason.
+    This is not licence to inline anything an editor should be able to change: if the page
+    is a CMS page, the list goes in a block; if the data has a second reader, it goes in a
+    collection. The homepage's four "Start here" cards used to be the example here, as an
+    array in `src/pages/index.astro` — they're a `LinkCards` block now that home is a CMS
+    page, which is the first branch of that same rule, not an exception to it.
 - **`short-links` is the one exception**, and deliberately so. It lives in
   `src/content/` and is edited in the CMS like everything else, but it is _not_ in
   `content.config.ts`, because nothing renders it — it's build-time configuration read

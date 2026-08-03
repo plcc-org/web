@@ -20,6 +20,7 @@ const quotes = (await getCollection('quotes'))
   quotes.length > 0 && (
     <Band
       tinaField={blockField(Astro.props)}
+      class="band--wash"
       tone={tone}
       eyebrow={eyebrow || undefined}
       heading={heading || undefined}

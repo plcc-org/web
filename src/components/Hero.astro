@@ -1,4 +1,5 @@
 ---
+import type { ImageMetadata } from 'astro'
 import Photo from './Photo.astro'
 
 // Full-bleed cinematic hero. While the background video loads, a soft "glow"
@@ -6,21 +7,31 @@ import Photo from './Photo.astro'
 // photo is shown instead when motion is reduced, when scripting is unavailable,
 // or when the page is loaded with ?video=0.
 
+type ImageItem = { image: ImageMetadata; alt: string }
 type Props = {
   video?: string
   /** Photos cross-faded behind the headline as a slow, blurred drift. */
   photos?: string[]
+  /** The same drift stack, already resolved with its own alt (a CMS hero). */
+  images?: ImageItem[]
   filename?: string
   alt?: string
   eyebrow?: string
   title: string
   subhead?: string
+  /** Visual-editor marker; see src/lib/tina/block-field.ts. */
+  tinaField?: string
 }
 
 // alt is optional: omit for catalogued photos (looked up by filename in <Photo>).
-const { video, photos, filename, alt, eyebrow, title, subhead } = Astro.props
-const heroPhotos = photos ?? []
-const usePhotos = heroPhotos.length > 0
+const { video, photos, images, filename, alt, eyebrow, title, subhead, tinaField } = Astro.props
+
+// Normalize to one pane list <Photo> can consume either way — the same dual
+// input as MomentsSection, for the same reason: hand-built pages name a
+// catalogued file, the CMS hands over a resolved upload and its alt.
+const heroPanes: Array<{ filename?: string; image?: ImageMetadata; alt?: string }> =
+  images ?? (photos ?? []).map((name) => ({ filename: name }))
+const usePhotos = heroPanes.length > 0
 ---
 
 {
@@ -35,19 +46,25 @@ const usePhotos = heroPhotos.length > 0
   }
 </script>
 
-<section class:list={['hero', { 'hero--has-video': video && !usePhotos, 'hero--photos': usePhotos }]} data-hero>
+<section
+  data-tina-field={tinaField}
+  class:list={['hero', { 'hero--has-video': video && !usePhotos, 'hero--photos': usePhotos }]}
+  data-hero
+>
   <div class="hero__media">
     {
       usePhotos && (
-        <div class="hero__strip" aria-hidden="true" style={`--pane-count:${heroPhotos.length}`}>
-          {heroPhotos.map((name, i) => (
+        <div class="hero__strip" aria-hidden="true" style={`--pane-count:${heroPanes.length}`}>
+          {heroPanes.map((pane, i) => (
             <div class="hero__pane" style={`--pane-index:${i}`}>
               {/* Well below what a sharp full-bleed image would need: at a 10px
                   blur a 720px source upscales without visible artefacts, so
                   paying for 1440 buys nothing. Checked by forcing each width
                   and comparing. */}
               <Photo
-                filename={name}
+                filename={pane.filename}
+                image={pane.image}
+                alt={pane.alt}
                 class="hero__pane-img"
                 widths={[480, 720, 960]}
                 sizes="100vw"

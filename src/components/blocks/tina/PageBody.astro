@@ -7,12 +7,18 @@ import { tinaComponents } from './registry'
 // A CMS page rendered from Tina's GraphQL result rather than from a compiled
 // MDX module, so the bridge can wire each region to its form.
 //
-// Nothing may come between `.canvas` and a block. `.canvas` is a full-bleed grid
-// that places its children by column, and layout.css addresses them as direct
-// children — `.canvas > *`, `.canvas > .to-full`, `.canvas:has(> .is-flush)`.
-// A wrapper div around a block silently drops it out of every one of those rules,
-// so a full-bleed hero or a flush closing band renders inset instead. It looks
-// like a margin bug and nothing fails.
+// Nothing may come *between* `.canvas` and a block. `.canvas` is a full-bleed
+// grid that places its children by column, and layout.css addresses them as
+// direct children — `.canvas > *`, `.canvas > .to-full`,
+// `.canvas:has(> .is-flush)`. A wrapper div around a block silently drops it out
+// of every one of those rules, so a full-bleed hero or a flush closing band
+// renders inset instead. It looks like a margin bug and nothing fails.
+//
+// A cinematic hero is the one thing that sits *outside* the canvas, as a sibling
+// before it. `.hero` does its own breakout — `width: 100vw; margin-inline:
+// calc(50% - 50vw)` — and as a grid item that percentage resolves against the
+// grid area rather than the viewport, so the hero lands off-centre and narrow.
+// Outside, it's the same DOM the hand-built home page had.
 //
 // So `data-tina-field` goes *on* the element, never on a wrapper around it: the
 // hero passes its marker down to whichever root it renders, and each block sets
@@ -22,9 +28,21 @@ import { tinaComponents } from './registry'
 type Props = { data: Record<string, any> }
 const { data } = Astro.props
 const hero = data.hero ?? {}
+
+// Which hero template the editor chose. The file on disk names it in
+// `_template`, but that key never reaches here: the GraphQL layer turns the
+// union into `__typename`, so a hero saved as `_template: cinematic` arrives as
+// `PagesHeroCinematic`. Reading the wrong one fails quietly — every page falls
+// back to the plain text header and nothing errors.
+const variant =
+  String(hero.__typename ?? '')
+    .replace(/^PagesHero/, '')
+    .toLowerCase() || 'photo'
+const cinematic = variant === 'cinematic'
 ---
 
+{cinematic && <PageHero {...hero} variant={variant} title={data.title} tinaField={tinaField(data, 'hero')} />}
 <div class="canvas">
-  <PageHero {...hero} title={data.title} tinaField={tinaField(data, 'hero')} />
+  {!cinematic && <PageHero {...hero} variant={variant} title={data.title} tinaField={tinaField(data, 'hero')} />}
   <TinaMarkdown content={data.content} components={tinaComponents} />
 </div>

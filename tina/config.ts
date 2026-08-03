@@ -1,6 +1,6 @@
 import { defineConfig } from 'tinacms'
 // @ts-expect-error — plain-JS template palette, shared with the spike harness.
-import { templates } from './templates.mjs'
+import { templates, heroTemplates } from './templates.mjs'
 
 // CMS configuration. The `pages` collection carries the page frontmatter (including the
 // nested `hero` object) and an 18-component body palette; the other three are YAML data
@@ -50,9 +50,14 @@ export default defineConfig({
         format: 'mdx',
         // Visual editing opens this URL in the admin iframe — the real page, now
         // that src/pages/[...slug].astro renders through Tina and carries the
-        // field metadata the bridge maps clicks onto.
+        // field metadata the bridge maps clicks onto. `index.mdx` is the home
+        // page and lives at `/`, not `/index/`; getStaticPaths carries the same
+        // special case, and without it here the editor's preview opens on a 404.
         ui: {
-          router: ({ document }) => `/${document._sys.breadcrumbs.join('/')}/`,
+          router: ({ document }) => {
+            const crumbs = document._sys.breadcrumbs
+            return crumbs.length === 1 && crumbs[0] === 'index' ? '/' : `/${crumbs.join('/')}/`
+          },
         },
         // New pages start unpublished, as they did under the previous CMS. Without
         // this a page goes live the moment it's created.
@@ -65,6 +70,14 @@ export default defineConfig({
             isTitle: true,
             required: true,
             description: 'Also the page address — "MOMCo" → /momco/.',
+          },
+          {
+            name: 'seoTitle',
+            label: 'SEO title',
+            type: 'string',
+            description:
+              'Optional. Overrides the browser-tab title, which is otherwise the page title followed by ' +
+              '“| Pine Lake Covenant Church”. Only the home page needs this.',
           },
           {
             name: 'seoDescription',
@@ -83,57 +96,10 @@ export default defineConfig({
             name: 'hero',
             label: 'Hero',
             type: 'object',
-            fields: [
-              {
-                name: 'image',
-                label: 'Hero photo',
-                type: 'image',
-                description: 'Optional — leave blank for a calm, text-only header (no photo).',
-              },
-              {
-                name: 'alt',
-                label: 'Photo description (alt text)',
-                type: 'string',
-                description:
-                  'Required only when a hero photo is set. Say what someone who can’t see it would need — ' +
-                  '“A volunteer making coffee before the service”, not “coffee”.',
-              },
-              {
-                name: 'eyebrow',
-                label: 'Eyebrow',
-                type: 'string',
-                description: 'Optional — a small label shown above the heading.',
-              },
-              {
-                name: 'lede',
-                label: 'Intro line',
-                type: 'string',
-                ui: { component: 'textarea' },
-                description:
-                  'A one- or two-sentence opening. The heading comes from the page title. If it could describe ' +
-                  'any church, rewrite it with something only true of Pine Lake.',
-              },
-              {
-                name: 'subhead',
-                label: 'Subhead',
-                type: 'string',
-                description: 'Optional — a line between the heading and the intro.',
-              },
-              {
-                name: 'logo',
-                label: 'Wordmark logo',
-                type: 'image',
-                description: 'Optional — a wordmark shown instead of the heading (e.g. Pine Lake Kids).',
-              },
-              {
-                name: 'logoAlt',
-                label: 'Logo description (alt text)',
-                type: 'string',
-                description: 'Required only when a wordmark logo is set.',
-              },
-              { name: 'buttonLabel', label: 'Hero button label', type: 'string', description: 'Optional.' },
-              { name: 'buttonHref', label: 'Hero button link', type: 'string', description: 'Optional.' },
-            ],
+            // Four named shapes rather than one object of optional fields, so an
+            // editor picks the kind of hero and then sees only its own fields.
+            // See the note above heroTemplates in tina/templates.mjs.
+            templates: heroTemplates,
           },
           {
             name: 'content',
