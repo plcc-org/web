@@ -385,5 +385,26 @@ every check above, because each build looks perfectly consistent on its own.
 - `contrast.test.ts` — the accent tokens still clear WCAG AA against the surfaces they're
   painted on, computed from `tokens.css` rather than restated
 
+### Dependency updates
+
+`.github/dependabot.yml` watches npm and the workflow actions. Version bumps arrive on
+Monday mornings — Astro and its integrations in one PR, Tina in another, every other
+minor and patch batched into a third; majors come alone, because those are the ones worth
+reading a changelog for. Security advisories don't wait for Monday and aren't batched.
+
+Merging a bump is a deploy: Cloudflare publishes whatever lands on `main` and runs none
+of these checks, so CI is the whole gate. Green, then merge.
+
+Two things a bump can break that aren't obvious from the diff:
+
+- **`@tinacms/cli`** carries a patch (`patches/@tinacms+cli+2.5.6.patch`) applied on every
+  install. A bump that invalidates it fails at `npm ci`; re-run `npx patch-package @tinacms/cli`
+  and commit the new patch, or drop it if the CLI has grown a flag for what it does.
+- **Node** is pinned in `.node-version`, not by Dependabot. It stays on 22 until Tina's
+  datalayer race on 25 is fixed — see the note in `ci.yml`.
+
+The Dockerfile has no entry, because `node:lts` and `nginx:alpine` are floating tags with
+no version to bump.
+
 Keep pure logic in dependency-free modules so it stays testable. When you add a guard,
 **break it once** to confirm it fires — a clean run proves nothing on its own.

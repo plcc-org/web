@@ -1,0 +1,76 @@
+version: 2
+
+# Dependabot opens the version-bump and security PRs; CI decides whether they're
+# safe. That matters more here than on most repos: Cloudflare publishes whatever
+# lands on `main` and runs none of the checks, so ci.yml is the only gate — a
+# merged bump is a deploy. Never merge one that CI hasn't gone green on.
+#
+# Security fixes for a vulnerable dependency arrive as their own PR the moment
+# GitHub learns about the advisory, independent of the schedules below. They're
+# deliberately left ungrouped so they land alone and can be merged alone.
+#
+# There's no `docker` entry, and that's intentional: the Dockerfile pins nothing
+# to pin — `node:lts` and `nginx:alpine` are floating tags that pick up new
+# digests on every rebuild, so there is no version for Dependabot to bump.
+
+updates:
+  # ── npm ─────────────────────────────────────────────────────────────────────
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore(deps)
+      prefix-development: chore(deps-dev)
+
+    # A dependency joins the first group it matches, so order is meaningful.
+    groups:
+      # Astro and its integrations are built against each other; splitting a
+      # bump across PRs means testing a combination that was never released.
+      astro:
+        patterns:
+          - astro
+          - '@astrojs/*'
+
+      # Same reasoning for Tina, plus one extra hazard: `patches/@tinacms+cli+2.5.6.patch`
+      # is written against a specific CLI version, and postinstall applies it on
+      # every `npm ci`. A CLI bump that invalidates the patch fails CI at install
+      # — the fix is to re-run `npx patch-package @tinacms/cli` and commit the new
+      # patch file, or drop the patch if the CLI has grown a flag for it. See the
+      # `_comment_postinstall` note in package.json.
+      tina:
+        patterns:
+          - tinacms
+          - '@tinacms/*'
+
+      # Everything else that isn't a major: one PR a week rather than a dozen.
+      # Majors fall through to individual PRs, which is where they belong —
+      # they're the ones that need a human to read the changelog.
+      minor-and-patch:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+
+  # ── GitHub Actions ──────────────────────────────────────────────────────────
+  # Only two workflows, both pinned to major tags (`actions/checkout@v6`), so
+  # this is quiet by design — it fires when a major ships or an action is found
+  # to be compromised.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: America/Los_Angeles
+    commit-message:
+      prefix: chore(ci)
+    groups:
+      actions:
+        patterns:
+          - '*'
