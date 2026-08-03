@@ -1,5 +1,6 @@
 // @ts-check
-// The page block palette: every component an editor can insert into a page body.
+// The editor's two template sets: `heroTemplates` (the shape of a page's hero, chosen once
+// in frontmatter) and `templates` (every component an editor can insert into a page body).
 //
 // A block with prose inside it (a Split, a Callout) is a template with a field named
 // `children` of type `rich-text` — Tina's MDX parser treats that name specially and maps
@@ -66,6 +67,104 @@ const itemProps = (key, fallback) => ({
   }),
 })
 
+/* ----------------------------------------------------------------------
+ * Hero templates
+ *
+ * A page's hero used to be one object with nine optional fields, and which
+ * kind of hero you got depended on which of them you happened to fill in — a
+ * photo hero if `image` was set, a wordmark if `logo` was, a plain header if
+ * neither. Three shapes with no name, and every editor saw all nine fields on
+ * every page whether or not they applied.
+ *
+ * Templates make the shape an explicit choice and show only its own fields.
+ * Tina has no conditional field visibility, and faking it needs a React
+ * component in the config — which this file can't have, being plain .mjs so
+ * spike/roundtrip.mjs can import it without a build step. Templates are the
+ * supported answer.
+ *
+ * `required` is deliberately absent except inside the cinematic photo list.
+ * These are collection fields: a required one becomes non-null in GraphQL, and
+ * the indexer then rejects any already-saved page missing it (see the note in
+ * tina/config.ts). The photo list is the one safe case — no existing page has
+ * one — and alt text is worth validating at the point of upload.
+ * -------------------------------------------------------------------- */
+
+const heroEyebrow = text('eyebrow', 'Eyebrow', { description: 'Optional — a small label shown above the heading.' })
+
+const heroSubhead = text('subhead', 'Subhead', {
+  description: 'Optional — a line between the heading and the intro.',
+})
+
+const heroLede = textarea('lede', 'Intro line', {
+  description:
+    'A one- or two-sentence opening. The heading comes from the page title. If it could describe any church, ' +
+    'rewrite it with something only true of Pine Lake.',
+})
+
+const heroPhoto = [
+  image('image', 'Hero photo'),
+  text('alt', 'Photo description (alt text)', {
+    description:
+      'Say what someone who can’t see it would need — “A volunteer making coffee before the service”, not “coffee”.',
+  }),
+]
+
+const heroButton = [
+  text('buttonLabel', 'Hero button label', { description: 'Optional.' }),
+  text('buttonHref', 'Hero button link', { description: 'Optional.' }),
+]
+
+export const heroTemplates = [
+  {
+    name: 'photo',
+    label: 'Photo & text',
+    description: 'A portrait photo beside the page title and intro. The default for most pages.',
+    fields: [...heroPhoto, heroEyebrow, heroSubhead, heroLede, ...heroButton],
+  },
+  {
+    name: 'plain',
+    label: 'Text only',
+    description: 'A calm, text-only header — no photo. For pages that open on words rather than an image.',
+    fields: [heroEyebrow, heroSubhead, heroLede, ...heroButton],
+  },
+  {
+    name: 'wordmark',
+    label: 'Logo & photo',
+    description: 'A programme wordmark in place of the heading, beside a photo — Pine Lake Kids, Youth.',
+    fields: [
+      image('logo', 'Wordmark logo'),
+      text('logoAlt', 'Logo description (alt text)', { description: 'What the wordmark says, e.g. “Pine Lake Kids”.' }),
+      ...heroPhoto,
+      heroEyebrow,
+      heroSubhead,
+      heroLede,
+      ...heroButton,
+    ],
+  },
+  {
+    name: 'cinematic',
+    label: 'Cinematic (full-bleed)',
+    description: 'A full-width photo stack that drifts slowly behind the headline. The home page treatment.',
+    fields: [
+      {
+        name: 'photos',
+        label: 'Photos',
+        type: 'object',
+        list: true,
+        description: 'Shown in order, each cross-fading into the next. Around five works well.',
+        ui: itemProps('alt', 'Photo'),
+        fields: [
+          image('image', 'Photo', { required: true }),
+          text('alt', 'Photo description (alt text)', { required: true }),
+        ],
+      },
+      heroEyebrow,
+      heroSubhead,
+      ...heroButton,
+    ],
+  },
+]
+
 export const templates = [
   {
     name: 'Section',
@@ -86,6 +185,8 @@ export const templates = [
       bool('reverse', 'Photo on the right'),
       tone(['sand', 'paper', 'forest'], 'sand'),
       children,
+      text('buttonLabel', 'Button label'),
+      text('buttonHref', 'Button link'),
     ],
   },
   {
@@ -122,19 +223,20 @@ export const templates = [
     ],
   },
   {
-    name: 'Cta',
-    label: 'Banner',
+    // Was "Banner", a general-purpose tonal band with tone and flush as options.
+    // Every one of its uses was a page's closing block, every one was forest, and
+    // two of five had missed the flush tick its own description asked for — three
+    // fields carrying no information and one already got wrong. Narrowing it to
+    // the thing it was actually used for lets the layout be fixed in code.
+    name: 'Closing',
+    label: 'Closing banner',
     description:
-      'A full-width colored band that interrupts the page to make a statement, with an optional button — a welcome, an invitation, a closing message.',
+      'The last block on a page — a dark band that closes it against the footer, with an optional button. A parting invitation.',
     fields: [
-      tone(['forest', 'sand', 'paper'], 'forest'),
       text('eyebrow', 'Eyebrow'),
       text('heading', 'Heading'),
       text('buttonLabel', 'Button label'),
       text('buttonHref', 'Button link'),
-      bool('flush', 'Sit flush against the footer', false, {
-        description: 'Use only when this banner is the last block on the page.',
-      }),
       children,
     ],
   },

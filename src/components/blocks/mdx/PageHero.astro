@@ -1,21 +1,35 @@
 ---
 import type { ImageMetadata } from 'astro'
 import Split from '../../Split.astro'
+import Hero from '../../Hero.astro'
 import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
 import { renderInline } from '../../../lib/markdown'
 import { resolveHref } from '../../../lib/url'
 
-// The page hero, from a CMS page's frontmatter `hero`. Renders the site's
-// reversed sand Split with the page H1 + lede — guaranteeing every CMS page has
-// a single, real <h1>. Images (the hero photo and an optional wordmark logo)
-// resolve through imageFromRef — the same nesting-agnostic registry the block
-// wrappers use — so a fixed "../../assets/images/…" path works whether the page
-// is flat or nested. When a logo is present it stands in for the visible title
-// (a wordmark); the <h1> text is kept for the document outline but hidden.
+// The page hero, from a CMS page's frontmatter `hero`. Every shape puts the page
+// title in a single, real <h1> — that guarantee is why the hero lives in
+// frontmatter rather than the block palette.
+//
+// `variant` names which shape the editor chose (tina/templates.mjs); PageBody
+// derives it from the GraphQL `__typename`. The four used to be implicit — a
+// photo hero was "the one where `image` happened to be set" — so a page could
+// half-declare itself and render as something the editor didn't intend:
+//
+//   photo      a portrait Split, page title alongside          (the default)
+//   plain      a text-only header, no photo
+//   wordmark   a programme logo standing in for the title, hidden <h1> behind it
+//   cinematic  the full-bleed drifting photo stack (the home page)
+//
+// Images (hero photos and the wordmark) resolve through imageFromRef — the same
+// nesting-agnostic registry the block wrappers use — so a stored path works
+// whether the page is flat or nested.
+type HeroPhoto = { image?: string; alt?: string }
 type Props = {
+  variant?: 'photo' | 'plain' | 'wordmark' | 'cinematic'
   image?: string
   alt?: string
+  photos?: HeroPhoto[]
   eyebrow?: string
   title: string
   subhead?: string
@@ -28,14 +42,49 @@ type Props = {
   /** Visual-editor marker; see src/lib/tina/block-field.ts. Absent on hand-built pages. */
   tinaField?: string
 }
-const { image, alt, eyebrow, title, subhead, lede, logo, logoAlt, buttonLabel, buttonHref, flush, tinaField } =
-  Astro.props
-const heroImg = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined
-const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata | undefined) : undefined
+const {
+  variant = 'photo',
+  image,
+  alt,
+  photos = [],
+  eyebrow,
+  title,
+  subhead,
+  lede,
+  logo,
+  logoAlt,
+  buttonLabel,
+  buttonHref,
+  flush,
+  tinaField,
+} = Astro.props
+
+const resolve = async (ref?: string) =>
+  ref ? ((await imageFromRef(ref)?.())?.default as ImageMetadata | undefined) : undefined
+
+const heroImg = await resolve(image)
+const logoImg = await resolve(logo)
+
+// Drop any pane whose upload can't be resolved, rather than rendering a gap.
+const panes: { image: ImageMetadata; alt: string }[] = []
+for (const p of photos) {
+  const resolved = await resolve(p.image)
+  if (resolved) panes.push({ image: resolved, alt: p.alt || '' })
+}
+
+const cinematic = variant === 'cinematic' && panes.length > 0
 ---
 
 {
-  heroImg ? (
+  cinematic ? (
+    <Hero images={panes} eyebrow={eyebrow} title={title} subhead={subhead} tinaField={tinaField}>
+      {buttonHref && (
+        <a class="btn" href={resolveHref(buttonHref)}>
+          {buttonLabel || 'Learn more'}
+        </a>
+      )}
+    </Hero>
+  ) : heroImg ? (
     <Split
       class:list={['to-full', flush && 'is-flush']}
       image={heroImg}

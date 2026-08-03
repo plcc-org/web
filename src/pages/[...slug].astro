@@ -24,13 +24,19 @@ import { PAGE_WRAPPER } from '../lib/tina/islands'
 //     and zod-validates every *declared* collection whether or not a route loads
 //     it. That check is what catches a page saved without a `hero` — the CMS
 //     schema and zod catch different mistakes, so both are worth keeping.
+// `index.mdx` is the home page, so it maps to `/` rather than `/index/`: a rest
+// parameter of undefined is how Astro spells the root. The CMS's `ui.router` in
+// tina/config.ts carries the same special case, so the editor's preview agrees.
 export async function getStaticPaths() {
   const pages = await listPages()
   const published = pages.filter((page) => (import.meta.env.PROD ? !page.draft : true))
-  return published.map((page) => ({
-    params: { slug: page.relativePath.replace(/\.mdx$/, '') },
-    props: { relativePath: page.relativePath },
-  }))
+  return published.map((page) => {
+    const slug = page.relativePath.replace(/\.mdx$/, '')
+    return {
+      params: { slug: slug === 'index' ? undefined : slug },
+      props: { relativePath: page.relativePath },
+    }
+  })
 }
 
 const { relativePath } = Astro.props
@@ -45,10 +51,21 @@ if (!page) return new Response('Not Found', { status: 404 })
 // omitting it, and an empty description is exactly as useless as a missing one —
 // it just isn't nullish, so `??` kept it and the page shipped with no description
 // at all. Seen on /families/ after an editor saved a page they hadn't given one.
-const description = page.seoDescription || renderPlain(page.hero?.lede ?? '')
+// `hero` is a union over the four hero templates and only three of them carry a
+// lede — a cinematic hero has a subhead over the photo stack and no room for
+// one. Hence the `in` narrowing rather than a plain optional chain; a page
+// without a lede falls back to its seoDescription, which is what the home page
+// (the only cinematic hero) does.
+const lede = page.hero && 'lede' in page.hero ? (page.hero.lede ?? '') : ''
+const description = page.seoDescription || renderPlain(lede)
+
+// Nearly every page wants "<title> | Pine Lake Covenant Church"; the home page
+// leads with the church and qualifies it ("… | Sammamish"), which is the shape
+// search results want for the site's root. `||` again, for the '' reason above.
+const title = page.seoTitle || `${page.title} | Pine Lake Covenant Church`
 ---
 
-<BaseLayout title={`${page.title} | Pine Lake Covenant Church`} description={description}>
+<BaseLayout title={title} description={description}>
   <TinaIsland name="page" wrapper={PAGE_WRAPPER} params={{ relativePath }} primary>
     <PageBody data={page} />
   </TinaIsland>

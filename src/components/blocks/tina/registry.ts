@@ -11,7 +11,7 @@ import { inlineComponents } from './inline'
 import SectionTina from './SectionTina.astro'
 import SplitTina from './SplitTina.astro'
 import CalloutTina from './CalloutTina.astro'
-import CtaTina from './CtaTina.astro'
+import ClosingTina from './ClosingTina.astro'
 import AsideTina from './AsideTina.astro'
 import LetterTina from './LetterTina.astro'
 
@@ -34,7 +34,7 @@ export const tinaComponents: CustomComponentsMap = {
   Section: SectionTina,
   Split: SplitTina,
   Callout: CalloutTina,
-  Cta: CtaTina,
+  Closing: ClosingTina,
   Aside: AsideTina,
   Letter: LetterTina,
 

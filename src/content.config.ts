@@ -97,6 +97,17 @@ const quotes = defineCollection({
   }),
 })
 
+// The opening lines every hero shape shares. Spread into each member of the hero
+// union below so only the parts that actually differ — photo, wordmark, photo
+// stack — are written out per template.
+const heroText = {
+  eyebrow: z.string().optional(),
+  subhead: z.string().optional(),
+  lede: z.string().optional(),
+  buttonLabel: z.string().optional(),
+  buttonHref: z.string().optional(),
+}
+
 // CMS-built pages. Each is an MDX file: a structured hero in frontmatter plus an
 // MDX body the editor composes in the CMS's rich-text editor, inserting styled
 // components (Split, Callout, Photo band, …). The body's component tags map to
@@ -123,22 +134,32 @@ const pages = defineCollection({
   // which needs a path relative to the file. See test/image-ref.test.ts.
   schema: z.object({
     title: z.string(),
+    seoTitle: z.string().optional(),
     seoDescription: z.string().optional(),
     draft: z.boolean().default(false),
-    hero: z.object({
-      // Image (+ alt) are optional: a page with no hero photo renders a calm,
-      // text-only header instead (PageHero). When an image is present its alt is
-      // enforced at build time by the site crawl (scripts/check-site.mjs).
-      image: z.string().optional(),
-      alt: z.string().optional(),
-      eyebrow: z.string().optional(),
-      subhead: z.string().optional(),
-      lede: z.string().optional(),
-      logo: z.string().optional(),
-      logoAlt: z.string().optional(),
-      buttonLabel: z.string().optional(),
-      buttonHref: z.string().optional(),
-    }),
+    // A discriminated union over the CMS's hero templates (tina/templates.mjs),
+    // which is what `_template` in the frontmatter names. This is stricter than
+    // the single optional-everything object it replaced, where a photo hero
+    // saved without a photo validated cleanly and then rendered as a text-only
+    // header — the schema couldn't tell the difference because there was no
+    // stated intent to check against.
+    hero: z.discriminatedUnion('_template', [
+      z.object({ _template: z.literal('photo'), image: z.string(), alt: z.string(), ...heroText }),
+      z.object({ _template: z.literal('plain'), ...heroText }),
+      z.object({
+        _template: z.literal('wordmark'),
+        logo: z.string(),
+        logoAlt: z.string(),
+        image: z.string().optional(),
+        alt: z.string().optional(),
+        ...heroText,
+      }),
+      z.object({
+        _template: z.literal('cinematic'),
+        photos: z.array(z.object({ image: z.string(), alt: z.string().min(1) })).min(1),
+        ...heroText,
+      }),
+    ]),
   }),
 })
 

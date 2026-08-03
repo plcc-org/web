@@ -1,6 +1,7 @@
 ---
 import Split from '../../Split.astro'
 import { imageFromRef } from '../../../lib/images'
+import { resolveHref } from '../../../lib/url'
 import TinaChildren from './TinaChildren.astro'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
@@ -11,9 +12,11 @@ type Props = {
   tone?: 'paper' | 'sand' | 'forest'
   eyebrow?: string
   heading?: string
+  buttonLabel?: string
+  buttonHref?: string
   children?: unknown
 } & BlockProps
-const { image, alt, reverse = false, tone = 'sand', eyebrow, heading, children } = Astro.props
+const { image, alt, reverse = false, tone = 'sand', eyebrow, heading, buttonLabel, buttonHref, children } = Astro.props
 const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
 ---
 
@@ -29,4 +32,13 @@ const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
   reveal
 >
   <TinaChildren content={children as never} />
+  {
+    buttonHref && (
+      <p>
+        <a class="btn btn--ghost" href={resolveHref(buttonHref)}>
+          {buttonLabel || 'Learn more'}
+        </a>
+      </p>
+    )
+  }
 </Split>
