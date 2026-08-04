@@ -166,9 +166,31 @@ A page has two parts:
    does.
 
 2. **A body** — a **rich-text editor** where you type formatted prose and insert **blocks**
-   from the "+" / insert menu. Each block is a pre-styled section, so anything you build
-   stays on-brand. Blocks show inline as labelled cards (with a photo thumbnail where
-   relevant), and you edit a block's text right on the card.
+   from the **Embed** menu at the left of the toolbar. Each block is a pre-styled section,
+   so anything you build stays on-brand. Blocks show inline as labelled cards (with a photo
+   thumbnail where relevant), and you edit a block's text right on the card.
+
+### Editing blocks
+
+Each block card has a **…** menu on its right:
+
+| Item                        | What it does                                               |
+| --------------------------- | ---------------------------------------------------------- |
+| **Edit**                    | Opens the block's fields. Clicking the card does the same. |
+| **Move up** / **Move down** | Reorders the block. Greyed out at the top and bottom.      |
+| **Duplicate**               | Copies the block, with its content, directly below.        |
+| **Insert blank line below** | Opens an empty line under the block — room for a new one.  |
+| **Remove**                  | Deletes the block.                                         |
+
+To add a block, click where it should go and pick it from **Embed**. Selecting an existing
+block first puts the new one directly after it; **Insert blank line below** is the way to
+open a gap between two blocks that sit flush against each other.
+
+Three of those five items — everything but Edit and Remove — and the insert-after-the-
+selected-block behaviour come from `patches/tinacms+3.11.0.patch`. Stock, the editor has no
+way to reorder blocks at all, and inserting a block while another is selected **overwrites
+it**. See `patches/README.md`; the patch is re-derived by hand on every version bump, so if
+this section stops describing what the editor does, that is the first place to look.
 
 To make a new page: add a **Pages** entry, fill the hero, and stack blocks. New pages start
 as **drafts** — visible in preview but not on the published site — so uncheck **Draft** to
@@ -358,7 +380,7 @@ different decisions:
 2. **CMS page** (an MDX entry: hero + blocks) — when the whole page is editor-territory and
    fits the hero-plus-blocks model.
 3. **CMS block** (a palette entry) — only when its content repeats and an editor can safely
-   compose it anywhere. Every block in the "+" menu is a promise it's safe to insert on any
+   compose it anywhere. Every block in the Embed menu is a promise it's safe to insert on any
    page, so a one-off block makes the editor worse for the pages that aren't it.
 
 By this rule, these stay **hand-built `.astro`**, not CMS pages: `events/*` (the
@@ -392,7 +414,7 @@ Two places show the difference:
   wrong. Narrowed to the job it actually did, it's five fields and no layout choices.
 
 Closing banner got _smaller_. That's the usual outcome, and it's the tell: if splitting a
-block leaves you with two nearly identical entries in the "+" menu, the split was wrong and
+block leaves you with two nearly identical entries in the Embed menu, the split was wrong and
 the option was real.
 
 The corollary is that a genuinely new shape earns a new template, not a flag on an old one —
@@ -575,7 +597,10 @@ change, or every existing inbound link breaks.
   starts at **H3**, because the block's own heading is the `<h2>` — except in a Rich text
   block, whose heading is optional, so H2 stays available there. Both settings are UI-only:
   content already saved with a disallowed level still renders. Removing `raw` is also what
-  now enforces the old "no inline raw HTML" rule below.
+  now enforces the old "no inline raw HTML" rule below. The list is ordered as well as
+  trimmed: the toolbar drops its **tail** into an overflow menu when it doesn't fit, which
+  is what the sidebar width in visual editing does to it, so **Embed** goes first — losing
+  the block insert menu is losing the thing a page body is built from.
 - **No _inline_ raw HTML in page bodies.** Now unreachable from the toolbar, but still true
   if you hand-edit MDX: `<br>` inside a paragraph fails to parse and the block renders as an
   "invalid markdown" node. Block-level HTML (a standalone `<div>…</div>`) does round-trip.
@@ -615,4 +640,6 @@ change, or every existing inbound link breaks.
 - **Block descriptions don't show in the insert menu.** They're in the schema and worth
   keeping, but the menu renders labels only — the "which block do I use?" table above is the
   substitute.
+- **Slash (`/`) inserts headings and lists only.** Blocks aren't in that menu; they're in
+  **Embed**.
 - **The `pages` directory must exist** even when empty (kept via `.gitkeep`).
