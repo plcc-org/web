@@ -33,20 +33,21 @@ import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync, rmSync
 import { join, dirname } from 'node:path'
 import { parse } from 'yaml'
 
+// The per-entry rules live next to the CMS config so the editor can run them in the
+// form, where they're useful, rather than only here, where an editor never sees them.
+// Everything needing more than one entry at a time — duplicate addresses, the review
+// warnings below — stays in this file, because it's the only thing that reads them all.
+//
+// A shortcut is temporary on purpose. Browsers cache a 301 more or less forever, so if
+// plcc.org/camp were permanent, everyone who followed it once would keep landing on
+// this year's registration after next year's replaced it — and nobody would be able to
+// tell us, because their browser would never ask the server again. 302 keeps the short
+// link ours to re-point. 301 is right only when a page has genuinely moved for good,
+// where passing search ranking to the new URL is the point.
+import { STATUS, toPath, checkFrom, checkDestination, checkReview, parseReviewDate } from '../tina/short-link-rules.mjs'
+
 const SOURCE_DIR = 'src/content/short-links'
 const OUT = 'public/_redirects'
-
-/**
- * A shortcut is temporary on purpose. Browsers cache a 301 more or less
- * forever, so if plcc.org/camp were permanent, everyone who followed it once
- * would keep landing on this year's registration after next year's replaced it
- * — and nobody would be able to tell us, because their browser would never ask
- * the server again. 302 keeps the short link ours to re-point.
- *
- * 301 is right only when a page has genuinely moved for good, where passing
- * search ranking to the new URL is the point.
- */
-const STATUS = { shortcut: 302, moved: 301 }
 
 /**
  * "Gone" can't be a redirect rule: Cloudflare only permits 200/301/302/303/307/308
@@ -70,18 +71,6 @@ const STATUS = { shortcut: 302, moved: 301 }
  */
 const PAGES_DIR = 'src/pages'
 const GONE_MARKER = '@generated-gone-route'
-
-/** Reserved because a short link that shadows one of these would hide real content. */
-const RESERVED = new Set([
-  '_astro',
-  '_headers',
-  '_redirects',
-  'admin',
-  'api',
-  'robots.txt',
-  'sitemap-index.xml',
-  'tina-island',
-])
 
 if (!existsSync(SOURCE_DIR)) {
   console.log('generate-redirects: no short-links collection — nothing to do.')
@@ -115,53 +104,21 @@ for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || 
   const { from, destination, kind = 'shortcut', note, expires, permanent = false } = entry
   const isGone = kind === 'gone'
 
-  // The old address is an explicit field rather than the filename: cutover
-  // redirects carry several path segments ("/connect/about/leadership-team/"),
-  // which a filename can't hold.
-  if (typeof from !== 'string' || !from.startsWith('/')) {
-    errors.push(`${where}: "from" must be the old address, starting with a slash`)
+  // The per-entry rules, in the same order the form presents them.
+  const problem = checkFrom(from) ?? checkDestination(destination, kind) ?? checkReview(permanent, expires)
+  if (problem) {
+    errors.push(`${where}: ${problem}`)
     continue
   }
-  const path = from.toLowerCase().replace(/^\/+/, '').replace(/\/+$/, '')
-  if (!/^[a-z0-9][a-z0-9\-/]*$/.test(path)) {
-    errors.push(`${where}: "${from}" must be lowercase letters, numbers, hyphens and slashes`)
-    continue
-  }
-  if (RESERVED.has(path.split('/')[0])) {
-    errors.push(`${where}: "/${path}" starts with a path reserved by the site itself`)
-    continue
-  }
-  if (!isGone) {
-    const external = /^https?:\/\//i.test(destination ?? '')
-    if (typeof destination !== 'string' || !(external || destination.startsWith('/'))) {
-      errors.push(`${where}: "destination" must be a full https:// address or a path on this site starting with /`)
-      continue
-    }
-    if (!(kind in STATUS)) {
-      errors.push(`${where}: "kind" must be one of ${[...Object.keys(STATUS), 'gone'].join(', ')}`)
-      continue
-    }
-  }
+
+  // Everything below needs the other entries, so it can only happen here.
+  const path = toPath(from)
   if (seen.has(path)) {
     errors.push(`${where}: "${path}" is already defined in ${seen.get(path)}`)
     continue
   }
 
-  // One or the other, never both: a permanent link with a date on it is two
-  // answers to the same question, and whichever one a later reader trusts, the
-  // other was misleading.
-  if (permanent && expires) {
-    errors.push(`${where}: is marked permanent, so it should not also carry a "Review by" date`)
-    continue
-  }
-
-  // Required unless permanent, so the list can't quietly grow a tail of links
-  // nobody owns.
-  const reviewBy = expires ? new Date(`${expires}T00:00:00Z`) : null
-  if (!permanent && (!reviewBy || Number.isNaN(reviewBy.getTime()))) {
-    errors.push(`${where}: needs a "Review by" date (YYYY-MM-DD), or "permanent: true" if it will never need one`)
-    continue
-  }
+  const reviewBy = parseReviewDate(expires)
   let status_note = ''
   if (reviewBy) {
     const daysLeft = Math.round((reviewBy - today) / 86_400_000)
