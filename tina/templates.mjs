@@ -101,7 +101,8 @@ const itemProps = (key, fallback) => ({
  * it existed — and alt text is worth validating at the point of upload.
  * -------------------------------------------------------------------- */
 
-/** Which variants a field applies to, appended to its description. */
+/** Which variants a field applies to, prepended to its description. */
+/** @type {(which: string, rest: string) => string} */
 const forVariants = (which, rest) => `Used by: ${which}. ${rest}`
 
 export const heroFields = [
