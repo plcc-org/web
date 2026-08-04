@@ -16,7 +16,30 @@
 
 /** @typedef {Record<string, unknown>} FieldOpts */
 
-const children = { name: 'children', label: 'Content', type: 'rich-text' }
+/**
+ * A wrapper block's prose.
+ *
+ * The toolbar is inline formatting only. `image` is absent because these blocks carry
+ * their own image fields, and `embed` because TinaChildren.astro renders a block's body
+ * with the inline overrides alone — a block nested inside a block would save fine and
+ * then render as nothing. Everything else Tina offers (raw, table, code, mermaid,
+ * highlight, strikethrough) has no styling anywhere in src/styles, so it's out too.
+ *
+ * Heading levels default to h3 and below: a wrapper block renders its own `heading`
+ * field as an h2 (Band.astro), and the page hero owns the only h1. The exception is a
+ * block whose heading is optional — pass ['h2', 'h3', 'h4'] there so prose in a
+ * headingless one doesn't jump straight from h1 to h3.
+ */
+/** @type {(headingLevels?: string[]) => Record<string, unknown>} */
+const children = (headingLevels = ['h3', 'h4']) => ({
+  name: 'children',
+  label: 'Content',
+  type: 'rich-text',
+  overrides: {
+    toolbar: ['heading', 'link', 'quote', 'ul', 'ol', 'bold', 'italic'],
+    headingLevels,
+  },
+})
 
 /** @type {(name: string, label: string, opts?: FieldOpts) => Record<string, unknown>} */
 const text = (name, label, opts = {}) => ({ name, label, type: 'string', ...opts })
@@ -135,7 +158,12 @@ export const heroFields = [
     label: 'Photos (cinematic)',
     type: 'object',
     list: true,
+    openFormOnCreate: true,
     description: forVariants('Cinematic', 'Shown in order, each cross-fading into the next. Around five works well.'),
+    // No `ui.min: 1`, even though src/content.config.ts requires at least one photo for
+    // a cinematic hero. `min` disables Delete at the floor, and this list is shared by
+    // all four variants — a photo added by mistake on a Photo & text page could then
+    // never be removed. The zod check is variant-aware; this field can't be.
     ui: itemProps('alt', 'Photo'),
     fields: [
       image('image', 'Photo', { required: true }),
@@ -166,7 +194,13 @@ export const templates = [
     name: 'Section',
     label: 'Rich text',
     description: 'A heading and formatted paragraphs — bold, links, lists. The default for written content.',
-    fields: [text('eyebrow', 'Eyebrow (small label above the heading)'), text('heading', 'Heading'), children],
+    // The only wrapper whose heading is optional, so its prose may be the first
+    // thing under the page's h1 — h2 stays available here alone.
+    fields: [
+      text('eyebrow', 'Eyebrow (small label above the heading)'),
+      text('heading', 'Heading'),
+      children(['h2', 'h3', 'h4']),
+    ],
   },
   {
     name: 'Split',
@@ -180,7 +214,7 @@ export const templates = [
       text('eyebrow', 'Eyebrow'),
       bool('reverse', 'Photo on the right'),
       tone(['sand', 'paper', 'forest'], 'sand'),
-      children,
+      children(),
       text('buttonLabel', 'Button label'),
       text('buttonHref', 'Button link'),
     ],
@@ -189,7 +223,7 @@ export const templates = [
     name: 'Callout',
     label: 'Callout',
     description: 'A small boxed aside that sets one point apart — a reassurance, a key fact, a heads-up.',
-    fields: [text('heading', 'Heading'), children],
+    fields: [text('heading', 'Heading'), children()],
   },
   {
     name: 'CaptionedPhoto',
@@ -233,7 +267,7 @@ export const templates = [
       text('heading', 'Heading'),
       text('buttonLabel', 'Button label'),
       text('buttonHref', 'Button link'),
-      children,
+      children(),
     ],
   },
   {
@@ -248,6 +282,7 @@ export const templates = [
         label: 'Photos',
         type: 'object',
         list: true,
+        openFormOnCreate: true,
         ui: itemProps('alt', 'Photo'),
         fields: [
           image('image', 'Photo', { required: true }),
@@ -285,6 +320,7 @@ export const templates = [
         label: 'Cards',
         type: 'object',
         list: true,
+        openFormOnCreate: true,
         ui: itemProps('title', 'Card'),
         fields: [
           text('title', 'Title', { required: true }),
@@ -308,6 +344,7 @@ export const templates = [
         label: 'Links',
         type: 'object',
         list: true,
+        openFormOnCreate: true,
         ui: itemProps('title', 'Link'),
         fields: [
           text('title', 'Title', { required: true }),
@@ -376,6 +413,7 @@ export const templates = [
         label: 'Points',
         type: 'object',
         list: true,
+        openFormOnCreate: true,
         ui: itemProps('title', 'Point'),
         fields: [text('title', 'Title', { required: true }), textarea('body', 'Text', { required: true })],
       },
@@ -393,6 +431,7 @@ export const templates = [
         label: 'Cards',
         type: 'object',
         list: true,
+        openFormOnCreate: true,
         ui: itemProps('alt', 'Card'),
         fields: [
           image('image', 'Logo', { required: true }),
@@ -414,7 +453,7 @@ export const templates = [
       text('logoAlt', 'Logo description (alt text)', {
         description: 'Required only when a logo is set.',
       }),
-      children,
+      children(),
     ],
   },
   {
@@ -446,6 +485,7 @@ export const templates = [
         label: 'Steps',
         type: 'object',
         list: true,
+        openFormOnCreate: true,
         ui: itemProps('title', 'Step'),
         fields: [text('title', 'Title', { required: true }), textarea('body', 'Text', { required: true })],
       },
@@ -462,12 +502,18 @@ export const templates = [
       }),
       text('signoffName', 'Signature — name'),
       text('signoffRole', 'Signature — role/title'),
-      children,
+      children(),
     ],
   },
 ]
 
-/** The `rich-text` field definition the MDX parser/serializer expects. */
+/**
+ * The `rich-text` field definition the MDX parser/serializer expects.
+ *
+ * Deliberately without the `overrides` the same field carries in tina/config.ts: those
+ * only constrain the editor's toolbar, and the harness parses and re-serialises rather
+ * than editing. Nothing here needs to change when the toolbar does.
+ */
 export const bodyField = {
   name: 'content',
   label: 'Body',

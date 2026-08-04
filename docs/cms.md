@@ -20,9 +20,10 @@ For the stack and conventions, see [development.md](./development.md); for hosti
   build; the build ships static HTML. Visitors never hit a server — the only on-demand route
   is `/tina-island/*`, which re-renders a region while an editor is typing.
 - The config is **`tina/config.ts`** (collections and fields) plus **`tina/templates.mjs`**
-  (the block palette). Its schemas must stay aligned with the Astro content schemas in
-  `src/content.config.ts` — Astro validates the same files at build time, and the two catch
-  different mistakes. **Change one, change the other.**
+  (the block palette), with **`tina/short-link-rules.mjs`** holding the per-entry short-link
+  rules it shares with the build script. Its schemas must stay aligned with the Astro content
+  schemas in `src/content.config.ts` — Astro validates the same files at build time, and the
+  two catch different mistakes. **Change one, change the other.**
 - **`tina/tina-lock.json` is the third thing to change**, and the one nothing reminds you
   about. See below.
 
@@ -169,9 +170,16 @@ A page has two parts:
    stays on-brand. Blocks show inline as labelled cards (with a photo thumbnail where
    relevant), and you edit a block's text right on the card.
 
-To make a new page: add a **Pages** entry, give it a title and a URL slug (`momco` →
-`/momco/`), fill the hero, and stack blocks. New pages start as **drafts** — visible in
-preview but not on the published site — so uncheck **Draft** to publish when it's ready.
+To make a new page: add a **Pages** entry, fill the hero, and stack blocks. New pages start
+as **drafts** — visible in preview but not on the published site — so uncheck **Draft** to
+publish when it's ready.
+
+**The address is the first field on the form, and it's worth a moment.** It starts from the
+title, but the two don't have to match: it renders locked, and **clicking it unlocks it** —
+after which it stops following the title. So a page titled "Church Safety Policy" can live
+at `/safety/`. Short is better; these get said aloud and printed on things. Changing the
+address later breaks every existing link to the page, which is what the Short links list is
+then for.
 
 ### The block palette
 
@@ -296,6 +304,12 @@ Photos live in `src/assets/images/`, and the media library reads that folder dir
 the build optimizes everything an editor picks (responsive WebP) like every other image —
 there's nothing to manage. Existing curated photos elsewhere on the site still come from the
 catalog via `<Photo filename>`.
+
+**JPEG, PNG, WebP and AVIF only.** The picker refuses anything else, which mostly means one
+thing in practice: a photo straight off an iPhone is usually **HEIC**, and needs exporting
+as JPEG first. The restriction is `media.accept` in `tina/config.ts` and it exists because
+those four are exactly what the image pipeline resolves (the globs in `src/lib/images.ts`).
+An unresolvable image doesn't fail the build — it just doesn't appear.
 
 ---
 
@@ -552,11 +566,21 @@ change, or every existing inbound link breaks.
   verify. See `tsconfig.json`.
 - **CMS pages are Prettier-ignored** (`src/content/pages/` in `.prettierignore`) — Prettier's
   MDX reflow breaks block-component children. The CMS owns their formatting.
-- **No _inline_ raw HTML in page bodies.** `<br>` inside a paragraph fails to parse and the
-  block renders as an "invalid markdown" node. Block-level HTML (a standalone `<div>…</div>`)
-  does round-trip, but there's rarely a reason to reach for it. For a line break, use a
-  **Markdown hard break** — two trailing spaces; the editor normalises it to a backslash and
-  Astro still renders `<br>`.
+- **The toolbar is deliberately short.** `overrides.toolbar` on the body field keeps ten
+  controls and drops the rest: raw, table, code, code block, mermaid, highlight and
+  strikethrough are all offered by default and **none of them are styled anywhere in
+  `src/styles`**, so reaching one produced output nobody designed. Same principle as
+  `npm run lint:css` — enforced, not requested. Headings stop at **H2–H4**: the hero renders
+  the page's only `<h1>`, and `base.css` styles nothing below `h4`. Inside a block, prose
+  starts at **H3**, because the block's own heading is the `<h2>` — except in a Rich text
+  block, whose heading is optional, so H2 stays available there. Both settings are UI-only:
+  content already saved with a disallowed level still renders. Removing `raw` is also what
+  now enforces the old "no inline raw HTML" rule below.
+- **No _inline_ raw HTML in page bodies.** Now unreachable from the toolbar, but still true
+  if you hand-edit MDX: `<br>` inside a paragraph fails to parse and the block renders as an
+  "invalid markdown" node. Block-level HTML (a standalone `<div>…</div>`) does round-trip.
+  For a line break, use a **Markdown hard break** — two trailing spaces; the editor
+  normalises it to a backslash and Astro still renders `<br>`.
 - **Object props need identifier keys.** Tina's MDX parser accepts
   `items={[{title: "A"}]}` but not `items={[{"title": "A"}]}`, and rejects bare boolean
   attributes (`reverse` must be `reverse={true}`). The editor always writes the accepted
@@ -581,6 +605,13 @@ change, or every existing inbound link breaks.
 - **The short-links list has no columns.** The CMS has no list-view column configuration, so
   55 entries show as filenames. `from`, `destination` and `note` are marked searchable, so
   search the list by the address printed on the flyer rather than scrolling it.
+- **Short-link rules run in two places, on purpose.** `tina/short-link-rules.mjs` holds
+  everything decidable from one entry — the address shape, the reserved prefixes, the
+  destination, and "a review date unless it's marked permanent" — and both
+  `tina/config.ts` (as `ui.validate`) and `scripts/generate-redirects.mjs` import it, so an
+  editor gets the message in the form instead of in a build they never see. The script stays
+  the authority: it alone reads every entry, so duplicate addresses and the review-date
+  warnings can only happen there. Add a per-entry rule to the shared module, not to one side.
 - **Block descriptions don't show in the insert menu.** They're in the schema and worth
   keeping, but the menu renders labels only — the "which block do I use?" table above is the
   substitute.

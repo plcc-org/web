@@ -1,6 +1,20 @@
 import { defineConfig } from 'tinacms'
 // @ts-expect-error — plain-JS template palette, shared with the spike harness.
 import { templates, heroFields } from './templates.mjs'
+// @ts-expect-error — plain-JS, shared with scripts/generate-redirects.mjs.
+import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs'
+
+/**
+ * A page address: lowercase, hyphen-separated, slashes kept so a page can sit in a
+ * folder. Used for both halves of the filename field — see the note on `filename` below
+ * for why one function can't cover it.
+ */
+const slug = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9/]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
 
 // CMS configuration. The `pages` collection carries the page frontmatter (including the
 // nested `hero` object) and an 18-component body palette; the other three are YAML data
@@ -21,8 +35,16 @@ export default defineConfig({
   // scripts/build.mjs switches to `--content=local` and the deployed admin and
   // /tina-island talk to TinaCloud; with neither, the build emits a local client
   // and everything still works offline — which is what CI and a fresh clone get.
-  // TINA_TOKEN is a secret and must stay one; the client ID is public by design
-  // (it ships inside the admin bundle).
+  // TINA_TOKEN is a secret and must stay one; the client ID is public by design.
+  //
+  // Both are read here in Node, at build time. Note what that means for anything
+  // added alongside them: the CLI inlines only TINA_PUBLIC_*, NEXT_PUBLIC_*,
+  // NODE_ENV and HEAD into the admin bundle's `process.env` (filterPublicEnv in
+  // @tinacms/cli), so `PUBLIC_TINA_CLIENT_ID` is undefined in the browser and the
+  // browser-side copy of this config sees `clientId: null`. Nothing depends on it:
+  // the CLI bakes the ID into the content API URL, and the admin reads that. But a
+  // future PUBLIC_* variable meant for admin code would silently be undefined —
+  // name it TINA_PUBLIC_* if it needs to reach the browser.
   //
   // `branch` is the branch a deployed editor commits to, and the one TinaCloud
   // indexes. It only matters when talking to the cloud; local builds read the
@@ -32,6 +54,24 @@ export default defineConfig({
   token: process.env.TINA_TOKEN || null,
   localContentPath: undefined,
   build: { outputFolder: 'admin', publicFolder: 'public' },
+  // A per-document link out to the file's commit history on GitHub, so "when did this
+  // change, and who changed it" is answerable from the editor.
+  //
+  // Pages only, and that's a limitation of the hook rather than a choice. `relativePath`
+  // is relative to the *collection* root ("church-life/pine-lake-academy.mdx"), and the
+  // callback is given nothing else — no collection, no full path — so building a repo
+  // path means knowing which collection the document came from. `.mdx` identifies `pages`
+  // on its own; the other four collections are all YAML in sibling directories and a
+  // filename can't tell them apart. Returning an empty url drops the button, which is
+  // the right failure: a history link pointing at the wrong file is worse than none.
+  repoProvider: {
+    defaultBranchName: 'main',
+    historyUrl: ({ relativePath, branch }) => ({
+      url: relativePath.endsWith('.mdx')
+        ? `https://github.com/timsneath/plcc-web/commits/${branch}/src/content/pages/${relativePath}`
+        : '',
+    }),
+  },
   media: {
     tina: {
       // Our photo bytes live in src/assets/images so Astro's sharp pipeline can
@@ -40,6 +80,12 @@ export default defineConfig({
       publicFolder: 'src',
       mediaRoot: 'assets/images',
     },
+    // Exactly the formats the glob in src/lib/images.ts resolves. Tina's default
+    // accepts far more — HEIC, SVG, PDF, video, 3D models — and anything outside
+    // this list uploads cleanly and then doesn't render: imageFromRef finds no
+    // loader, returns undefined, and the photo silently disappears. A volunteer
+    // uploading straight from an iPhone is the case this exists for.
+    accept: ['image/jpeg', 'image/png', 'image/webp', 'image/avif'],
   },
   schema: {
     collections: [
@@ -58,6 +104,33 @@ export default defineConfig({
             const crumbs = document._sys.breadcrumbs
             return crumbs.length === 1 && crumbs[0] === 'index' ? '/' : `/${crumbs.join('/')}/`
           },
+          // The filename is the URL, so it's the first thing an editor sees rather than
+          // the last. Tina seeds it from the title and stops the moment the field is
+          // edited, so a long title can still get a short address — "Church Safety
+          // Policy" at /safety/, not /church-safety-policy/. That's the case this exists
+          // for; buried at the foot of the form, nobody noticed the choice was theirs.
+          //
+          // The field renders locked behind a padlock and unlocks on click, which is
+          // Tina's own affordance, not something set here — hence "click it" in the
+          // description rather than "type over it".
+          //
+          // `slugify` is spelled out rather than left to the `isTitle` default, because
+          // that default is `replace(/ /g, '-').replace(/[^a-zA-Z0-9-]/g, '')` — it keeps
+          // capitals, so "Church Safety Policy" seeds `Church-Safety-Policy` and the page
+          // ships at /Church-Safety-Policy/. `parse` can't save it: the seed is written
+          // with form.change(), which bypasses field-level parse. Both are needed —
+          // `slugify` for the seed, `parse` for what an editor types.
+          //
+          // No `readonly`: renaming has to stay possible.
+          filename: {
+            showFirst: true,
+            description:
+              'The page address: "safety" makes plcc.org/safety/. It starts from the title — click it to set your ' +
+              'own, and it stops following. Keep it short: these get read aloud and printed on things. Lowercase ' +
+              'letters, numbers and hyphens. Changing it later breaks every existing link to the page.',
+            slugify: (values) => slug(values?.title ?? ''),
+            parse: (value) => slug(value),
+          },
         },
         // New pages start unpublished, as they did under the previous CMS. Without
         // this a page goes live the moment it's created.
@@ -69,7 +142,9 @@ export default defineConfig({
             type: 'string',
             isTitle: true,
             required: true,
-            description: 'Also the page address — "MOMCo" → /momco/.',
+            description:
+              'The page’s heading, and its name in the browser tab. The address is the separate field above — ' +
+              'it starts from this, but the two don’t have to match.',
           },
           {
             name: 'seoTitle',
@@ -108,6 +183,19 @@ export default defineConfig({
             type: 'rich-text',
             isBody: true,
             templates,
+            // The toolbar is trimmed to the controls this site can actually render.
+            // Raw HTML, tables, code, code blocks, mermaid, highlight and strikethrough
+            // are all offered by default and none of them are styled anywhere in
+            // src/styles — an editor reaching one produces output nobody designed. This
+            // is the same principle as `npm run lint:css`: enforced, not requested.
+            //
+            // Headings stop at h2 because the hero renders the page's only h1, and at h4
+            // because base.css styles h1–h4 and nothing below. Both settings are UI-only:
+            // content already saved with a disallowed level still renders.
+            overrides: {
+              toolbar: ['heading', 'link', 'image', 'quote', 'ul', 'ol', 'bold', 'italic', 'embed', 'hr'],
+              headingLevels: ['h2', 'h3', 'h4'],
+            },
             description:
               'Type prose; use the insert menu to add styled blocks. Two habits carry most of the voice: start ' +
               'with the reader’s situation rather than our programme (“When life is overwhelming…”, not “We have ' +
@@ -218,6 +306,7 @@ export default defineConfig({
             label: 'Quotes',
             type: 'object',
             list: true,
+            openFormOnCreate: true,
             ui: { itemProps: (item) => ({ label: item?.by || item?.id || 'Quote' }) },
             fields: [
               { name: 'id', label: 'ID', type: 'string', required: true },
@@ -259,6 +348,10 @@ export default defineConfig({
             type: 'string',
             required: true,
             searchable: true,
+            // scripts/generate-redirects.mjs runs the same checks at build time and
+            // remains the authority — it alone can see that two entries claim the same
+            // address. This is the same rule, moved to where the editor is standing.
+            ui: { validate: (value: string) => checkFrom(value) },
             description:
               'The address people are typing or following, starting with a slash — "/camp" for plcc.org/camp. ' +
               'It can have several parts, e.g. "/connect/about/leadership-team/".',
@@ -268,6 +361,9 @@ export default defineConfig({
             label: 'Sends people to',
             type: 'string',
             searchable: true,
+            ui: {
+              validate: (value: string, allValues: { kind?: string }) => checkDestination(value, allValues?.kind),
+            },
             description:
               'Either a full address elsewhere (https://plcc.churchcenter.com/…) or a page on this site, ' +
               'written with slashes at both ends — "/visit/". Leave empty for a page that is gone for good.',
@@ -301,6 +397,11 @@ export default defineConfig({
             name: 'expires',
             label: 'Review by',
             type: 'datetime',
+            // The cross-field rule: required unless the box above is ticked, forbidden
+            // when it is. Both halves used to surface only as a failed build.
+            ui: {
+              validate: (value: string, allValues: { permanent?: boolean }) => checkReview(allValues?.permanent, value),
+            },
             description:
               'Every short link gets a date so the list stays honest — otherwise nobody dares delete anything ' +
               'because nobody remembers what it was for. A sign-up shortcut: the date the thing it points at ends. ' +

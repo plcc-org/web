@@ -1,5 +1,6 @@
 ---
 import SectionHeader from './SectionHeader.astro'
+import { blockField, type BlockProps } from '../lib/tina/block-field'
 
 // A numbered "roadmap": steps as nodes on a connecting line, each with a title
 // and a short description. Rendered as the CMS "Roadmap" block; the CMS
@@ -7,14 +8,14 @@ import SectionHeader from './SectionHeader.astro'
 // single row (one column per step); it collapses to a vertical list on narrow
 // screens.
 type Step = { title: string; body: string }
-type Props = { eyebrow?: string; heading?: string; steps?: Step[] }
+type Props = { eyebrow?: string; heading?: string; steps?: Step[] } & BlockProps
 // Defaulted so the CMS block maps straight to this component with no
 // pass-through wrapper: an editor who adds the block before filling it in
 // sends no steps at all.
 const { eyebrow, heading, steps = [] } = Astro.props
 ---
 
-<section class="section roadmap-section" data-reveal>
+<section class="section roadmap-section" data-reveal data-tina-field={blockField(Astro.props)}>
   {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
   <ol class="roadmap" role="list" style={`--roadmap-cols:${Math.max(steps.length, 1)}`}>
     {
