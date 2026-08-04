@@ -29,15 +29,8 @@ type Props = { data: Record<string, any> }
 const { data } = Astro.props
 const hero = data.hero ?? {}
 
-// Which hero template the editor chose. The file on disk names it in
-// `_template`, but that key never reaches here: the GraphQL layer turns the
-// union into `__typename`, so a hero saved as `_template: cinematic` arrives as
-// `PagesHeroCinematic`. Reading the wrong one fails quietly — every page falls
-// back to the plain text header and nothing errors.
-const variant =
-  String(hero.__typename ?? '')
-    .replace(/^PagesHero/, '')
-    .toLowerCase() || 'photo'
+// Which kind of hero the editor chose. A plain field, so it arrives verbatim.
+const variant = hero.variant || 'photo'
 const cinematic = variant === 'cinematic'
 ---
 
