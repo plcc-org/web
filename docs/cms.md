@@ -150,8 +150,8 @@ a year out — one list to review rather than two places to forget about.
 A page has two parts:
 
 1. **A hero** (in the page's form). Every page gets one, and it always carries the page
-   title as the page's single `<h1>`. Pick the **kind** of hero first and the form shows
-   only that kind's fields:
+   title as the page's single `<h1>`. Pick the **kind** of hero first — it decides which of
+   the fields below it apply, and each field says which kinds use it:
 
    | Hero             | What it is                                                            |
    | ---------------- | --------------------------------------------------------------------- |
@@ -370,19 +370,50 @@ Two places show the difference:
 - **The hero** was one object with nine optional fields, and which of the three heroes you
   got depended on which of them you'd filled in. A photo hero saved without a photo silently
   became a text-only header, and nothing could flag it, because nothing had been declared.
-  As four named templates, the choice is explicit, the form is 5–7 fields instead of 9, and
-  the schema can tell a half-filled hero from an intentional one.
+  Naming the shape in a `variant` field makes the choice explicit and gives
+  `src/content.config.ts` a discriminator, so that mistake now fails the build.
 - **Closing banner** was "Banner", a general tonal band with `tone` and `flush` options. All
   five uses were a page's last block, all five were forest, and two had missed the `flush`
   tick its own description asked for. Three fields carrying no information, one already got
   wrong. Narrowed to the job it actually did, it's five fields and no layout choices.
 
-Both got _smaller_. That's the usual outcome, and it's the tell: if splitting a block leaves
-you with two nearly identical entries in the "+" menu, the split was wrong and the option
-was real.
+Closing banner got _smaller_. That's the usual outcome, and it's the tell: if splitting a
+block leaves you with two nearly identical entries in the "+" menu, the split was wrong and
+the option was real.
 
 The corollary is that a genuinely new shape earns a new template, not a flag on an old one —
 and an option that has never been set to anything but its default has earned deletion.
+
+#### Where this stops: the hero can't hide its unused fields
+
+Naming a shape and **showing only that shape's fields** are two different things, and Tina
+gives you the first but not the second. The hero still shows all eleven fields whatever
+variant you pick; the `variant` select and the "Used by:" line on each field's description
+are the whole mitigation.
+
+Two mechanisms look like they'd fix that. Neither does:
+
+- **Conditional visibility** needs a React component in `ui.component` reading form state.
+  `tina/templates.mjs` is plain `.mjs` so `spike/roundtrip.mjs` can import it without a
+  build step, and `tina/config.ts` deliberately holds no JSX.
+- **`type: 'object'` with `templates`** is the documented "pick a shape, see only its fields"
+  mechanism, and it is **only implemented for lists**. In `@tinacms/schema-tools` 2.8.3 — the
+  current release — the mapping is literally:
+
+  ```js
+  component: field.list ? 'blocks' : 'not-implemented'
+  ```
+
+  A non-list object with templates renders as **"Unrecognized field type"** where the field
+  should be, which also breaks click-to-edit for it, since the form has nothing to focus.
+  Nothing fails at build time: the schema compiles, the lock file matches, the site builds
+  and deploys, and only the editor is broken. **This shipped once.** Check that line before
+  reaching for `templates` on anything that isn't a list.
+
+The only workaround that preserves the choose-then-see behaviour is a list capped at one
+item (`list: true` with `ui.max: 1`), which makes the frontmatter an array and puts the hero
+behind an extra click. Judged not worth it for a field every page has — but it's the option
+if the field count becomes the bigger problem.
 
 ---
 

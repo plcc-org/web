@@ -137,26 +137,36 @@ const pages = defineCollection({
     seoTitle: z.string().optional(),
     seoDescription: z.string().optional(),
     draft: z.boolean().default(false),
-    // A discriminated union over the CMS's hero templates (tina/templates.mjs),
-    // which is what `_template` in the frontmatter names. This is stricter than
-    // the single optional-everything object it replaced, where a photo hero
-    // saved without a photo validated cleanly and then rendered as a text-only
-    // header — the schema couldn't tell the difference because there was no
-    // stated intent to check against.
-    hero: z.discriminatedUnion('_template', [
-      z.object({ _template: z.literal('photo'), image: z.string(), alt: z.string(), ...heroText }),
-      z.object({ _template: z.literal('plain'), ...heroText }),
+    // A discriminated union over the hero's `variant` (tina/templates.mjs). This
+    // is the whole value of making the kind of hero an explicit choice: the
+    // single optional-everything object it replaced let a photo hero save
+    // without a photo and render as a text-only header, and the schema couldn't
+    // tell the difference because there was no stated intent to check against.
+    //
+    // The CMS form still shows every field regardless of variant — Tina can't
+    // hide the irrelevant ones — so this is what catches a hero whose variant
+    // and contents disagree. Leftovers from another variant are simply stripped:
+    // switching a hero from photo to plain leaves an `image` behind, which is
+    // ignored at render and isn't worth failing a build over.
+    //
+    // `.min(1)` throughout, not a bare `z.string()`: the CMS writes an untouched
+    // field as '' rather than omitting it, and '' satisfies z.string() — so the
+    // exact mistake this union exists to catch would pass. Same trap as the `||`
+    // in src/pages/[...slug].astro.
+    hero: z.discriminatedUnion('variant', [
+      z.object({ variant: z.literal('photo'), image: z.string().min(1), alt: z.string().min(1), ...heroText }),
+      z.object({ variant: z.literal('plain'), ...heroText }),
       z.object({
-        _template: z.literal('wordmark'),
-        logo: z.string(),
-        logoAlt: z.string(),
+        variant: z.literal('wordmark'),
+        logo: z.string().min(1),
+        logoAlt: z.string().min(1),
         image: z.string().optional(),
         alt: z.string().optional(),
         ...heroText,
       }),
       z.object({
-        _template: z.literal('cinematic'),
-        photos: z.array(z.object({ image: z.string(), alt: z.string().min(1) })).min(1),
+        variant: z.literal('cinematic'),
+        photos: z.array(z.object({ image: z.string().min(1), alt: z.string().min(1) })).min(1),
         ...heroText,
       }),
     ]),

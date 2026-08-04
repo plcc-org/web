@@ -66,8 +66,11 @@ const heroImg = await resolve(image)
 const logoImg = await resolve(logo)
 
 // Drop any pane whose upload can't be resolved, rather than rendering a gap.
+// `photos ?? []`, not just the destructuring default: every hero carries the
+// field now that they share one flat shape, and a non-cinematic one arrives as
+// an explicit null, which a default parameter doesn't catch.
 const panes: { image: ImageMetadata; alt: string }[] = []
-for (const p of photos) {
+for (const p of photos ?? []) {
   const resolved = await resolve(p.image)
   if (resolved) panes.push({ image: resolved, alt: p.alt || '' })
 }

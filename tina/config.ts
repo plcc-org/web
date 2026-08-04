@@ -1,6 +1,6 @@
 import { defineConfig } from 'tinacms'
 // @ts-expect-error — plain-JS template palette, shared with the spike harness.
-import { templates, heroTemplates } from './templates.mjs'
+import { templates, heroFields } from './templates.mjs'
 
 // CMS configuration. The `pages` collection carries the page frontmatter (including the
 // nested `hero` object) and an 18-component body palette; the other three are YAML data
@@ -96,10 +96,11 @@ export default defineConfig({
             name: 'hero',
             label: 'Hero',
             type: 'object',
-            // Four named shapes rather than one object of optional fields, so an
-            // editor picks the kind of hero and then sees only its own fields.
-            // See the note above heroTemplates in tina/templates.mjs.
-            templates: heroTemplates,
+            // A `variant` select decides which of these fields apply. It is not
+            // `templates` — that would show only the chosen shape's fields, but
+            // Tina implements object templates for lists only, and a non-list one
+            // renders as "Unrecognized field type". See the note in templates.mjs.
+            fields: heroFields,
           },
           {
             name: 'content',

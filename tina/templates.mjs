@@ -1,6 +1,6 @@
 // @ts-check
-// The editor's two template sets: `heroTemplates` (the shape of a page's hero, chosen once
-// in frontmatter) and `templates` (every component an editor can insert into a page body).
+// The editor's two field sets: `heroFields` (a page's hero, in frontmatter) and `templates`
+// (every component an editor can insert into a page body).
 //
 // A block with prose inside it (a Split, a Callout) is a template with a field named
 // `children` of type `rich-text` — Tina's MDX parser treats that name specially and maps
@@ -68,101 +68,96 @@ const itemProps = (key, fallback) => ({
 })
 
 /* ----------------------------------------------------------------------
- * Hero templates
+ * Hero fields
  *
- * A page's hero used to be one object with nine optional fields, and which
- * kind of hero you got depended on which of them you happened to fill in — a
- * photo hero if `image` was set, a wordmark if `logo` was, a plain header if
- * neither. Three shapes with no name, and every editor saw all nine fields on
- * every page whether or not they applied.
+ * Which kind of hero a page gets is an explicit choice — the `variant` select
+ * below — rather than something inferred from which optional fields happen to
+ * be filled in. That inference is what this replaced: a photo hero was "the one
+ * where `image` was set", so a photo hero saved without a photo silently became
+ * a text-only header and nothing could flag it. `variant` is the discriminator
+ * src/content.config.ts validates against, so now that mistake fails the build.
  *
- * Templates make the shape an explicit choice and show only its own fields.
- * Tina has no conditional field visibility, and faking it needs a React
- * component in the config — which this file can't have, being plain .mjs so
- * spike/roundtrip.mjs can import it without a build step. Templates are the
- * supported answer.
+ * It would be better still if picking a variant hid the fields it doesn't use,
+ * and Tina can't do that. Two dead ends, both tried:
  *
- * `required` is deliberately absent except inside the cinematic photo list.
- * These are collection fields: a required one becomes non-null in GraphQL, and
- * the indexer then rejects any already-saved page missing it (see the note in
- * tina/config.ts). The photo list is the one safe case — no existing page has
- * one — and alt text is worth validating at the point of upload.
+ *   - Conditional visibility needs a React component in `ui.component` reading
+ *     form state. This file is plain .mjs so spike/roundtrip.mjs can import it
+ *     without a build step, and config.ts deliberately holds no JSX.
+ *   - `type: 'object'` with `templates` — the documented "pick a shape, see only
+ *     its fields" mechanism — is only implemented for *lists*. Non-list is
+ *     literally `component: field.list ? 'blocks' : 'not-implemented'`
+ *     (@tinacms/schema-tools 2.8.3, the current release), and the form renders
+ *     "Unrecognized field type" where the hero should be. Shipped once; don't
+ *     try it again without checking that line first.
+ *
+ * So the variants are documented in each field's description instead, and the
+ * editor reads rather than is shown. If Tina implements non-list templates, the
+ * shape here maps onto them directly.
+ *
+ * `required` is deliberately absent except inside the photo list. These are
+ * collection fields: a required one becomes non-null in GraphQL, and the indexer
+ * then rejects any already-saved page missing it (see the note in
+ * tina/config.ts). The photo list is the one safe case — no page had one before
+ * it existed — and alt text is worth validating at the point of upload.
  * -------------------------------------------------------------------- */
 
-const heroEyebrow = text('eyebrow', 'Eyebrow', { description: 'Optional — a small label shown above the heading.' })
+/** Which variants a field applies to, appended to its description. */
+const forVariants = (which, rest) => `Used by: ${which}. ${rest}`
 
-const heroSubhead = text('subhead', 'Subhead', {
-  description: 'Optional — a line between the heading and the intro.',
-})
-
-const heroLede = textarea('lede', 'Intro line', {
-  description:
-    'A one- or two-sentence opening. The heading comes from the page title. If it could describe any church, ' +
-    'rewrite it with something only true of Pine Lake.',
-})
-
-const heroPhoto = [
-  image('image', 'Hero photo'),
-  text('alt', 'Photo description (alt text)', {
+export const heroFields = [
+  {
+    name: 'variant',
+    label: 'Kind of hero',
+    type: 'string',
+    options: [
+      { label: 'Photo & text — a portrait photo beside the title', value: 'photo' },
+      { label: 'Text only — a calm header, no photo', value: 'plain' },
+      { label: 'Logo & photo — a programme wordmark instead of the title', value: 'wordmark' },
+      { label: 'Cinematic — a full-width photo stack (the home page)', value: 'cinematic' },
+    ],
+    ui: { defaultValue: 'photo' },
     description:
-      'Say what someone who can’t see it would need — “A volunteer making coffee before the service”, not “coffee”.',
+      'Pick this first — it decides which fields below are used. Each field says which kinds it applies to, ' +
+      'and anything a kind doesn’t use is ignored.',
+  },
+  image('image', 'Hero photo', {
+    description: forVariants('Photo & text, Logo & photo', 'The single portrait photo beside the title.'),
   }),
-]
-
-const heroButton = [
-  text('buttonLabel', 'Hero button label', { description: 'Optional.' }),
-  text('buttonHref', 'Hero button link', { description: 'Optional.' }),
-]
-
-export const heroTemplates = [
+  text('alt', 'Photo description (alt text)', {
+    description: forVariants(
+      'Photo & text, Logo & photo',
+      'Say what someone who can’t see it would need — “A volunteer making coffee before the service”, not “coffee”.'
+    ),
+  }),
   {
-    name: 'photo',
-    label: 'Photo & text',
-    description: 'A portrait photo beside the page title and intro. The default for most pages.',
-    fields: [...heroPhoto, heroEyebrow, heroSubhead, heroLede, ...heroButton],
-  },
-  {
-    name: 'plain',
-    label: 'Text only',
-    description: 'A calm, text-only header — no photo. For pages that open on words rather than an image.',
-    fields: [heroEyebrow, heroSubhead, heroLede, ...heroButton],
-  },
-  {
-    name: 'wordmark',
-    label: 'Logo & photo',
-    description: 'A programme wordmark in place of the heading, beside a photo — Pine Lake Kids, Youth.',
+    name: 'photos',
+    label: 'Photos (cinematic)',
+    type: 'object',
+    list: true,
+    description: forVariants('Cinematic', 'Shown in order, each cross-fading into the next. Around five works well.'),
+    ui: itemProps('alt', 'Photo'),
     fields: [
-      image('logo', 'Wordmark logo'),
-      text('logoAlt', 'Logo description (alt text)', { description: 'What the wordmark says, e.g. “Pine Lake Kids”.' }),
-      ...heroPhoto,
-      heroEyebrow,
-      heroSubhead,
-      heroLede,
-      ...heroButton,
+      image('image', 'Photo', { required: true }),
+      text('alt', 'Photo description (alt text)', { required: true }),
     ],
   },
-  {
-    name: 'cinematic',
-    label: 'Cinematic (full-bleed)',
-    description: 'A full-width photo stack that drifts slowly behind the headline. The home page treatment.',
-    fields: [
-      {
-        name: 'photos',
-        label: 'Photos',
-        type: 'object',
-        list: true,
-        description: 'Shown in order, each cross-fading into the next. Around five works well.',
-        ui: itemProps('alt', 'Photo'),
-        fields: [
-          image('image', 'Photo', { required: true }),
-          text('alt', 'Photo description (alt text)', { required: true }),
-        ],
-      },
-      heroEyebrow,
-      heroSubhead,
-      ...heroButton,
-    ],
-  },
+  image('logo', 'Wordmark logo', {
+    description: forVariants('Logo & photo', 'Stands in for the heading, e.g. the Pine Lake Kids wordmark.'),
+  }),
+  text('logoAlt', 'Logo description (alt text)', {
+    description: forVariants('Logo & photo', 'What the wordmark says, e.g. “Pine Lake Kids”.'),
+  }),
+  text('eyebrow', 'Eyebrow', { description: 'Used by: all. A small label shown above the heading.' }),
+  text('subhead', 'Subhead', { description: 'Used by: all. A line between the heading and the intro.' }),
+  textarea('lede', 'Intro line', {
+    description: forVariants(
+      'Photo & text, Text only, Logo & photo',
+      'A one- or two-sentence opening. The heading comes from the page title. If it could describe any church, ' +
+        'rewrite it with something only true of Pine Lake.'
+    ),
+  }),
+  text('buttonLabel', 'Hero button label', { description: 'Used by: all. Optional.' }),
+  text('buttonHref', 'Hero button link', { description: 'Used by: all. Optional.' }),
 ]
 
 export const templates = [
