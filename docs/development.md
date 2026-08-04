@@ -204,7 +204,10 @@ Two things this is **not**, both checked before landing:
   [cms.md](./cms.md) still stands.
 
 Re-generate the patch with `npx patch-package @tinacms/cli` if you bump the CLI, and drop
-it entirely if Tina ever grows a flag for this — there is none as of 2.5.6.
+it entirely if Tina ever grows a flag for this — there is none as of 2.5.6. This is one of
+two patched dependencies; both are recorded in
+[`patches/README.md`](../patches/README.md), which is also where the upgrade procedure
+lives.
 
 ### What is still slow
 
@@ -401,9 +404,14 @@ of these checks, so CI is the whole gate. Green, then merge.
 
 Two things a bump can break that aren't obvious from the diff:
 
-- **`@tinacms/cli`** carries a patch (`patches/@tinacms+cli+2.5.6.patch`) applied on every
-  install. A bump that invalidates it fails at `npm ci`; re-run `npx patch-package @tinacms/cli`
-  and commit the new patch, or drop it if the CLI has grown a flag for what it does.
+- **`@tinacms/cli` and `tinacms`** both carry patches, applied on every install and
+  documented — motivation, hunk by hunk — in **[`patches/README.md`](../patches/README.md)**.
+  A bump invalidates them, and `patch-package` then warns rather than fails, so the fix
+  quietly reverts. Neither is a mechanical re-generate: the `tinacms` one lands in a rollup
+  bundle, so it has to be re-derived by intent against the new source, which is why that
+  package is pinned to an exact version rather than a caret. The procedure is written down
+  as the `/upgrade-patched-dep` command — fetch upstream, rebase our changes onto it,
+  verify the editor still behaves, then replace the version.
 - **Node** is pinned in `.node-version`, not by Dependabot. It stays on 22 until Tina's
   datalayer race on 25 is fixed — see the note in `ci.yml`.
 

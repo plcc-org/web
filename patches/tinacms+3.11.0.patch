@@ -1,0 +1,180 @@
+diff --git a/node_modules/tinacms/dist/index.js b/node_modules/tinacms/dist/index.js
+index 69093c7..321213a 100644
+--- a/node_modules/tinacms/dist/index.js
++++ b/node_modules/tinacms/dist/index.js
+@@ -17443,7 +17443,50 @@ const useEmbedHandles = (editor, element, baseFieldName) => {
+   const handleRemove = () => {
+     handleRemoveBase(editor, element);
+   };
+-  return { isExpanded, handleClose, handleRemove, handleSelect };
++  // PATCHED (plcc-web): stock, a block's only options are Edit and Remove —
++  // there is no way to reorder, copy or make room between blocks from the
++  // editor. These back the extra items in DotMenu.
++  const index = path[path.length - 1];
++  const parentEntry = editor.api.parent(path);
++  const siblings = parentEntry ? parentEntry[0].children : editor.children;
++  const canMoveUp = index > 0;
++  const canMoveDown = index < siblings.length - 1;
++  const siblingPath = (offset) => [...path.slice(0, -1), index + offset];
++  const handleMoveUp = () => {
++    if (canMoveUp) {
++      editor.tf.moveNodes({ at: path, to: siblingPath(-1) });
++    }
++  };
++  const handleMoveDown = () => {
++    if (canMoveDown) {
++      editor.tf.moveNodes({ at: path, to: siblingPath(1) });
++    }
++  };
++  const handleDuplicate = () => {
++    const { id: _id, ...copy } = element;
++    editor.tf.insertNodes([JSON.parse(JSON.stringify(copy))], {
++      at: siblingPath(1)
++    });
++    editor.tf.normalize({ force: true });
++  };
++  const handleInsertBelow = () => {
++    editor.tf.insertNodes(
++      [{ type: ParagraphPlugin.key, children: [{ text: "" }] }],
++      { at: siblingPath(1), select: true }
++    );
++  };
++  return {
++    isExpanded,
++    handleClose,
++    handleRemove,
++    handleSelect,
++    handleMoveUp,
++    handleMoveDown,
++    handleDuplicate,
++    handleInsertBelow,
++    canMoveUp,
++    canMoveDown
++  };
+ };
+ const ImgEmbed = ({
+   attributes,
+@@ -17638,7 +17681,18 @@ const BlockEmbed = ({
+ }) => {
+   const selected = useSelected();
+   const { templates, fieldName } = useTemplates();
+-  const { handleClose, handleRemove, handleSelect, isExpanded } = useEmbedHandles(editor, element, fieldName);
++  const {
++    handleClose,
++    handleRemove,
++    handleSelect,
++    isExpanded,
++    handleMoveUp,
++    handleMoveDown,
++    handleDuplicate,
++    handleInsertBelow,
++    canMoveUp,
++    canMoveDown
++  } = useEmbedHandles(editor, element, fieldName);
+   useHotkey("enter", () => {
+     editor.tf.insertNodes([
+       { type: ParagraphPlugin.key, children: [{ text: "" }] }
+@@ -17665,7 +17719,16 @@ const BlockEmbed = ({
+       className: "truncate cursor-pointer w-full relative inline-flex items-center justify-start px-4 py-2 rounded-l border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+     },
+     label
+-  ), /* @__PURE__ */ React__default.createElement(DotMenu, { onOpen: handleSelect, onRemove: handleRemove })), isExpanded && /* @__PURE__ */ React__default.createElement(EmbedNestedForm, { ...formProps })));
++  ), /* @__PURE__ */ React__default.createElement(DotMenu, {
++    onOpen: handleSelect,
++    onRemove: handleRemove,
++    onMoveUp: handleMoveUp,
++    onMoveDown: handleMoveDown,
++    onDuplicate: handleDuplicate,
++    onInsertBelow: handleInsertBelow,
++    canMoveUp,
++    canMoveDown
++  })), isExpanded && /* @__PURE__ */ React__default.createElement(EmbedNestedForm, { ...formProps })));
+ };
+ const getLabel = (activeTemplate, formProps) => {
+   const titleField = activeTemplate.fields.find((field) => field.isTitle);
+@@ -17699,7 +17762,35 @@ const EmbedNestedForm = ({
+     }
+   );
+ };
+-const DotMenu = ({ onOpen, onRemove }) => {
++const DOT_MENU_ITEM_CLASS = "cursor-pointer text-left w-full block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900";
++const DOT_MENU_ITEM_DISABLED_CLASS = "text-left w-full block px-4 py-2 text-sm text-gray-300 cursor-default";
++const DotMenuItem = ({ label, onSelect, disabled }) => /* @__PURE__ */ React__default.createElement(
++  "button",
++  {
++    type: "button",
++    disabled,
++    onMouseDown: (e) => {
++      e.preventDefault();
++      if (!disabled) {
++        onSelect();
++      }
++    },
++    className: classNames$1(
++      disabled ? DOT_MENU_ITEM_DISABLED_CLASS : DOT_MENU_ITEM_CLASS
++    )
++  },
++  label
++);
++const DotMenu = ({
++  onOpen,
++  onRemove,
++  onMoveUp,
++  onMoveDown,
++  onDuplicate,
++  onInsertBelow,
++  canMoveUp,
++  canMoveDown
++}) => {
+   return /* @__PURE__ */ React__default.createElement(Popover$4, { as: "span", className: "-ml-px relative block" }, /* @__PURE__ */ React__default.createElement(
+     PopoverButton,
+     {
+@@ -17726,6 +17817,18 @@ const DotMenu = ({ onOpen, onRemove }) => {
+         )
+       },
+       "Edit"
++    ), onMoveUp && /* @__PURE__ */ React__default.createElement(
++      DotMenuItem,
++      { label: "Move up", onSelect: onMoveUp, disabled: !canMoveUp }
++    ), onMoveDown && /* @__PURE__ */ React__default.createElement(
++      DotMenuItem,
++      { label: "Move down", onSelect: onMoveDown, disabled: !canMoveDown }
++    ), onDuplicate && /* @__PURE__ */ React__default.createElement(
++      DotMenuItem,
++      { label: "Duplicate", onSelect: onDuplicate }
++    ), onInsertBelow && /* @__PURE__ */ React__default.createElement(
++      DotMenuItem,
++      { label: "Insert blank line below", onSelect: onInsertBelow }
+     ), /* @__PURE__ */ React__default.createElement(
+       "button",
+       {
+@@ -18067,8 +18170,28 @@ const insertInlineElement = (editor, inlineElement) => {
+ const insertBlockElement = (editor, blockElement) => {
+   editor.tf.withoutNormalizing(() => {
+     const block = editor.api.block();
+-    if (!block)
++    // PATCHED (plcc-web): with no selection at all — the state the editor is in
++    // until it's been clicked into — this used to `return` and the insert
++    // silently did nothing. Append instead.
++    if (!block) {
++      editor.tf.insertNodes([blockElement], {
++        at: [editor.children.length],
++        select: true
++      });
++      return;
++    }
++    // PATCHED (plcc-web): an embedded template is a Slate *void* node, so
++    // isCurrentBlockEmpty() below is always true for one — no text, no inline
++    // children, cursor at offset 0 — and the setNodes branch overwrites the
++    // selected block in place. Insert after it instead.
++    const [blockNode, blockPath] = block;
++    if (editor.api.isVoid(blockNode)) {
++      editor.tf.insertNodes([blockElement], {
++        at: [...blockPath.slice(0, -1), blockPath[blockPath.length - 1] + 1],
++        select: true
++      });
+       return;
++    }
+     if (isCurrentBlockEmpty(editor)) {
+       editor.tf.setNodes(blockElement);
+     } else {

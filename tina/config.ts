@@ -192,8 +192,15 @@ export default defineConfig({
             // Headings stop at h2 because the hero renders the page's only h1, and at h4
             // because base.css styles h1–h4 and nothing below. Both settings are UI-only:
             // content already saved with a disallowed level still renders.
+            //
+            // `embed` leads because this list is also the drop order: the toolbar renders
+            // left to right and pushes whatever doesn't fit into an overflow menu, so the
+            // tail is what disappears. It disappears at the width visual editing actually
+            // runs at — the sidebar, not the full-width form — and the block insert menu
+            // is the control a page body is mostly built out of. Anywhere but first, it's
+            // the first thing an editor loses.
             overrides: {
-              toolbar: ['heading', 'link', 'image', 'quote', 'ul', 'ol', 'bold', 'italic', 'embed', 'hr'],
+              toolbar: ['embed', 'heading', 'link', 'image', 'quote', 'ul', 'ol', 'bold', 'italic', 'hr'],
               headingLevels: ['h2', 'h3', 'h4'],
             },
             description:
