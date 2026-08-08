@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-08-07T12:34:57.540Z",
+  "capturedAt": "2026-08-08T12:20:36.974Z",
   "links": {
-    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-08-07T00%3A00%3A00.000Z&where[starts_at][lte]=2026-10-02T12%3A34%3A56.000Z"
+    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-08-08T00%3A00%3A00.000Z&where[starts_at][lte]=2026-10-03T12%3A20%3A36.000Z"
   },
   "data": [
     {
