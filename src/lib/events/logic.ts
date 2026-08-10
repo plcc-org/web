@@ -3,18 +3,33 @@
 
 import type { CalendarEvent, EventCategory } from './types'
 
-/** Build-time "now" as the start of today (used to drop past events). */
-export function startOfToday(): Date {
-  const now = new Date()
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate())
+// The church is in Pacific time and CI is not, so every date decision here
+// pins the zone rather than trusting the host.
+const PACIFIC_DAY = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/Los_Angeles',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+})
+
+/**
+ * The calendar date in church time, as `YYYY-MM-DD`.
+ *
+ * "Is this event past?" is a question about church-local *days*, not instants,
+ * so it's answered by comparing calendar dates. That sidesteps DST completely —
+ * there is no UTC offset to pick, and so none to get wrong on the two days a
+ * year it changes — and `YYYY-MM-DD` already sorts lexicographically.
+ */
+function pacificDay(d: Date): string {
+  return PACIFIC_DAY.format(d)
 }
 
 /** Drop past events, de-duplicate by id, and sort ascending by start. */
 export function normalizeUpcoming(events: CalendarEvent[]): CalendarEvent[] {
-  const floor = startOfToday()
+  const today = pacificDay(new Date())
   const seen = new Set<string>()
   return events
-    .filter((e) => new Date(e.start) >= floor)
+    .filter((e) => pacificDay(new Date(e.start)) >= today)
     .filter((e) => (seen.has(e.id) ? false : (seen.add(e.id), true)))
     .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
 }
