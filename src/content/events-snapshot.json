@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-08-10T12:37:33.796Z",
+  "capturedAt": "2026-08-11T12:34:51.985Z",
   "links": {
-    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-08-10T00%3A00%3A00.000Z&where[starts_at][lte]=2026-10-05T12%3A37%3A32.000Z"
+    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-08-11T00%3A00%3A00.000Z&where[starts_at][lte]=2026-10-06T12%3A34%3A50.000Z"
   },
   "data": [
     {
@@ -35,56 +35,6 @@
             "related": "https://api.churchcenter.com/calendar/v2/events/203425508/category_tags"
           },
           "data": []
-        },
-        "event_registration_url": {
-          "data": null
-        }
-      }
-    },
-    {
-      "type": "Event",
-      "id": "163209899",
-      "attributes": {
-        "all_day_event": false,
-        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
-        "ends_at": "2026-08-10T18:30:00Z",
-        "featured": false,
-        "name": "Community Playgroup",
-        "recurring": true,
-        "show_page_path": "/calendar/event/163209899",
-        "starts_at": "2026-08-10T17:00:00Z"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/events/163209899"
-      },
-      "relationships": {
-        "location": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
-          },
-          "data": {
-            "type": "Location",
-            "id": "6158728"
-          }
-        },
-        "category_tags": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/events/163209899/category_tags"
-          },
-          "data": [
-            {
-              "type": "CategoryTag",
-              "id": "241923"
-            },
-            {
-              "type": "CategoryTag",
-              "id": "241936"
-            },
-            {
-              "type": "CategoryTag",
-              "id": "419299"
-            }
-          ]
         },
         "event_registration_url": {
           "data": null
@@ -1649,6 +1599,140 @@
           "data": null
         }
       }
+    },
+    {
+      "type": "Event",
+      "id": "168981350",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "ends_at": "2026-10-05T18:30:00Z",
+        "featured": false,
+        "name": "Community Playgroup",
+        "recurring": true,
+        "show_page_path": "/calendar/event/168981350",
+        "starts_at": "2026-10-05T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/168981350"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+          },
+          "data": {
+            "type": "Location",
+            "id": "6158728"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/168981350/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241923"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241936"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "419299"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "226271667",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  A time for ladies to take a break from the busy week and connect with one another!\n</div>\n",
+        "ends_at": "2026-10-05T18:30:00Z",
+        "featured": false,
+        "name": "Women's Coffee Break ",
+        "recurring": true,
+        "show_page_path": "/calendar/event/226271667",
+        "starts_at": "2026-10-05T17:30:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/226271667"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/13062812"
+          },
+          "data": {
+            "type": "Location",
+            "id": "13062812"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/226271667/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241935"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "Event",
+      "id": "220992312",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>BSF offers free, in-depth Bible studies in community for people of all ages around the world. <a href=\"https://www.bsfinternational.org/\">Learn more about BSF</a></div>\n</div>\n",
+        "ends_at": "2026-10-06T04:00:00Z",
+        "featured": false,
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "recurring": true,
+        "show_page_path": "/calendar/event/220992312",
+        "starts_at": "2026-10-06T01:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/220992312"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/12765808"
+          },
+          "data": {
+            "type": "Location",
+            "id": "12765808"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/220992312/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241935"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
     }
   ],
   "included": [
@@ -1668,54 +1752,6 @@
       },
       "links": {
         "self": "https://api.churchcenter.com/calendar/v2/locations/11747072"
-      }
-    },
-    {
-      "type": "Location",
-      "id": "6158728",
-      "attributes": {
-        "additional_address_info": null,
-        "approximation": null,
-        "display_on_church_center": true,
-        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
-        "latitude": 47.5941283,
-        "longitude": -122.0363843,
-        "name": "PLCC Campus",
-        "type": "Campus",
-        "url": null
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/locations/6158728"
-      }
-    },
-    {
-      "type": "CategoryTag",
-      "id": "241923",
-      "attributes": {
-        "name": "Community Event"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241923"
-      }
-    },
-    {
-      "type": "CategoryTag",
-      "id": "241936",
-      "attributes": {
-        "name": "Children & Families"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241936"
-      }
-    },
-    {
-      "type": "CategoryTag",
-      "id": "419299",
-      "attributes": {
-        "name": "Community Playgroup"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419299"
       }
     },
     {
@@ -1752,6 +1788,16 @@
       },
       "links": {
         "self": "https://api.churchcenter.com/calendar/v2/locations/13175406"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241923",
+      "attributes": {
+        "name": "Community Event"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241923"
       }
     },
     {
@@ -1818,6 +1864,44 @@
       },
       "links": {
         "self": "https://api.churchcenter.com/calendar/v2/locations/13175186"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "6158728",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241936",
+      "attributes": {
+        "name": "Children & Families"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241936"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "419299",
+      "attributes": {
+        "name": "Community Playgroup"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419299"
       }
     },
     {
@@ -2000,8 +2084,8 @@
     }
   ],
   "meta": {
-    "total_count": 37,
-    "count": 37,
+    "total_count": 39,
+    "count": 39,
     "can_order_by": [
       "featured",
       "visible_starts_at"
