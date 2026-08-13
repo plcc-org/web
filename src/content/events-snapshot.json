@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-08-12T12:37:55.349Z",
+  "capturedAt": "2026-08-13T12:38:59.409Z",
   "links": {
-    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-08-12T00%3A00%3A00.000Z&where[starts_at][lte]=2026-10-07T12%3A37%3A54.000Z"
+    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-08-13T00%3A00%3A00.000Z&where[starts_at][lte]=2026-10-08T12%3A38%3A58.000Z"
   },
   "data": [
     {
@@ -33,43 +33,6 @@
         "category_tags": {
           "links": {
             "related": "https://api.churchcenter.com/calendar/v2/events/203425508/category_tags"
-          },
-          "data": []
-        },
-        "event_registration_url": {
-          "data": null
-        }
-      }
-    },
-    {
-      "type": "Event",
-      "id": "169359183",
-      "attributes": {
-        "all_day_event": false,
-        "description": "<div class=\"trix-content\">\n  <div>This is a support group for people who have loved ones with Dementia or Alzheimer's. Led by Linda Crossgrove, the group will gather in the HUB at church monthly to share resources, pray for and support one another.</div>\n</div>\n",
-        "ends_at": "2026-08-12T23:00:00Z",
-        "featured": false,
-        "name": "Dementia/Alzheimer's Family Support Group",
-        "recurring": true,
-        "show_page_path": "/calendar/event/169359183",
-        "starts_at": "2026-08-12T21:30:00Z"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/events/169359183"
-      },
-      "relationships": {
-        "location": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/locations/9654054"
-          },
-          "data": {
-            "type": "Location",
-            "id": "9654054"
-          }
-        },
-        "category_tags": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/events/169359183/category_tags"
           },
           "data": []
         },
@@ -1793,24 +1756,6 @@
     },
     {
       "type": "Location",
-      "id": "9654054",
-      "attributes": {
-        "additional_address_info": null,
-        "approximation": null,
-        "display_on_church_center": true,
-        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
-        "latitude": 47.5941283,
-        "longitude": -122.0363843,
-        "name": "PLCC Campus",
-        "type": "Campus",
-        "url": null
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/locations/9654054"
-      }
-    },
-    {
-      "type": "Location",
       "id": "13175406",
       "attributes": {
         "additional_address_info": "Meet at restroom pavilion between Library and City Hall",
@@ -2015,6 +1960,24 @@
     },
     {
       "type": "Location",
+      "id": "9654054",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/9654054"
+      }
+    },
+    {
+      "type": "Location",
       "id": "13062787",
       "attributes": {
         "additional_address_info": null,
@@ -2121,8 +2084,8 @@
     }
   ],
   "meta": {
-    "total_count": 40,
-    "count": 40,
+    "total_count": 39,
+    "count": 39,
     "can_order_by": [
       "featured",
       "visible_starts_at"
