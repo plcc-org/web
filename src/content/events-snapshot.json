@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-08-16T12:13:52.998Z",
+  "capturedAt": "2026-08-17T12:17:07.571Z",
   "links": {
-    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-08-16T00%3A00%3A00.000Z&where[starts_at][lte]=2026-10-11T12%3A13%3A52.000Z"
+    "self": "https://api.churchcenter.com/calendar/v2/events?fields[Event]=name%2Cdescription%2Cstarts_at%2Cends_at%2Cfeatured%2Call_day_event%2Cshow_page_path%2Crecurring%2Clocation%2Ccategory_tags%2Cevent_registration_url&include=location%2Ccategory_tags%2Cevent_registration_url&order=starts_at&per_page=100&where[ends_at][gte]=2026-08-17T00%3A00%3A00.000Z&where[starts_at][lte]=2026-10-12T12%3A17%3A06.000Z"
   },
   "data": [
     {
@@ -35,98 +35,6 @@
             "related": "https://api.churchcenter.com/calendar/v2/events/203425508/category_tags"
           },
           "data": []
-        },
-        "event_registration_url": {
-          "data": null
-        }
-      }
-    },
-    {
-      "type": "Event",
-      "id": "163876694",
-      "attributes": {
-        "all_day_event": false,
-        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
-        "ends_at": "2026-08-16T18:00:00Z",
-        "featured": false,
-        "name": "Sunday Service",
-        "recurring": true,
-        "show_page_path": "/calendar/event/163876694",
-        "starts_at": "2026-08-16T17:00:00Z"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/events/163876694"
-      },
-      "relationships": {
-        "location": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
-          },
-          "data": {
-            "type": "Location",
-            "id": "3960177"
-          }
-        },
-        "category_tags": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/events/163876694/category_tags"
-          },
-          "data": [
-            {
-              "type": "CategoryTag",
-              "id": "241928"
-            },
-            {
-              "type": "CategoryTag",
-              "id": "241940"
-            }
-          ]
-        },
-        "event_registration_url": {
-          "data": null
-        }
-      }
-    },
-    {
-      "type": "Event",
-      "id": "228130652",
-      "attributes": {
-        "all_day_event": false,
-        "description": "<div class=\"trix-content\">\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
-        "ends_at": "2026-08-16T19:45:00Z",
-        "featured": false,
-        "name": "Summer Meetup",
-        "recurring": true,
-        "show_page_path": "/calendar/event/228130652",
-        "starts_at": "2026-08-16T18:45:00Z"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/events/228130652"
-      },
-      "relationships": {
-        "location": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/locations/13175186"
-          },
-          "data": {
-            "type": "Location",
-            "id": "13175186"
-          }
-        },
-        "category_tags": {
-          "links": {
-            "related": "https://api.churchcenter.com/calendar/v2/events/228130652/category_tags"
-          },
-          "data": [
-            {
-              "type": "CategoryTag",
-              "id": "241923"
-            },
-            {
-              "type": "CategoryTag",
-              "id": "419298"
-            }
-          ]
         },
         "event_registration_url": {
           "data": null
@@ -1687,6 +1595,52 @@
           "data": null
         }
       }
+    },
+    {
+      "type": "Event",
+      "id": "169504531",
+      "attributes": {
+        "all_day_event": false,
+        "description": "<div class=\"trix-content\">\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "ends_at": "2026-10-11T18:00:00Z",
+        "featured": false,
+        "name": "Sunday Service",
+        "recurring": true,
+        "show_page_path": "/calendar/event/169504531",
+        "starts_at": "2026-10-11T17:00:00Z"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/events/169504531"
+      },
+      "relationships": {
+        "location": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/locations/3960177"
+          },
+          "data": {
+            "type": "Location",
+            "id": "3960177"
+          }
+        },
+        "category_tags": {
+          "links": {
+            "related": "https://api.churchcenter.com/calendar/v2/events/169504531/category_tags"
+          },
+          "data": [
+            {
+              "type": "CategoryTag",
+              "id": "241928"
+            },
+            {
+              "type": "CategoryTag",
+              "id": "241940"
+            }
+          ]
+        },
+        "event_registration_url": {
+          "data": null
+        }
+      }
     }
   ],
   "included": [
@@ -1706,6 +1660,82 @@
       },
       "links": {
         "self": "https://api.churchcenter.com/calendar/v2/locations/11747072"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "6158728",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
+        "latitude": 47.5941283,
+        "longitude": -122.0363843,
+        "name": "PLCC Campus",
+        "type": "Campus",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/6158728"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241923",
+      "attributes": {
+        "name": "Community Event"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241923"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "241936",
+      "attributes": {
+        "name": "Children & Families"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241936"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "419299",
+      "attributes": {
+        "name": "Community Playgroup"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419299"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "13175406",
+      "attributes": {
+        "additional_address_info": "Meet at restroom pavilion between Library and City Hall",
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "801 228th Ave SE\nMeet at restroom pavilion between Library and City Hall\nSammamish, WA 98074",
+        "latitude": 47.60107360000001,
+        "longitude": -122.0365113,
+        "name": "Sammamish Farmers Market, Upper Sammamish Commons",
+        "type": "Custom",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/13175406"
+      }
+    },
+    {
+      "type": "CategoryTag",
+      "id": "419298",
+      "attributes": {
+        "name": "Summer Meetups"
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419298"
       }
     },
     {
@@ -1748,100 +1778,6 @@
     },
     {
       "type": "Location",
-      "id": "13175186",
-      "attributes": {
-        "additional_address_info": null,
-        "approximation": null,
-        "display_on_church_center": true,
-        "full_formatted_address": "301 228th Ave SE\nSammamish, WA 98074",
-        "latitude": 47.6058149,
-        "longitude": -122.0359255,
-        "name": "Met Market",
-        "type": "Custom",
-        "url": null
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/locations/13175186"
-      }
-    },
-    {
-      "type": "CategoryTag",
-      "id": "241923",
-      "attributes": {
-        "name": "Community Event"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241923"
-      }
-    },
-    {
-      "type": "CategoryTag",
-      "id": "419298",
-      "attributes": {
-        "name": "Summer Meetups"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419298"
-      }
-    },
-    {
-      "type": "Location",
-      "id": "6158728",
-      "attributes": {
-        "additional_address_info": null,
-        "approximation": null,
-        "display_on_church_center": true,
-        "full_formatted_address": "1715 228th Ave SE\nSammamish, Washington 98075",
-        "latitude": 47.5941283,
-        "longitude": -122.0363843,
-        "name": "PLCC Campus",
-        "type": "Campus",
-        "url": null
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/locations/6158728"
-      }
-    },
-    {
-      "type": "CategoryTag",
-      "id": "241936",
-      "attributes": {
-        "name": "Children & Families"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/category_tags/241936"
-      }
-    },
-    {
-      "type": "CategoryTag",
-      "id": "419299",
-      "attributes": {
-        "name": "Community Playgroup"
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/category_tags/419299"
-      }
-    },
-    {
-      "type": "Location",
-      "id": "13175406",
-      "attributes": {
-        "additional_address_info": "Meet at restroom pavilion between Library and City Hall",
-        "approximation": null,
-        "display_on_church_center": true,
-        "full_formatted_address": "801 228th Ave SE\nMeet at restroom pavilion between Library and City Hall\nSammamish, WA 98074",
-        "latitude": 47.60107360000001,
-        "longitude": -122.0365113,
-        "name": "Sammamish Farmers Market, Upper Sammamish Commons",
-        "type": "Custom",
-        "url": null
-      },
-      "links": {
-        "self": "https://api.churchcenter.com/calendar/v2/locations/13175406"
-      }
-    },
-    {
-      "type": "Location",
       "id": "13143433",
       "attributes": {
         "additional_address_info": null,
@@ -1856,6 +1792,24 @@
       },
       "links": {
         "self": "https://api.churchcenter.com/calendar/v2/locations/13143433"
+      }
+    },
+    {
+      "type": "Location",
+      "id": "13175186",
+      "attributes": {
+        "additional_address_info": null,
+        "approximation": null,
+        "display_on_church_center": true,
+        "full_formatted_address": "301 228th Ave SE\nSammamish, WA 98074",
+        "latitude": 47.6058149,
+        "longitude": -122.0359255,
+        "name": "Met Market",
+        "type": "Custom",
+        "url": null
+      },
+      "links": {
+        "self": "https://api.churchcenter.com/calendar/v2/locations/13175186"
       }
     },
     {
@@ -2038,8 +1992,8 @@
     }
   ],
   "meta": {
-    "total_count": 38,
-    "count": 38,
+    "total_count": 37,
+    "count": 37,
     "can_order_by": [
       "featured",
       "visible_starts_at"
