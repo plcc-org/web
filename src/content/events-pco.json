@@ -1,143 +1,9 @@
 {
-  "capturedAt": "2026-08-24T01:21:36.651Z",
+  "capturedAt": "2026-08-24T12:46:12.470Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-23T07%3A00%3A00Z&where[starts_at][lte]=2026-10-18T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-24T07%3A00%3A00Z&where[starts_at][lte]=2026-10-19T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "164633430",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/164633430",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-08-23T18:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Sunday Service",
-        "published_ends_at": "2026-08-23T18:00:00Z",
-        "published_starts_at": "2026-08-23T17:00:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-08-23T17:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
-          },
-          "data": {
-            "type": "Event",
-            "id": "4368161"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/164633430/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241928"
-            },
-            {
-              "type": "Tag",
-              "id": "241940"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/164633430"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "227516669",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227516669",
-        "compact_recurrence_description": "Does not repeat",
-        "ends_at": "2026-08-23T19:30:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Membership Class",
-        "published_ends_at": "2026-08-23T19:30:00Z",
-        "published_starts_at": "2026-08-23T18:30:00Z",
-        "recurrence": "None",
-        "starts_at": "2026-08-23T18:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647559"
-          },
-          "data": {
-            "type": "Event",
-            "id": "21647559"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227516669/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241925"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227516669"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "228130653",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/228130653",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-08-23T19:45:00Z",
-        "kind": "standard",
-        "location": "Met Market - 301 228th Ave SE, Sammamish, WA 98074, USA",
-        "name": "Summer Meetup",
-        "published_ends_at": "2026-08-23T19:45:00Z",
-        "published_starts_at": "2026-08-23T18:45:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-08-23T18:45:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/21719551"
-          },
-          "data": {
-            "type": "Event",
-            "id": "21719551"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/228130653/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241923"
-            },
-            {
-              "type": "Tag",
-              "id": "419298"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/228130653"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "164767250",
@@ -1750,100 +1616,69 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/169612018"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "170031600",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/170031600",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-18T18:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-10-18T18:00:00Z",
+        "published_starts_at": "2026-10-18T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-18T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/170031600/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/170031600"
+      }
     }
   ],
   "included": [
     {
       "type": "Event",
-      "id": "4368161",
+      "id": "6719956",
       "attributes": {
-        "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
-        "image_url": null,
-        "name": "Sunday Service",
+        "description": "<div>\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2Fi6hbteud83pbhijqhcicfhs522b7&thumb=960x540%23&signature=a7f5cfc4897bf030d7c9ccd3078327815660629cd7603a99a29fe4320c05c7f4",
+        "name": "Community Playgroup",
         "registration_url": null,
-        "summary": "We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!",
+        "summary": "A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup.",
         "visible_in_church_center": true
       },
       "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/4368161",
-        "html": "https://calendar.planningcenteronline.com/events/4368161"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241928",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#F6E7BB",
-        "created_at": "2023-05-21T17:26:49Z",
-        "name": "Worship Service",
-        "position": 77824,
-        "updated_at": "2026-07-11T04:28:33Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241928"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241940",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#C69CE8",
-        "created_at": "2023-05-21T17:38:22Z",
-        "name": "Worship",
-        "position": 98304,
-        "updated_at": "2026-07-11T04:28:25Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241940"
-      }
-    },
-    {
-      "type": "Event",
-      "id": "21647559",
-      "attributes": {
-        "description": null,
-        "image_url": null,
-        "name": "Membership Class",
-        "registration_url": null,
-        "summary": null,
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/21647559",
-        "html": "https://calendar.planningcenteronline.com/events/21647559"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241925",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#F9D266",
-        "created_at": "2023-05-21T17:26:05Z",
-        "name": "Class, Seminar or Course",
-        "position": 6144,
-        "updated_at": "2023-05-21T17:31:12Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241925"
-      }
-    },
-    {
-      "type": "Event",
-      "id": "21719551",
-      "attributes": {
-        "description": "<div>\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2Feife0qkcx1d5zu6qemal4hp5xd3m&thumb=960x540%23&signature=f489f248b14ea96fb943c40e41e710fb05db3791cb913081f7578b8627f742a1",
-        "name": "Summer Meetup",
-        "registration_url": null,
-        "summary": "After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/21719551",
-        "html": "https://calendar.planningcenteronline.com/events/21719551"
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/6719956",
+        "html": "https://calendar.planningcenteronline.com/events/6719956"
       }
     },
     {
@@ -1859,37 +1694,6 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241923"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "419298",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#F9D266",
-        "created_at": "2026-07-11T06:51:13Z",
-        "name": "Summer Meetups",
-        "position": 16384,
-        "updated_at": "2026-07-11T06:51:32Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419298"
-      }
-    },
-    {
-      "type": "Event",
-      "id": "6719956",
-      "attributes": {
-        "description": "<div>\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2Fi6hbteud83pbhijqhcicfhs522b7&thumb=960x540%23&signature=a7f5cfc4897bf030d7c9ccd3078327815660629cd7603a99a29fe4320c05c7f4",
-        "name": "Community Playgroup",
-        "registration_url": null,
-        "summary": "A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup.",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/6719956",
-        "html": "https://calendar.planningcenteronline.com/events/6719956"
       }
     },
     {
@@ -1939,6 +1743,67 @@
       }
     },
     {
+      "type": "Tag",
+      "id": "419298",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F9D266",
+        "created_at": "2026-07-11T06:51:13Z",
+        "name": "Summer Meetups",
+        "position": 16384,
+        "updated_at": "2026-07-11T06:51:32Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419298"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "4368161",
+      "attributes": {
+        "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "image_url": null,
+        "name": "Sunday Service",
+        "registration_url": null,
+        "summary": "We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/4368161",
+        "html": "https://calendar.planningcenteronline.com/events/4368161"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241928",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F6E7BB",
+        "created_at": "2023-05-21T17:26:49Z",
+        "name": "Worship Service",
+        "position": 77824,
+        "updated_at": "2026-07-11T04:28:33Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241928"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241940",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#C69CE8",
+        "created_at": "2023-05-21T17:38:22Z",
+        "name": "Worship",
+        "position": 98304,
+        "updated_at": "2026-07-11T04:28:25Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241940"
+      }
+    },
+    {
       "type": "Event",
       "id": "21647590",
       "attributes": {
@@ -1952,6 +1817,22 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/events/21647590",
         "html": "https://calendar.planningcenteronline.com/events/21647590"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21719551",
+      "attributes": {
+        "description": "<div>\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2Feife0qkcx1d5zu6qemal4hp5xd3m&thumb=960x540%23&signature=f489f248b14ea96fb943c40e41e710fb05db3791cb913081f7578b8627f742a1",
+        "name": "Summer Meetup",
+        "registration_url": null,
+        "summary": "After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21719551",
+        "html": "https://calendar.planningcenteronline.com/events/21719551"
       }
     },
     {
@@ -2096,6 +1977,21 @@
     },
     {
       "type": "Tag",
+      "id": "241925",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F9D266",
+        "created_at": "2023-05-21T17:26:05Z",
+        "name": "Class, Seminar or Course",
+        "position": 6144,
+        "updated_at": "2023-05-21T17:31:12Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241925"
+      }
+    },
+    {
+      "type": "Tag",
       "id": "241935",
       "attributes": {
         "church_center_category": true,
@@ -2158,8 +2054,8 @@
     }
   ],
   "meta": {
-    "total_count": 38,
-    "count": 38,
+    "total_count": 36,
+    "count": 36,
     "can_order_by": [
       "created_at",
       "updated_at",
