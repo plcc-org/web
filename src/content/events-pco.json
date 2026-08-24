@@ -1,0 +1,2226 @@
+{
+  "capturedAt": "2026-08-24T01:05:21.470Z",
+  "links": {
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-23T07%3A00%3A00Z&where[starts_at][lte]=2026-10-18T07%3A00%3A00Z"
+  },
+  "data": [
+    {
+      "type": "EventInstance",
+      "id": "164633430",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/164633430",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-08-23T18:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-08-23T18:00:00Z",
+        "published_starts_at": "2026-08-23T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-08-23T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/164633430/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/164633430"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "227516669",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227516669",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-08-23T19:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Membership Class",
+        "published_ends_at": "2026-08-23T19:30:00Z",
+        "published_starts_at": "2026-08-23T18:30:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-08-23T18:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647559"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21647559"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227516669/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241925"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227516669"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "228130653",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/228130653",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-08-23T19:45:00Z",
+        "kind": "standard",
+        "location": "Met Market - 301 228th Ave SE, Sammamish, WA 98074, USA",
+        "name": "Summer Meetup",
+        "published_ends_at": "2026-08-23T19:45:00Z",
+        "published_starts_at": "2026-08-23T18:45:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-08-23T18:45:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21719551"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21719551"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/228130653/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "419298"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/228130653"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "164767250",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/164767250",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-08-24T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-08-24T18:30:00Z",
+        "published_starts_at": "2026-08-24T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-08-24T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/164767250/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/164767250"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "228134735",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/228134735",
+        "compact_recurrence_description": "Every Wednesday",
+        "ends_at": "2026-08-27T02:00:00Z",
+        "kind": "standard",
+        "location": "Sammamish Farmers Market, Upper Sammamish Commons - 801 228th Ave SE, Sammamish, WA 98074, USA",
+        "name": "Summer Meetup",
+        "published_ends_at": "2026-08-27T02:00:00Z",
+        "published_starts_at": "2026-08-27T00:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-08-27T00:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21720019"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21720019"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/228134735/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "419298"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/228134735"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "165502681",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/165502681",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-08-30T18:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-08-30T18:00:00Z",
+        "published_starts_at": "2026-08-30T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-08-30T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/165502681/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/165502681"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "227516862",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227516862",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-08-30T19:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Newcomers Brunch",
+        "published_ends_at": "2026-08-30T19:30:00Z",
+        "published_starts_at": "2026-08-30T18:30:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-08-30T18:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647590"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21647590"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227516862/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227516862"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "228130654",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/228130654",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-08-30T19:45:00Z",
+        "kind": "standard",
+        "location": "Met Market - 301 228th Ave SE, Sammamish, WA 98074, USA",
+        "name": "Summer Meetup",
+        "published_ends_at": "2026-08-30T19:45:00Z",
+        "published_starts_at": "2026-08-30T18:45:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-08-30T18:45:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21719551"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21719551"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/228130654/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "419298"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/228130654"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "165610302",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/165610302",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-08-31T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-08-31T18:30:00Z",
+        "published_starts_at": "2026-08-31T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-08-31T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/165610302/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/165610302"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "227518176",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227518176",
+        "compact_recurrence_description": "The first and third Tuesday of every month",
+        "ends_at": "2026-09-02T02:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Tuesdays Together",
+        "published_ends_at": "2026-09-02T02:00:00Z",
+        "published_starts_at": "2026-09-02T01:00:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-09-02T01:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647793"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21647793"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227518176/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241924"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227518176"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "232157757",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/232157757",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-09-02T22:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Blood Drive  ",
+        "published_ends_at": "2026-09-02T22:00:00Z",
+        "published_starts_at": "2026-09-02T15:00:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-09-02T15:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/19716510"
+          },
+          "data": {
+            "type": "Event",
+            "id": "19716510"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/232157757/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/232157757"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "166276664",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/166276664",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-09-06T18:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-09-06T18:00:00Z",
+        "published_starts_at": "2026-09-06T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-06T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/166276664/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/166276664"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "166359684",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/166359684",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-09-07T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-09-07T18:30:00Z",
+        "published_starts_at": "2026-09-07T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-07T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/166359684/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/166359684"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "169359184",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/169359184",
+        "compact_recurrence_description": "The second Wednesday of every month",
+        "ends_at": "2026-09-10T00:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Dementia/Alzheimer's Family Support Group",
+        "published_ends_at": "2026-09-09T23:00:00Z",
+        "published_starts_at": "2026-09-09T21:30:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-09-09T20:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/14317271"
+          },
+          "data": {
+            "type": "Event",
+            "id": "14317271"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/169359184/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151451"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/169359184"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "167083809",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/167083809",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-09-13T18:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-09-13T18:00:00Z",
+        "published_starts_at": "2026-09-13T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-13T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/167083809/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/167083809"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "226271449",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/226271449",
+        "compact_recurrence_description": "Every other Monday",
+        "ends_at": "2026-09-14T19:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "MomCo Meetup ",
+        "published_ends_at": "2026-09-14T18:30:00Z",
+        "published_starts_at": "2026-09-14T16:45:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-14T15:45:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21468765"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21468765"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271449/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241931"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271449"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "167153589",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/167153589",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-09-14T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-09-14T18:30:00Z",
+        "published_starts_at": "2026-09-14T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-14T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/167153589/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/167153589"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "220992309",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/220992309",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-09-15T04:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "published_ends_at": "2026-09-15T04:00:00Z",
+        "published_starts_at": "2026-09-15T01:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-15T01:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/20815103"
+          },
+          "data": {
+            "type": "Event",
+            "id": "20815103"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992309/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151429"
+            },
+            {
+              "type": "Tag",
+              "id": "241925"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992309"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "227553476",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227553476",
+        "compact_recurrence_description": "The first and third Tuesday of every month",
+        "ends_at": "2026-09-16T02:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Tuesdays Together",
+        "published_ends_at": "2026-09-16T02:00:00Z",
+        "published_starts_at": "2026-09-16T01:00:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-09-16T01:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647793"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21647793"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227553476/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241924"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227553476"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "167712458",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/167712458",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-09-20T18:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-09-20T18:00:00Z",
+        "published_starts_at": "2026-09-20T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-20T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/167712458/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/167712458"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "167801643",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/167801643",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-09-21T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-09-21T18:30:00Z",
+        "published_starts_at": "2026-09-21T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-21T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/167801643/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/167801643"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "226271666",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/226271666",
+        "compact_recurrence_description": "Every other Monday",
+        "ends_at": "2026-09-21T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Women's Coffee Break ",
+        "published_ends_at": "2026-09-21T18:30:00Z",
+        "published_starts_at": "2026-09-21T17:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-21T17:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21468816"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21468816"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271666/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241922"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271666"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "220992310",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/220992310",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-09-22T04:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "published_ends_at": "2026-09-22T04:00:00Z",
+        "published_starts_at": "2026-09-22T01:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-22T01:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/20815103"
+          },
+          "data": {
+            "type": "Event",
+            "id": "20815103"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992310/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151429"
+            },
+            {
+              "type": "Tag",
+              "id": "241925"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992310"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "168365423",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/168365423",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-09-27T18:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-09-27T18:00:00Z",
+        "published_starts_at": "2026-09-27T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-27T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/168365423/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/168365423"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "227517301",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227517301",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-09-27T19:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Annual Meeting / Ministry Fair",
+        "published_ends_at": "2026-09-27T19:30:00Z",
+        "published_starts_at": "2026-09-27T18:30:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-09-27T18:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647675"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21647675"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227517301/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241922"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227517301"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "226271450",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/226271450",
+        "compact_recurrence_description": "Every other Monday",
+        "ends_at": "2026-09-28T19:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "MomCo Meetup ",
+        "published_ends_at": "2026-09-28T18:30:00Z",
+        "published_starts_at": "2026-09-28T16:45:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-28T15:45:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21468765"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21468765"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271450/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241931"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271450"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "168427716",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/168427716",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-09-28T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-09-28T18:30:00Z",
+        "published_starts_at": "2026-09-28T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-28T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/168427716/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/168427716"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "220992311",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/220992311",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-09-29T04:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "published_ends_at": "2026-09-29T04:00:00Z",
+        "published_starts_at": "2026-09-29T01:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-29T01:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/20815103"
+          },
+          "data": {
+            "type": "Event",
+            "id": "20815103"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992311/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151429"
+            },
+            {
+              "type": "Tag",
+              "id": "241925"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992311"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "168875348",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/168875348",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-04T18:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-10-04T18:00:00Z",
+        "published_starts_at": "2026-10-04T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-04T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/168875348/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/168875348"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "168981350",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/168981350",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-10-05T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-10-05T18:30:00Z",
+        "published_starts_at": "2026-10-05T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-05T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/168981350/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/168981350"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "226271667",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/226271667",
+        "compact_recurrence_description": "Every other Monday",
+        "ends_at": "2026-10-05T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Women's Coffee Break ",
+        "published_ends_at": "2026-10-05T18:30:00Z",
+        "published_starts_at": "2026-10-05T17:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-05T17:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21468816"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21468816"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271667/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241922"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271667"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "220992312",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/220992312",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-10-06T04:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "published_ends_at": "2026-10-06T04:00:00Z",
+        "published_starts_at": "2026-10-06T01:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-06T01:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/20815103"
+          },
+          "data": {
+            "type": "Event",
+            "id": "20815103"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992312/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151429"
+            },
+            {
+              "type": "Tag",
+              "id": "241925"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992312"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "227519864",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227519864",
+        "compact_recurrence_description": "The first and third Tuesday of every month",
+        "ends_at": "2026-10-07T02:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Tuesdays Together",
+        "published_ends_at": "2026-10-07T02:00:00Z",
+        "published_starts_at": "2026-10-07T01:00:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-10-07T01:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647793"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21647793"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227519864/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241924"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227519864"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "169504531",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/169504531",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-11T18:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-10-11T18:00:00Z",
+        "published_starts_at": "2026-10-11T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-11T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/169504531/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/169504531"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "226271451",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/226271451",
+        "compact_recurrence_description": "Every other Monday",
+        "ends_at": "2026-10-12T19:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "MomCo Meetup ",
+        "published_ends_at": "2026-10-12T18:30:00Z",
+        "published_starts_at": "2026-10-12T16:45:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-12T15:45:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21468765"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21468765"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271451/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241931"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271451"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "169553254",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/169553254",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-10-12T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-10-12T18:30:00Z",
+        "published_starts_at": "2026-10-12T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-12T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/169553254/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/169553254"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "220992313",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/220992313",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-10-13T04:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "published_ends_at": "2026-10-13T04:00:00Z",
+        "published_starts_at": "2026-10-13T01:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-13T01:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/20815103"
+          },
+          "data": {
+            "type": "Event",
+            "id": "20815103"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992313/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151429"
+            },
+            {
+              "type": "Tag",
+              "id": "241925"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992313"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "169612018",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/169612018",
+        "compact_recurrence_description": "The second Wednesday of every month",
+        "ends_at": "2026-10-15T00:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Dementia/Alzheimer's Family Support Group",
+        "published_ends_at": "2026-10-14T23:00:00Z",
+        "published_starts_at": "2026-10-14T21:30:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-10-14T20:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/14317271"
+          },
+          "data": {
+            "type": "Event",
+            "id": "14317271"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/169612018/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151451"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/169612018"
+      }
+    }
+  ],
+  "included": [
+    {
+      "type": "Event",
+      "id": "4368161",
+      "attributes": {
+        "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "image_url": null,
+        "name": "Sunday Service",
+        "registration_url": null,
+        "summary": "We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/4368161",
+        "html": "https://calendar.planningcenteronline.com/events/4368161"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241928",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F6E7BB",
+        "created_at": "2023-05-21T17:26:49Z",
+        "name": "Worship Service",
+        "position": 77824,
+        "updated_at": "2026-07-11T04:28:33Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241928"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241940",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#C69CE8",
+        "created_at": "2023-05-21T17:38:22Z",
+        "name": "Worship",
+        "position": 98304,
+        "updated_at": "2026-07-11T04:28:25Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241940"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21647559",
+      "attributes": {
+        "description": null,
+        "image_url": null,
+        "name": "Membership Class",
+        "registration_url": null,
+        "summary": null,
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21647559",
+        "html": "https://calendar.planningcenteronline.com/events/21647559"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241925",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F9D266",
+        "created_at": "2023-05-21T17:26:05Z",
+        "name": "Class, Seminar or Course",
+        "position": 6144,
+        "updated_at": "2023-05-21T17:31:12Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241925"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21719551",
+      "attributes": {
+        "description": "<div>\n  After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2Feife0qkcx1d5zu6qemal4hp5xd3m&thumb=960x540%23&signature=f489f248b14ea96fb943c40e41e710fb05db3791cb913081f7578b8627f742a1",
+        "name": "Summer Meetup",
+        "registration_url": null,
+        "summary": "After the service every Sunday this summer, we'll meet up at the Met Market in Sammamish in the upstairs dining area. Grab lunch or coffee and hang out with us!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21719551",
+        "html": "https://calendar.planningcenteronline.com/events/21719551"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241923",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#E7DEFA",
+        "created_at": "2023-05-21T17:25:54Z",
+        "name": "Community Event",
+        "position": -8192,
+        "updated_at": "2026-07-11T02:45:17Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241923"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "419298",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F9D266",
+        "created_at": "2026-07-11T06:51:13Z",
+        "name": "Summer Meetups",
+        "position": 16384,
+        "updated_at": "2026-07-11T06:51:32Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419298"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "6719956",
+      "attributes": {
+        "description": "<div>\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2Fi6hbteud83pbhijqhcicfhs522b7&thumb=960x540%23&signature=a7f5cfc4897bf030d7c9ccd3078327815660629cd7603a99a29fe4320c05c7f4",
+        "name": "Community Playgroup",
+        "registration_url": null,
+        "summary": "A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/6719956",
+        "html": "https://calendar.planningcenteronline.com/events/6719956"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241936",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#BEEBDE",
+        "created_at": "2023-05-21T17:37:41Z",
+        "name": "Children & Families",
+        "position": 32768,
+        "updated_at": "2026-07-11T04:28:15Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241936"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "419299",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F5A57A",
+        "created_at": "2026-07-11T06:51:28Z",
+        "name": "Community Playgroup",
+        "position": 32768,
+        "updated_at": "2026-07-11T06:57:51Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419299"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21720019",
+      "attributes": {
+        "description": "<div>\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2F3hn7wvu54oh866bqt7v7stq6gb36&thumb=960x540%23&signature=142ba368abff62daa5ab480968bddd33991280834a0e93696fdee4044c59b76c",
+        "name": "Summer Meetup",
+        "registration_url": null,
+        "summary": "On Wednesday evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21720019",
+        "html": "https://calendar.planningcenteronline.com/events/21720019"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21647590",
+      "attributes": {
+        "description": "<div>\n  <div>This is for anyone newer to Pine Lake Covenant Church. Come find out who we are and what we are all about!</div>\n</div>\n",
+        "image_url": null,
+        "name": "Newcomers Brunch",
+        "registration_url": null,
+        "summary": "This is for anyone newer to Pine Lake Covenant Church. Come find out who we are and what we are all about!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21647590",
+        "html": "https://calendar.planningcenteronline.com/events/21647590"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21647793",
+      "attributes": {
+        "description": "<div>\n  <div>Join us for a meal together every 1st and 3rd Tuesdays of each month!&nbsp;</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2F5lgi43ia2benrrpbctkyxuigtyae&thumb=960x540%23&signature=46aac26b2d36b2e3c93ae8f8fd965ebd20ec42ae4501924cbbc325af720147d3",
+        "name": "Tuesdays Together",
+        "registration_url": null,
+        "summary": "Join us for a meal together every 1st and 3rd Tuesdays of each month!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21647793",
+        "html": "https://calendar.planningcenteronline.com/events/21647793"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241924",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#CBEAFA",
+        "created_at": "2023-05-21T17:26:00Z",
+        "name": "Meal or Dessert",
+        "position": -4096,
+        "updated_at": "2023-05-21T17:30:57Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241924"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "19716510",
+      "attributes": {
+        "description": "<div>\n  <div>Make an appointment to donate at plcc.org/blood</div>\n</div>\n",
+        "image_url": null,
+        "name": "Blood Drive  ",
+        "registration_url": null,
+        "summary": null,
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/19716510",
+        "html": "https://calendar.planningcenteronline.com/events/19716510"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "14317271",
+      "attributes": {
+        "description": "<div>\n  <div>This is a support group for people who have loved ones with Dementia or Alzheimer's. Led by Linda Crossgrove, the group will gather in the HUB at church monthly to share resources, pray for and support one another.</div>\n</div>\n",
+        "image_url": null,
+        "name": "Dementia/Alzheimer's Family Support Group",
+        "registration_url": null,
+        "summary": "This is a support group for people who have loved ones with Dementia or Alzheimer's. Led by Linda Crossgrove, the group will gather in the HUB at church monthly to share resources, pray for and support one another. ",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/14317271",
+        "html": "https://calendar.planningcenteronline.com/events/14317271"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "151451",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F297CD",
+        "created_at": "2021-08-31T18:02:35Z",
+        "name": "Congregational Care",
+        "position": 16384,
+        "updated_at": "2023-05-21T17:24:44Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/151451"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21468765",
+      "attributes": {
+        "description": "<div>\n  <div><strong>TWO WAYS TO PARTICIPATE!</strong></div><ol><li><strong>MomCo Monday Meetups (full membership)</strong></li><li><strong>MomCo Social Meetups only</strong></li></ol><div>Here at MomCo at Pine Lake, we gather and support moms. The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together. We believe in the simple but revolutionary idea that remarkable things happen when moms come together. If you are a mom with a child at home, of any age, we have a place for you!<br><br><a href=\"https://plcc.churchcenter.com/calendar?category=MomCo%2520%28The%2520Mom%2520Community%29&amp;view=list\"><strong>See upcoming dates</strong></a></div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2Fxlomipoz5lcjqul0tsfvh72nm4rb&thumb=960x540%23&signature=032442fa2fab296e9b0a3e88667f826cd8759152e32b17ec6e1aa5e04ee37a35",
+        "name": "MomCo Meetup ",
+        "registration_url": "https://plcc.churchcenter.com/registrations/events/3743770",
+        "summary": "The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21468765",
+        "html": "https://calendar.planningcenteronline.com/events/21468765"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241931",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#C69CE8",
+        "created_at": "2023-05-21T17:36:30Z",
+        "name": "MomCo (The Mom Community)",
+        "position": 49152,
+        "updated_at": "2026-07-11T06:56:28Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241931"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "20815103",
+      "attributes": {
+        "description": "<div>\n  <div>BSF offers free, in-depth Bible studies in community for people of all ages around the world. <a href=\"https://www.bsfinternational.org/\">Learn more about BSF</a></div>\n</div>\n",
+        "image_url": null,
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "registration_url": null,
+        "summary": "BSF offers free, in-depth Bible studies in community for people of all ages around the world. For more information, go to https://www.bsfinternational.org/",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/20815103",
+        "html": "https://calendar.planningcenteronline.com/events/20815103"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "151429",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F297CD",
+        "created_at": "2021-08-31T17:37:26Z",
+        "name": "BSF",
+        "position": 32768,
+        "updated_at": "2023-11-14T04:50:20Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/151429"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241935",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#81D973",
+        "created_at": "2023-05-21T17:37:35Z",
+        "name": "Adults",
+        "position": 16384,
+        "updated_at": "2026-07-11T04:28:26Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241935"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21468816",
+      "attributes": {
+        "description": "<div>\n  A time for ladies to take a break from the busy week and connect with one another!\n</div>\n",
+        "image_url": null,
+        "name": "Women's Coffee Break ",
+        "registration_url": null,
+        "summary": "A time for ladies to take a break from the busy week and connect with one another!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21468816",
+        "html": "https://calendar.planningcenteronline.com/events/21468816"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241922",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#E4EDFF",
+        "created_at": "2023-05-21T17:25:49Z",
+        "name": "Meeting",
+        "position": -16384,
+        "updated_at": "2023-05-21T17:27:24Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241922"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21647675",
+      "attributes": {
+        "description": "<div>\n  <div>The PLCC Annual Meeting &amp; Ministry Fair is an opportunity to remember and celebrate the last year of ministry and look forward to the coming year! We'll have food and fun for the whole PLCC family, and members will vote on leadership positions. Whether you've attended for 40 years or 40 minutes, we invite you to join us!</div>\n</div>\n",
+        "image_url": null,
+        "name": "Annual Meeting / Ministry Fair",
+        "registration_url": null,
+        "summary": "The PLCC Annual Meeting & Ministry Fair is an opportunity to remember and celebrate the last year of ministry and look forward to the coming year! We'll have food and fun for the whole PLCC family, and members will vote on leadership positions. Whether you've attended for 40 years or 40 minutes, we invite you to join us!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21647675",
+        "html": "https://calendar.planningcenteronline.com/events/21647675"
+      }
+    }
+  ],
+  "meta": {
+    "total_count": 38,
+    "count": 38,
+    "can_order_by": ["created_at", "updated_at", "starts_at", "ends_at"],
+    "can_query_by": [
+      "calendar_ids",
+      "created_at",
+      "ends_at",
+      "event_name",
+      "kind",
+      "starts_at",
+      "tag_ids",
+      "updated_at"
+    ],
+    "can_include": ["event", "event_times", "resource_bookings", "tags"],
+    "can_filter": [
+      "future",
+      "not_pending_event_requests",
+      "all",
+      "approver",
+      "approver_subscriber",
+      "manager",
+      "manager_approver",
+      "manager_approver_subscriber",
+      "manager_subscriber",
+      "owner",
+      "owner_approver",
+      "owner_approver_subscriber",
+      "owner_manager_approver",
+      "owner_manager_subscriber",
+      "owner_manager_approver_subscriber",
+      "owner_manager",
+      "owner_subscriber",
+      "subscriber",
+      "approved",
+      "pending",
+      "rejected",
+      "unresolved",
+      "lost",
+      "shared",
+      "lost_due_to_blockout",
+      "approved_pending",
+      "approved_rejected",
+      "pending_rejected",
+      "approved_pending_rejected",
+      "conflict",
+      "approved_conflict",
+      "pending_conflict",
+      "rejected_conflict",
+      "approved_pending_conflict",
+      "approved_rejected_conflict",
+      "pending_rejected_conflict",
+      "approved_pending_rejected_conflict",
+      "event_request_approved",
+      "event_request_pending",
+      "event_request_rejected",
+      "event_request_approved_pending",
+      "event_request_approved_rejected",
+      "event_request_pending_rejected",
+      "event_request_approved_pending_rejected"
+    ],
+    "parent": {
+      "id": "65711",
+      "type": "Organization"
+    }
+  }
+}

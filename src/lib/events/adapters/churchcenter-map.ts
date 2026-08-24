@@ -10,11 +10,9 @@
 
 import type { CalendarEvent, EventSource } from '../types'
 import { mapCategory } from '../logic'
+import { stripHtml, truncate } from '../text'
 
 const ORIGIN = 'https://plcc.churchcenter.com'
-
-/** Longest summary we'll show on a card, in characters. */
-const SUMMARY_MAX = 180
 
 // Third-party facility rentals and the like that shouldn't read as PLCC
 // programs on "What's On". Curation list — adjust as needed.
@@ -25,33 +23,6 @@ type JsonApiResource = {
   id: string
   attributes?: Record<string, any>
   relationships?: Record<string, { data?: { type: string; id: string } | { type: string; id: string }[] | null }>
-}
-
-function stripHtml(html: string | undefined | null): string {
-  if (!html) return ''
-  return html
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
-/**
- * Trim to length on a word boundary, with an ellipsis.
- *
- * Church Center descriptions are written for Church Center, so they routinely
- * overrun the card. A plain `.slice()` cuts mid-word and gives the reader no
- * signal that anything is missing.
- */
-function truncate(text: string, max = SUMMARY_MAX): string {
-  if (text.length <= max) return text
-  const cut = text.slice(0, max)
-  const lastSpace = cut.lastIndexOf(' ')
-  // Only back up to a word boundary if one is reasonably close to the limit;
-  // otherwise (a single very long token) take the hard cut.
-  const body = lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut
-  return `${body.replace(/[\s,;:.!?-]+$/, '')}…`
 }
 
 export function mapChurchCenterBody(body: any, source: EventSource): CalendarEvent[] {

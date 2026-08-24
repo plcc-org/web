@@ -12,17 +12,22 @@ For the rest of the codebase see [development.md](./development.md); for the CMS
 ## The short version
 
 Events live in Planning Center and are published through **Church Center**, the
-church's public-facing Planning Center site. We don't have a Planning Center API key
-yet. Church Center's public calendar is a client-rendered single-page app, so there
-is no HTML to parse and no token to read out of the page.
+church's public-facing Planning Center site.
 
-So: a **nightly GitHub Action drives a real browser**, lets Church Center's own app
-authenticate itself, steals the token off the request it makes, calls the same API,
-and commits the result as a JSON file. The site build reads that file.
+A **nightly GitHub Action captures the calendar and commits it as a JSON file**, which
+the site build reads. Capturing out-of-band rather than fetching during the build keeps
+the build hermetic (a Planning Center outage can't fail a deploy), keeps the API token
+in GitHub Actions rather than Cloudflare's build environment, and makes each day's
+calendar change a reviewable diff.
 
-That is a hack, and it is a deliberate one. It is marked `STOPGAP` in four places in
-the source. [Replacing it](#replacing-the-snapshot-with-the-planning-center-api) is a
-day's work once an API key exists.
+Two capture paths exist during the migration:
+
+- **`pco`** — the official Planning Center Calendar API, authenticated with a personal
+  access token. Built and at parity; see [the traps](#the-planning-center-traps).
+- **`snapshot`** — the outgoing stopgap. Church Center's public calendar is a
+  client-rendered SPA with no token in the page, so this drives a real browser, steals
+  the Bearer token off the request the SPA makes, and calls the same API. Still the
+  production default until the cutover completes.
 
 ---
 
@@ -78,14 +83,14 @@ with `EventSource` in `src/lib/events/types.ts` — there's a comment on both si
 
 | Source     | Status         | What it is                                                                                                |
 | ---------- | -------------- | --------------------------------------------------------------------------------------------------------- |
-| `snapshot` | **production** | The committed nightly capture. Default for production builds.                                             |
+| `snapshot` | **production** | The committed nightly Church Center capture. Default for production builds. Outgoing.                     |
 | `curated`  | **live**       | Hand-maintained real events, generated from recurrence rules. The dev default and the permanent fallback. |
-| `pco`      | not built      | The official Planning Center Calendar API. Throws; provider falls back.                                   |
+| `pco`      | **built**      | The official Planning Center Calendar API, captured daily to `src/content/events-pco.json`.               |
 | `ics`      | not built      | A public ICS feed, if one is ever exposed. Throws; provider falls back.                                   |
 
-`pco` and `ics` exist as enum values with deliberate `throw`s rather than as absent
-cases, so the seam is visible in the code and selecting one gives a clear error rather
-than a silent default.
+`ics` exists as an enum value with a deliberate `throw` rather than as an absent case,
+so the seam is visible in the code and selecting it gives a clear error rather than a
+silent default.
 
 ---
 
@@ -141,9 +146,16 @@ events, since `normalizeUpcoming` evaluates "past" at build time.
 ## Mapping and categories
 
 `adapters/churchcenter-map.ts` translates a Church Center JSON:API body to
-`CalendarEvent[]`. It's deliberately separate from the adapter that _supplies_ the
-body: the shape is Church Center's, but nothing in the mapper cares where the bytes
-came from, so a Planning Center adapter reuses it unchanged.
+`CalendarEvent[]`, and `adapters/pco-map.ts` does the same for Planning Center. Each is
+separate from the adapter that _supplies_ the body, so neither cares where the bytes
+came from.
+
+**They are two mappers, not one.** Both APIs speak JSON:API, but the resources differ:
+Church Center rows are already one-per-occurrence `Event`s with the location and
+category tags as included resources; Planning Center rows are `EventInstance`s whose
+parent `Event` carries the title, summary and visibility, with location as a plain
+string and tags hanging off the instance. Shared text cleanup lives in
+`src/lib/events/text.ts`.
 
 It also does the cleanup that Church Center data reliably needs:
 
@@ -155,18 +167,6 @@ It also does the cleanup that Church Center data reliably needs:
   overrun the card.
 - **Third-party facility rentals are excluded** by title (`EXCLUDE_TITLE`), so a hall
   hire doesn't read as a PLCC program.
-
-### Categories
-
-`mapCategory()` in `logic.ts` maps Church Center's category tags plus the title onto our
-five coarse categories, by testing a regex ladder against `tags + title` lowercased.
-
-**The order is load-bearing**, because events match more than one pattern. `Youth` is
-tested first, then `Groups`, `Serve`, `Families`, and anything unmatched falls to
-`Everyone`. A confirmation class for middle-schoolers should be Youth even though it
-would also match `Families`; moving a rule up or down silently re-files events. If you
-add a term, add it to the rule that should _win_, and add a case to
-`test/events.test.ts`.
 
 ---
 
@@ -186,24 +186,107 @@ runs in UTC and the church is in Pacific.
 
 ---
 
-## Replacing the snapshot with the Planning Center API
+## The Planning Center traps
 
-When an API key exists, in rough order:
+Three things about the Calendar API that are not in its docs and cost real debugging.
+All three are guarded in code; none of them fail loudly on their own.
 
-1. Add `src/lib/events/adapters/pco.ts`. Fetch the Calendar API with the key, and pass
-   the body straight to `mapChurchCenterBody()` — Planning Center and Church Center
-   serve the same JSON:API shape, which is why the mapper is a separate module.
-2. Wire the `pco` case in `provider.ts` (replace the `throw`).
-3. Add the key as a **secret** env field in `astro.config.mjs`'s `env.schema`
-   (`access: 'secret'`), and set it in the Cloudflare dashboard.
-4. Set `EVENTS_SOURCE=pco` in the Cloudflare build variables.
-5. Delete `scripts/scrape-events.mjs`, `.github/workflows/scrape-events.yml`,
-   `adapters/snapshot.ts`, `src/content/events-snapshot.json`, and the `playwright`
-   dependency. Then re-check: the daily snapshot commit is currently what triggers the
-   daily rebuild, so **something else has to age out past events** — either a scheduled
-   deploy, or moving the "is it past?" filter to request time.
+### The visibility filter is silently ignored without `include=event`
 
-Step 5's last sentence is the part that's easy to miss.
+`where[event][visible_in_church_center]=true` is a join filter. **Without
+`include=event` in the same query it does nothing** — no error, no warning, a `200`
+with the entire internal calendar:
+
+| query                                             | rows |
+| ------------------------------------------------- | ---- |
+| 56-day window only                                | 164  |
+| window + `where[event][visible_in_church_center]` | 164  |
+| window + `include=event`                          | 164  |
+| window + `include=event` + `where[…]=true`        | 38   |
+
+This matters because the API serves the **internal** calendar. Of the church's 874
+events, **680 are not public** — staff meetings, room blockouts, outside-hirer
+bookings, `Reserved for Worship Rehearsal`. Dropping one query parameter publishes all
+of it to plcc.org.
+
+So the mapper-side check in `pco-map.ts` is **the authority**, not defence in depth: a
+row whose parent `Event` is missing, or not explicitly `visible_in_church_center: true`,
+is dropped. `capture-events.mjs` re-verifies every row before writing and refuses to
+overwrite the file if any row is unverifiable.
+
+### A sparse fieldset strips relationships, not just attributes
+
+`fields[EventInstance]=name,starts_at,…` also removes the `event` and `tags`
+**relationships** unless they're named in the list. The failure is quiet: the rows look
+fine, but every parent link is gone, so visibility can't be checked and tags read as
+empty. Both are named explicitly in the capture query. Don't trim that list.
+
+### `starts_at` is not the time the public is told
+
+Events can reserve setup/teardown buffer. `starts_at` is the internal booking;
+`published_starts_at` is what Church Center advertises. Five of the church's recurring
+instances reserve an hour — mapping `starts_at` puts the playgroup and the dementia
+support group on the site **an hour before they begin**. The mapper reads
+`published_starts_at ?? starts_at`.
+
+### Also worth knowing
+
+- **`kind` is opt-in.** Planning Center omits it unless `fields[EventInstance]` names
+  it. The mapper drops `blockout` rows on it, so it must stay in the query.
+- **Pin `x-pco-api-version`.** `2020-06-16` serves Event `details` with no `summary`
+  field at all — the copy the cards render. "Latest" drifts; the capture pins
+  `2026-06-22`.
+- **`featured` is `false` on every event.** Nothing reads `CalendarEvent.featured`, so
+  this costs nothing today, but don't build on it.
+- **There is only one calendar** (`Pine Lake Covenant Church`), so events can't be
+  scoped by calendar. Visibility and tags are the only levers.
+
+---
+
+## Categories, tags first
+
+`resolveCategory()` in `logic.ts` tries real Planning Center tags before falling back to
+the title regex ladder.
+
+Tags are authoritative **only when they name one of the four specific categories**
+(`Youth`, `Children & Families`, `Congregational Care`, `Missions / Service`, the group
+tags). Tags that would mean `Everyone` — `Worship`, `Community Event`, `Meeting`,
+`Adults` — are deliberately **not** in the map: they are the absence of a signal, and
+treating them as one would shadow the ladder. `Blood Drive` carries only
+`Community Event` but belongs in Serve, and the ladder is what finds it.
+
+The ladder stays because Planning Center tagging is inconsistent — `Newcomers Brunch`
+carries no tags at all. **Its order is still load-bearing**; see below.
+
+`mapCategory()` maps Church Center's category tags plus the title onto our five coarse
+categories, by testing a regex ladder against `tags + title` lowercased.
+
+**The order is load-bearing**, because events match more than one pattern. `Youth` is
+tested first, then `Groups`, `Serve`, `Families`, and anything unmatched falls to
+`Everyone`. A confirmation class for middle-schoolers should be Youth even though it
+would also match `Families`; moving a rule up or down silently re-files events. If you
+add a term, add it to the rule that should _win_, and add a case to
+`test/events.test.ts`.
+
+---
+
+## Finishing the cutover
+
+`pco` is built and verified at parity — a fresh capture from each source over the same
+56-day window produces **38 identical events, zero category differences**. What remains:
+
+1. Add `PCO_APP_ID` / `PCO_SECRET` as GitHub Actions repository secrets.
+2. Replace `.github/workflows/scrape-events.yml` with the same job running
+   `npm run capture:events`. Drop the `playwright install` step.
+3. Set `EVENTS_SOURCE=pco` in the Cloudflare build variables, and flip `defaultSource()`
+   in `provider.ts` from `snapshot` to `pco`.
+4. Delete `scripts/scrape-events.mjs`, `adapters/snapshot.ts`,
+   `src/content/events-snapshot.json`, `adapters/churchcenter-map.ts`,
+   `test/churchcenter-map.test.ts`, and the `playwright` dependency.
+
+The daily commit stays the deploy trigger, so **nothing needs to replace the
+rebuild-ages-out-past-events mechanism** — that was only a risk in the abandoned
+live-fetch design.
 
 Keep `curated` either way. It's the fallback that makes every other source safe to fail.
 
@@ -215,12 +298,16 @@ Recorded here so it isn't mistaken for an oversight:
 
 - **`/events/` shows every instance of a recurring event.** A weekly service appears
   once per week for the whole window, so the page reads as a calendar dump rather than
-  the "curated view" its own lede promises. Collapsing a series to one row with a
-  cadence needs a `series` key that Church Center's payload doesn't give us directly.
+  the "curated view" its own lede promises. **Planning Center unblocks this**: every
+  `EventInstance` carries `relationships.event`, a real series key Church Center never
+  gave us. The current window is 38 instances across just 13 parent events, and
+  `compact_recurrence_description` supplies the cadence ("Every Sunday", "The second
+  Wednesday of every month") ready-made. Worth doing once the cutover lands.
 - **Imported descriptions are Church Center's marketing voice**, not the site's — they
   arrive with exclamation marks and URLs in body copy, both of which
-  [voice.md](./voice.md) bans. The options are to stop rendering imported descriptions
-  entirely, or to add a small overrides map for the handful of recurring events.
+  [voice.md](./voice.md) bans. Planning Center's `summary` is shorter and better written
+  than the `description` the old path truncated, which narrows the problem without
+  solving it. The options remain: stop rendering imported copy entirely, or add a small
+  overrides map for the handful of recurring events.
 
-Both are waiting on the same thing: curation is worth building once the data source is
-stable, not against a stopgap.
+Both are worth building against `pco`, not against the stopgap.

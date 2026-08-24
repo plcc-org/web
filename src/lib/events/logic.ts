@@ -43,3 +43,49 @@ export function mapCategory(catNames: string[], title: string): EventCategory {
   if (/kid|child|family|families|playgroup|momco|mom community|sports camp|vbs|nursery/.test(hay)) return 'Families'
   return 'Everyone'
 }
+
+/**
+ * Planning Center tags that name one of our four specific categories.
+ *
+ * Only the specific four are listed. Tags that would resolve to `Everyone`
+ * (`Worship`, `Community Event`, `Meeting`, `Adults`, …) are deliberately
+ * absent: they're the *absence* of a signal, not a signal, and treating them
+ * as one would shadow the title ladder below. "Blood Drive" carries only
+ * `Community Event` but belongs in Serve, and the ladder is what finds it.
+ *
+ * Keyed lowercased; tag names come from the Ministry, Ministry Area and
+ * Organization tag groups in Planning Center.
+ */
+const TAG_CATEGORY: ReadonlyArray<readonly [RegExp, EventCategory]> = [
+  [/^youth$/, 'Youth'],
+  [/^(care & recovery|congregational care|griefshare|divorcecare|stephen ministry)$/, 'Groups'],
+  [/^(life group|growth group|social group)$/, 'Groups'],
+  [/^missions? \/ service$/, 'Serve'],
+  [/^(children & families|community playgroup|momco)/, 'Families'],
+]
+
+/**
+ * The category a tag set names outright, or `null` when the tags carry no
+ * specific signal and the caller should fall back to the title ladder.
+ *
+ * Order matches `mapCategory`'s precedence: an event tagged both `Youth` and
+ * `Children & Families` is Youth.
+ */
+export function categoryFromTags(tagNames: string[]): EventCategory | null {
+  const tags = tagNames.map((t) => t.trim().toLowerCase())
+  for (const [pattern, category] of TAG_CATEGORY) {
+    if (tags.some((t) => pattern.test(t))) return category
+  }
+  return null
+}
+
+/**
+ * Category for a Planning Center event: real tags first, then the title ladder.
+ *
+ * Tags are authoritative when they say something specific, but Planning Center
+ * tagging is inconsistent — "Newcomers Brunch" carries no tags at all — so the
+ * ladder stays underneath as the fallback rather than being replaced by it.
+ */
+export function resolveCategory(tagNames: string[], title: string): EventCategory {
+  return categoryFromTags(tagNames) ?? mapCategory(tagNames, title)
+}

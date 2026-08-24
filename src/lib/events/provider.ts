@@ -9,6 +9,7 @@ import { EVENTS_SOURCE } from 'astro:env/server'
 import type { CalendarEvent, EventSource } from './types'
 import { curatedEvents } from './adapters/curated'
 import { snapshotEvents } from './adapters/snapshot'
+import { pcoEvents } from './adapters/pco'
 import { normalizeUpcoming } from './logic'
 
 async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
@@ -16,9 +17,11 @@ async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
     case 'snapshot':
       // Church Center data captured daily by a headless browser (see snapshot.ts).
       return snapshotEvents()
-    case 'ics':
     case 'pco':
-      // Not implemented yet; the provider falls back to curated.
+      // Planning Center Calendar data captured daily by CI (see pco.ts).
+      return pcoEvents()
+    case 'ics':
+      // Not implemented; the provider falls back to curated.
       throw new Error(`events source "${source}" is not implemented yet`)
     case 'curated':
     default:
