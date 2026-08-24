@@ -2,6 +2,11 @@
 // build time. The feed is parsed with regex (the feed shape is small and stable);
 // if the fetch fails we fall back to a hardcoded recent list so the page always
 // renders. Extracted from messages.astro to keep the page a view.
+//
+// The feed is the only machine-readable source available: Planning Center
+// Publishing/Sermons is not enabled for this church, so there is no PCO
+// endpoint carrying sermon metadata. A YouTube title is all we get — no
+// speaker, series or passage — which is why the page renders dates, not names.
 
 const CHANNEL_ID = 'UC1eeiv-tSWoCkB33rskGggw'
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`
