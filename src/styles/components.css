@@ -1120,23 +1120,13 @@ a.card:hover,
  * prints a place: the address appears once, in prose, near the top.
  * ==================================================================== */
 
-/* The category filter. It sits inside the page header rather than in a section
-   of its own: as a sibling section it inherited the full `--space-section` row
-   gap, which left it stranded a screen below the lede it belongs to. */
-.chip-row {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin: var(--space-md) 0 0;
-}
-
 /* The address, said once — 35 of 38 listings carry it identically, so printing
    it per row buried the three that are somewhere else.
    
-   A caption under the filter, not a line of prose: it explains why no row names
-   a place, which is worth knowing once and never again. */
+   A caption under the heading, not a line of prose: it explains why no row
+   names a place, which is worth knowing once and never again. */
 .events-place {
-  margin: 0.6rem 0 0;
+  margin: var(--space-md) 0 0;
   color: var(--color-clay-ink);
   font-size: var(--text-sm);
 }

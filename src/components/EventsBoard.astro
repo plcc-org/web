@@ -1,11 +1,14 @@
 ---
-// "What's On" — shared by /events/ and each /events/<category>/ page.
+// "What's On" — the whole of /events/.
 //
 // Three sections, because the calendar holds two different kinds of thing and
 // flattening them into one dated list serves neither. "This week" answers what's
 // on now. "Coming up" carries the one-offs — the things you'd miss if nobody
 // told you. "Regular rhythms" shows each recurring series once, which is both the
 // honest shape of the data and the answer to "what is life here actually like?"
+//
+// The board shows everything in the window. Each row already carries its own
+// category tag, so the three sections do the sorting a filter used to.
 
 import PageIntro from './PageIntro.astro'
 import Band from './Band.astro'
@@ -14,63 +17,24 @@ import EventCard from './events/EventCard.astro'
 import WeekRhythm from './events/WeekRhythm.astro'
 import { withBase } from '../lib/url'
 import { buildSections } from '../lib/events/logic'
-import type { CalendarEvent, EventCategory } from '../lib/events/types'
+import type { CalendarEvent } from '../lib/events/types'
 import { church } from '../config/church'
 
 type Props = {
   events: CalendarEvent[]
-  selected: EventCategory
 }
 
-const { events, selected } = Astro.props
-
-const categories: EventCategory[] = ['Everyone', 'Families', 'Youth', 'Groups', 'Serve']
-
-const categoryHref = (c: EventCategory) =>
-  c === 'Everyone' ? withBase('events/') : withBase(`events/${c.toLowerCase()}/`)
-
-// Where to send someone when a category has nothing dated. A category page with
-// only "nothing on right now" is a dead end; these are the pages that answer the
-// question they actually came with.
-const DOORS: Record<EventCategory, { href: string; label: string }> = {
-  Everyone: { href: 'visit/', label: 'Plan a visit' },
-  Families: { href: 'families/', label: 'Families at Pine Lake' },
-  Youth: { href: 'youth/', label: 'Youth at Pine Lake' },
-  Groups: { href: 'neighbors/care/', label: 'Care and support' },
-  Serve: { href: 'neighbors/serve/', label: 'Serving together' },
-}
-
-// Each page is a single category, so filtering happens at build time — no client
-// JS. Note "Everyone" the view is every event, not events whose category is
-// "Everyone"; the five chips are doors, and the first one is unfiltered.
-const items = selected === 'Everyone' ? events : events.filter((e) => e.category === selected)
+const { events } = Astro.props
 
 // Section membership and the overlap rules live in logic.ts, where a test can
 // hold them — they're the part of this page most likely to drift.
-const { thisWeek, oneOffs, rhythms } = buildSections(items)
+const { thisWeek, oneOffs, rhythms } = buildSections(events)
 
-const door = DOORS[selected]
-const empty = items.length === 0
+const empty = events.length === 0
 ---
 
 <div class="canvas">
   <PageIntro eyebrow="Services, groups, and community events" title="What’s On">
-    <p class="lede">What’s on this week, what’s coming up, and the things that happen here week after week.</p>
-
-    <nav class="chip-row" aria-label="Browse by category">
-      {
-        categories.map((c) => (
-          <a
-            href={categoryHref(c)}
-            class={`chip ${c === selected ? 'chip--active' : ''}`}
-            aria-current={c === selected ? 'page' : undefined}
-          >
-            {c}
-          </a>
-        ))
-      }
-    </nav>
-
     <p class="events-place">
       Unless another place is named, everything is at our campus —{' '}
       <a class="events-place__address" href={church.mapUrl} rel="noopener" target="_blank">
@@ -83,14 +47,10 @@ const empty = items.length === 0
     empty && (
       <section class="section">
         <h2>Nothing on the calendar</h2>
-        <p class="events-empty">
-          There’s nothing dated for{' '}
-          {selected === 'Everyone' ? 'the next eight weeks' : `${selected} in the next eight weeks`}.
-          {selected !== 'Everyone' && ' Other categories may have something — or start here:'}
-        </p>
+        <p class="events-empty">There’s nothing dated for the next eight weeks.</p>
         <p>
-          <a class="btn btn--ghost" href={withBase(door.href)}>
-            {door.label} <span aria-hidden="true">→</span>
+          <a class="btn btn--ghost" href={withBase('visit/')}>
+            Plan a visit <span aria-hidden="true">→</span>
           </a>
         </p>
       </section>

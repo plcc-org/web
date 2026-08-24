@@ -22,39 +22,10 @@
   border: 0;
 }
 
-/* Pills, tags, and utility chips */
+/* Pills and tags */
 
-/* `.chip` — an interactive pill. The category filter on What's On is the only
-   current user; it's a control, so it has a hover state and an active state.
-   Distinct from `.btn--quiet`, which is an action rather than a selection. */
-.chip {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-pill);
-  background: var(--color-stone);
-  border: 1px solid var(--color-mist);
-  text-decoration: none;
-  color: var(--color-clay-ink);
-  font-weight: 600;
-  font-size: var(--text-xs);
-  transition: all var(--duration-fast) ease;
-}
-
-.chip:hover {
-  background: var(--color-mist);
-  color: var(--color-moss-ink);
-}
-
-/* The currently selected chip: filled, so selection reads at a glance down a
-   row rather than needing a comparison between neighbours. */
-.chip--active {
-  background: var(--color-moss-ink);
-  color: var(--color-white);
-  border-color: var(--color-moss-ink);
-}
-
-/* `.tag` — a non-interactive label (an event's category). Smaller and flatter
-   than a chip, with no hover, because there is nothing to click. */
+/* `.tag` — a non-interactive label (an event's category). Flat, with no hover,
+   because there is nothing to click. */
 .tag {
   font-size: var(--text-2xs);
   padding: 0.25rem 0.65rem;

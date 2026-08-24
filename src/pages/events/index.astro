@@ -7,13 +7,10 @@ import { eventGraph } from '../../lib/structured-data'
 
 const events = await getUpcomingEvents()
 
-// Event JSON-LD lives on this board only, not on the four category pages: the
-// same event under five URLs would read as five entities. See structured-data.ts.
-//
-// It describes `rendered`, not every event in the window. The board collapses a
-// recurring series to a single entry, so emitting one node per occurrence would
-// advertise dates that appear nowhere on the page — structured data for content
-// the reader can't see.
+// Event JSON-LD describes `rendered`, not every event in the window. The
+// board collapses a recurring series to a single entry, so emitting one node
+// per occurrence would advertise dates that appear nowhere on the page —
+// structured data for content the reader can't see.
 const origin = Astro.site?.origin
 const { rendered } = buildSections(events)
 const structuredData = origin ? eventGraph(origin, rendered) : []
@@ -24,5 +21,5 @@ const structuredData = origin ? eventGraph(origin, rendered) : []
   description="What’s coming up at Pine Lake — Sunday gatherings, groups, family events, and ways to help out around Sammamish."
   structuredData={structuredData}
 >
-  <EventsBoard events={events} selected="Everyone" />
+  <EventsBoard events={events} />
 </BaseLayout>
