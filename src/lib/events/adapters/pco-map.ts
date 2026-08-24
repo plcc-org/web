@@ -1,12 +1,11 @@
 // Maps a Planning Center Calendar JSON:API body ({ data, included }) to our
 // CalendarEvent[]. Shape translation only — capturing the payload is
-// scripts/capture-events.mjs's job.
+// scripts/capture-events.mjs's job. Nothing here cares where the bytes came
+// from, which is what keeps the source swappable without touching the pages.
 //
-// Planning Center's shape is NOT Church Center's, despite both being JSON:API:
-// rows are EventInstances whose parent Event carries the title, summary and
-// visibility; location is a plain string rather than an included resource; and
-// tags hang off the instance, not the event. Hence a sibling to
-// churchcenter-map.ts rather than a shared mapper.
+// Rows are EventInstances; the parent Event (relationships.event) carries the
+// title, summary, registration URL and public visibility. `location` is a plain
+// string on the instance, and tags hang off the instance too.
 //
 // THE VISIBILITY CHECK BELOW IS THE AUTHORITY, not a second line of defence.
 // Planning Center's API serves the *internal* calendar — 680 of the church's

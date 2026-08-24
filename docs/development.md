@@ -43,7 +43,7 @@ src/
     youth-moments/  Youth photo captions
     short-links/    Redirects + 410s (NOT an Astro collection — see below)
     photos.json     The photo catalog: filename → alt
-    quotes.yaml, events-snapshot.json
+    quotes.yaml, events-pco.json
   content.config.ts Collection definitions + Zod schemas
   layouts/          BaseLayout.astro (head, header, footer, skip link, JSON-LD)
   lib/              Image registry, photo catalog, URL/markdown helpers, events, messages
@@ -384,7 +384,8 @@ every check above, because each build looks perfectly consistent on its own.
 - `rich-text-href.test.ts` — the href allowlist for CMS rich text, on both sides: the
   schemes the site uses keep working, and script-bearing ones stay blocked
 - `events.test.ts` — `mapCategory`, `normalizeUpcoming`
-- `churchcenter-map.test.ts` — HTML stripping and word-boundary truncation
+- `pco-map.test.ts` — the Planning Center mapper: visibility failing closed, published
+  times, HTML stripping and word-boundary truncation, tag-first categories
 - `markdown.test.ts` — `renderPlain`, including entity decoding
 - `assets.test.ts` — every image referenced in source or the catalog exists on disk
 - `contrast.test.ts` — the accent tokens still clear WCAG AA against the surfaces they're

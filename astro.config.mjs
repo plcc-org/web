@@ -144,7 +144,7 @@ export default defineConfig({
         context: 'server',
         access: 'public',
         // Keep in sync with EventSource in src/lib/events/types.ts.
-        values: ['curated', 'snapshot', 'ics', 'pco'],
+        values: ['curated', 'pco', 'ics'],
         optional: true,
       }),
     },

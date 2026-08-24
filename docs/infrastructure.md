@@ -52,9 +52,9 @@ build command is `npm run build`; the adapter needs the `nodejs_compat` compatib
 targets (see [development.md](./development.md)). Cloudflare does not run these, so this
 workflow is the only gate.
 
-`.github/workflows/scrape-events.yml` runs nightly (12:00 UTC) and is the **second way a
-deploy happens**: it captures the Church Center calendar, verifies it with a full build and
-crawl, and commits the refreshed snapshot — and that commit to `main` is what triggers the
+`.github/workflows/capture-events.yml` runs nightly (12:00 UTC) and is the **second way a
+deploy happens**: it captures the Planning Center calendar, verifies it with a full build and
+crawl, and commits the refreshed capture — and that commit to `main` is what triggers the
 Cloudflare rebuild. So the site redeploys daily even when nobody touches it, which is also
 what ages past events off "What's On". If the calendar ever looks stale, check this workflow
 before anything else. See [events.md](./events.md).

@@ -1,0 +1,64 @@
+name: Capture events
+
+# Pulls the church's public calendar from the Planning Center API into
+# src/content/events-pco.json and commits it. The commit pushes to `main`, which
+# triggers Cloudflare Workers Builds to redeploy with fresh events — and, because
+# it rebuilds daily, also prunes events that have become past.
+#
+# The capture runs here rather than during the site build because the Cloudflare
+# adapter prerenders in workerd, which has no `node:fs`: the JSON is imported
+# statically and inlined by Vite. Committing it also keeps the build hermetic (a
+# Planning Center outage can't fail a deploy), keeps the API token in Actions
+# rather than Cloudflare's build environment, and leaves each day's calendar
+# change as a reviewable diff. See scripts/capture-events.mjs and docs/events.md.
+#
+# Not triggered on push — only daily and manually.
+on:
+  schedule:
+    - cron: '0 12 * * *' # 12:00 UTC ≈ 5am PDT
+  workflow_dispatch:
+
+# Needed so the job can push the refreshed capture back to the repo.
+permissions:
+  contents: write
+
+concurrency:
+  group: capture-events
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 25
+          cache: npm
+
+      - run: npm ci
+
+      # Capture the calendar → writes src/content/events-pco.json. Refuses to
+      # write an empty result, or one where any row's public visibility can't be
+      # verified against its parent Event.
+      - run: npm run capture:events
+        env:
+          PCO_APP_ID: ${{ secrets.PCO_APP_ID }}
+          PCO_SECRET: ${{ secrets.PCO_SECRET }}
+
+      # Build + verify with the fresh capture so a bad one never lands on main.
+      - run: DEPLOY_ENV=staging npm run build
+      - run: npm run test:site
+
+      - name: Commit refreshed capture
+        run: |
+          if git diff --quiet -- src/content/events-pco.json; then
+            echo "Capture unchanged — nothing to commit."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/content/events-pco.json
+            git commit -m "chore(events): refresh calendar capture"
+            git push
+          fi

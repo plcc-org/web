@@ -11,8 +11,9 @@ For the rest of the codebase see [development.md](./development.md); for the CMS
 
 ## The short version
 
-Events live in Planning Center and are published through **Church Center**, the
-church's public-facing Planning Center site.
+Events live in Planning Center and are published to the public through **Church
+Center**, the church's public-facing Planning Center site. We read the **Planning
+Center Calendar API** directly, with a personal access token.
 
 A **nightly GitHub Action captures the calendar and commits it as a JSON file**, which
 the site build reads. Capturing out-of-band rather than fetching during the build keeps
@@ -20,29 +21,23 @@ the build hermetic (a Planning Center outage can't fail a deploy), keeps the API
 in GitHub Actions rather than Cloudflare's build environment, and makes each day's
 calendar change a reviewable diff.
 
-Two capture paths exist during the migration:
-
-- **`pco`** — the official Planning Center Calendar API, authenticated with a personal
-  access token. Built and at parity; see [the traps](#the-planning-center-traps).
-- **`snapshot`** — the outgoing stopgap. Church Center's public calendar is a
-  client-rendered SPA with no token in the page, so this drives a real browser, steals
-  the Bearer token off the request the SPA makes, and calls the same API. Still the
-  production default until the cutover completes.
+The API serves the church's **internal** calendar — most of it is not public. Read
+[the traps](#the-planning-center-traps) before touching the query or the mapper.
 
 ---
 
 ## The shape
 
 ```
-Church Center (Planning Center)
+Planning Center Calendar API
         │
-        │  nightly, in CI, via a headless browser
+        │  nightly, in CI, with a personal access token
         ▼
-scripts/scrape-events.mjs ──writes──► src/content/events-snapshot.json  (committed)
+scripts/capture-events.mjs ──writes──► src/content/events-pco.json  (committed)
                                               │
                                               │  imported at build time
                                               ▼
-        adapters/snapshot.ts ──► adapters/churchcenter-map.ts ──► CalendarEvent[]
+             adapters/pco.ts ──► adapters/pco-map.ts ──► CalendarEvent[]
                                               │
         adapters/curated.ts ──────────────────┤  (fallback, and the dev default)
                                               ▼
@@ -56,8 +51,8 @@ scripts/scrape-events.mjs ──writes──► src/content/events-snapshot.json
 
 Everything upstream of `provider.ts` is replaceable. Everything downstream of it only
 knows about `CalendarEvent` (`src/lib/events/types.ts`) and never learns where the
-data came from. That seam is the point of the design — it's what makes the Planning
-Center migration a change to one file rather than a change to the pages.
+data came from. That seam is the point of the design — it's what kept the Planning
+Center migration a change to one adapter rather than a change to the pages.
 
 ---
 
@@ -66,8 +61,8 @@ Center migration a change to one file rather than a change to the pages.
 `src/lib/events/provider.ts` is the only entry point pages use. It does four things:
 
 1. **Selects a source.** From the `EVENTS_SOURCE` build variable if set, otherwise
-   `snapshot` in production and `curated` in dev — dev stays fast and offline-friendly,
-   and doesn't need a fresh snapshot in the working copy.
+   `pco` in production and `curated` in dev — dev stays fast and offline-friendly, and
+   doesn't need a fresh capture in the working copy.
 2. **Falls back.** Any throw, _and_ any successful-but-empty result from a non-curated
    source, drops to `curated` with a `console.warn`. "What's On" is never empty.
 3. **Normalizes.** `normalizeUpcoming()` drops past events, de-duplicates by `id`, and
@@ -79,14 +74,13 @@ Center migration a change to one file rather than a change to the pages.
 typo fails the build rather than silently falling back. Its values must stay in step
 with `EventSource` in `src/lib/events/types.ts` — there's a comment on both sides.
 
-### The four sources
+### The three sources
 
-| Source     | Status         | What it is                                                                                                |
-| ---------- | -------------- | --------------------------------------------------------------------------------------------------------- |
-| `snapshot` | **production** | The committed nightly Church Center capture. Default for production builds. Outgoing.                     |
-| `curated`  | **live**       | Hand-maintained real events, generated from recurrence rules. The dev default and the permanent fallback. |
-| `pco`      | **built**      | The official Planning Center Calendar API, captured daily to `src/content/events-pco.json`.               |
-| `ics`      | not built      | A public ICS feed, if one is ever exposed. Throws; provider falls back.                                   |
+| Source    | Status         | What it is                                                                                                |
+| --------- | -------------- | --------------------------------------------------------------------------------------------------------- |
+| `pco`     | **production** | The Planning Center Calendar API, captured daily to `src/content/events-pco.json`. Default in production. |
+| `curated` | **live**       | Hand-maintained real events, generated from recurrence rules. The dev default and the permanent fallback. |
+| `ics`     | not built      | A public ICS feed, if one is ever exposed. Throws; provider falls back.                                   |
 
 `ics` exists as an enum value with a deliberate `throw` rather than as an absent case,
 so the seam is visible in the code and selecting it gives a clear error rather than a
@@ -94,68 +88,66 @@ silent default.
 
 ---
 
-## The snapshot pipeline
-
-### Why a browser
-
-Church Center's calendar API needs a Bearer "organization read token" (`ort_…`). The
-token isn't in the page HTML — the SPA obtains it at runtime. A build-time `fetch()`
-has nothing to authenticate with, and the site build runs in **workerd** (the
-Cloudflare adapter), which can't run a browser or read the filesystem anyway.
-
-So `scripts/scrape-events.mjs` runs out-of-band: launch Chromium, navigate to
-`/calendar`, wait for the app to make its own authenticated request, intercept the
-`Authorization` header, close the browser, then call the API directly with that token.
-
-It requests the **same query** the old live adapter used — same fields, same includes,
-same 56-day window — so the captured body is shape-identical to a live response. That's
-what lets `churchcenter-map.ts` stay unaware of which one it's reading.
+## The capture pipeline
 
 ### Why it's committed rather than fetched
 
-The snapshot is imported **statically** (`import snapshot from '…/events-snapshot.json'`)
-so Vite inlines it into the bundle. Prerendering happens in workerd, which has no
-`node:fs`, so there is no runtime read available. Committing it is not a caching
-choice — it's the only way the data can reach the build.
+The capture is imported **statically** (`import capture from '…/events-pco.json'`) so
+Vite inlines it into the bundle. Prerendering happens in **workerd** (the Cloudflare
+adapter), which has no `node:fs`, so there is no runtime read available. Committing it
+is not a caching choice — it's the only way the data can reach the build.
+
+Fetching the API during the build was considered and rejected. Committing keeps the
+build hermetic (a Planning Center outage can't fail a deploy, and can't quietly swap
+the real calendar for the curated fallback mid-deploy), keeps the token in Actions
+rather than Cloudflare's build environment where CMS editors can see it, makes each
+day's calendar change a reviewable diff, and makes rollback a `git revert`.
 
 ### The nightly job
 
-`.github/workflows/scrape-events.yml`, 12:00 UTC (≈5am Pacific), plus manual dispatch.
-It scrapes, then **builds and crawls the site with the fresh snapshot before
-committing**, so a bad capture can't land on `main`. If the snapshot is byte-identical
-it commits nothing.
+`.github/workflows/capture-events.yml`, 12:00 UTC (≈5am Pacific), plus manual dispatch.
+It captures, then **builds and crawls the site with the fresh capture before
+committing**, so a bad one can't land on `main`. If the capture is byte-identical it
+commits nothing.
+
+It needs `PCO_APP_ID` and `PCO_SECRET` as repository secrets — a Planning Center
+**personal access token** (HTTP Basic), not an OAuth app. OAuth is for software acting
+on behalf of _other_ organizations' users; it would mean short-lived tokens and a
+refresh dance CI has nowhere to perform. Note that a PAT carries the permissions of the
+person who created it and dies with their account.
 
 The commit is also the deploy trigger: pushing to `main` starts a Cloudflare build.
 That's deliberate — it replaced a separate timer-based rebuild, so there's one
 mechanism instead of two. It also means the daily rebuild is what ages out past
 events, since `normalizeUpcoming` evaluates "past" at build time.
 
-### The two guards worth knowing about
+### The three guards worth knowing about
 
-- **The scraper refuses to write an empty result.** A zero-event response throws rather
-  than overwriting the snapshot, because a transient API failure that returns `200` with
-  no data would otherwise silently empty the calendar.
-- **The adapter warns when the snapshot goes stale.** Past three days,
-  `snapshot.ts` logs `snapshot is N days old — is the scrape workflow running?`. Not
-  fatal — past events still get dropped correctly — but it's the signal that the
-  workflow has quietly stopped. **This appears in the Cloudflare build log, which nobody
-  watches.** If the calendar ever looks thin, check that first.
+- **The capture refuses to write an empty result.** A zero-event response throws rather
+  than overwriting the file, because a transient API failure that returns `200` with no
+  data would otherwise silently empty the calendar.
+- **The capture re-verifies every row's visibility before writing** and refuses if any
+  row can't be proved public. This is what catches the `include=event` trap below if
+  someone edits the query.
+- **The adapter warns when the capture goes stale.** Past three days, `pco.ts` logs
+  `capture is N days old — is the capture workflow running?`. Not fatal — past events
+  still get dropped correctly — but it's the signal that the workflow has quietly
+  stopped. **This appears in the Cloudflare build log, which nobody watches.** If the
+  calendar ever looks thin, check that first.
 
 ---
 
 ## Mapping and categories
 
-`adapters/churchcenter-map.ts` translates a Church Center JSON:API body to
-`CalendarEvent[]`, and `adapters/pco-map.ts` does the same for Planning Center. Each is
-separate from the adapter that _supplies_ the body, so neither cares where the bytes
-came from.
+`adapters/pco-map.ts` translates a Planning Center JSON:API body to `CalendarEvent[]`.
+It's deliberately separate from the adapter that _supplies_ the body: nothing in the
+mapper cares where the bytes came from, which is what let the previous Church Center
+source be swapped out without touching anything downstream. Text cleanup shared with
+any future mapper lives in `src/lib/events/text.ts`.
 
-**They are two mappers, not one.** Both APIs speak JSON:API, but the resources differ:
-Church Center rows are already one-per-occurrence `Event`s with the location and
-category tags as included resources; Planning Center rows are `EventInstance`s whose
-parent `Event` carries the title, summary and visibility, with location as a plain
-string and tags hanging off the instance. Shared text cleanup lives in
-`src/lib/events/text.ts`.
+Rows are `EventInstance`s; the parent `Event` (via `relationships.event`) carries the
+title, summary, registration URL and — critically — the public visibility flag.
+`location` is a plain string on the instance, and tags hang off the instance too.
 
 It also does the cleanup that Church Center data reliably needs:
 
@@ -270,25 +262,18 @@ add a term, add it to the rule that should _win_, and add a case to
 
 ---
 
-## Finishing the cutover
+## Running it by hand
 
-`pco` is built and verified at parity — a fresh capture from each source over the same
-56-day window produces **38 identical events, zero category differences**. What remains:
+```sh
+# Put PCO_APP_ID / PCO_SECRET in a gitignored .env, then:
+node --env-file=.env scripts/capture-events.mjs
+```
 
-1. Add `PCO_APP_ID` / `PCO_SECRET` as GitHub Actions repository secrets.
-2. Replace `.github/workflows/scrape-events.yml` with the same job running
-   `npm run capture:events`. Drop the `playwright install` step.
-3. Set `EVENTS_SOURCE=pco` in the Cloudflare build variables, and flip `defaultSource()`
-   in `provider.ts` from `snapshot` to `pco`.
-4. Delete `scripts/scrape-events.mjs`, `adapters/snapshot.ts`,
-   `src/content/events-snapshot.json`, `adapters/churchcenter-map.ts`,
-   `test/churchcenter-map.test.ts`, and the `playwright` dependency.
+Or `npm run capture:events` with the two variables already exported. Either way it
+rewrites `src/content/events-pco.json` in place; commit the result or throw it away.
 
-The daily commit stays the deploy trigger, so **nothing needs to replace the
-rebuild-ages-out-past-events mechanism** — that was only a risk in the abandoned
-live-fetch design.
-
-Keep `curated` either way. It's the fallback that makes every other source safe to fail.
+Local dev doesn't need a fresh capture — `defaultSource()` picks `curated` outside
+production. To render the real calendar locally, build with `EVENTS_SOURCE=pco`.
 
 ---
 

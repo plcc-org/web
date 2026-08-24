@@ -2,21 +2,17 @@
 //
 // Selects an adapter by the EVENTS_SOURCE env var, normalizes the result to an
 // upcoming, sorted list, and falls back to the curated source on any failure so
-// "What's On" is never empty. New sources (public ICS feed, PCO API) plug in
-// here behind the same interface.
+// "What's On" is never empty. New sources (a public ICS feed, say) plug in here
+// behind the same interface.
 
 import { EVENTS_SOURCE } from 'astro:env/server'
 import type { CalendarEvent, EventSource } from './types'
 import { curatedEvents } from './adapters/curated'
-import { snapshotEvents } from './adapters/snapshot'
 import { pcoEvents } from './adapters/pco'
 import { normalizeUpcoming } from './logic'
 
 async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
   switch (source) {
-    case 'snapshot':
-      // Church Center data captured daily by a headless browser (see snapshot.ts).
-      return snapshotEvents()
     case 'pco':
       // Planning Center Calendar data captured daily by CI (see pco.ts).
       return pcoEvents()
@@ -30,12 +26,12 @@ async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
 }
 
 /**
- * Default source: the daily Church Center snapshot for production builds (see
- * snapshot.ts), curated for local dev (fast, offline-friendly, and no snapshot
+ * Default source: the daily Planning Center capture for production builds (see
+ * pco.ts), curated for local dev (fast, offline-friendly, and no fresh capture
  * needed in the working copy). Override anytime with EVENTS_SOURCE.
  */
 function defaultSource(): EventSource {
-  return import.meta.env.PROD ? 'snapshot' : 'curated'
+  return import.meta.env.PROD ? 'pco' : 'curated'
 }
 
 // Memoized for the lifetime of the build process so the multiple "What's
