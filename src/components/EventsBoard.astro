@@ -55,14 +55,9 @@ const empty = items.length === 0
 
 <div class="canvas">
   <PageIntro eyebrow="Services, groups, and community events" title="What’s On">
-    <p class="lede">
-      What’s happening this week, the one-off things worth a note in your calendar, and the rhythms you can simply turn
-      up to.
-    </p>
-  </PageIntro>
+    <p class="lede">What’s on this week, what’s coming up, and the things that happen here week after week.</p>
 
-  <section class="section" aria-label="Browse by category">
-    <div class="chip-row">
+    <nav class="chip-row" aria-label="Browse by category">
       {
         categories.map((c) => (
           <a
@@ -74,13 +69,15 @@ const empty = items.length === 0
           </a>
         ))
       }
-    </div>
+    </nav>
 
     <p class="events-place">
-      Unless somewhere else is named, everything is at our campus —{' '}
-      <a href={church.mapUrl} rel="noopener" target="_blank">{church.addressLine}</a>.
+      Unless another place is named, everything is at our campus —{' '}
+      <a class="events-place__address" href={church.mapUrl} rel="noopener" target="_blank">
+        {church.address.street}, {church.address.locality}
+      </a>.
     </p>
-  </section>
+  </PageIntro>
 
   {
     empty && (
@@ -113,8 +110,6 @@ const empty = items.length === 0
     oneOffs.length > 0 && (
       <section class="section">
         <h2>Coming up</h2>
-        <p class="section-note">Happening once — worth putting in the calendar.</p>
-
         <div class="event-grid">
           {oneOffs.map((s) => (
             <EventCard series={s} />
@@ -127,7 +122,6 @@ const empty = items.length === 0
   {
     rhythms.length > 0 && (
       <Band tone="sand" heading="Regular rhythms">
-        <p class="section-note">The things that come round again. Turn up to any of them.</p>
         <WeekRhythm series={rhythms} />
       </Band>
     )

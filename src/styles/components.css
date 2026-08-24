@@ -1120,22 +1120,31 @@ a.card:hover,
  * prints a place: the address appears once, in prose, near the top.
  * ==================================================================== */
 
-/* The category filter above the board (chip styling is in utilities.css). */
+/* The category filter. It sits inside the page header rather than in a section
+   of its own: as a sibling section it inherited the full `--space-section` row
+   gap, which left it stranded a screen below the lede it belongs to. */
 .chip-row {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
-  margin: 0.75rem 0 1rem;
+  margin: var(--space-md) 0 0;
 }
 
-/* The address, said once. 35 of 38 listings carry it identically, so printing it
-   per row buried the three that are somewhere else. */
-.events-place,
-.section-note {
-  margin: 0 0 var(--space-md);
+/* The address, said once — 35 of 38 listings carry it identically, so printing
+   it per row buried the three that are somewhere else.
+   
+   A caption under the filter, not a line of prose: it explains why no row names
+   a place, which is worth knowing once and never again. */
+.events-place {
+  margin: 0.6rem 0 0;
   color: var(--color-clay-ink);
-  font-size: var(--text-ui);
-  max-width: var(--measure);
+  font-size: var(--text-sm);
+}
+
+/* Wraps as a whole or not at all. Broken across lines mid-address ("1715 228th
+   Ave SE," / "Sammamish") it reads as two places rather than one. */
+.events-place__address {
+  white-space: nowrap;
 }
 
 /* Shown when a filter matches nothing — quiet, so it reads as an answer rather
