@@ -15,6 +15,7 @@ function body(
     location?: string
     church_center_url?: string
     kind?: string
+    cadence?: string
     event?: string
     tags?: string[]
   }>,
@@ -42,6 +43,7 @@ function body(
         location: i.location,
         church_center_url: i.church_center_url,
         ...(i.kind ? { kind: i.kind } : {}),
+        ...(i.cadence ? { compact_recurrence_description: i.cadence } : {}),
       },
       relationships: {
         ...(i.event ? { event: { data: { type: 'Event', id: i.event } } } : {}),
@@ -198,6 +200,36 @@ describe('mapPcoBody field mapping', () => {
       body([{ id: '1', event: 'e1', starts_at: '2026-09-06T17:00:00Z' }], [{ id: 'e1', name: 'Sunday Service' }])
     )
     expect(out[0].start).toBe('2026-09-06T17:00:00Z')
+  })
+
+  it('carries the parent event id as the series key', () => {
+    // The instance id is unique per occurrence, so only this can collapse a
+    // recurrence into one entry on the page.
+    const out = mapPcoBody(
+      body(
+        [
+          { id: 'i1', event: 'e1' },
+          { id: 'i2', event: 'e1' },
+        ],
+        [{ id: 'e1', name: 'Sunday Service' }]
+      )
+    )
+    expect(out.map((e) => e.id)).toEqual(['i1', 'i2'])
+    expect(out.map((e) => e.seriesId)).toEqual(['e1', 'e1'])
+  })
+
+  it('carries the cadence through verbatim, and omits it when absent', () => {
+    const out = mapPcoBody(
+      body(
+        [
+          { id: '1', event: 'e1', cadence: 'The second Wednesday of every month' },
+          { id: '2', event: 'e1' },
+        ],
+        [{ id: 'e1' }]
+      )
+    )
+    expect(out[0].cadence).toBe('The second Wednesday of every month')
+    expect(out[1].cadence).toBeUndefined()
   })
 
   it('carries all-day through and tags every event with the pco source', () => {

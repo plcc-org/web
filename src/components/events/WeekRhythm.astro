@@ -1,0 +1,84 @@
+---
+// The recurring events, each shown once, grouped by the day they land on.
+//
+// This is the section that replaces a calendar dump: eight weeks of a weekly
+// service is one line here, not eight rows. Grouping by weekday means the page
+// reads as a week in the life of the church rather than as a list.
+//
+// Series are keyed on seriesId upstream, never on title — two different Summer
+// Meetups (Sunday at Met Market, Wednesday at the farmers market) share a name
+// and must stay apart. The weekday heading and the venue separate them on screen.
+
+import type { EventSeries } from '../../lib/events/logic'
+import { fmtTime, fmtTime24, fmtWeekdayLong } from '../../lib/events/format'
+import { venueLabel } from '../../lib/events/place'
+
+type Props = { series: EventSeries[] }
+
+const { series } = Astro.props
+
+const WEEK_ORDER = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+const byDay = new Map<string, EventSeries[]>()
+for (const s of series) {
+  const day = fmtWeekdayLong(new Date(s.next.start))
+  byDay.set(day, [...(byDay.get(day) ?? []), s])
+}
+
+const days = [...byDay.entries()]
+  .sort(([a], [b]) => WEEK_ORDER.indexOf(a) - WEEK_ORDER.indexOf(b))
+  .map(([day, list]) => ({
+    day,
+    // By time of day, not by instant: these land on different dates, so sorting
+    // on the timestamp would order them by which week they fall in.
+    list: [...list].sort((a, b) => fmtTime24(new Date(a.next.start)).localeCompare(fmtTime24(new Date(b.next.start)))),
+  }))
+
+/**
+ * The cadence, but only when it says more than the heading above it already does.
+ *
+ * "Sundays → Sunday Service → Every Sunday" is noise; "Mondays → MomCo Meetup →
+ * Every other Monday" is the whole point. A string comparison, not a parse.
+ */
+const qualifier = (s: EventSeries, day: string) => (s.cadence && s.cadence !== `Every ${day}` ? s.cadence : undefined)
+---
+
+<div class="rhythm">
+  {
+    days.map(({ day, list }) => (
+      <div class="rhythm__day">
+        <h3 class="rhythm__dayname">{day}s</h3>
+
+        <ul class="rhythm__items">
+          {list.map((s) => {
+            const venue = venueLabel(s.location)
+            const note = qualifier(s, day)
+            const external = s.url.startsWith('http')
+            return (
+              <li class="rhythm__item">
+                <span class="rhythm__time">{s.next.allDay ? 'All day' : fmtTime(new Date(s.next.start))}</span>
+                <span class="rhythm__what">
+                  <a
+                    class="rhythm__title"
+                    href={s.url}
+                    rel={external ? 'noopener' : undefined}
+                    target={external ? '_blank' : undefined}
+                  >
+                    {s.title}
+                  </a>
+                  {(note || venue) && (
+                    <span class="rhythm__note">
+                      {note}
+                      {note && venue && ' · '}
+                      {venue}
+                    </span>
+                  )}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    ))
+  }
+</div>

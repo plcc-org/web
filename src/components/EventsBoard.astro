@@ -1,9 +1,21 @@
 ---
+// "What's On" — shared by /events/ and each /events/<category>/ page.
+//
+// Three sections, because the calendar holds two different kinds of thing and
+// flattening them into one dated list serves neither. "This week" answers what's
+// on now. "Coming up" carries the one-offs — the things you'd miss if nobody
+// told you. "Regular rhythms" shows each recurring series once, which is both the
+// honest shape of the data and the answer to "what is life here actually like?"
+
 import PageIntro from './PageIntro.astro'
-import EventRow from './EventRow.astro'
+import Band from './Band.astro'
+import ThisWeekPanel from './events/ThisWeekPanel.astro'
+import EventCard from './events/EventCard.astro'
+import WeekRhythm from './events/WeekRhythm.astro'
 import { withBase } from '../lib/url'
-import { fmtDay, fmtDate, fmtTime, weekLabel } from '../lib/events/format'
+import { buildSections } from '../lib/events/logic'
 import type { CalendarEvent, EventCategory } from '../lib/events/types'
+import { church } from '../config/church'
 
 type Props = {
   events: CalendarEvent[]
@@ -17,36 +29,35 @@ const categories: EventCategory[] = ['Everyone', 'Families', 'Youth', 'Groups', 
 const categoryHref = (c: EventCategory) =>
   c === 'Everyone' ? withBase('events/') : withBase(`events/${c.toLowerCase()}/`)
 
-// Each page is a single category, so filtering happens at build time — no client JS.
-const items = (selected === 'Everyone' ? events : events.filter((e) => e.category === selected)).map((e) => ({
-  ...e,
-  _start: new Date(e.start),
-}))
-
-// Featured: explicitly-featured events, or — if none are flagged — the nearest few
-// so the section is always a useful highlight. Only shown in the Everyone view.
-const explicitFeatured = items.filter((e) => e.featured)
-const featured = (explicitFeatured.length ? explicitFeatured : items).slice(0, 3)
-const showFeatured = selected === 'Everyone' && featured.length > 0
-
-// Don't repeat featured events in "Coming up".
-const featuredIds = new Set(showFeatured ? featured.map((e) => e.id) : [])
-const comingUp = items.filter((e) => !featuredIds.has(e.id))
-
-const grouped = new Map<string, typeof items>()
-for (const e of comingUp) {
-  const label = weekLabel(e._start)
-  const group = grouped.get(label) ?? []
-  group.push(e)
-  grouped.set(label, group)
+// Where to send someone when a category has nothing dated. A category page with
+// only "nothing on right now" is a dead end; these are the pages that answer the
+// question they actually came with.
+const DOORS: Record<EventCategory, { href: string; label: string }> = {
+  Everyone: { href: 'visit/', label: 'Plan a visit' },
+  Families: { href: 'families/', label: 'Families at Pine Lake' },
+  Youth: { href: 'youth/', label: 'Youth at Pine Lake' },
+  Groups: { href: 'neighbors/care/', label: 'Care and support' },
+  Serve: { href: 'neighbors/serve/', label: 'Serving together' },
 }
+
+// Each page is a single category, so filtering happens at build time — no client
+// JS. Note "Everyone" the view is every event, not events whose category is
+// "Everyone"; the five chips are doors, and the first one is unfiltered.
+const items = selected === 'Everyone' ? events : events.filter((e) => e.category === selected)
+
+// Section membership and the overlap rules live in logic.ts, where a test can
+// hold them — they're the part of this page most likely to drift.
+const { thisWeek, oneOffs, rhythms } = buildSections(items)
+
+const door = DOORS[selected]
+const empty = items.length === 0
 ---
 
 <div class="canvas">
   <PageIntro eyebrow="Services, groups, and community events" title="What’s On">
     <p class="lede">
-      A curated view of what’s coming up at Pine Lake — the kind of things that are easy to join and a good fit for
-      different seasons of life.
+      What’s happening this week, the one-off things worth a note in your calendar, and the rhythms you can simply turn
+      up to.
     </p>
   </PageIntro>
 
@@ -64,100 +75,70 @@ for (const e of comingUp) {
         ))
       }
     </div>
+
+    <p class="events-place">
+      Unless somewhere else is named, everything is at our campus —{' '}
+      <a href={church.mapUrl} rel="noopener" target="_blank">{church.addressLine}</a>.
+    </p>
   </section>
 
   {
-    showFeatured && (
+    empty && (
       <section class="section">
-        <h2>Featured</h2>
+        <h2>Nothing on the calendar</h2>
+        <p class="events-empty">
+          There’s nothing dated for{' '}
+          {selected === 'Everyone' ? 'the next eight weeks' : `${selected} in the next eight weeks`}.
+          {selected !== 'Everyone' && ' Other categories may have something — or start here:'}
+        </p>
+        <p>
+          <a class="btn btn--ghost" href={withBase(door.href)}>
+            {door.label} <span aria-hidden="true">→</span>
+          </a>
+        </p>
+      </section>
+    )
+  }
+
+  {
+    thisWeek.length > 0 && (
+      <section class="section">
+        <h2>This week</h2>
+        <ThisWeekPanel events={thisWeek} />
+      </section>
+    )
+  }
+
+  {
+    oneOffs.length > 0 && (
+      <section class="section">
+        <h2>Coming up</h2>
+        <p class="section-note">Happening once — worth putting in the calendar.</p>
 
         <div class="event-grid">
-          {featured.map((e) => (
-            <article class="event-card">
-              <div class="event-date">
-                <div class="event-day">{fmtDay(e._start)}</div>
-                <div class="event-md">{fmtDate(e._start)}</div>
-                <div class="event-time">{fmtTime(e._start)}</div>
-              </div>
-
-              <div class="event-body">
-                <h3 class="event-card__title">{e.title}</h3>
-                <div class="event-meta">
-                  <span>{e.category}</span>
-                  {e.location && <span> · {e.location}</span>}
-                </div>
-                {e.summary && <p class="event-card__summary">{e.summary}</p>}
-
-                <p class="event-card__cta">
-                  <a
-                    href={e.url}
-                    rel={e.url.startsWith('http') ? 'noopener' : undefined}
-                    target={e.url.startsWith('http') ? '_blank' : undefined}
-                  >
-                    Details →
-                  </a>
-                </p>
-              </div>
-            </article>
+          {oneOffs.map((s) => (
+            <EventCard series={s} />
           ))}
         </div>
       </section>
     )
   }
 
-  <section class="section">
-    <h2>{selected === 'Everyone' ? 'Coming up' : `Coming up · ${selected}`}</h2>
+  {
+    rhythms.length > 0 && (
+      <Band tone="sand" heading="Regular rhythms">
+        <p class="section-note">The things that come round again. Turn up to any of them.</p>
+        <WeekRhythm series={rhythms} />
+      </Band>
+    )
+  }
 
-    {
-      comingUp.length === 0 ? (
-        <p class="coming-empty">
-          {selected === 'Everyone'
-            ? 'Nothing else coming up just now — check back soon.'
-            : 'Nothing in this category right now. Try another, or browse Everyone.'}
-        </p>
-      ) : (
-        [...grouped.entries()].map(([label, list]) => (
-          <div class="event-group">
-            <h3 class="event-group__label">{label}</h3>
-
-            <div class="event-list">
-              {list.map((e) => (
-                <EventRow event={e} />
-              ))}
-            </div>
-          </div>
-        ))
-      )
-    }
-  </section>
-
-  <section class="section">
-    <h2>Ongoing rhythms</h2>
-
-    <div class="rhythm-grid">
-      <div class="rhythm-card">
-        <strong>Sundays at 10:00am</strong>
-        <div>Worship + teaching, with kids and youth programs.</div>
-        <div class="rhythm-card__cta">
-          <a href={withBase('visit/')}>Plan a Visit</a>
-        </div>
-      </div>
-
-      <div class="rhythm-card">
-        <strong>Families & Youth</strong>
-        <div>Kids and youth are a big part of our life together.</div>
-        <div class="rhythm-card__cta">
-          <a href={withBase('families/')}>Families</a>
-        </div>
-      </div>
-
-      <div class="rhythm-card">
-        <strong>Groups & Serving</strong>
-        <div>Small groups and serving teams are simple ways to find community.</div>
-        <div class="rhythm-card__cta">
-          <a href={withBase('neighbors/serve/')}>Groups &amp; Serving</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <Band tone="forest" flush centered heading="New here?">
+    <p>Sunday mornings are the simplest place to start, and nobody will make a fuss of you when you arrive.</p>
+    <p class="band__actions">
+      <a class="btn" href={withBase('visit/')}>Plan a visit</a>
+      <a class="btn btn--ghost" href={withBase('families/')}>Families</a>
+      <a class="btn btn--ghost" href={withBase('neighbors/serve/')}>Serving together</a>
+    </p>
+  </Band>
 </div>

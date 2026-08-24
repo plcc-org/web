@@ -1,6 +1,7 @@
 ---
 import type { CalendarEvent } from '../lib/events/types'
 import { fmtDay, fmtDate, fmtTime } from '../lib/events/format'
+import { venueLabel } from '../lib/events/place'
 
 // One row in an event list: a date chip, the title + category/time/location, and
 // a "Details" link. Shared by the full <EventsBoard> and the compact youth feed.
@@ -9,6 +10,10 @@ type Props = { event: CalendarEvent }
 const { event } = Astro.props
 const start = new Date(event.start)
 const external = event.url.startsWith('http')
+// Only when it isn't the church: Planning Center stamps the full campus address
+// onto nearly every event, and repeated down a list it drowns the few that are
+// genuinely somewhere else.
+const venue = venueLabel(event.location)
 ---
 
 <article class="event-row">
@@ -22,8 +27,8 @@ const external = event.url.startsWith('http')
     <div class="event-row__meta">
       <span class="tag event-row__cat">{event.category}</span>
       <span>
-        {fmtTime(start)}
-        {event.location ? ` · ${event.location}` : ''}
+        {event.allDay ? 'All day' : fmtTime(start)}
+        {venue ? ` · ${venue}` : ''}
       </span>
     </div>
   </div>

@@ -65,14 +65,14 @@ type WeeklyRhythm = {
   hour: number
   minute: number
   durationMins: number
-  location?: string
   summary: string
   url: string
   category: EventCategory
-  featured?: boolean
   /** How many upcoming instances to surface. */
   instances: number
 }
+
+const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 const WEEKLY_RHYTHMS: WeeklyRhythm[] = [
   {
@@ -82,11 +82,9 @@ const WEEKLY_RHYTHMS: WeeklyRhythm[] = [
     hour: 10,
     minute: 0,
     durationMins: 75,
-    location: '1715 228th Ave SE, Sammamish',
     summary: 'Worship, teaching, and programs for kids and youth.',
     url: '/visit/',
     category: 'Everyone',
-    featured: true,
     instances: 6,
   },
   {
@@ -96,7 +94,6 @@ const WEEKLY_RHYTHMS: WeeklyRhythm[] = [
     hour: 18,
     minute: 0,
     durationMins: 120,
-    location: '1715 228th Ave SE, Sammamish',
     summary: 'Dinner at 6pm, then connection time, worship, teaching, and small groups for middle & high school.',
     url: '/youth/',
     category: 'Youth',
@@ -115,14 +112,18 @@ export async function curatedEvents(): Promise<CalendarEvent[]> {
       const end = new Date(new Date(start).getTime() + r.durationMins * 60_000).toISOString()
       return {
         id: `${r.idPrefix}-${start.slice(0, 10)}`,
+        // The prefix is already the stable per-series key these ids are built from.
+        seriesId: r.idPrefix,
+        cadence: `Every ${WEEKDAY_NAMES[r.weekday]}`,
         title: r.title,
         start,
         end,
-        location: r.location,
+        // No `location`: everything curated is on campus, and an absent location
+        // is what both the display layer and the schema.org graph read as "here".
+        // Spelling out the street address made it print on every single row.
         summary: r.summary,
         url: r.url,
         category: r.category,
-        featured: r.featured,
         source: 'curated' as const,
       }
     })

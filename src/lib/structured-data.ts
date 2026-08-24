@@ -12,6 +12,7 @@
 
 import { church, serviceCloses } from '../config/church'
 import type { CalendarEvent } from './events/types'
+import { isOnCampus } from './events/place'
 
 /** Stable `@id` fragments. Absolute so nodes can be referenced across pages. */
 const ID = {
@@ -117,11 +118,6 @@ export function eventGraph(origin: string, events: CalendarEvent[]): JsonLdNode[
     if (e.url) node.url = e.url
     return node
   })
-}
-
-/** Church Center labels the building "PLCC Campus"; treat a missing location as on-site too. */
-function isOnCampus(location?: string): boolean {
-  return !location || /plcc/i.test(location)
 }
 
 /** Wrap nodes in the single `@graph` document BaseLayout renders. */

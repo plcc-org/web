@@ -1,0 +1,42 @@
+---
+// One dated, one-off event.
+//
+// The whole card is the link — the same shape as .link-card — so there's one
+// target rather than a title link and a "Details" link racing each other, and
+// so the hover lift has something to be about.
+//
+// Everything below the date is optional: two of the church's events carry no
+// summary at all. The card is a flex column with the CTA pushed to the bottom,
+// so a missing summary leaves a gap instead of a short card in a row of tall ones.
+
+import type { EventSeries } from '../../lib/events/logic'
+import { fmtDay, fmtDate, fmtTime } from '../../lib/events/format'
+import { venueLabel } from '../../lib/events/place'
+
+type Props = { series: EventSeries }
+
+const { series } = Astro.props
+const e = series.next
+const start = new Date(e.start)
+const venue = venueLabel(e.location)
+const external = e.url.startsWith('http')
+---
+
+<a class="event-card" href={e.url} rel={external ? 'noopener' : undefined} target={external ? '_blank' : undefined}>
+  <span class="event-card__when">
+    <span class="event-card__dow">{fmtDay(start)}</span>
+    <span class="event-card__date">{fmtDate(start)}</span>
+    {!e.allDay && <span class="event-card__time">{fmtTime(start)}</span>}
+  </span>
+
+  <span class="event-card__title">{e.title}</span>
+
+  <span class="event-card__meta">
+    <span class="tag">{e.category}</span>
+    {venue && <span class="event-card__venue">{venue}</span>}
+  </span>
+
+  {e.summary && <span class="event-card__summary">{e.summary}</span>}
+
+  <span class="event-card__cta">Details <span aria-hidden="true">→</span></span>
+</a>

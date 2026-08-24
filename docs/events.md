@@ -169,12 +169,20 @@ runs in UTC and the church is in Pacific.
 
 - **Rendering** (`format.ts`) always passes `timeZone: 'America/Los_Angeles'`, so the
   build host's timezone can't shift a displayed time.
-- **`weekLabel()`** computes the Sunday that starts the church-local week and returns it
-  as a **UTC-midnight `Date`**, then formats it back with `timeZone: 'UTC'`. The
-  round-trip is what stops the label shifting a day. It looks wrong and it is correct;
-  don't "simplify" it without a test.
+- **`withinDays()`** ("this week") compares church-local `YYYY-MM-DD` strings rather
+  than subtracting milliseconds. A rolling `7 × 86,400,000` window is wrong by an hour
+  twice a year, and on the spring-forward Sunday it silently drops the last hour of the
+  seventh day.
+- **`fmtTime24()`** exists only for sorting. Series in the rhythm list have their next
+  occurrence on different dates, so ordering them by instant would sort them by which
+  week they fall in rather than by time of day.
 - **The curated adapter** computes Pacific wall-clock dates and DST offsets explicitly
   through `Intl`, rather than trusting the host timezone.
+
+`test/format.test.ts` covers this. Every case picks an instant where the host's answer
+and the church's differ — 02:00 UTC Monday is 7pm the previous _Sunday_ in Sammamish —
+so a test that only passes in Pacific fails. It's checked against `UTC`,
+`Australia/Sydney` and `America/New_York`.
 
 ---
 
@@ -235,6 +243,70 @@ support group on the site **an hour before they begin**. The mapper reads
 
 ---
 
+## The page: three sections, not one list
+
+`/events/` and the four category pages all render `EventsBoard.astro`. It shows three
+things, because the calendar holds two different kinds of event and a single dated list
+serves neither:
+
+| Section             | Holds                                             | Overlaps?                                           |
+| ------------------- | ------------------------------------------------- | --------------------------------------------------- |
+| **This week**       | Every occurrence in the next 7 church-local days  | Yes, deliberately — it answers "what's on now"      |
+| **Coming up**       | Non-recurring events starting _after_ that window | No — anything sooner is already above               |
+| **Regular rhythms** | Every recurring series, once, grouped by weekday  | Yes, deliberately — it answers "what's normally on" |
+
+`buildSections()` in `logic.ts` owns those rules, so a test can hold them. Two are easy
+to get wrong later:
+
+- A one-off falling this week is dropped from "Coming up". The same dated thing twice on
+  one screen reads as a bug.
+- A recurring series stays in "Regular rhythms" **even when it also appears in This
+  week**. Suppressing it would hide the Sunday service every week that it happens, which
+  is every week.
+
+**Series, not instances.** `CalendarEvent.id` is the _occurrence_ id, so it can't
+collapse a recurrence — eight Sundays are eight ids. `seriesId` (Planning Center's parent
+Event id) is what `groupIntoSeries()` keys on. Never key on title: the church runs two
+different "Summer Meetup" series, a Sunday one at Met Market and a Wednesday one at the
+farmers' market, and merging them would invent an event that doesn't exist.
+
+**Recurring or not** is decided by `cadence`, never by counting occurrences. A five-day
+camp arrives as five separate one-day occurrences of one event, so a count would file it
+as a weekly rhythm. The span fallback (>14 days) exists only for a source with no cadence.
+
+**"Regular rhythms", not "week by week"** — two of the nine series are monthly, and a
+weekly label over a twice-a-month support group is a lie to someone deciding whether to
+turn up.
+
+**The section is named by what it holds, and the window is invisible.** Occurrence counts
+and last dates are artefacts of the 56-day capture, so the page never says "6 more dates"
+or "runs until 12 Oct". A series that genuinely ends is indistinguishable from one the
+window truncated.
+
+---
+
+## Place: said once
+
+Planning Center stamps `PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075` onto
+35 of 38 events. Printed per row it buried the three that are somewhere else, so
+`place.ts` suppresses it: `isOnCampus()` decides, `venueLabel()` shortens what's left to a
+name ("Met Market"), and the address appears once in prose near the top, from
+`church.addressLine`.
+
+A missing location counts as on-campus — that's what the curated adapter means by leaving
+it off, and what `eventGraph` needs to point at the church's Place node.
+
+**The schema.org graph keeps the raw string**, never `venueLabel()`: the page wants the
+shortest name it can print, the graph wants the fullest identifier it has. `place.test.ts`
+pins that, because breaking it is a one-character change nothing else would catch.
+
+**The graph also describes only what's rendered.** `index.astro` passes
+`buildSections(events).rendered` to `eventGraph`, not the raw list. The board collapses a
+series to one entry, so emitting a node per occurrence would advertise dates that appear
+nowhere on the page — structured data for content the reader can't see.
+
+---
+
 ## Categories, tags first
 
 `resolveCategory()` in `logic.ts` tries real Planning Center tags before falling back to
@@ -281,13 +353,6 @@ production. To render the real calendar locally, build with `EVENTS_SOURCE=pco`.
 
 Recorded here so it isn't mistaken for an oversight:
 
-- **`/events/` shows every instance of a recurring event.** A weekly service appears
-  once per week for the whole window, so the page reads as a calendar dump rather than
-  the "curated view" its own lede promises. **Planning Center unblocks this**: every
-  `EventInstance` carries `relationships.event`, a real series key Church Center never
-  gave us. The current window is 38 instances across just 13 parent events, and
-  `compact_recurrence_description` supplies the cadence ("Every Sunday", "The second
-  Wednesday of every month") ready-made. Worth doing once the cutover lands.
 - **Imported descriptions are Church Center's marketing voice**, not the site's — they
   arrive with exclamation marks and URLs in body copy, both of which
   [voice.md](./voice.md) bans. Planning Center's `summary` is shorter and better written
@@ -295,4 +360,4 @@ Recorded here so it isn't mistaken for an oversight:
   solving it. The options remain: stop rendering imported copy entirely, or add a small
   overrides map for the handful of recurring events.
 
-Both are worth building against `pco`, not against the stopgap.
+Worth building against `pco`, not against the stopgap.

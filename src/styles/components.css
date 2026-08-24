@@ -462,7 +462,7 @@
 .link-card,
 .story-quote,
 .event-card,
-.rhythm-card,
+.week-panel,
 .event-row,
 .accent-card,
 .moment-card,
@@ -479,6 +479,7 @@
    that are just containers don't. That's why this is `a.card`, not `.card`. */
 a.card,
 .link-card,
+.event-card,
 .event-row,
 .service-card {
   transition:
@@ -489,6 +490,7 @@ a.card,
 
 a.card:hover,
 .link-card:hover,
+.event-card:hover,
 .event-row:hover,
 .service-card:hover {
   transform: translateY(-4px);
@@ -1106,12 +1108,16 @@ a.card:hover,
 }
 
 /* ======================================================================
- * Events — What's On (EventsBoard.astro, EventRow.astro)
+ * Events — What's On (EventsBoard.astro and src/components/events/*)
  *
- * Two presentations of the same data. The *card* (`.event-card` and its
- * `.event-…` parts) is the featured, roomy form at the top of the page; the
- * *row* (`.event-row__…`) is the dense list form used for everything after it
- * and for the featured-events MDX block.
+ * Three presentations, because the calendar holds two different kinds of thing.
+ * `.week-panel` is the next seven days as one surface. `.event-card` is a dated
+ * one-off. `.rhythm-*` is a recurring series shown once, grouped by weekday.
+ * `.event-row` is the dense list form, kept for the featured-events MDX block.
+ *
+ * The unifying idea is that the page states a time and a name, and stays quiet
+ * about everything a reader already knows — which is why no on-campus event
+ * prints a place: the address appears once, in prose, near the top.
  * ==================================================================== */
 
 /* The category filter above the board (chip styling is in utilities.css). */
@@ -1122,120 +1128,329 @@ a.card:hover,
   margin: 0.75rem 0 1rem;
 }
 
+/* The address, said once. 35 of 38 listings carry it identically, so printing it
+   per row buried the three that are somewhere else. */
+.events-place,
+.section-note {
+  margin: 0 0 var(--space-md);
+  color: var(--color-clay-ink);
+  font-size: var(--text-ui);
+  max-width: var(--measure);
+}
+
+/* Shown when a filter matches nothing — quiet, so it reads as an answer rather
+   than an error. */
+.events-empty {
+  color: var(--color-clay-ink);
+  font-style: italic;
+  max-width: var(--measure);
+}
+
 /* ----------------------------------------------------------------------
- * The card form — the featured events at the top of the board.
+ * "This week" — one panel, not seven cards.
  *
- * Structure: `.event-grid` > `.event-card` > a floated `.event-date` (holding
- * `.event-day` / `.event-md` / `.event-time`) beside an `.event-body` (holding
- * `.event-card__title` and `.event-meta`), then `.event-card__summary` and
- * `.event-card__cta` below.
+ * The surface comes from the shared card recipe; the padding is zero so day
+ * groups run edge to edge and are divided by hairlines instead of gaps. That is
+ * the whole point of the section: a column of separate cards reads as several
+ * unrelated things, one ruled panel reads as a week.
  * -------------------------------------------------------------------- */
 
-/* The featured cards. A wider minimum than `.card-grid` because an event card
-   carries a floated date block beside its text. */
-.event-grid {
+/* Clips the first and last row inside the radius, which zero padding exposes. */
+.week-panel {
+  overflow: hidden;
+}
+
+/* The rule above each group is the separation, so groups carry no margin — a
+   margin plus a border would read as two dividers. */
+.week-panel__day + .week-panel__day {
+  border-top: 1px solid var(--color-mist);
+}
+
+.week-panel__day {
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  grid-template-columns: 7rem 1fr;
+  align-items: start;
+  gap: var(--space-md);
+  padding: var(--space-md);
 }
 
-/* `flow-root` contains the floated date block, so a short summary can't leave
-   the card shorter than its own date. */
-.event-card {
-  display: flow-root;
-  padding: 2rem;
+/* The date rail. Stacked rather than inline so the weekday reads as a label and
+   the date beneath it stays scannable down the left edge of the panel. */
+.week-panel__when {
+  display: grid;
+  gap: 0.1rem;
 }
 
-/* The tear-off calendar block, floated so a long summary wraps around it. */
-.event-date {
-  float: left;
-  width: 100px;
-  margin: 0 1.5rem 1rem 0;
-  text-align: center;
-  border-radius: var(--radius-sm);
-  background: var(--color-stone);
-  padding: 0.75rem;
+.week-panel__dow {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-clay-ink);
+}
+
+.week-panel__date {
   font-family: var(--font-serif);
-  border: 1px solid var(--color-mist);
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--color-moss-ink);
+  line-height: 1.1;
 }
 
-/* Day-of-week, the largest line in the date block. */
-.event-day {
-  font-weight: 800;
-  font-size: var(--text-xl);
-  line-height: 1;
+.week-panel__events {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.week-panel__event {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  align-items: baseline;
+  gap: var(--space-md);
+}
+
+/* Tabular figures so the times form a clean column; the fixed width holds that
+   column when one row reads "All day". */
+.week-panel__time {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-ui);
+  color: var(--color-clay-ink);
+}
+
+.week-panel__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-forest);
+  text-decoration: none;
+}
+
+.week-panel__title:hover {
   color: var(--color-moss-ink);
 }
 
-/* Month and day beneath it. (`md` is month/day, not the size token.) */
-.event-md {
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-clay-ink);
-}
-
-/* Start time, the last line of the date block. */
-.event-time {
-  font-size: var(--text-xs);
-  color: var(--color-clay-ink);
+/* Venue only — an on-campus event renders nothing here, which is the point. */
+.week-panel__venue {
+  display: block;
   margin-top: 0.15rem;
-}
-
-/* The text beside the floated date. `min-width: 0` lets a long unbroken title
-   wrap instead of pushing the card wide. */
-.event-body {
-  min-width: 0;
-}
-
-.event-card__title {
-  margin: 0 0 0.25rem;
-}
-
-/* Category and location line under an event card's title. */
-.event-meta {
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: var(--text-ui);
   color: var(--color-clay-ink);
-  margin: 0.15rem 0 0.6rem;
 }
 
-.event-card__summary {
-  margin: 0.5rem 0 0;
-}
+@media (max-width: 560px) {
+  .week-panel__day {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
 
-.event-card__cta {
-  margin: 0.75rem 0 0;
+  .week-panel__when {
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .week-panel__event {
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0.75rem;
+  }
 }
 
 /* ----------------------------------------------------------------------
- * The row form — the dense list below the featured cards.
+ * "Coming up" — the one-off events, as cards.
  *
- * Structure: `.event-group` (a dated heading) > `.event-list` > `.event-row`,
- * each row being a `.event-row__date-chip`, a `.event-row__main`, and a
- * `.event-row__cta`.
+ * The whole card is the link, like `.link-card`, so there is one target rather
+ * than a title and a "Details" racing each other — and so the lift has
+ * something to be about.
  * -------------------------------------------------------------------- */
 
-/* A dated group of rows ("This week", "Later this month"). */
-.event-group {
-  margin: 1.25rem 0;
+/* auto-fill, not auto-fit: a lone final card keeps the width its siblings use
+   instead of stretching across the row. Real relevance here — "Coming up" holds
+   only one-offs, so counts of 1, 3 and 4 are the normal case, not the edge. */
+.event-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
 }
 
-.event-group__label {
-  margin: 0 0 0.5rem;
+/* Column flex so the CTA sits on the card's bottom edge however long the summary
+   runs, which is what keeps a row of cards aligned. This replaces a `flow-root`
+   with a floated date block, where height came entirely from text length: two of
+   the church's events carry no summary at all, so a card could end up barely
+   taller than its own date beside one with three lines of copy. */
+.event-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+  padding: clamp(1.5rem, 2.2vw, 1.85rem);
+  text-decoration: none;
 }
+
+/* The date, inline above the title rather than floated beside it. */
+.event-card__when {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-clay-ink);
+}
+
+.event-card__date {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--color-moss-ink);
+}
+
+.event-card__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-forest);
+}
+
+.event-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: var(--text-ui);
+  color: var(--color-clay-ink);
+}
+
+/* Clamped so an unusually long summary can't set the height of every card in
+   the row. Three lines is enough to tell whether the event is for you. */
+.event-card__summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--color-ink-soft);
+}
+
+/* Pinned to the bottom edge, so the CTAs line up across a row whatever the
+   summary above them does — or whether there is one at all. */
+.event-card__cta {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-size: var(--text-ui);
+  font-weight: 600;
+  color: var(--color-moss-ink);
+}
+
+/* ----------------------------------------------------------------------
+ * "Regular rhythms" — each recurring series once, grouped by weekday.
+ *
+ * Named for what it holds: two of the church's series are monthly, so "week by
+ * week" would be a lie to someone deciding whether to turn up.
+ * -------------------------------------------------------------------- */
+/* Multi-column rather than a grid: the weekday groups are wildly uneven (four
+   things on a Monday, one on a Tuesday), and grid rows align to the tallest cell
+   in the row, which leaves a hole under the short one. Columns just flow. */
+.rhythm {
+  columns: 1;
+  column-gap: var(--space-xl);
+}
+
+@media (min-width: 720px) {
+  .rhythm {
+    columns: 2;
+  }
+}
+
+/* A weekday group must not be split down the middle by a column break. */
+.rhythm__day {
+  break-inside: avoid;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  padding-bottom: var(--space-md);
+}
+
+/* The weekday. A real heading, sized as a label so it doesn't compete with the
+   band's own heading above it. */
+.rhythm__dayname {
+  margin: 0;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-clay-ink);
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--color-moss-line);
+}
+
+.rhythm__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.rhythm__item {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  align-items: baseline;
+  gap: var(--space-md);
+}
+
+.rhythm__time {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-ui);
+  color: var(--color-clay-ink);
+}
+
+.rhythm__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-forest);
+  text-decoration: none;
+}
+
+.rhythm__title:hover {
+  color: var(--color-moss-ink);
+}
+
+/* The cadence, and the venue if it isn't the church. Present only when it says
+   something the weekday heading and the time don't already. */
+.rhythm__note {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: var(--text-ui);
+  color: var(--color-clay-ink);
+}
+
+@media (max-width: 560px) {
+  .rhythm__item {
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0.75rem;
+  }
+}
+
+/* ----------------------------------------------------------------------
+ * The row form — the dense list, kept for the featured-events MDX block
+ * (FeaturedEventsMdx.astro, used on /youth/).
+ *
+ * Structure: `.event-list` > `.event-row`, each row being a
+ * `.event-row__date-chip`, a `.event-row__main`, and a `.event-row__cta`.
+ * -------------------------------------------------------------------- */
 
 .event-list {
   display: grid;
   gap: 0.85rem;
-}
-
-/* Shown when a filter matches nothing — quiet, so it reads as an answer
-   rather than an error. */
-.coming-empty {
-  color: var(--color-clay-ink);
-  font-style: italic;
 }
 
 /* One row: date chip · title and meta · action. The middle column is the only
@@ -1248,7 +1463,7 @@ a.card:hover,
   padding: 1rem 1.35rem;
 }
 
-/* The row's compact date block — the list-form counterpart to `.event-date`. */
+/* The row's compact date block. */
 .event-row__date-chip {
   display: grid;
   place-items: center;
@@ -1278,7 +1493,7 @@ a.card:hover,
 }
 
 /* The flexible middle column; `min-width: 0` for the same reason as
-   `.event-body`. */
+   the panel's own event column. */
 .event-row__main {
   min-width: 0;
 }
@@ -1326,34 +1541,6 @@ a.card:hover,
   .event-row__cta a {
     display: block;
   }
-}
-
-/* ----------------------------------------------------------------------
- * Rhythms — the recurring things at the foot of the board, which have no one
- * date to show and so get neither a date block nor a place in the list.
- * -------------------------------------------------------------------- */
-.rhythm-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.rhythm-card {
-  padding: 1.5rem;
-}
-
-/* The rhythm's name. A <strong> for the same outline reason as the row title. */
-.rhythm-card strong {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: var(--text-md);
-  color: var(--color-forest);
-  margin-bottom: 0.35rem;
-}
-
-/* The "find out more" line at the foot of a rhythm card. */
-.rhythm-card__cta {
-  margin-top: 0.5rem;
 }
 
 /* ======================================================================

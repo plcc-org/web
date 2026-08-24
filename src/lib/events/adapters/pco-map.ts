@@ -68,6 +68,13 @@ export function mapPcoBody(body: any): CalendarEvent[] {
 
     events.push({
       id: inst.id,
+      // The resolved parent, not the reference: the guard above narrows it, and
+      // the two ids are the same value.
+      seriesId: parent.id,
+      // Planning Center's own phrasing. `recurrence` is also captured but is too
+      // coarse to use: it labels the fortnightly MomCo meetup "Weekly", and only
+      // the compact description keeps the distinction.
+      cadence: (a.compact_recurrence_description as string | undefined)?.trim() || undefined,
       title,
       // `starts_at` is the internal booking, which includes any setup/teardown
       // buffer the event carries; `published_starts_at` is the public time
