@@ -9,7 +9,7 @@ for "What's On", see [events.md](./events.md).
 
 ## Stack
 
-- **Framework:** [Astro 6](https://astro.build/) — static output (SSG). Every public page is
+- **Framework:** [Astro 7](https://astro.build/) — static output (SSG). Every public page is
   prerendered to HTML; only the CMS admin's two routes run on demand.
 - **Language:** TypeScript.
 - **Styling:** Vanilla CSS with design tokens, split into partials under `src/styles/`
@@ -418,10 +418,14 @@ Three things a bump can break that aren't obvious from the diff:
 - **TypeScript** stays on 6. TypeScript 7 is the native Go compiler, and its npm package
   drops the programmatic API — `require('typescript')` returns `version` and nothing else.
   `astro check` runs on Volar, which embeds that API, so it cannot run under 7: the
-  language server throws before it checks a file. Dependabot's TS 7 PR is left open as a
-  tracker and stays red. The hold lifts when `@astrojs/check` widens its `typescript` peer
-  range — `npm view @astrojs/check peerDependencies` is the whole test. Track
-  [withastro/roadmap#1321](https://github.com/withastro/roadmap/discussions/1321).
+  language server throws before it checks a file. The blocker sits two levels upstream of
+  us. Volar needs a stable Language Service API; TypeScript has that scheduled for 7.1
+  ([microsoft/TypeScript#63703](https://github.com/microsoft/TypeScript/issues/63703) —
+  stable targeted 10 November 2026), and `@astrojs/check` can widen its `typescript` peer
+  range once Volar ships against it
+  ([withastro/roadmap#1321](https://github.com/withastro/roadmap/discussions/1321)).
+  Dependabot's TS 7 PR is left open as a tracker and stays red until then;
+  `npm view @astrojs/check peerDependencies` is the whole test for whether it has lifted.
 
 The Dockerfile has no entry, because `node:lts` and `nginx:alpine` are floating tags with
 no version to bump.

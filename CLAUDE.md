@@ -1,7 +1,7 @@
 # Pine Lake Covenant Church Website
 
 A photo-rich, editorial website for Pine Lake Covenant Church (PLCC), optimized for young
-families and first-time guests. Built with Astro 6 + TypeScript, statically generated.
+families and first-time guests. Built with Astro 7 + TypeScript, statically generated.
 
 This file is the thin entry point. The full reference lives in **[`docs/`](./docs/)** —
 read the doc that matches your change before editing.
