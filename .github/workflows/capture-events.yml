@@ -34,7 +34,10 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: 25
+          # Match .node-version — the build step below runs Tina, and on Node 25
+          # an unfixed race in Tina's datalayer client hangs builds at "Indexing
+          # local files" (tinacms/tinacms#7295). Same pin as ci.yml.
+          node-version-file: .node-version
           cache: npm
 
       - run: npm ci
