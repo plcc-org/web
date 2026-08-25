@@ -403,7 +403,7 @@ through the same dependency tree otherwise open near-duplicate PRs.
 Merging a bump is a deploy: Cloudflare publishes whatever lands on `main` and runs none
 of these checks, so CI is the whole gate. Green, then merge.
 
-Two things a bump can break that aren't obvious from the diff:
+Three things a bump can break that aren't obvious from the diff:
 
 - **`@tinacms/cli` and `tinacms`** both carry patches, applied on every install and
   documented — motivation, hunk by hunk — in **[`patches/README.md`](../patches/README.md)**.
@@ -415,6 +415,13 @@ Two things a bump can break that aren't obvious from the diff:
   verify the editor still behaves, then replace the version.
 - **Node** is pinned in `.node-version`, not by Dependabot. It stays on 22 until Tina's
   datalayer race on 25 is fixed — see the note in `ci.yml`.
+- **TypeScript** stays on 6. TypeScript 7 is the native Go compiler, and its npm package
+  drops the programmatic API — `require('typescript')` returns `version` and nothing else.
+  `astro check` runs on Volar, which embeds that API, so it cannot run under 7: the
+  language server throws before it checks a file. Dependabot's TS 7 PR is left open as a
+  tracker and stays red. The hold lifts when `@astrojs/check` widens its `typescript` peer
+  range — `npm view @astrojs/check peerDependencies` is the whole test. Track
+  [withastro/roadmap#1321](https://github.com/withastro/roadmap/discussions/1321).
 
 The Dockerfile has no entry, because `node:lts` and `nginx:alpine` are floating tags with
 no version to bump.
