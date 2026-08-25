@@ -34,3 +34,6 @@ public/admin/
 
 # Per-page snapshots written by spike/compare-builds.mjs.
 spike/.compare/
+
+# Per-machine Claude Code settings (and any /doctor backups of them).
+.claude/settings.local.json*
