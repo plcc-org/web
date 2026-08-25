@@ -294,6 +294,16 @@ describe('the committed capture', () => {
     expect(mapped.length).toBe((capture as any).data.length)
   })
 
+  it('is fresh', () => {
+    // The nightly workflow recommits the capture every run, so a capture more
+    // than a week old means the pipeline is dead — most likely GitHub disabling
+    // the cron after 60 days without repo activity. This assertion runs on every
+    // PR and is the only repo-side detector for that silent failure.
+    const capturedAt = new Date((capture as { capturedAt: string }).capturedAt).getTime()
+    const ageDays = (Date.now() - capturedAt) / 86_400_000
+    expect(ageDays).toBeLessThan(7)
+  })
+
   it('yields a usable event for every row', () => {
     for (const e of mapped) {
       expect(e.title).toBeTruthy()
