@@ -93,11 +93,7 @@ export function churchGraph(origin: string, images: { logo?: string; image?: str
 }
 
 /**
- * Event nodes for the calendar.
- *
- * Emitted on the "Everyone" board only, never on the four category pages —
- * the same event appearing under five URLs would read as five separate
- * entities. Category pages still carry the Church node from BaseLayout.
+ * Event nodes for the calendar, emitted on the events board.
  */
 export function eventGraph(origin: string, events: CalendarEvent[]): JsonLdNode[] {
   return events.map((e) => {

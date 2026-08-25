@@ -63,8 +63,8 @@
 //     local files" with "Ineffective mark-compacts near heap limit".
 //   NODE_ENV=production — `tinacms build` sets NODE_ENV=development for the command
 //     it wraps, which makes import.meta.env.PROD false and silently flips both PROD
-//     branches we have: events fall back to the curated list instead of the Church
-//     Center snapshot, and draft pages get published.
+//     branches we have: events fall back to the curated list instead of the
+//     Planning Center capture, and draft pages get published.
 
 import { spawnSync } from 'node:child_process'
 

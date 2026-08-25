@@ -19,8 +19,8 @@ read the doc that matches your change before editing.
   which block to use, the photo model, visual editing, and the Cloudflare setup. Read before
   changing content collections, blocks, or `tina/config.ts`.
 - **[docs/events.md](./docs/events.md)** — how "What's On" gets its data: the provider
-  seam, the nightly Church Center capture, and the Planning Center migration path. Read
-  before touching anything under `src/lib/events/`.
+  seam and the nightly Planning Center capture. Read before touching anything under
+  `src/lib/events/`.
 - **[docs/infrastructure.md](./docs/infrastructure.md)** — environments, deployment,
   container workflows.
 - **[docs/website-one-pager.md](./docs/website-one-pager.md)** — a shareable stakeholder

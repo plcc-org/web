@@ -34,8 +34,8 @@ function defaultSource(): EventSource {
   return import.meta.env.PROD ? 'pco' : 'curated'
 }
 
-// Memoized for the lifetime of the build process so the multiple "What's
-// Happening" pages (Everyone + one per category) share a single live fetch.
+// Memoized for the lifetime of the build process so every page that renders
+// events shares a single load.
 let cached: Promise<CalendarEvent[]> | null = null
 
 export function getUpcomingEvents(): Promise<CalendarEvent[]> {

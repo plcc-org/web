@@ -136,7 +136,7 @@ picks the CMS flags from the environment. Three parts are load-bearing:
 - **`NODE_ENV=production` is not redundant.** `tinacms build` sets `NODE_ENV=development`
   for the command it wraps, which makes `import.meta.env.PROD` false inside the Astro
   build. That inverts both `PROD` branches in the codebase at once: events fall back to
-  the curated list instead of the Church Center snapshot, and draft pages get published.
+  the curated list instead of the Planning Center capture, and draft pages get published.
   Nothing fails; you just get a development build under a production name.
 - **`astro.config.mjs` pins `import.meta.env.DEPLOY_ENV`** through `vite.define` — see
   [infrastructure.md](./infrastructure.md).

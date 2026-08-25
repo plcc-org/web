@@ -44,9 +44,9 @@ scripts/capture-events.mjs ──writes──► src/content/events-pco.json  (c
                                     lib/events/provider.ts
                                      getUpcomingEvents()
                                               │
-                    ┌─────────────────────────┼──────────────────────────┐
-                    ▼                         ▼                          ▼
-          pages/events/index.astro  pages/events/[category].astro  FeaturedEventsMdx
+                          ┌───────────────────┴───────────────────┐
+                          ▼                                       ▼
+                pages/events/index.astro                  FeaturedEventsMdx
 ```
 
 Everything upstream of `provider.ts` is replaceable. Everything downstream of it only
@@ -67,8 +67,8 @@ Center migration a change to one adapter rather than a change to the pages.
    source, drops to `curated` with a `console.warn`. "What's On" is never empty.
 3. **Normalizes.** `normalizeUpcoming()` drops past events, de-duplicates by `id`, and
    sorts ascending by start.
-4. **Memoizes.** One fetch per build process, shared across the five pages that need
-   events (Everyone plus one per category).
+4. **Memoizes.** One load per build process, shared across the pages that render
+   events (the board and the homepage's featured strip).
 
 `EVENTS_SOURCE` is declared as a validated Astro env enum in `astro.config.mjs`, so a
 typo fails the build rather than silently falling back. Its values must stay in step
@@ -107,8 +107,9 @@ day's calendar change a reviewable diff, and makes rollback a `git revert`.
 
 `.github/workflows/capture-events.yml`, 12:00 UTC (≈5am Pacific), plus manual dispatch.
 It captures, then **builds and crawls the site with the fresh capture before
-committing**, so a bad one can't land on `main`. If the capture is byte-identical it
-commits nothing.
+committing**, so a bad one can't land on `main`. In practice a commit lands every
+night: the capture stamps `capturedAt` with the run's timestamp, so the file always
+differs.
 
 It needs `PCO_APP_ID` and `PCO_SECRET` as repository secrets — a Planning Center
 **personal access token** (HTTP Basic), not an OAuth app. OAuth is for software acting
@@ -132,8 +133,10 @@ events, since `normalizeUpcoming` evaluates "past" at build time.
 - **The adapter warns when the capture goes stale.** Past three days, `pco.ts` logs
   `capture is N days old — is the capture workflow running?`. Not fatal — past events
   still get dropped correctly — but it's the signal that the workflow has quietly
-  stopped. **This appears in the Cloudflare build log, which nobody watches.** If the
-  calendar ever looks thin, check that first.
+  stopped. **This appears in the Cloudflare build log, which nobody watches.** The
+  loud version lives in `test/pco-map.test.ts`: the committed-capture suite fails any
+  PR once the capture is more than a week old. If the calendar ever looks thin, check
+  the workflow first.
 
 ---
 
@@ -157,8 +160,9 @@ It also does the cleanup that Church Center data reliably needs:
 - **Descriptions are stripped of HTML and truncated on a word boundary** with an
   ellipsis. Church Center descriptions are written for Church Center and routinely
   overrun the card.
-- **Third-party facility rentals are excluded** by title (`EXCLUDE_TITLE`), so a hall
-  hire doesn't read as a PLCC program.
+- **There is no title-based rental filter.** Third-party hires never carry
+  `visible_in_church_center: true`, so the visibility gate is the only thing keeping a
+  hall hire from reading as a PLCC program — if one is ever flagged visible, it shows.
 
 ---
 
@@ -245,7 +249,7 @@ support group on the site **an hour before they begin**. The mapper reads
 
 ## The page: three sections, not one list
 
-`/events/` and the four category pages all render `EventsBoard.astro`. It shows three
+`/events/` renders `EventsBoard.astro`. It shows three
 things, because the calendar holds two different kinds of event and a single dated list
 serves neither:
 
