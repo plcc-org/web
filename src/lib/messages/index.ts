@@ -24,21 +24,21 @@ export type SundayService = SundayServiceSeed & {
 }
 
 const fallbackSundayServices: SundayServiceSeed[] = [
-  { title: 'Sunday Service - April 26, 2026', dateLabel: 'April 26, 2026', videoId: 'Z8DQgRFGjoc' },
-  { title: 'Sunday Service - April 19, 2026', dateLabel: 'April 19, 2026', videoId: 'xk3tBosFt4I' },
-  { title: 'Sunday Service - April 12, 2026', dateLabel: 'April 12, 2026', videoId: 'v_TUOAL2dzo' },
-  { title: 'Sunday Service - April 5, 2026', dateLabel: 'April 5, 2026', videoId: '9t8ktly3i0o' },
-  { title: 'Sunday Service - March 29, 2026', dateLabel: 'March 29, 2026', videoId: '6bMJIqiELVk' },
-  { title: 'Sunday Service - March 22, 2026', dateLabel: 'March 22, 2026', videoId: '-llHi5tmsds' },
-  { title: 'Sunday Service - March 15, 2026', dateLabel: 'March 15, 2026', videoId: 'XWof2n2Z6yg' },
-  { title: 'Sunday Service - March 8, 2026', dateLabel: 'March 8, 2026', videoId: '1V1o2CIVpfQ' },
-  { title: 'Sunday Service - March 1, 2026', dateLabel: 'March 1, 2026', videoId: '0z_3WMaP5Og' },
-  { title: 'Sunday Service - February 22, 2026', dateLabel: 'February 22, 2026', videoId: 'ylhP0KAYv1Y' },
-  { title: 'Sunday Service - February 15, 2026', dateLabel: 'February 15, 2026', videoId: 'TZHDN98aflk' },
-  { title: 'Sunday Service - February 8, 2026', dateLabel: 'February 8, 2026', videoId: 'MIz6XO63p3o' },
-  { title: 'Sunday Service - February 1, 2026', dateLabel: 'February 1, 2026', videoId: 'qhqozisz1F8' },
-  { title: 'Sunday Service - January 25, 2026', dateLabel: 'January 25, 2026', videoId: 'r7g8zwK-3UQ' },
-  { title: 'Sunday Service - January 18, 2026', dateLabel: 'January 18, 2026', videoId: 'At5sziEX4l8' },
+  { title: 'Sunday Service - August 23, 2026', dateLabel: 'August 23, 2026', videoId: 'zGKTO8WYfi4' },
+  { title: 'Sunday Service - August 16, 2026', dateLabel: 'August 16, 2026', videoId: 'iQnj153Yhkc' },
+  { title: 'Sunday Service - August 9, 2026', dateLabel: 'August 9, 2026', videoId: 'MKNn2FwOYNQ' },
+  { title: 'Sunday Service - August 2, 2026', dateLabel: 'August 2, 2026', videoId: 'Ysx6bEEVJMo' },
+  { title: 'Sunday Service - July 26, 2026', dateLabel: 'July 26, 2026', videoId: '_9xNQcW8TOQ' },
+  { title: 'Sunday Service - July 19, 2026', dateLabel: 'July 19, 2026', videoId: 'LykIEQyxh50' },
+  { title: 'Sunday Service - July 12, 2026', dateLabel: 'July 12, 2026', videoId: 'di_wpu9twnE' },
+  { title: 'Sunday Service - July 5, 2026', dateLabel: 'July 5, 2026', videoId: 'vN_7PtMdtaM' },
+  { title: 'Sunday Service - June 28, 2026', dateLabel: 'June 28, 2026', videoId: 'MW70HwSgGmE' },
+  { title: 'Sunday Service - June 21, 2026', dateLabel: 'June 21, 2026', videoId: 'hmk4SyhbJ6k' },
+  { title: 'Sunday Service - June 14, 2026', dateLabel: 'June 14, 2026', videoId: 'fLzKku1FsaI' },
+  { title: 'Sunday Service - June 7, 2026', dateLabel: 'June 7, 2026', videoId: 'tzBOXoM8wjU' },
+  { title: 'Sunday Service - May 31, 2026', dateLabel: 'May 31, 2026', videoId: 'z_VYh98eSoY' },
+  { title: 'Sunday Service - May 24, 2026', dateLabel: 'May 24, 2026', videoId: 'cCMZOwGOiyI' },
+  { title: 'Sunday Service - May 17, 2026', dateLabel: 'May 17, 2026', videoId: 'XXdVtJkfgVM' },
 ]
 
 const asService = (service: SundayServiceSeed): SundayService => ({
@@ -106,14 +106,17 @@ export async function getSundayServices(): Promise<{ latest: SundayService; arch
 
   try {
     const feedResponse = await fetch(FEED_URL)
-    if (feedResponse.ok) {
-      const parsed = extractSundayServicesFromFeed(await feedResponse.text())
-      if (parsed.length > 0) {
-        services = parsed
-      }
+    const parsed = feedResponse.ok ? extractSundayServicesFromFeed(await feedResponse.text()) : []
+    if (parsed.length > 0) {
+      services = parsed
+    } else {
+      console.warn(
+        `[messages] YouTube feed returned no usable services (HTTP ${feedResponse.status}) — using the hardcoded fallback list`
+      )
     }
-  } catch {
+  } catch (error) {
     // Keep fallback services when the RSS fetch is unavailable.
+    console.warn('[messages] YouTube feed fetch failed — using the hardcoded fallback list:', error)
   }
 
   const [latest, ...archive] = services
