@@ -1,59 +1,9 @@
 {
-  "capturedAt": "2026-08-25T02:47:56.336Z",
+  "capturedAt": "2026-08-25T12:43:17.990Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-24T07%3A00%3A00Z&where[starts_at][lte]=2026-10-19T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-25T07%3A00%3A00Z&where[starts_at][lte]=2026-10-20T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "164767250",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/164767250",
-        "compact_recurrence_description": "Every Monday",
-        "ends_at": "2026-08-24T18:30:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Community Playgroup",
-        "published_ends_at": "2026-08-24T18:30:00Z",
-        "published_starts_at": "2026-08-24T17:00:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-08-24T17:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
-          },
-          "data": {
-            "type": "Event",
-            "id": "6719956"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/164767250/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241923"
-            },
-            {
-              "type": "Tag",
-              "id": "241936"
-            },
-            {
-              "type": "Tag",
-              "id": "419299"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/164767250"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "228134735",
@@ -1984,23 +1934,169 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/170031600"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "170075834",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/170075834",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-10-19T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-10-19T18:30:00Z",
+        "published_starts_at": "2026-10-19T17:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-19T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/170075834/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/170075834"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "226271668",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/226271668",
+        "compact_recurrence_description": "Every other Monday",
+        "ends_at": "2026-10-19T18:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Women's Coffee Break ",
+        "published_ends_at": "2026-10-19T18:30:00Z",
+        "published_starts_at": "2026-10-19T17:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-19T17:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21468816"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21468816"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271668/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241922"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271668"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "220992314",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/220992314",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-10-20T04:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "published_ends_at": "2026-10-20T04:00:00Z",
+        "published_starts_at": "2026-10-20T01:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-20T01:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/20815103"
+          },
+          "data": {
+            "type": "Event",
+            "id": "20815103"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992314/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151429"
+            },
+            {
+              "type": "Tag",
+              "id": "241925"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992314"
+      }
     }
   ],
   "included": [
     {
       "type": "Event",
-      "id": "6719956",
+      "id": "21720019",
       "attributes": {
-        "description": "<div>\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2Fi6hbteud83pbhijqhcicfhs522b7&thumb=960x540%23&signature=a7f5cfc4897bf030d7c9ccd3078327815660629cd7603a99a29fe4320c05c7f4",
-        "name": "Community Playgroup",
+        "description": "<div>\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2F3hn7wvu54oh866bqt7v7stq6gb36&thumb=960x540%23&signature=142ba368abff62daa5ab480968bddd33991280834a0e93696fdee4044c59b76c",
+        "name": "Summer Meetup",
         "registration_url": null,
-        "summary": "A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup.",
+        "summary": "On Wednesday evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!",
         "visible_in_church_center": true
       },
       "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/6719956",
-        "html": "https://calendar.planningcenteronline.com/events/6719956"
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21720019",
+        "html": "https://calendar.planningcenteronline.com/events/21720019"
       }
     },
     {
@@ -2016,52 +2112,6 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241923"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241936",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#BEEBDE",
-        "created_at": "2023-05-21T17:37:41Z",
-        "name": "Children & Families",
-        "position": 32768,
-        "updated_at": "2026-07-11T04:28:15Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241936"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "419299",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#F5A57A",
-        "created_at": "2026-07-11T06:51:28Z",
-        "name": "Community Playgroup",
-        "position": 32768,
-        "updated_at": "2026-07-11T06:57:51Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419299"
-      }
-    },
-    {
-      "type": "Event",
-      "id": "21720019",
-      "attributes": {
-        "description": "<div>\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2F3hn7wvu54oh866bqt7v7stq6gb36&thumb=960x540%23&signature=142ba368abff62daa5ab480968bddd33991280834a0e93696fdee4044c59b76c",
-        "name": "Summer Meetup",
-        "registration_url": null,
-        "summary": "On Wednesday evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/21720019",
-        "html": "https://calendar.planningcenteronline.com/events/21720019"
       }
     },
     {
@@ -2155,6 +2205,52 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/events/21719551",
         "html": "https://calendar.planningcenteronline.com/events/21719551"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "6719956",
+      "attributes": {
+        "description": "<div>\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2Fi6hbteud83pbhijqhcicfhs522b7&thumb=960x540%23&signature=a7f5cfc4897bf030d7c9ccd3078327815660629cd7603a99a29fe4320c05c7f4",
+        "name": "Community Playgroup",
+        "registration_url": null,
+        "summary": "A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/6719956",
+        "html": "https://calendar.planningcenteronline.com/events/6719956"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241936",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#BEEBDE",
+        "created_at": "2023-05-21T17:37:41Z",
+        "name": "Children & Families",
+        "position": 32768,
+        "updated_at": "2026-07-11T04:28:15Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241936"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "419299",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F5A57A",
+        "created_at": "2026-07-11T06:51:28Z",
+        "name": "Community Playgroup",
+        "position": 32768,
+        "updated_at": "2026-07-11T06:57:51Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419299"
       }
     },
     {
@@ -2407,8 +2503,8 @@
     }
   ],
   "meta": {
-    "total_count": 43,
-    "count": 43,
+    "total_count": 45,
+    "count": 45,
     "can_order_by": [
       "created_at",
       "updated_at",
