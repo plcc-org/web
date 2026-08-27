@@ -1,55 +1,9 @@
 {
-  "capturedAt": "2026-08-26T12:48:41.959Z",
+  "capturedAt": "2026-08-27T21:47:24.812Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-26T07%3A00%3A00Z&where[starts_at][lte]=2026-10-21T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-27T07%3A00%3A00Z&where[starts_at][lte]=2026-10-22T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "228134735",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/228134735",
-        "compact_recurrence_description": "Every Wednesday",
-        "ends_at": "2026-08-27T02:00:00Z",
-        "kind": "standard",
-        "location": "Sammamish Farmers Market, Upper Sammamish Commons - 801 228th Ave SE, Sammamish, WA 98074, USA",
-        "name": "Summer Meetup",
-        "published_ends_at": "2026-08-27T02:00:00Z",
-        "published_starts_at": "2026-08-27T00:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-08-27T00:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/21720019"
-          },
-          "data": {
-            "type": "Event",
-            "id": "21720019"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/228134735/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241923"
-            },
-            {
-              "type": "Tag",
-              "id": "419298"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/228134735"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "165502681",
@@ -817,6 +771,52 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227553476"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "234185003",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/234185003",
+        "compact_recurrence_description": "The third Friday of every month",
+        "ends_at": "2026-09-19T02:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Adventure Group \"Appy Hour\"",
+        "published_ends_at": "2026-09-19T01:30:00Z",
+        "published_starts_at": "2026-09-19T00:00:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-09-18T23:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22229301"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22229301"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/234185003/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241922"
+            },
+            {
+              "type": "Tag",
+              "id": "241924"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/234185003"
       }
     },
     {
@@ -1891,6 +1891,52 @@
     },
     {
       "type": "EventInstance",
+      "id": "234185004",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/234185004",
+        "compact_recurrence_description": "The third Friday of every month",
+        "ends_at": "2026-10-17T02:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Adventure Group \"Appy Hour\"",
+        "published_ends_at": "2026-10-17T01:30:00Z",
+        "published_starts_at": "2026-10-17T00:00:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-10-16T23:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22229301"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22229301"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/234185004/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241922"
+            },
+            {
+              "type": "Tag",
+              "id": "241924"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/234185004"
+      }
+    },
+    {
+      "type": "EventInstance",
       "id": "170031600",
       "attributes": {
         "all_day_event": false,
@@ -2173,52 +2219,6 @@
   "included": [
     {
       "type": "Event",
-      "id": "21720019",
-      "attributes": {
-        "description": "<div>\n  <div>On Wednesday&nbsp;evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1788249599&key=uploads%2F65711%2F3hn7wvu54oh866bqt7v7stq6gb36&thumb=960x540%23&signature=142ba368abff62daa5ab480968bddd33991280834a0e93696fdee4044c59b76c",
-        "name": "Summer Meetup",
-        "registration_url": null,
-        "summary": "On Wednesday evenings this summer, 5:30-7:00pm, join us at the Sammamish Farmers Market at the Upper Sammamish Commons. Meet at the covered restroom pavilion and then enjoy the market together!",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/21720019",
-        "html": "https://calendar.planningcenteronline.com/events/21720019"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241923",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#E7DEFA",
-        "created_at": "2023-05-21T17:25:54Z",
-        "name": "Community Event",
-        "position": -8192,
-        "updated_at": "2026-07-11T02:45:17Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241923"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "419298",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#F9D266",
-        "created_at": "2026-07-11T06:51:13Z",
-        "name": "Summer Meetups",
-        "position": 16384,
-        "updated_at": "2026-07-11T06:51:32Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419298"
-      }
-    },
-    {
-      "type": "Event",
       "id": "4368161",
       "attributes": {
         "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
@@ -2293,6 +2293,36 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/events/21719551",
         "html": "https://calendar.planningcenteronline.com/events/21719551"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241923",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#E7DEFA",
+        "created_at": "2023-05-21T17:25:54Z",
+        "name": "Community Event",
+        "position": -8192,
+        "updated_at": "2026-07-11T02:45:17Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241923"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "419298",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F9D266",
+        "created_at": "2026-07-11T06:51:13Z",
+        "name": "Summer Meetups",
+        "position": 16384,
+        "updated_at": "2026-07-11T06:51:32Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419298"
       }
     },
     {
@@ -2544,18 +2574,18 @@
     },
     {
       "type": "Event",
-      "id": "21468816",
+      "id": "22229301",
       "attributes": {
-        "description": "<div>\n  A time for ladies to take a break from the busy week and connect with one another!\n</div>\n",
+        "description": "<div>\n  <div>Appy Hours are our monthly Adventure Group gatherings to share appetizers, ideas &amp; information about upcoming adventure opportunities! Bring an appetizer to share if you can…but not required!<br><a href=\"https://plcc.churchcenter.com/groups/social-group/adventure-group\">LEARN MORE &amp; SIGN UP</a></div>\n</div>\n",
         "image_url": null,
-        "name": "Women's Coffee Break ",
+        "name": "Adventure Group \"Appy Hour\"",
         "registration_url": null,
-        "summary": "A time for ladies to take a break from the busy week and connect with one another!",
+        "summary": "Appy Hours are our monthly Adventure Group gatherings to share appetizers, ideas & information about upcoming adventure opportunities! Bring an appetizer to share if you can…but not required!",
         "visible_in_church_center": true
       },
       "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/21468816",
-        "html": "https://calendar.planningcenteronline.com/events/21468816"
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22229301",
+        "html": "https://calendar.planningcenteronline.com/events/22229301"
       }
     },
     {
@@ -2571,6 +2601,22 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241922"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21468816",
+      "attributes": {
+        "description": "<div>\n  A time for ladies to take a break from the busy week and connect with one another!\n</div>\n",
+        "image_url": null,
+        "name": "Women's Coffee Break ",
+        "registration_url": null,
+        "summary": "A time for ladies to take a break from the busy week and connect with one another!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21468816",
+        "html": "https://calendar.planningcenteronline.com/events/21468816"
       }
     },
     {
@@ -2591,8 +2637,8 @@
     }
   ],
   "meta": {
-    "total_count": 47,
-    "count": 47,
+    "total_count": 48,
+    "count": 48,
     "can_order_by": [
       "created_at",
       "updated_at",
