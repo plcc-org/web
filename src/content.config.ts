@@ -130,8 +130,9 @@ const pages = defineCollection({
   // one the CMS round-trips unchanged. Its cloud resolver strips `mediaRoot` by
   // substring, so a relative "../../assets/images/x.jpg" comes back as
   // "/assets/images../../x.jpg" and the photo silently disappears. Leadership
-  // portraits are the deliberate exception — they go through Astro's image(),
-  // which needs a path relative to the file. See test/image-ref.test.ts.
+  // portraits use the same form and the same resolver — one rule, no exceptions.
+  // See test/image-ref.test.ts, and imageRef in tina/templates.mjs for the hook
+  // that keeps saves on this shape.
   schema: z.object({
     title: z.string(),
     seoTitle: z.string().optional(),

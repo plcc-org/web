@@ -8,12 +8,13 @@ import { siteConfig } from './src/config/site.ts'
 import { createReadStream, existsSync, statSync } from 'node:fs'
 import { extname, join, normalize } from 'node:path'
 
-// Spike, dev only. Tina's media picker requests photos at /assets/images/<file>,
-// but our bytes live in src/assets/images so Astro's sharp pipeline can process
-// them — outside anything the dev server serves, so every thumbnail 404s and the
-// picker shows a wall of broken images. Serving them here keeps the canonical
-// location (and the build) untouched; the alternative, a public/ symlink, copies
-// 41 MB of unoptimized originals into dist.
+// Dev only. Tina's media picker requests photos at /assets/images/<file>, but our
+// bytes live in src/assets/images so Astro's sharp pipeline can process them —
+// outside anything the dev server serves, so every thumbnail 404s and the picker
+// shows a wall of broken images. Serving them here keeps the canonical location
+// (and the build) untouched; the alternative, a public/ symlink, copies 41 MB of
+// unoptimized originals into dist. In production the same path is a generated
+// redirect to TinaCloud's CDN — see scripts/generate-redirects.mjs.
 function tinaAssetsDevPlugin() {
   const root = new URL('./src/assets/images/', import.meta.url).pathname
   /** @type {Record<string, string>} */

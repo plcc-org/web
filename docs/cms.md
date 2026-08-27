@@ -474,8 +474,9 @@ Two things worth knowing about dev:
 - Dev runs without the Cloudflare adapter (`ASTRO_DEV=1`), so routes run on Node.
 - A dev-only Vite route serves `src/assets/images` at `/assets/images/*`, because that's
   where the media picker looks for thumbnails and Astro doesn't otherwise serve that folder.
-  See `tinaAssetsDevPlugin` in `astro.config.mjs`. Production needs its own answer here —
-  currently unresolved.
+  See `tinaAssetsDevPlugin` in `astro.config.mjs`. In production the same path is a
+  generated redirect to TinaCloud's CDN, which mirrors the repo's media — see the note in
+  `scripts/generate-redirects.mjs`.
 
 ---
 
@@ -532,8 +533,18 @@ datalayer that only exists while a build runs. `--content=local` is the flag tha
 It is the first thing to re-test after a credentials change, because it proves the deployed
 backend is actually reachable; a working login does not.
 
-Also unresolved: Tina's FAQ lists **git-backed media** as TinaCloud-only. Repo-based media
-works here, but has only ever been exercised locally.
+**Git-backed media works against the deployed admin**, with one asymmetry to know about.
+TinaCloud mirrors `src/assets/images` at its CDN (`assets.tina.io/<clientId>/<file>`) — the
+media manager and its thumbnails come from there. On read it rewrites stored refs to that
+CDN URL for _direct_ image fields only; an image field nested inside a rich-text object
+list (PhotoBand photos, LogoCards cards) reaches the form un-rewritten, and on save the
+form value is written into the MDX verbatim. Two seams this repo owns keep that honest,
+with no patch to Tina itself: every image field's `ui.parse` normalises what a save may
+store to `/assets/images/<file>` (`imageRef` in `tina/templates.mjs`), and the tests in
+`test/image-ref.test.ts` / `test/image-parse.test.ts` pin the stored form, the normaliser,
+and its presence on every image field — so a Tina upgrade that changes shape turns CI red
+instead of silently rotting content. `check-tina-lock.mjs` catches the schema side of the
+same bumps.
 
 ### Cloudflare (staging → `plcc.dev`)
 

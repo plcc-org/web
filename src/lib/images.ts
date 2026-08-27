@@ -4,8 +4,8 @@ import type { ImageMetadata } from 'astro'
 // (used for page-literal images such as Split heroes and logos) resolves to an
 // importer. Loaders are passed straight to <Image> so Astro's image service
 // manages them — only rendered images are emitted, as optimized variants (no
-// original-file dead weight). The `leadership` content collection references
-// its portraits via the image() schema helper instead of this map.
+// original-file dead weight). CMS-stored references (page blocks, leadership
+// portraits) resolve through imageFromRef below instead.
 type ImageModule = { default: ImageMetadata }
 
 const loaders = import.meta.glob<ImageModule>('../assets/images/*.{jpg,jpeg,png,webp,avif}')
@@ -20,12 +20,13 @@ export function imageLoader(filename: string): (() => Promise<ImageModule>) | un
   return byFilename.get(filename)
 }
 
-// CMS page-block images. The CMS nests an entry's uploads under
-// src/assets/images/<page-slug>/…, so we also index every image recursively by
-// its path relative to assets/images (e.g. "church-life/sunset"). The MDX
-// block wrappers resolve their stored reference ("…/assets/images/<key>")
-// through imageFromRef so CMS-uploaded photos get the same build-time
-// optimization as the rest of the site.
+// CMS page-block images, indexed recursively by path relative to assets/images
+// (e.g. "church-life/sunset.jpg"). Tina uploads flat, so today every key is a
+// bare filename; the recursion is tolerance for a legacy nested key, which must
+// degrade to a missing photo rather than resolve somewhere else (pinned in
+// test/image-ref.test.ts). The MDX block wrappers resolve their stored
+// reference ("…/assets/images/<key>") through imageFromRef so CMS-uploaded
+// photos get the same build-time optimization as the rest of the site.
 const allLoaders = import.meta.glob<ImageModule>('../assets/images/**/*.{jpg,jpeg,png,webp,avif}')
 const byPath = new Map<string, () => Promise<ImageModule>>()
 for (const [path, loader] of Object.entries(allLoaders)) {

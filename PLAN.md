@@ -21,10 +21,9 @@ cutover itself.
 - [ ] **Re-point the `/camp` short link.** `src/content/short-links/camp.yaml` expires
       2026-09-30 and needs the next Church Center event ID (minted fresh each year). Build
       logs start warning from 2026-08-31.
-- [ ] **Decide the deployed editor** — only if `/admin` ships at launch; the site itself
-      doesn't need it. Two open questions from [cms.md](./docs/cms.md): who authenticates at
-      `/admin` (TinaCloud free tier vs self-hosted auth), and production media (the
-      thumbnail route is dev-only). If `/admin` stays unpublished, defer both.
+- [ ] **Decide who authenticates at `/admin`** — TinaCloud free tier (2 editors) vs Team
+      vs self-hosted auth; see [cms.md](./docs/cms.md). Production media is resolved (the
+      `/assets/images/*` redirect to TinaCloud's CDN ships with the build).
 - [ ] **Decide on analytics.** There is none today — no beacon, no Search Console
       verification. Cloudflare Web Analytics is the zero-config option if wanted; also fine
       to launch without.
