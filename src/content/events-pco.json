@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-08-27T21:47:24.812Z",
+  "capturedAt": "2026-08-27T23:52:02.227Z",
   "links": {
     "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-27T07%3A00%3A00Z&where[starts_at][lte]=2026-10-22T07%3A00%3A00Z"
   },
