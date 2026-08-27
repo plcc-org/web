@@ -41,6 +41,24 @@ describe('imageKey', () => {
     expect(imageKey(`https://assets.tina.io/${ID}/church-life/sunset.jpg`)).toBe('church-life/sunset.jpg')
   })
 
+  // What a deployed-editor save writes for an image field nested inside a
+  // rich-text object list (PhotoBand photos, LogoCards cards): the picker's CDN
+  // URL, verbatim — TinaCloud's cloud→relative rewrite covers only direct props.
+  // Copied from commit 6042bc5. The pinned-form test below rejects the shape in
+  // content; this pins that the renderer still survives it in the meantime.
+  it('resolves the flat CDN URL a nested-field save writes', () => {
+    expect(imageKey(`https://assets.tina.io/${ID}/479169157_18157955926338056_118133880266586215_n.jpg`)).toBe(
+      '479169157_18157955926338056_118133880266586215_n.jpg'
+    )
+  })
+
+  // assets.tina.io is the host in every stored value observed so far, but the
+  // SDK's own default assets host is assets.tinajs.io — accept both, so a host
+  // change upstream degrades to nothing worse than today's shapes.
+  it('accepts either Tina assets host', () => {
+    expect(imageKey(`https://assets.tinajs.io/${ID}/visit-welcome-cafe.jpg`)).toBe('visit-welcome-cafe.jpg')
+  })
+
   // What the deployed editor *writes back* when it saves a page. Same missing
   // slash, in reverse: mediaRoot re-prefixed onto the relative path it read. Real,
   // from commit f077628 — an editor changed some text and the hero image broke.
@@ -79,7 +97,14 @@ describe('imageKey', () => {
 // guarding the path shape that has broken production twice. `hero` and `logo`
 // carry images too, and a new block can introduce another name without anyone
 // thinking to come back here.
-const IMAGE_REF = /\w+\s*[:=]\s*"?([\w./-]+\.(?:jpg|jpeg|png|webp))"?/gi
+//
+// The value class allows `:` so a full URL is visible: TinaCloud writes the CDN
+// URL verbatim when an editor replaces a photo in an image field nested inside a
+// rich-text object list (its cloud→relative rewrite covers only direct props —
+// observed in commit 6042bc5). The site happens to render that shape, so without
+// the tests seeing it, content drifts silently into CDN URLs. `.avif` is listed
+// because media.accept (tina/config.ts) allows the upload.
+const IMAGE_REF = /\w+\s*[:=]\s*"?([\w.:/-]+\.(?:jpg|jpeg|png|webp|avif))"?/gi
 
 // Every photo referenced by a CMS page has to resolve to a file we actually have.
 //
@@ -128,6 +153,16 @@ describe('CMS page image references', () => {
 describe('CMS pages store images in the form the CMS round-trips', () => {
   const PAGES = 'src/content/pages'
   const files = (readdirSync(PAGES, { recursive: true }) as string[]).filter((f) => f.endsWith('.mdx'))
+
+  // The exact hunk commit 6042bc5 landed (prettier-wrapped, value on its own
+  // line). The first regex shipped here couldn't match a value containing `:`,
+  // so a committed CDN URL was invisible to both scanning tests and CI stayed
+  // green while content drifted. This pins the blind spot shut.
+  it('sees a committed CDN URL at all', () => {
+    const hunk = '      image:\n        "https://assets.tina.io/445fdc97/479169157_n.jpg",\n'
+    const refs = [...hunk.matchAll(IMAGE_REF)].map((m) => m[1])
+    expect(refs).toEqual(['https://assets.tina.io/445fdc97/479169157_n.jpg'])
+  })
 
   const wrong: Record<string, string> = {}
   for (const file of files) {

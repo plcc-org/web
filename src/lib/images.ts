@@ -47,10 +47,12 @@ for (const [path, loader] of Object.entries(allLoaders)) {
 // slashes — leaving the catalog key. Deliberately tolerant: this is the third path
 // shape the CMS has produced, every change of shape has been invisible until
 // deployed, and a photo that fails to resolve doesn't error, it just disappears.
+// Both of Tina's asset hosts are accepted: stored values carry assets.tina.io,
+// but the SDK's own default host is assets.tinajs.io, so either could appear.
 // Exported so the shapes can be asserted directly.
 export function imageKey(ref: string): string {
   return ref
-    .replace(/^https?:\/\/assets\.tina\.io\/[^/]*/, '')
+    .replace(/^https?:\/\/assets\.tina(?:js)?\.io\/[^/]*/, '')
     .replace(/^.*\.\.\//, '')
     .replace(/^.*assets\/images\//, '')
     .replace(/^\/+/, '')
