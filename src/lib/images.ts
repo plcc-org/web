@@ -58,6 +58,25 @@ export function imageKey(ref: string): string {
     .replace(/^\/+/, '')
 }
 
+// The stored-form path for an already-resolved image, for the one context that
+// must serve the unoptimised file: the /tina-island preview (see the fallback in
+// src/components/Photo.astro). `/assets/images/<key>` is served by
+// tinaAssetsDevPlugin in dev and by the generated CDN redirect in production
+// (scripts/generate-redirects.mjs), so resolving back to it works for any photo
+// in the library — including one an editor just picked that no page references
+// yet. Eager: this imports the metadata modules (a filename and dimensions
+// each), not the image bytes, which stay behind the lazy loaders above.
+const eagerModules = import.meta.glob<ImageModule>('../assets/images/**/*.{jpg,jpeg,png,webp,avif}', { eager: true })
+const keyBySrc = new Map<string, string>()
+for (const [path, mod] of Object.entries(eagerModules)) {
+  keyBySrc.set(mod.default.src, path.replace('../assets/images/', ''))
+}
+
+export function assetPath(image: ImageMetadata): string | undefined {
+  const key = keyBySrc.get(image.src)
+  return key ? `assets/images/${key}` : undefined
+}
+
 export function imageFromRef(ref: string): (() => Promise<ImageModule>) | undefined {
   const loader = byPath.get(imageKey(ref))
   // A miss renders as a missing photo, not an error — <Photo> is optional almost

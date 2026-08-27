@@ -1,8 +1,9 @@
 ---
 import { Image, getImage } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
-import { imageLoader } from '../lib/images'
+import { imageLoader, assetPath } from '../lib/images'
 import { photoAlt } from '../lib/photos'
+import { withBase } from '../lib/url'
 
 // Thin wrapper around Astro's <Image>. Provide EITHER:
 //   • `image` — a resolved ImageMetadata (e.g. a content-collection image() field), or
@@ -61,17 +62,22 @@ const resolvedAlt = alt ?? (filename ? await photoAlt(filename) : '')
 // /_image happily, and we want dev exercising what production does.
 //
 // The original is bigger than the WebP a live page serves, which is the right
-// trade for a preview one editor sees at a time. prune-dist keeps those files
-// when the editor ships; see the note there.
+// trade for a preview one editor sees at a time. It is fetched from
+// /assets/images/<file> — the stored-form path, served by tinaAssetsDevPlugin in
+// dev and the generated CDN redirect in production — not from the emitted /_astro
+// original: prune-dist removes those (no public page references them), and a
+// photo an editor just picked may not be referenced by anything at all yet.
 const built = src ? await getImage({ src, widths, sizes, format }) : undefined
 const unoptimised = import.meta.env.PROD && built?.src.startsWith('/_image') ? src : undefined
+const unoptimisedPath = unoptimised && assetPath(unoptimised)
+const unoptimisedSrc = unoptimisedPath ? withBase(unoptimisedPath) : unoptimised?.src
 ---
 
 {
   src &&
     (unoptimised ? (
       <img
-        src={unoptimised.src}
+        src={unoptimisedSrc}
         alt={resolvedAlt}
         class={className}
         width={unoptimised.width}

@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
-// @ts-expect-error — plain-JS template palette, shared with tina/config.ts.
 import { imageRef, heroFields, templates } from '../tina/templates.mjs'
 
 // Guards the save-side normaliser on every CMS image field.
