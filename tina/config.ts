@@ -64,7 +64,7 @@ export default defineConfig({
   repoProvider: {
     defaultBranchName: 'main',
     historyUrl: ({ relativePath, branch }) => ({
-      url: `https://github.com/timsneath/plcc-web/commits/${branch}/${relativePath}`,
+      url: `https://github.com/plcc-org/web/commits/${branch}/${relativePath}`,
     }),
   },
   media: {

@@ -549,7 +549,7 @@ same bumps.
 ### Cloudflare (staging → `plcc.dev`)
 
 1. Cloudflare dashboard → **Workers & Pages → Create** → **Import a repository** (Workers
-   Builds), pick `timsneath/plcc-web` and the deploy branch.
+   Builds), pick `plcc-org/web` and the deploy branch.
 2. Build settings: **build command** `npm run build`, **deploy command**
    `npx wrangler deploy`. The adapter emits the Worker config (`main`, `assets` from
    `dist/client`, the `SESSION` KV binding); `wrangler deploy` picks it up automatically.
