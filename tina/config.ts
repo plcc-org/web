@@ -57,19 +57,14 @@ export default defineConfig({
   // A per-document link out to the file's commit history on GitHub, so "when did this
   // change, and who changed it" is answerable from the editor.
   //
-  // Pages only, and that's a limitation of the hook rather than a choice. `relativePath`
-  // is relative to the *collection* root ("church-life/pine-lake-academy.mdx"), and the
-  // callback is given nothing else — no collection, no full path — so building a repo
-  // path means knowing which collection the document came from. `.mdx` identifies `pages`
-  // on its own; the other four collections are all YAML in sibling directories and a
-  // filename can't tell them apart. Returning an empty url drops the button, which is
-  // the right failure: a history link pointing at the wrong file is worse than none.
+  // `relativePath` is, despite its name, the repo-relative content path
+  // ("src/content/pages/families.mdx") — tinacms hands the callback the form's own
+  // `path` (FileHistoryProvider) — so it needs no prefix and works for every
+  // collection, not just pages.
   repoProvider: {
     defaultBranchName: 'main',
     historyUrl: ({ relativePath, branch }) => ({
-      url: relativePath.endsWith('.mdx')
-        ? `https://github.com/timsneath/plcc-web/commits/${branch}/src/content/pages/${relativePath}`
-        : '',
+      url: `https://github.com/timsneath/plcc-web/commits/${branch}/${relativePath}`,
     }),
   },
   media: {
