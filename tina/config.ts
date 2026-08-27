@@ -1,6 +1,6 @@
 import { defineConfig } from 'tinacms'
 // @ts-expect-error — plain-JS template palette, shared with the spike harness.
-import { templates, heroFields } from './templates.mjs'
+import { templates, heroFields, imageRef } from './templates.mjs'
 // @ts-expect-error — plain-JS, shared with scripts/generate-redirects.mjs.
 import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs'
 
@@ -220,7 +220,9 @@ export default defineConfig({
         fields: [
           { name: 'name', label: 'Name', type: 'string', isTitle: true, required: true },
           { name: 'title', label: 'Role / title', type: 'string', required: true },
-          { name: 'portrait', label: 'Portrait', type: 'image', required: true },
+          // ui.parse pins the stored shape to /assets/images/<file> — see imageRef
+          // in templates.mjs for why every image field carries it.
+          { name: 'portrait', label: 'Portrait', type: 'image', required: true, ui: { parse: imageRef } },
           {
             name: 'portraitAlt',
             label: 'Portrait description (alt text)',

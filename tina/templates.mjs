@@ -53,8 +53,43 @@ const textarea = (name, label, opts = {}) => ({
   ...opts,
 })
 
+/**
+ * What an editor's pick must be stored as: `/assets/images/<file>`, the one shape a
+ * deployed save round-trips unchanged (test/image-ref.test.ts traces why).
+ *
+ * The media picker hands the field the full CDN URL (TinaMediaStore.parse returns
+ * `img.src`), and for an image field nested inside a rich-text object list —
+ * PhotoBand photos, LogoCards cards — TinaCloud writes that form value into the MDX
+ * verbatim: its cloud→relative rewrite covers only direct props (@tinacms/mdx,
+ * stringifyProps). That code runs on TinaCloud's servers, so it can't be patched
+ * here; normalising in the form is the seam we own. Runs only on change, so values
+ * an editor never touches still take TinaCloud's own conversion.
+ *
+ * Uploads are flat under mediaRoot, so the basename is the identity. Idempotent
+ * across every shape the CMS has produced — CDN URL, `/assets/images/…`, bare
+ * filename, the historical mangles — which keeps it safe on either side of a Tina
+ * upgrade. Deliberately separate from imageKey (src/lib/images.ts): that one is
+ * render-side tolerance for anything already stored; this one defines the single
+ * shape a save may write.
+ *
+ * Markdown-body inline images need no equivalent: they go through the server
+ * resolver on both read and write.
+ * @type {(value: unknown) => unknown}
+ */
+export const imageRef = (value) => {
+  if (!value || typeof value !== 'string') return value
+  const base = value.split('/').pop()?.split('?')[0]
+  return base ? `/assets/images/${base}` : value
+}
+
 /** @type {(name: string, label: string, opts?: FieldOpts) => Record<string, unknown>} */
-const image = (name, label, opts = {}) => ({ name, label, type: 'image', ...opts })
+const image = (name, label, opts = {}) => ({
+  name,
+  label,
+  type: 'image',
+  ...opts,
+  ui: { parse: imageRef, ...(typeof opts.ui === 'object' ? opts.ui : {}) },
+})
 
 /** @type {(name: string, label: string, defaultValue?: boolean, opts?: FieldOpts) => Record<string, unknown>} */
 const bool = (name, label, defaultValue = false, opts = {}) => ({
