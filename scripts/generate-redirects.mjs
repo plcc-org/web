@@ -180,6 +180,23 @@ for (const { path, note, expires, permanent } of gone) {
   )
 }
 
+// CMS media fallback. Stored photo refs are `/assets/images/<file>`, but the bytes
+// live in src/assets/images for Astro's sharp pipeline, and nothing serves them at
+// that path in production — only the deployed admin asks for it (field thumbnails
+// for refs TinaCloud's resolver leaves un-rewritten, and the /tina-island preview's
+// unoptimised fallback in src/components/Photo.astro). TinaCloud mirrors repo media
+// at its CDN, so send the request there. 302, because the CDN host is theirs to
+// change. Gated on the client ID because the URL needs it: absent credentials (CI,
+// a fresh clone) there is no deployed admin and no rule. tinaAssetsDevPlugin in
+// astro.config.mjs is this rule's dev-server counterpart. Media uploads are flat,
+// so the splat is always a bare filename.
+const clientId = process.env.PUBLIC_TINA_CLIENT_ID
+if (clientId) {
+  rules.push('# CMS media — see the note in scripts/generate-redirects.mjs.')
+  rules.push(`/assets/images/* https://assets.tina.io/${clientId}/:splat 302`)
+  rules.push('')
+}
+
 mkdirSync('public', { recursive: true })
 const header = [
   '# Generated from src/content/short-links — do not edit.',
