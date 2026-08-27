@@ -145,9 +145,10 @@ picks the CMS flags from the environment. Three parts are load-bearing:
 
 `scripts/prune-admin.mjs` keeps the CMS admin out of the published site. A deployed static
 site has no data layer, so the admin SPA would load and fail every call it makes.
-Publishing it is opt-in via `TINA_PUBLISH_ADMIN=true`, once the editor has an auth backend
-(see [cms.md](./cms.md)). Local dev is untouched: it serves `/admin` from `public/`, which
-this never looks at.
+Publishing it is opt-in via `TINA_PUBLISH_ADMIN=true` — set on the Cloudflare staging
+build, where TinaCloud provides the login (see [cms.md](./cms.md)); unset everywhere else,
+including CI. Local dev is untouched: it serves `/admin` from `public/`, which this never
+looks at.
 
 That same flag now also decides whether the SPA is **compiled** at all — see
 [the admin SPA is not built unless it ships](#the-admin-spa-is-not-built-unless-it-ships).
@@ -176,9 +177,10 @@ blames neither. `npm run tina:lock` regenerates it. See
 `tinacms build` compile the admin bundle only when `TINA_PUBLISH_ADMIN=true`. Stock, it
 compiles unconditionally.
 
-That bundle is the single largest cost in the whole pipeline, and until the editor has an
-auth backend it is thrown away every time. Measured on a 4-core Linux container — a Mac is
-roughly 4× faster, but the proportions hold:
+That bundle is the single largest cost in the whole pipeline, and on any build that
+doesn't ship the editor — CI, a local build, a deploy with the flag unset — it is thrown
+away every time. Measured on a 4-core Linux container — a Mac is roughly 4× faster, but
+the proportions hold:
 
 | Stage                                     | Stock  | Patched | Note                     |
 | ----------------------------------------- | ------ | ------- | ------------------------ |
@@ -296,8 +298,8 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
   out of the deploy — don't prune the source.
 - Render through **`<Photo>`** (`src/components/Photo.astro`), a wrapper over Astro's
   `<Image>` that emits an optimized, responsive WebP with intrinsic dimensions (no layout
-  shift). Pass it **either** an `image` (a resolved `ImageMetadata`, e.g. from a collection
-  `image()` field) **or** a `filename` from `src/assets/images` (resolved via
+  shift). Pass it **either** an `image` (a resolved `ImageMetadata`, e.g. from
+  `imageFromRef`) **or** a `filename` from `src/assets/images` (resolved via
   `src/lib/images.ts`). It renders nothing if a filename can't be resolved.
 - **The photo catalog is the single source of truth for photo metadata.** Every editorial
   photo has one entry in `src/content/photos.json` (the `photos` collection): its `id` is

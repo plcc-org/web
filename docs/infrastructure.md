@@ -71,12 +71,14 @@ itself; the repo's root `wrangler.jsonc` only adds `nodejs_compat` on top of it 
 see [cms.md](./cms.md)). Everything else has to be set in the dashboard, so the settings
 below are recorded here because nothing in the repo can assert them:
 
-| Setting              | Value                                  | If it's wrong                                                                                                 |
-| -------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Build command        | `npm run build`                        | Without the CMS wrapper the build fails at prerendering with `fetch failed`                                   |
-| `DEPLOY_ENV`         | `staging` (production: `production`)   | Falls back to staging with a build-log warning; on the production Worker that means the site is never indexed |
-| Node version         | _not set_ — comes from `.node-version` | Cloudflare's default (22.16.0) trips an `EBADENGINE` warning; Node 25 risks a datalayer hang (see cms.md)     |
-| CMS auth credentials | per the CMS backend (see cms.md)       | Editors can't sign in to /admin                                                                               |
+| Setting                 | Value                                  | If it's wrong                                                                                                 |
+| ----------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Build command           | `npm run build`                        | Without the CMS wrapper the build fails at prerendering with `fetch failed`                                   |
+| `DEPLOY_ENV`            | `staging` (production: `production`)   | Falls back to staging with a build-log warning; on the production Worker that means the site is never indexed |
+| Node version            | _not set_ — comes from `.node-version` | Cloudflare's default (22.16.0) trips an `EBADENGINE` warning; Node 25 risks a datalayer hang (see cms.md)     |
+| CMS auth credentials    | per the CMS backend (see cms.md)       | Editors can't sign in to /admin                                                                               |
+| `TINA_PUBLISH_ADMIN`    | `true` on deploys that ship the editor | `/admin` 404s — the SPA is neither compiled nor deployed (see development.md)                                 |
+| `PUBLIC_TINA_CLIENT_ID` | the TinaCloud project's client ID      | Beyond auth, it feeds the `/assets/images/*` → CDN redirect; unset, admin thumbnails and previews 404         |
 
 `DEPLOY_ENV` is the one with no safety net in the repo: it's read at build time by
 `astro.config.mjs`, and Workers Builds only takes build variables from the dashboard.
