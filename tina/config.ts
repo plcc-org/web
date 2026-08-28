@@ -57,15 +57,26 @@ export default defineConfig({
   // A per-document link out to the file's commit history on GitHub, so "when did this
   // change, and who changed it" is answerable from the editor.
   //
-  // `relativePath` is, despite its name, the repo-relative content path
-  // ("src/content/pages/families.mdx") — tinacms hands the callback the form's own
-  // `path` (FileHistoryProvider) — so it needs no prefix and works for every
-  // collection, not just pages.
+  // The two admin views disagree about what they hand this callback: the visual-editing
+  // header passes the form's repo-relative path ("src/content/pages/families.mdx"), the
+  // collection-edit header the collection-relative one ("families.mdx"), and nothing
+  // else — no collection — comes with it. A repo-relative path passes through untouched.
+  // A bare `.mdx` can only be a page (the one mdx collection), so it gets that prefix.
+  // A bare YAML filename could belong to any of the sibling YAML collections, so it
+  // drops the button instead: a history link pointing at the wrong file is worse than
+  // none.
   repoProvider: {
     defaultBranchName: 'main',
-    historyUrl: ({ relativePath, branch }) => ({
-      url: `https://github.com/plcc-org/web/commits/${branch}/${relativePath}`,
-    }),
+    historyUrl: ({ relativePath, branch }) => {
+      const path = relativePath.startsWith('src/')
+        ? relativePath
+        : relativePath.endsWith('.mdx')
+          ? `src/content/pages/${relativePath}`
+          : ''
+      return {
+        url: path ? `https://github.com/plcc-org/web/commits/${branch}/${path}` : '',
+      }
+    },
   },
   media: {
     tina: {
