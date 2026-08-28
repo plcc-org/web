@@ -41,7 +41,7 @@ behaviour being demonstrated, not assumed.
 
 ## `@tinacms/cli` — don't compile the admin SPA on every build
 
-**File:** `@tinacms+cli+2.5.6.patch`
+**File:** `@tinacms+cli+2.6.1.patch`
 
 **Upstream behaviour.** `tinacms build` compiles the 11 MB admin single-page app
 unconditionally.
@@ -59,13 +59,13 @@ editing is unaffected.
 `npm run dev:tina` still serves the editor at `/admin/index.html`.
 
 **Delete it when.** The CLI grows a flag of its own for this. There was no equivalent as of
-2.5.6.
+2.6.1.
 
 ---
 
 ## `tinacms` — block editing in the page body
 
-**File:** `tinacms+3.11.0.patch`
+**File:** `tinacms+3.12.1.patch`
 
 The page body is a `rich-text` field whose real content is a sequence of block templates
 (see `tina/templates.mjs`). Every one of those blocks is a Slate **void** node, and the
@@ -125,7 +125,7 @@ field:
 Don't save while testing — reload to discard.
 
 **Delete it when.** Upstream fixes void-node insertion and ships block-level reordering in
-the rich-text editor. Neither existed as of 3.11.0, and the void bug is worth reporting: it
+the rich-text editor. Neither existed as of 3.12.1, and the void bug is worth reporting: it
 is a data-loss bug for any Tina site whose body is built from templates.
 
 **Related, and deliberately not patched.** The slash (`/`) menu offers only headings and

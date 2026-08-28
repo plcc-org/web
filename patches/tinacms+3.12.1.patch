@@ -1,8 +1,8 @@
 diff --git a/node_modules/tinacms/dist/index.js b/node_modules/tinacms/dist/index.js
-index 69093c7..321213a 100644
+index 8bd9552..a6cfd4a 100644
 --- a/node_modules/tinacms/dist/index.js
 +++ b/node_modules/tinacms/dist/index.js
-@@ -17443,7 +17443,50 @@ const useEmbedHandles = (editor, element, baseFieldName) => {
+@@ -17856,7 +17856,50 @@ const useEmbedHandles = (editor, element, baseFieldName) => {
    const handleRemove = () => {
      handleRemoveBase(editor, element);
    };
@@ -54,7 +54,7 @@ index 69093c7..321213a 100644
  };
  const ImgEmbed = ({
    attributes,
-@@ -17638,7 +17681,18 @@ const BlockEmbed = ({
+@@ -18051,7 +18094,18 @@ const BlockEmbed = ({
  }) => {
    const selected = useSelected();
    const { templates, fieldName } = useTemplates();
@@ -74,7 +74,7 @@ index 69093c7..321213a 100644
    useHotkey("enter", () => {
      editor.tf.insertNodes([
        { type: ParagraphPlugin.key, children: [{ text: "" }] }
-@@ -17665,7 +17719,16 @@ const BlockEmbed = ({
+@@ -18078,7 +18132,16 @@ const BlockEmbed = ({
        className: "truncate cursor-pointer w-full relative inline-flex items-center justify-start px-4 py-2 rounded-l border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
      },
      label
@@ -92,7 +92,7 @@ index 69093c7..321213a 100644
  };
  const getLabel = (activeTemplate, formProps) => {
    const titleField = activeTemplate.fields.find((field) => field.isTitle);
-@@ -17699,7 +17762,35 @@ const EmbedNestedForm = ({
+@@ -18112,7 +18175,35 @@ const EmbedNestedForm = ({
      }
    );
  };
@@ -126,10 +126,10 @@ index 69093c7..321213a 100644
 +  canMoveUp,
 +  canMoveDown
 +}) => {
-   return /* @__PURE__ */ React__default.createElement(Popover$4, { as: "span", className: "-ml-px relative block" }, /* @__PURE__ */ React__default.createElement(
-     PopoverButton,
+   return /* @__PURE__ */ React__default.createElement(Popover, null, /* @__PURE__ */ React__default.createElement(PopoverTrigger, { className: "-ml-px cursor-pointer h-full relative inline-flex items-center px-1 py-0.5 rounded-r border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" }, /* @__PURE__ */ React__default.createElement(EllipsisIcon, { title: "Open options" })), /* @__PURE__ */ React__default.createElement(
+     PopoverContent,
      {
-@@ -17726,6 +17817,18 @@ const DotMenu = ({ onOpen, onRemove }) => {
+@@ -18129,6 +18220,18 @@ const DotMenu = ({ onOpen, onRemove }) => {
          )
        },
        "Edit"
@@ -148,11 +148,11 @@ index 69093c7..321213a 100644
      ), /* @__PURE__ */ React__default.createElement(
        "button",
        {
-@@ -18067,8 +18170,28 @@ const insertInlineElement = (editor, inlineElement) => {
+@@ -18469,7 +18572,28 @@ const insertInlineElement = (editor, inlineElement) => {
  const insertBlockElement = (editor, blockElement) => {
    editor.tf.withoutNormalizing(() => {
      const block = editor.api.block();
--    if (!block)
+-    if (!block) return;
 +    // PATCHED (plcc-web): with no selection at all — the state the editor is in
 +    // until it's been clicked into — this used to `return` and the insert
 +    // silently did nothing. Append instead.
@@ -173,7 +173,7 @@ index 69093c7..321213a 100644
 +        at: [...blockPath.slice(0, -1), blockPath[blockPath.length - 1] + 1],
 +        select: true
 +      });
-       return;
++      return;
 +    }
      if (isCurrentBlockEmpty(editor)) {
        editor.tf.setNodes(blockElement);

@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "_comment_postinstall": "Applies two patches, both re-generated with `npx patch-package <pkg>` after any version bump. (1) patches/@tinacms+cli+2.5.6.patch makes `tinacms build` compile the 11 MB admin SPA only when TINA_PUBLISH_ADMIN=true. Stock, it compiles unconditionally — 60s of every build, on a bundle scripts/prune-admin.mjs then deletes, because a deployed static site has no data layer to serve it. That is 60s CI never needed and 60s Cloudflare never needed. `tinacms dev` is untouched (it serves the admin from Vite, not this bundle), so local editing is unaffected. REMOVE when the CLI grows a flag for this — tinacms/tinacms has no equivalent as of 2.5.6. (2) patches/tinacms+3.11.0.patch fixes block editing in the page-body editor; see docs/cms.md, 'Editing blocks'. `tinacms` is pinned to an exact version because that patch lands in dist/index.js, which is a rollup bundle and shifts on every release. The rm clears the admin's Vite dep cache, which pre-bundles tinacms and is keyed on the lockfile rather than file contents — without it, `tinacms dev` keeps serving the unpatched editor.",
+    "_comment_postinstall": "Applies two patches, both re-generated with `npx patch-package <pkg>` after any version bump. (1) patches/@tinacms+cli+2.6.1.patch makes `tinacms build` compile the 11 MB admin SPA only when TINA_PUBLISH_ADMIN=true. Stock, it compiles unconditionally — 60s of every build, on a bundle scripts/prune-admin.mjs then deletes, because a deployed static site has no data layer to serve it. That is 60s CI never needed and 60s Cloudflare never needed. `tinacms dev` is untouched (it serves the admin from Vite, not this bundle), so local editing is unaffected. REMOVE when the CLI grows a flag for this — tinacms/tinacms has no equivalent as of 2.6.1. (2) patches/tinacms+3.12.1.patch fixes block editing in the page-body editor; see docs/cms.md, 'Editing blocks'. `tinacms` is pinned to an exact version because that patch lands in dist/index.js, which is a rollup bundle and shifts on every release. The rm clears the admin's Vite dep cache, which pre-bundles tinacms and is keyed on the lockfile rather than file contents — without it, `tinacms dev` keeps serving the unpatched editor.",
     "postinstall": "patch-package && rm -rf node_modules/@tinacms/app/node_modules/.vite",
     "dev": "ASTRO_DEV=1 astro dev",
     "dev:container": "container run --name plcc-dev --detach --rm --env ASTRO_CONTAINER_DEV=1 --publish 4321:4321 --mount type=bind,source=\"$PWD\",target=/workspace --tmpfs /workspace/node_modules --workdir /workspace docker.io/library/node:lts sh -lc \"npm ci && npm run dev -- --host 0.0.0.0 --port 4321\"",
@@ -50,7 +50,7 @@
     "@astrojs/check": "^0.9.10",
     "@astrojs/cloudflare": "^14.2.4",
     "@tinacms/astro": "^0.6.1",
-    "@tinacms/cli": "^2.5.6",
+    "@tinacms/cli": "^2.6.1",
     "@types/node": "^26.3.0",
     "patch-package": "^8.0.1",
     "postcss-html": "^2.0.0",
@@ -60,7 +60,7 @@
     "react-dom": "^19.2.8",
     "sharp": "^0.35.3",
     "stylelint": "^17.14.1",
-    "tinacms": "3.11.0",
+    "tinacms": "3.12.1",
     "typescript": "^6.0.3",
     "vitest": "^4.1.11",
     "wrangler": "^4.125.0"

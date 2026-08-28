@@ -1,8 +1,8 @@
 diff --git a/node_modules/@tinacms/cli/dist/index.js b/node_modules/@tinacms/cli/dist/index.js
-index 31bddc5..3b2b429 100644
+index 73bb4ae..adbed55 100644
 --- a/node_modules/@tinacms/cli/dist/index.js
 +++ b/node_modules/@tinacms/cli/dist/index.js
-@@ -3650,7 +3650,13 @@ ${dangerText(e.message)}
+@@ -4039,7 +4039,13 @@ ${dangerText(e.message)}
          });
        }
      }
@@ -14,6 +14,6 @@ index 31bddc5..3b2b429 100644
 +        "Skipping the admin SPA bundle (TINA_PUBLISH_ADMIN is not 'true') — see patches/ and scripts/prune-admin.mjs."
 +      );
 +    }
-     await fs10.outputFile(
+     await fs11.outputFile(
        configManager.outputGitignorePath,
        "index.html\nassets/"

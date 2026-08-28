@@ -187,7 +187,7 @@ block first puts the new one directly after it; **Insert blank line below** is t
 open a gap between two blocks that sit flush against each other.
 
 Three of those five items — everything but Edit and Remove — and the insert-after-the-
-selected-block behaviour come from `patches/tinacms+3.11.0.patch`. Stock, the editor has no
+selected-block behaviour come from `patches/tinacms+3.12.1.patch`. Stock, the editor has no
 way to reorder blocks at all, and inserting a block while another is selected **overwrites
 it**. See `patches/README.md`; the patch is re-derived by hand on every version bump, so if
 this section stops describing what the editor does, that is the first place to look.
