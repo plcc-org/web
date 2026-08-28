@@ -29,6 +29,7 @@
     "test:site": "node scripts/check-site.mjs",
     "capture:events": "node scripts/capture-events.mjs",
     "generate:social-card": "node scripts/generate-social-card.mjs",
+    "generate:favicon": "node scripts/generate-favicon.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dev:tina": "ASTRO_DEV=1 tinacms dev -c \"astro dev\"",
