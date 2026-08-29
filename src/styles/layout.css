@@ -341,7 +341,7 @@
    on the leading side. The one place a coloured rule marks a whole block, so
    keep it to genuine asides or it stops meaning anything. */
 .section-callout {
-  padding: clamp(1.75rem, 3.2vw, 2.75rem);
+  padding: var(--pad-card-roomy);
   border-radius: var(--radius-lg);
   background: var(--color-sand);
   border: 1px solid var(--color-line);
@@ -364,8 +364,8 @@
 
 /* The fluid padding above bottoms out at 1.75rem, which is still a lot of inset
    on a phone. Nothing else sets this padding, so the later rule simply wins. */
-@media (max-width: 640px) {
+@media (max-width: 560px) {
   .section-callout {
-    padding: 1.5rem;
+    padding: var(--space-lg);
   }
 }

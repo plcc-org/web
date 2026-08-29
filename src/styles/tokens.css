@@ -107,7 +107,9 @@
   --leading-relaxed: 1.72;
 
   --tracking-tight: -0.02em;
-  --tracking-wide: 0.06em;
+  --tracking-wide: 0.06em; /* the uppercase-label spread: eyebrows, day labels */
+  --tracking-slight: 0.02em; /* uppercase at small-and-bold weights, where the
+                                full spread reads gappy: cadence labels, tags */
 
   /* Organic axes for Fraunces headings. Fraunces is variable on optical size
      (opsz 9–144), SOFT (terminal rounding, 0–100), and WONK (its quirky
@@ -133,7 +135,16 @@
   --space-md: 1.25rem;
   --space-lg: 1.5rem;
   --space-xl: 3rem;
+  --space-2xl: 4.5rem; /* the step the ramp skipped; without it, values between
+                          3rem and 6rem get invented on the spot */
   --space-3xl: 6rem;
+
+  /* Card insets. Two densities, shared by every padded card surface — a
+     component states which density it is, not its own clamp(). The two
+     deliberately tighter insets (the 3-across accent card, the moment card's
+     photo-card body) stay with their components. */
+  --pad-card: clamp(1.5rem, 2.2vw, 1.85rem);
+  --pad-card-roomy: clamp(1.75rem, 3vw, 2.5rem);
 
   /* Fluid rhythm between major page sections */
   --space-section: clamp(3.25rem, 6vw, 6rem);
@@ -157,10 +168,10 @@
    * -------------------------------------------------------------------- */
   /* ----------------------------------------------------------------------
    * Breakpoints (documentation — custom properties can't reach @media)
-   * The canonical set: 560px (phone), 860px (tablet→desktop), and
-   * --width-shell − 1 (1119px) for the header. A few older queries still sit
-   * at 600/640/880/900; when touching one, move it to the nearest canonical
-   * value rather than adding another.
+   * The canonical set, and the only widths in use: 560px (phone), 860px
+   * (tablet→desktop), and --width-shell − 1 (1119px) for the header. A new
+   * query takes one of these three; a layout that seems to want its own
+   * width is the layout to adjust, not the set.
    * -------------------------------------------------------------------- */
 
   /* ----------------------------------------------------------------------

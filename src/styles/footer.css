@@ -243,7 +243,7 @@
 /* Phones and small tablets: everything becomes one column, the sitemap halves
    to two, and the whole panel tightens up — a footer this tall on a phone is
    just a long scroll past the content. */
-@media (max-width: 800px) {
+@media (max-width: 860px) {
   .site-footer {
     padding: 1rem 1rem 1.1rem;
   }

@@ -34,5 +34,5 @@
   color: var(--color-clay-ink);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-slight);
 }

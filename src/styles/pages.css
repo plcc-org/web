@@ -32,8 +32,8 @@
    and a tight grid makes a name look like it belongs to the photo below it. */
 .leader-grid {
   display: grid;
-  gap: 4.5rem 2.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-2xl) 2.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
 }
 
 /* The heading is the grid item. It exists for the outline, not for looks, so
@@ -228,7 +228,7 @@
 
 /* Phones: one portrait per row, and the profile stacks. Both photo columns are
    capped so a portrait doesn't run the full width of the screen. */
-@media (max-width: 600px) {
+@media (max-width: 560px) {
   .leader-grid {
     grid-template-columns: 1fr;
     gap: 3.5rem;
@@ -263,7 +263,7 @@
 .service-hero {
   display: grid;
   gap: var(--space-lg);
-  padding: clamp(1.25rem, 2.4vw, 2rem);
+  padding: var(--pad-card);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-mist);
   background: var(--surface-gradient-soft);
@@ -314,7 +314,7 @@
   margin-top: 1.25rem;
 }
 
-@media (min-width: 880px) {
+@media (min-width: 860px) {
   .service-hero {
     grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
     align-items: start;
@@ -345,7 +345,7 @@
   padding: 0;
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
 }
 
 /* Surface + lift from the shared card recipe (components.css); the clip keeps
