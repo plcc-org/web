@@ -44,7 +44,7 @@ const empty = events.length === 0
 
   {
     empty && (
-      <section class="section">
+      <section>
         <h2>Nothing on the calendar</h2>
         <p class="events-empty">There’s nothing dated for the next eight weeks.</p>
         <p>
@@ -58,7 +58,7 @@ const empty = events.length === 0
 
   {
     thisWeek.length > 0 && (
-      <section class="section">
+      <section>
         <h2>This week</h2>
         <ThisWeekPanel events={thisWeek} />
       </section>
@@ -67,7 +67,7 @@ const empty = events.length === 0
 
   {
     oneOffs.length > 0 && (
-      <section class="section">
+      <section>
         <h2>Coming up</h2>
         <div class="event-grid">
           {oneOffs.map((s) => (

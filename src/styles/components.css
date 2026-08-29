@@ -142,7 +142,8 @@
   }
 }
 
-/* Motion off: hold the first photo, still blurred, and drop the rest. */
+/* Motion off: hold the first photo, still blurred, drop the rest, and rest
+   the breathing glow. */
 @media (prefers-reduced-motion: reduce) {
   .hero__pane {
     animation: none;
@@ -154,6 +155,9 @@
   .hero__pane .hero__pane-img {
     animation: none;
     transform: scale(1.08);
+  }
+  .hero__media::before {
+    animation: none;
   }
 }
 
@@ -182,8 +186,15 @@
   object-fit: cover;
 }
 
+/* The still exists to stand in for the video, so its stand-in treatment is
+   baked in rather than stated per state: blurred and darkened so the headline
+   stays legible over it, overscaled so the blur's feathered edge never reaches
+   the frame. Only its opacity is stateful. */
 .hero__img {
+  opacity: 0;
   transition: opacity var(--duration-slow) var(--ease-out);
+  filter: blur(4px) brightness(0.68) saturate(1.05);
+  transform: scale(1.08);
 }
 
 .hero__video {
@@ -199,17 +210,10 @@
   animation: none;
 }
 
-/* The still photo hides behind the glow while a video hero is loading, and
-   reappears when the video is disabled (?video=0). Image-only heroes keep it. */
-.hero--has-video .hero__img {
-  opacity: 0;
-}
-/* When the still photo stands in for the video, blur and darken it a touch so
-   the headline stays legible. The slight scale hides the blur's feathered edge. */
+/* The still stays behind the glow while the video loads, and appears when the
+   video is disabled (?video=0, or the fallbacks further down). */
 .hero--no-video .hero__img {
   opacity: 1;
-  filter: blur(4px) brightness(0.68) saturate(1.05);
-  transform: scale(1.08);
 }
 .hero--no-video .hero__media::before {
   animation: none;
@@ -280,36 +284,23 @@
   text-shadow: var(--shadow-text-sm);
 }
 
-.hero__content .btn,
-.hero__content :where(a.btn) {
+.hero__content .btn {
   margin-top: 1.6rem;
 }
 
-/* Motion off: drop the video entirely and show the blurred still instead — a
-   looping background video is exactly what this preference is asking about. */
-@media (prefers-reduced-motion: reduce) {
-  .hero__media::before {
+/* Motion off (a looping background video is exactly what that preference asks
+   about), or no scripting (the video can never be given a source): one fate —
+   the still stands in and the video never shows. The glow rests too; the still
+   covers it. */
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+  .hero--has-video .hero__img {
+    opacity: 1;
+  }
+  .hero--has-video .hero__video {
+    display: none;
+  }
+  .hero--has-video .hero__media::before {
     animation: none;
-  }
-  .hero--has-video .hero__img {
-    opacity: 1;
-    filter: blur(4px) brightness(0.68) saturate(1.05);
-    transform: scale(1.08);
-  }
-  .hero--has-video .hero__video {
-    display: none;
-  }
-}
-
-/* No scripting: the video never gets a source, so show the still photo. */
-@media (scripting: none) {
-  .hero--has-video .hero__img {
-    opacity: 1;
-    filter: blur(4px) brightness(0.68) saturate(1.05);
-    transform: scale(1.08);
-  }
-  .hero--has-video .hero__video {
-    display: none;
   }
 }
 
@@ -342,10 +333,6 @@
 /* Headings default to forest ink, which disappears on a forest ground. */
 .split--forest :is(h2, h3) {
   color: var(--color-white);
-}
-
-.split--forest .split__body-inner :where(p) {
-  color: var(--color-on-dark);
 }
 
 /* The photo column. It has no intrinsic height (the image is positioned), so
@@ -757,10 +744,6 @@ a.card:hover,
   color: var(--color-clay-ink);
 }
 
-.moment-card__cta {
-  margin: 0.85rem 0 0;
-}
-
 .moment-list {
   list-style: none;
   margin: var(--space-md) 0 0;
@@ -1017,10 +1000,6 @@ a.card:hover,
  * `--roadmap-cols` from the component. On narrow screens the line is dropped
  * and the numbers move to the left margin, turning it into a vertical list.
  * ==================================================================== */
-.roadmap-section {
-  max-width: 100%;
-}
-
 .roadmap {
   position: relative;
   counter-reset: roadmap-step;
@@ -1065,7 +1044,6 @@ a.card:hover,
   border-radius: var(--radius-pill);
   display: grid;
   place-items: center;
-  font-family: var(--font-sans);
   font-weight: 700;
   font-size: var(--text-ui);
   color: var(--color-white);
@@ -1452,8 +1430,8 @@ a.card:hover,
   color: var(--color-moss-ink);
 }
 
-/* The flexible middle column; `min-width: 0` for the same reason as
-   the panel's own event column. */
+/* The flexible middle column. `min-width: 0` overrides the grid item's `auto`
+   minimum so a long title truncates the column instead of stretching the row. */
 .event-row__main {
   min-width: 0;
 }
@@ -1569,19 +1547,11 @@ a.card:hover,
   display: grid;
 }
 
-/* Out of the card: let the quote sit in open space. Drop the paper panel,
-   border, and shadow inherited from .story-quote; keep the centered serif
-   type and the moss accent rule. */
+/* Carousel mechanics only. The un-carding — dropping the paper panel and
+   centring the quote in open space — comes from `.pull-quote` (blocks.css),
+   which the slide markup shares with the standalone quote block. */
 .quote-slide {
   grid-area: 1 / 1;
-  max-width: var(--measure-wide);
-  margin-inline: auto;
-  padding: 0;
-  background: none;
-  border: 0;
-  box-shadow: none;
-  text-align: center;
-  align-items: center;
   opacity: 0;
   visibility: hidden;
   transform: translateY(8px);
@@ -1601,15 +1571,6 @@ a.card:hover,
   transition:
     opacity var(--duration-slow) var(--ease-out),
     transform var(--duration-slow) var(--ease-out);
-}
-
-/* Solo quote: larger and centered, with the accent rule centered too. */
-.quote-slide p {
-  font-size: var(--text-lg);
-}
-
-.quote-slide::before {
-  margin-inline: auto;
 }
 
 .quote-carousel__controls {
@@ -1644,11 +1605,6 @@ a.card:hover,
   transform: translateY(-1px);
 }
 
-.quote-nav:focus-visible {
-  outline: 2px solid var(--color-moss);
-  outline-offset: 2px;
-}
-
 .quote-dots {
   display: flex;
   align-items: center;
@@ -1675,9 +1631,4 @@ a.card:hover,
 .quote-dot.is-active {
   background: var(--color-ember);
   transform: scale(1.3);
-}
-
-.quote-dot:focus-visible {
-  outline: 2px solid var(--color-moss);
-  outline-offset: 2px;
 }

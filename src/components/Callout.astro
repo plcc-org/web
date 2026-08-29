@@ -13,7 +13,7 @@ type Props = {
 const { heading, tinaField } = Astro.props
 ---
 
-<section class="section section-callout" data-reveal data-tina-field={tinaField}>
+<section class="section-callout" data-reveal data-tina-field={tinaField}>
   {heading && <h2>{heading}</h2>}
   <slot />
 </section>

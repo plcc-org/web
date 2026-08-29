@@ -19,7 +19,7 @@ const {
   heading = 'Moments from Pine Lake',
   eyebrow = null,
   images = [],
-  class: className = 'section',
+  class: className,
   reveal = false,
   tinaField,
 } = Astro.props
@@ -27,7 +27,7 @@ const {
 const tiles = images
 ---
 
-<section data-tina-field={tinaField} {...reveal && { 'data-reveal': true }} class:list={['moments', className]}>
+<section data-tina-field={tinaField} {...reveal && { 'data-reveal': true }} class={className}>
   {
     (eyebrow || heading) && (
       <div class="moments__head">

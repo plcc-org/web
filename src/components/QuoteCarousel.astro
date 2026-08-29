@@ -26,7 +26,10 @@ const { quotes } = Astro.props
   <div class="quote-carousel__viewport">
     {
       quotes.map((quote, i) => (
-        <blockquote class:list={['story-quote', 'quote-slide', i === 0 && 'is-active']} aria-hidden={i !== 0}>
+        <blockquote
+          class:list={['story-quote', 'pull-quote', 'quote-slide', i === 0 && 'is-active']}
+          aria-hidden={i !== 0}
+        >
           <p>{quote.text}</p>
           {quote.by && <footer>— {quote.by}</footer>}
         </blockquote>

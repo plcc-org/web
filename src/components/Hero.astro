@@ -27,7 +27,10 @@ const { video, images = [], eyebrow, title, subhead, tinaField } = Astro.props
 // fallback (`.hero__img`) — what reduced-motion, no-script and ?video=0 show
 // instead of the video. Without a video, the images drive the drift strip.
 const useVideo = Boolean(video)
-const heroPanes = useVideo ? [] : images
+// Capped at 4: the hero-pane-fade keyframes (components.css) hold each pane
+// for a quarter of the cycle, so extra panes would open dark gaps between
+// cross-fades. Fewer than 4 leaves gaps the same way — feed the strip 4.
+const heroPanes = (useVideo ? [] : images).slice(0, 4)
 const usePhotos = heroPanes.length > 0
 const still = useVideo ? images[0] : undefined
 ---

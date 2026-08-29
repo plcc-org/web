@@ -192,7 +192,9 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
   text-decoration: none;
   color: inherit;
   white-space: nowrap;
-  transition: all var(--duration-fast) var(--ease-out);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
   padding: 0.25rem 0;
   border-bottom: 2px solid transparent;
 }

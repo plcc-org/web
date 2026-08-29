@@ -30,9 +30,6 @@
     radial-gradient(circle at 12% 10%, rgba(var(--color-moss-rgb), 0.35) 0%, rgba(var(--color-moss-rgb), 0) 45%),
     linear-gradient(145deg, var(--color-forest-deep) 0%, var(--color-forest-deep-2) 48%, var(--color-forest-deep) 100%);
   color: var(--color-stone);
-  border-radius: 0;
-  border: 0;
-  box-shadow: none;
   position: relative;
   overflow: hidden;
 }
@@ -225,7 +222,6 @@
 .site-footer__social-icon--youtube {
   width: 1.58rem;
   height: 1.12rem;
-  transform: translateY(0.01rem);
 }
 
 .site-footer__social-icon--podcast {
@@ -249,8 +245,6 @@
    just a long scroll past the content. */
 @media (max-width: 800px) {
   .site-footer {
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
     padding: 1rem 1rem 1.1rem;
   }
 
@@ -269,10 +263,6 @@
     gap: var(--space-md) 1rem;
     margin-bottom: 1.1rem;
     padding-bottom: 1.1rem;
-  }
-
-  .site-footer__info {
-    font-size: var(--text-ui);
   }
 
   /* Full width forces the address onto its own line under the name, rather

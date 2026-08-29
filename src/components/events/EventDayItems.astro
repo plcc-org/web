@@ -16,7 +16,7 @@ const { items } = Astro.props
       return (
         <li class="day-events__item">
           <span class="day-events__time">{e.time}</span>
-          <span class="day-events__what">
+          <span>
             <a
               class="day-events__title"
               href={resolveHref(e.url)}

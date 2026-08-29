@@ -21,7 +21,7 @@ const cols = Number(columns) === 3 ? 3 : 2
 const headingLevel = heading ? 3 : 2
 ---
 
-<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
+<section data-reveal data-tina-field={blockField(Astro.props)}>
   <SectionHeader eyebrow={eyebrow} heading={heading} />
   <AccentList items={items} columns={cols} headingLevel={headingLevel} />
 </section>

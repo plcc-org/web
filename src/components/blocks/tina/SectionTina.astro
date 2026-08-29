@@ -7,7 +7,7 @@ type Props = { eyebrow?: string; heading?: string; children?: unknown } & BlockP
 const { eyebrow, heading, children } = Astro.props
 ---
 
-<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
+<section data-reveal data-tina-field={blockField(Astro.props)}>
   <SectionHeader eyebrow={eyebrow} heading={heading} />
   <div class="measure"><TinaChildren content={children as never} /></div>
 </section>

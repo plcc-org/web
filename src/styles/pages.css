@@ -162,12 +162,8 @@
   margin-bottom: 1.5rem;
 }
 
-/* The bio is rendered from Markdown, so it gets sans body type and its own
-   paragraph rhythm via the owl selector rather than margins on <p>. */
-.leader-detail__prose {
-  font-family: var(--font-sans);
-}
-
+/* The bio is rendered from Markdown; its paragraph rhythm comes from the owl
+   selector rather than margins on <p>. */
 .leader-detail__prose > * + * {
   margin-top: 1rem;
 }
@@ -176,7 +172,6 @@
 .leader-detail__meta {
   margin-top: 1.5rem;
   font-size: var(--text-ui);
-  font-family: var(--font-sans);
 }
 
 .leader-detail__meta a {
@@ -184,7 +179,9 @@
   font-weight: 700;
   text-decoration: none;
   border-bottom: 2px solid var(--color-mist);
-  transition: all var(--duration-fast) var(--ease-out);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
 }
 
 .leader-detail__meta a:hover {
@@ -258,10 +255,6 @@
  * One featured service at the top with an embedded player, then a grid of
  * past services as thumbnail cards.
  * ==================================================================== */
-.archive-page {
-  color: var(--color-forest);
-}
-
 /* ------------------------------------------------------------------ *
  * The featured service
  * ------------------------------------------------------------------ */
@@ -277,12 +270,12 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Padding-top is the 16:9 ratio trick — the iframe has no intrinsic size, so
-   the box has to reserve the height before the embed loads into it. */
+/* The ratio reserves the height before the embed loads — an iframe has no
+   intrinsic size. */
 .service-hero__media {
   position: relative;
   width: 100%;
-  padding-top: 56.25%;
+  aspect-ratio: 16 / 9;
   border-radius: var(--radius-soft);
   overflow: hidden;
   background: var(--color-backdrop);

@@ -15,7 +15,7 @@ type Props = { eyebrow?: string; heading?: string; steps?: Step[] } & BlockProps
 const { eyebrow, heading, steps = [] } = Astro.props
 ---
 
-<section class="section roadmap-section" data-reveal data-tina-field={blockField(Astro.props)}>
+<section data-reveal data-tina-field={blockField(Astro.props)}>
   <SectionHeader eyebrow={eyebrow} heading={heading} />
   <ol class="roadmap" role="list" style={`--roadmap-cols:${Math.max(steps.length, 1)}`}>
     {

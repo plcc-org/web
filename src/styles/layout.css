@@ -120,7 +120,7 @@
 }
 
 /* Prose links on a forest band need light text to stay legible */
-.band--forest a:not(.btn):not(.btn--ghost) {
+.band--forest a:not(.btn) {
   color: var(--color-white);
   text-decoration-color: var(--color-on-dark-line);
 }

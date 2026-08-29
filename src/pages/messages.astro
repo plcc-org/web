@@ -11,15 +11,15 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
   title="Messages"
   description="Watch recent Sunday services from Pine Lake Covenant Church in Sammamish — teaching, music, and prayer, whenever suits you."
 >
-  <div class="canvas archive-page">
-    <PageIntro eyebrow="Sunday Messages" title="Worship with us anytime" class="archive-header">
+  <div class="canvas">
+    <PageIntro eyebrow="Sunday Messages" title="Worship with us anytime">
       <p class="lede">
         Catch up on recent Sunday services or revisit a message that encouraged you. Start with the latest service
         below, then browse the archive.
       </p>
     </PageIntro>
 
-    <section class="section service-hero" aria-labelledby="latest-service-heading">
+    <section class="service-hero" aria-labelledby="latest-service-heading">
       <div class="service-hero__media">
         <iframe
           src={latestService.embedUrl}
@@ -49,7 +49,7 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
       </div>
     </section>
 
-    <section class="section to-wide" aria-labelledby="archive-heading">
+    <section class="to-wide" aria-labelledby="archive-heading">
       <div class="archive-section__header">
         <p class="eyebrow">Archive</p>
         <h2 id="archive-heading">Service archive</h2>

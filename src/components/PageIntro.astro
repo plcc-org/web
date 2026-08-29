@@ -16,7 +16,7 @@ type Props = {
 const { eyebrow, title, subhead, class: className, tinaField } = Astro.props
 ---
 
-<header class:list={['section', 'page-intro', className]} data-tina-field={tinaField}>
+<header class:list={['page-intro', className]} data-tina-field={tinaField}>
   {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   <h1 class="display">{title}</h1>
   {subhead && <p class="subhead">{subhead}</p>}

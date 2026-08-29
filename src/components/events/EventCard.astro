@@ -30,16 +30,16 @@ const external = isWebUrl(e.url)
   target={external ? '_blank' : undefined}
 >
   <span class="event-card__when">
-    <span class="event-card__dow">{fmtDay(start)}</span>
+    <span>{fmtDay(start)}</span>
     <span class="event-card__date">{fmtDate(start)}</span>
-    {!e.allDay && <span class="event-card__time">{fmtTime(start)}</span>}
+    {!e.allDay && <span>{fmtTime(start)}</span>}
   </span>
 
   <span class="event-card__title">{e.title}</span>
 
   <span class="event-card__meta">
     <span class="tag">{e.category}</span>
-    {venue && <span class="event-card__venue">{venue}</span>}
+    {venue && <span>{venue}</span>}
   </span>
 
   {e.summary && <span class="event-card__summary">{e.summary}</span>}

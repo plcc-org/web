@@ -19,7 +19,7 @@ type Props = {
 const { eyebrow, heading, intro, columns, large, cards = [] } = Astro.props
 ---
 
-<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
+<section data-reveal data-tina-field={blockField(Astro.props)}>
   <SectionHeader eyebrow={eyebrow} heading={heading} />
   {intro && <p class="measure" set:html={renderInline(intro)} />}
   {

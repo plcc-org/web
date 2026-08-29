@@ -13,7 +13,7 @@ const { quote, attribution, tone = 'none' } = Astro.props
 
 {
   tone === 'none' ? (
-    <section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
+    <section data-reveal data-tina-field={blockField(Astro.props)}>
       <blockquote class="story-quote pull-quote">
         <p>{quote}</p>
         {attribution && <footer>— {attribution}</footer>}

@@ -16,7 +16,7 @@ const events = (await getUpcomingEvents()).filter((e) => category === 'all' || e
 
 {
   events.length > 0 && (
-    <section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
+    <section data-reveal data-tina-field={blockField(Astro.props)}>
       {heading && <h2>{heading}</h2>}
       <div class="event-list">
         {events.map((e) => (

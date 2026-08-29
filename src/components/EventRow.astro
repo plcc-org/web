@@ -26,7 +26,7 @@ const venue = venueLabel(event.location)
   <div class="event-row__main">
     <div class="event-row__title">{event.title}</div>
     <div class="event-row__meta">
-      <span class="tag event-row__cat">{event.category}</span>
+      <span class="tag">{event.category}</span>
       <span>
         {event.allDay ? 'All day' : fmtTime(start)}
         {venue ? ` · ${venue}` : ''}

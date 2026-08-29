@@ -18,7 +18,7 @@ const { url, title, caption } = Astro.props
 const embed = embedFrom(url)
 ---
 
-<section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
+<section data-reveal data-tina-field={blockField(Astro.props)}>
   <figure class="media media--flush">
     <div class="media__frame media__embed">
       {
