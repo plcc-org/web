@@ -303,7 +303,8 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
   `alt`, and renders nothing without an image.
 - **The photo catalog is the single source of truth for photo descriptions.** Every
   editorial photo has one entry in `src/content/photos/photos.json` (the `photos`
-  collection; "Photo descriptions" in the CMS): its `id` is the filename and `alt` is its
+  collection; "Photo descriptions" in the CMS): its `id` stores the `/assets/images/<file>`
+  reference (the CMS round-trip shape; the loader keys by filename) and `alt` is its
   description, written once. The catalog is **agnostic of how photos are used** — it
   knows nothing about pages, sections, or order.
 - **Blocks inherit the catalog description.** A block's alt field is optional: blank

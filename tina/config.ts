@@ -395,10 +395,13 @@ export default defineConfig({
       // (altFor in src/lib/photos.ts). Modelled like Homepage quotes: a single
       // JSON file as a one-document collection, create/delete removed.
       //
-      // `id` is the catalog key — the bare filename in src/assets/images. The
-      // image picker hands the field a full path/URL, so `parse` strips it to the
-      // basename on save, and `format` re-prefixes the stored form so the picker
-      // and thumbnail still recognise it.
+      // `id` stores `/assets/images/<file>` via the shared imageRef hook — the
+      // one shape every image field uses, because it is the only one TinaCloud
+      // round-trips unchanged (see imageRef in tina/templates.mjs). A bare
+      // filename was tried first and broke the deployed admin's thumbnails:
+      // TinaCloud's resolver mangles any other shape on read. The Astro loader
+      // strips the path back to the filename the catalog is keyed by
+      // (src/content.config.ts).
       {
         name: 'photoCatalog',
         label: 'Photo descriptions',
@@ -412,19 +415,15 @@ export default defineConfig({
             type: 'object',
             list: true,
             openFormOnCreate: true,
-            ui: { itemProps: (item) => ({ label: item?.id || 'Photo' }) },
+            // Rows label by filename — the stored value carries the path prefix.
+            ui: { itemProps: (item) => ({ label: item?.id?.split('/').pop() || 'Photo' }) },
             fields: [
               {
                 name: 'id',
                 label: 'Photo file',
                 type: 'image',
                 required: true,
-                ui: {
-                  parse: (value: unknown) =>
-                    typeof value === 'string' && value ? (value.split('/').pop()?.split('?')[0] ?? value) : value,
-                  format: (value: unknown) =>
-                    typeof value === 'string' && value && !value.includes('/') ? `/assets/images/${value}` : value,
-                },
+                ui: { parse: imageRef },
               },
               {
                 name: 'alt',

@@ -41,10 +41,17 @@ describe('image references resolve to assets', () => {
 })
 
 describe('photo catalog', () => {
-  const catalog = JSON.parse(readFileSync('src/content/photos/photos.json', 'utf-8')).photos as {
-    id: string
-    alt: string
-  }[]
+  // Entries store the full `/assets/images/<file>` reference (the CMS
+  // round-trip shape); the catalog is keyed by the basename.
+  const catalog = (
+    JSON.parse(readFileSync('src/content/photos/photos.json', 'utf-8')).photos as { id: string; alt: string }[]
+  ).map((p) => ({ ...p, id: p.id.split('/').pop() as string }))
+
+  it('every entry is stored as /assets/images/<file>', () => {
+    const raw = JSON.parse(readFileSync('src/content/photos/photos.json', 'utf-8')).photos as { id: string }[]
+    const wrong = raw.filter((p) => !p.id.startsWith('/assets/images/')).map((p) => p.id)
+    expect(wrong).toEqual([])
+  })
 
   it('every catalogued photo file exists', () => {
     const missing = catalog.filter((p) => !assets.has(p.id)).map((p) => p.id)

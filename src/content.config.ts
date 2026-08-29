@@ -39,9 +39,19 @@ const yamlList =
 //
 // Wrapped as `{ "photos": [...] }` in its own directory, like the quotes list,
 // so the CMS can edit it as a one-document collection ("Photo descriptions").
+//
+// On disk each entry's `id` is the stored image reference,
+// `/assets/images/<file>` — the one shape the CMS round-trips unchanged (see
+// imageRef in tina/templates.mjs). The catalog itself is keyed by bare
+// filename, which is what imageKey() reduces any reference to, so the parser
+// strips the path here and altFor's lookups stay filename → alt.
 const photos = defineCollection({
   loader: file('src/content/photos/photos.json', {
-    parser: (text) => JSON.parse(text).photos,
+    parser: (text) =>
+      JSON.parse(text).photos.map((p: { id: string; alt: string }) => ({
+        ...p,
+        id: p.id.split('/').pop(),
+      })),
   }),
   schema: z.object({
     id: z.string(),

@@ -533,7 +533,8 @@ automatically flips to a light fill so it doesn't read green-on-green.
 **Favour portrait (4:5 or taller); avoid landscape crops.**
 
 - Photo **bytes** live in `src/assets/images/`. Photo **descriptions** live once in
-  `src/content/photos/photos.json` — `{ id, alt }` where `id` is the filename. The
+  `src/content/photos/photos.json` — `{ id, alt }` where `id` is the stored
+  `/assets/images/<file>` reference, keyed by filename at load. The
   catalog is the single source of truth for `alt` and stays agnostic of where a photo is
   used; a block's inline alt is a per-page override (`altFor()`, `src/lib/photos.ts`).
 - Render through **`<Photo>`**, a wrapper over Astro's `<Image>` emitting responsive WebP
