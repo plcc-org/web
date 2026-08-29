@@ -1,7 +1,7 @@
 name: Capture events
 
 # Pulls the church's public calendar from the Planning Center API into
-# src/content/events-pco.json and commits it. The commit pushes to `main`, which
+# src/data/events-pco.json and commits it. The commit pushes to `main`, which
 # triggers Cloudflare Workers Builds to redeploy with fresh events — and, because
 # it rebuilds daily, also prunes events that have become past.
 #
@@ -42,7 +42,7 @@ jobs:
 
       - run: npm ci
 
-      # Capture the calendar → writes src/content/events-pco.json. Refuses to
+      # Capture the calendar → writes src/data/events-pco.json. Refuses to
       # write an empty result, or one where any row's public visibility can't be
       # verified against its parent Event.
       - run: npm run capture:events
@@ -56,12 +56,12 @@ jobs:
 
       - name: Commit refreshed capture
         run: |
-          if git diff --quiet -- src/content/events-pco.json; then
+          if git diff --quiet -- src/data/events-pco.json; then
             echo "Capture unchanged — nothing to commit."
           else
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add src/content/events-pco.json
+            git add src/data/events-pco.json
             git commit -m "chore(events): refresh calendar capture"
             git push
           fi

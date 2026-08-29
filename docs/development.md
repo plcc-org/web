@@ -43,7 +43,8 @@ src/
     youth-moments/  Youth photo captions
     short-links/    Redirects + 410s (NOT an Astro collection — see below)
     photos/         The photo catalog (photos.json): filename → alt, written once
-    quotes.yaml, events-pco.json
+    quotes.yaml
+  data/             Machine-written data (events-pco.json, the nightly PCO capture)
   content.config.ts Collection definitions + Zod schemas
   layouts/          BaseLayout.astro (head, header, footer, skip link, JSON-LD)
   lib/              Image registry, photo catalog, URL/markdown helpers, events, messages

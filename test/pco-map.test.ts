@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mapPcoBody } from '../src/lib/events/adapters/pco-map'
-import capture from '../src/content/events-pco.json'
+import capture from '../src/data/events-pco.json'
 
 /** Build a Planning Center-shaped body from a compact spec. */
 function body(

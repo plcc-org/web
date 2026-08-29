@@ -1,6 +1,4 @@
 ---
-import { resolveHref } from '../lib/url'
-
 // The big, recurring tentpoles of the youth program (from the `youthMoments`
 // collection). Featured moments render as large cards for special attention;
 // the rest fall into a compact list beneath them.
@@ -8,7 +6,6 @@ type Moment = {
   title: string
   when?: string
   blurb: string
-  link?: { label?: string; href?: string }
   featured: boolean
 }
 
@@ -41,11 +38,6 @@ const rest = moments.filter((m) => !m.featured)
               {m.when && <p class="moment-card__cadence">{m.when}</p>}
               <h3 class="moment-card__title">{m.title}</h3>
               <p class="moment-card__blurb">{m.blurb}</p>
-              {m.link?.href && (
-                <p class="moment-card__cta">
-                  <a href={resolveHref(m.link.href)}>{m.link.label} →</a>
-                </p>
-              )}
             </div>
           </article>
         ))}

@@ -2639,12 +2639,7 @@
   "meta": {
     "total_count": 48,
     "count": 48,
-    "can_order_by": [
-      "created_at",
-      "updated_at",
-      "starts_at",
-      "ends_at"
-    ],
+    "can_order_by": ["created_at", "updated_at", "starts_at", "ends_at"],
     "can_query_by": [
       "calendar_ids",
       "created_at",
@@ -2655,12 +2650,7 @@
       "tag_ids",
       "updated_at"
     ],
-    "can_include": [
-      "event",
-      "event_times",
-      "resource_bookings",
-      "tags"
-    ],
+    "can_include": ["event", "event_times", "resource_bookings", "tags"],
     "can_filter": [
       "future",
       "not_pending_event_requests",

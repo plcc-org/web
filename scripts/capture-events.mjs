@@ -3,7 +3,7 @@
 //
 // Runs out-of-band (daily in CI, see .github/workflows/capture-events.yml)
 // rather than during the site build: the Cloudflare adapter prerenders in
-// workerd, which has no `node:fs`, so src/content/events-pco.json is imported
+// workerd, which has no `node:fs`, so src/data/events-pco.json is imported
 // statically and inlined by Vite. Committing it also keeps builds hermetic and
 // makes each day's calendar change a reviewable diff.
 //
@@ -19,7 +19,7 @@ const BASE = 'https://api.planningcenteronline.com/calendar/v2'
 const API_VERSION = '2026-06-22'
 const USER_AGENT = 'plcc-web (+https://plcc.org)'
 const WINDOW_DAYS = 56
-const OUT = fileURLToPath(new URL('../src/content/events-pco.json', import.meta.url))
+const OUT = fileURLToPath(new URL('../src/data/events-pco.json', import.meta.url))
 
 const { PCO_APP_ID, PCO_SECRET } = process.env
 if (!PCO_APP_ID || !PCO_SECRET) {

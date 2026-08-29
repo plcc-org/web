@@ -5,15 +5,13 @@ import { getCollection } from 'astro:content'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // MDX wrapper for the Quotes carousel block — the rotating "voices" band, pulled
-// from the shared `quotes` collection (sorted by order). Distinct from the
-// single Quote block. Renders inside a tonal Band with an optional lead line;
-// renders nothing if there are no quotes.
+// from the shared `quotes` collection in file order (reorder by dragging rows in
+// the CMS). Distinct from the single Quote block. Renders inside a tonal Band
+// with an optional lead line; renders nothing if there are no quotes.
 type Props = { eyebrow?: string; heading?: string; intro?: string; tone?: 'forest' | 'sand' | 'paper' } & BlockProps
 const { eyebrow, heading, intro, tone = 'sand' } = Astro.props
 
-const quotes = (await getCollection('quotes'))
-  .sort((a, b) => a.data.order - b.data.order)
-  .map((q) => ({ text: q.data.text, by: q.data.by }))
+const quotes = (await getCollection('quotes')).map((q) => ({ text: q.data.text, by: q.data.by }))
 ---
 
 {

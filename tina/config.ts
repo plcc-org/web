@@ -254,15 +254,28 @@ export default defineConfig({
         defaultItem: () => ({ order: 0 }),
         fields: [
           { name: 'name', label: 'Name', type: 'string', isTitle: true, required: true },
-          { name: 'title', label: 'Role / title', type: 'string', required: true },
+          {
+            name: 'title',
+            label: 'Role / title',
+            type: 'string',
+            required: true,
+            description: 'As it should read under the name — "Lead Pastor", "Director, Communications".',
+          },
           // ui.parse pins the stored shape to /assets/images/<file> — see imageRef
           // in templates.mjs for why every image field carries it.
-          { name: 'portrait', label: 'Portrait', type: 'image', required: true, ui: { parse: imageRef } },
+          {
+            name: 'portrait',
+            label: 'Portrait',
+            type: 'image',
+            required: true,
+            ui: { parse: imageRef },
+            description: 'A portrait-orientation photo — the page crops it 4:5, so landscape shots lose their edges.',
+          },
           {
             name: 'portraitAlt',
             label: 'Portrait description (alt text)',
             type: 'string',
-            required: true,
+            description: 'Usually leave blank — "Name, Role" is used. Write one only if the photo needs more.',
           },
           {
             name: 'bio',
@@ -270,17 +283,21 @@ export default defineConfig({
             type: 'string',
             required: true,
             ui: { component: 'textarea' },
+            description: 'A few short paragraphs. Markdown works here — links, bold, paragraphs.',
           },
           {
             name: 'order',
             label: 'Order',
             type: 'number',
-            description: 'Lower numbers come first on the leadership page.',
+            description:
+              'Lower numbers come first on the leadership page. Leave gaps (10, 20, 30 …) so someone new can ' +
+              'slot in without renumbering.',
           },
           {
             name: 'link',
             label: 'Link (optional)',
             type: 'object',
+            description: 'An optional "read more" line under the bio. Both parts are needed for it to show.',
             fields: [
               { name: 'label', label: 'Link label', type: 'string' },
               { name: 'href', label: 'Link URL', type: 'string' },
@@ -307,8 +324,7 @@ export default defineConfig({
             name: 'when',
             label: 'When',
             type: 'string',
-            required: true,
-            description: 'A human label — a date range ("August 10–17, 2026") or a cadence ("Each spring").',
+            description: 'A human label — a date range ("August 10–17, 2026") or a cadence ("Each spring"). Optional.',
           },
           {
             name: 'blurb',
@@ -323,15 +339,12 @@ export default defineConfig({
             type: 'boolean',
             description: 'Featured moments get a large card; the rest fall into a compact list.',
           },
-          { name: 'order', label: 'Order', type: 'number' },
           {
-            name: 'link',
-            label: 'Link (optional)',
-            type: 'object',
-            fields: [
-              { name: 'label', label: 'Link label', type: 'string' },
-              { name: 'href', label: 'Link URL', type: 'string' },
-            ],
+            name: 'order',
+            label: 'Order',
+            type: 'number',
+            description:
+              'Lower numbers come first. Leave gaps (10, 20, 30 …) so a new moment can slot in without renumbering.',
           },
         ],
       },
@@ -358,10 +371,9 @@ export default defineConfig({
             type: 'object',
             list: true,
             openFormOnCreate: true,
-            ui: { itemProps: (item) => ({ label: item?.by || item?.id || 'Quote' }) },
+            // Rows show in the order they appear on the site — drag to reorder.
+            ui: { itemProps: (item) => ({ label: item?.by || item?.text || 'Quote' }) },
             fields: [
-              { name: 'id', label: 'ID', type: 'string', required: true },
-              { name: 'order', label: 'Order', type: 'number' },
               {
                 name: 'text',
                 label: 'Quote',

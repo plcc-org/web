@@ -33,7 +33,7 @@ Planning Center Calendar API
         │
         │  nightly, in CI, with a personal access token
         ▼
-scripts/capture-events.mjs ──writes──► src/content/events-pco.json  (committed)
+scripts/capture-events.mjs ──writes──► src/data/events-pco.json  (committed)
                                               │
                                               │  imported at build time
                                               ▼
@@ -78,7 +78,7 @@ with `EventSource` in `src/lib/events/types.ts` — there's a comment on both si
 
 | Source    | Status         | What it is                                                                                                |
 | --------- | -------------- | --------------------------------------------------------------------------------------------------------- |
-| `pco`     | **production** | The Planning Center Calendar API, captured daily to `src/content/events-pco.json`. Default in production. |
+| `pco`     | **production** | The Planning Center Calendar API, captured daily to `src/data/events-pco.json`. Default in production.    |
 | `curated` | **live**       | Hand-maintained real events, generated from recurrence rules. The dev default and the permanent fallback. |
 | `ics`     | not built      | A public ICS feed, if one is ever exposed. Throws; provider falls back.                                   |
 
@@ -346,7 +346,7 @@ node --env-file=.env scripts/capture-events.mjs
 ```
 
 Or `npm run capture:events` with the two variables already exported. Either way it
-rewrites `src/content/events-pco.json` in place; commit the result or throw it away.
+rewrites `src/data/events-pco.json` in place; commit the result or throw it away.
 
 Local dev doesn't need a fresh capture — `defaultSource()` picks `curated` outside
 production. To render the real calendar locally, build with `EVENTS_SOURCE=pco`.

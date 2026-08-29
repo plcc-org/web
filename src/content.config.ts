@@ -58,10 +58,9 @@ const photos = defineCollection({
 const youthMoments = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/youth-moments' }),
   schema: z.object({
-    title: z.string(),
+    title: z.string().min(1),
     when: z.string().optional(),
     blurb: z.string().min(1),
-    link: z.object({ label: z.string(), href: z.string() }).optional(),
     featured: z.boolean().default(false),
     order: z.number().default(0),
   }),
@@ -82,22 +81,30 @@ const leadership = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/leadership' }),
   schema: () =>
     z.object({
-      name: z.string(),
-      title: z.string(),
+      name: z.string().min(1),
+      title: z.string().min(1),
       portrait: z.string().min(1),
-      portraitAlt: z.string().min(1),
+      // Optional: absent falls back to "Name, Title", derived at render — the
+      // five hand-written values were exactly that, one with a typo.
+      portraitAlt: z.string().optional(),
       bio: z.string().min(1),
       order: z.number().default(0),
-      link: z.object({ label: z.string().optional(), href: z.string().optional() }).optional(),
+      // Half a link renders as "undefined →", so an incomplete pair collapses
+      // to no link rather than failing a CMS save or rendering garbage.
+      link: z
+        .object({ label: z.string().optional(), href: z.string().optional() })
+        .optional()
+        .transform((l) => (l?.label && l?.href ? { label: l.label, href: l.href } : undefined)),
     }),
 })
 
+// Quotes render in file order — the position in the YAML list is the ordering,
+// and the loader synthesizes each entry's store id from it.
 const quotes = defineCollection({
   loader: file('src/content/quotes/quotes.yaml', { parser: yamlList('quotes') }),
   schema: z.object({
     id: z.string(),
-    order: z.number().default(0),
-    text: z.string(),
+    text: z.string().min(1),
     by: z.string().optional(),
   }),
 })

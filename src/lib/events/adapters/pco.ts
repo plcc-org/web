@@ -1,6 +1,6 @@
 // Planning Center adapter — calendar data captured out-of-band by
 // scripts/capture-events.mjs (run daily in CI) and committed to
-// src/content/events-pco.json.
+// src/data/events-pco.json.
 //
 // The capture runs out-of-band rather than during the site build because the
 // Cloudflare adapter prerenders in workerd, which has no `node:fs`: the JSON is
@@ -10,7 +10,7 @@
 // Actions rather than Cloudflare's build environment, and makes each day's
 // calendar change a reviewable diff.
 
-import capture from '../../../content/events-pco.json'
+import capture from '../../../data/events-pco.json'
 import type { CalendarEvent } from '../types'
 import { mapPcoBody } from './pco-map'
 
