@@ -44,10 +44,18 @@
      as a different surface at all, and the banding the visual language is
      built on stops showing. */
   --color-stone: rgb(242, 238, 230); /* page background */
-  --color-stone-rgb: 242, 238, 230; /* for translucent stone, e.g. the sticky header */
+
+  /* Channel lists, for building translucent washes and gradients from the same
+     hues — rgba(var(--color-forest-rgb), 0.45) — instead of restating the
+     numbers longhand where the lint can't see them. */
+  --color-stone-rgb: 242, 238, 230; /* translucent stone, e.g. the sticky header */
+  --color-forest-rgb: 26, 46, 12;
+  --color-moss-rgb: 106, 149, 41;
+  --color-ember-rgb: 189, 101, 56;
   --color-sand: rgb(228, 219, 202); /* deeper warm band, alternating sections */
   --color-paper: rgb(250, 248, 244); /* lightest surface (cards) */
   --color-white: #ffffff;
+  --color-backdrop: #111111; /* neutral near-black letterboxing behind media embeds */
 
   --color-ink: var(--color-forest);
   --color-ink-soft: rgba(26, 46, 12, 0.72); /* secondary body text */
@@ -113,14 +121,14 @@
 
   /* ----------------------------------------------------------------------
    * Spacing & rhythm
-   * A single ramp. --space-s and --space-m are misnamed for their values
-   * (1.5rem and 3rem) but are used widely enough that renaming them is its
-   * own change; don't add new uses.
+   * One ramp, xs → 3xl. Policy: gaps and block margins of 0.5rem and up take a
+   * token; micro-spacing below 0.5rem (optical nudges) stays literal, and 1rem
+   * may stay literal too — it is the root unit, not a scale step.
    * -------------------------------------------------------------------- */
-  --space-s: 1.5rem; /* legacy alias */
+  --space-xs: 0.5rem;
   --space-sm: 0.75rem;
   --space-md: 1.25rem;
-  --space-m: 3rem; /* legacy alias */
+  --space-lg: 1.5rem;
   --space-xl: 3rem;
   --space-3xl: 6rem;
 
@@ -144,6 +152,21 @@
   /* ----------------------------------------------------------------------
    * Tactile — radii, shadows, surfaces, grain
    * -------------------------------------------------------------------- */
+  /* ----------------------------------------------------------------------
+   * Breakpoints (documentation — custom properties can't reach @media)
+   * The canonical set: 560px (phone), 860px (tablet→desktop), and
+   * --width-shell − 1 (1119px) for the header. A few older queries still sit
+   * at 600/640/880/900; when touching one, move it to the nearest canonical
+   * value rather than adding another.
+   * -------------------------------------------------------------------- */
+
+  /* ----------------------------------------------------------------------
+   * Stacking
+   * -------------------------------------------------------------------- */
+  --z-header: 100; /* sticky site header */
+  --z-grain: 9999; /* the film-grain overlay — above content */
+  --z-skip-link: 10000; /* must beat the grain when focused */
+
   --radius-sm: 10px;
   --radius-soft: 16px;
   --radius-lg: 24px;
@@ -153,6 +176,9 @@
   --shadow-sm: 0 1px 2px rgba(26, 46, 12, 0.06), 0 2px 6px -2px rgba(26, 46, 12, 0.08);
   --shadow-md: 0 4px 10px -4px rgba(26, 46, 12, 0.12), 0 12px 28px -16px rgba(26, 46, 12, 0.2);
   --shadow-lg: 0 8px 20px -8px rgba(26, 46, 12, 0.16), 0 28px 60px -28px rgba(26, 46, 12, 0.32);
+  /* Legibility halo for white type over a photo (the cinematic hero). */
+  --shadow-text: 0 2px 30px rgba(0, 0, 0, 0.35);
+  --shadow-text-sm: 0 1px 16px rgba(0, 0, 0, 0.35);
 
   --surface-gradient-soft: linear-gradient(170deg, rgba(255, 255, 255, 0.94) 0%, rgba(242, 238, 230, 0.72) 100%);
 

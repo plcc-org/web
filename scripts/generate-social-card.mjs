@@ -20,7 +20,11 @@ const root = new URL('../src/assets/images/', import.meta.url)
 const logoPath = fileURLToPath(new URL('Horizontal-Logo-White-on-Transparent.png', root))
 const outPath = fileURLToPath(new URL('plcc-social-card.png', root))
 
-// Glow recipe mirrors `.hero__media` / `.hero__media::before`:
+// Glow recipe mirrors `.hero__media` / `.hero__media::before`, with the token
+// values (--color-forest/-2, --color-moss/-2 in src/styles/tokens.css) baked in
+// as literals — if those tokens change, regenerate the card by hand and commit
+// it; nothing checks the two stay in step.
+// Recipe:
 //   base: linear forest-2 → forest
 //   r2:   radial(140% 120% at 50% 115%)  moss-2 0.5 → transparent
 //   r3:   radial(65% 55% at 50% 100%)    moss 0.72 → transparent

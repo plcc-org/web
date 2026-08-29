@@ -51,7 +51,7 @@ body::before {
   inset: 0;
   background-image: var(--grain);
   pointer-events: none;
-  z-index: 9999;
+  z-index: var(--z-grain);
   opacity: 0.5;
   mix-blend-mode: multiply;
 }
@@ -130,7 +130,7 @@ img {
 .site-footer {
   max-width: var(--width-shell);
   margin-inline: auto;
-  padding: var(--space-s);
+  padding: var(--space-lg);
 }
 
 /* Accessibility: keyboard skip-to-content */
@@ -147,7 +147,7 @@ img {
   text-decoration: none;
   font-weight: 600;
   transform: translateY(-200%);
-  z-index: 10000;
+  z-index: var(--z-skip-link);
 }
 
 .skip-link:focus {

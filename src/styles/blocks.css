@@ -117,7 +117,7 @@
   .aside-note {
     grid-template-columns: 1fr;
     justify-items: start;
-    gap: 1.5rem;
+    gap: var(--space-lg);
   }
 
   .aside-note__logo {

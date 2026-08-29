@@ -96,7 +96,11 @@
 /* Opt-in warm wash — a barely-there ember radial for a little depth in a light
    band. Layers over the band's existing fill (keeps its background-color). */
 .band--wash {
-  background-image: radial-gradient(80% 60% at 15% 0%, rgba(189, 101, 56, 0.06) 0%, rgba(189, 101, 56, 0) 60%);
+  background-image: radial-gradient(
+    80% 60% at 15% 0%,
+    rgba(var(--color-ember-rgb), 0.06) 0%,
+    rgba(var(--color-ember-rgb), 0) 60%
+  );
 }
 
 /* Centered band content, capped at a readable column (closing CTAs, quotes) */

@@ -158,7 +158,11 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(65% 55% at 50% 100%, rgba(106, 149, 41, 0.7) 0%, rgba(106, 149, 41, 0) 70%);
+  background: radial-gradient(
+    65% 55% at 50% 100%,
+    rgba(var(--color-moss-rgb), 0.7) 0%,
+    rgba(var(--color-moss-rgb), 0) 70%
+  );
   transform-origin: 50% 100%;
   animation: hero-glow 6s ease-in-out infinite;
 }
@@ -175,12 +179,12 @@
 }
 
 .hero__img {
-  transition: opacity var(--duration-slow) ease;
+  transition: opacity var(--duration-slow) var(--ease-out);
 }
 
 .hero__video {
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity var(--duration-slow) var(--ease-out);
 }
 
 /* Once the video is playing, fade it in over the glow and rest the animation. */
@@ -229,10 +233,10 @@
   z-index: -1;
   background: linear-gradient(
     180deg,
-    rgba(26, 46, 12, 0.45) 0%,
-    rgba(26, 46, 12, 0) 30%,
-    rgba(26, 46, 12, 0.1) 52%,
-    rgba(26, 46, 12, 0.85) 100%
+    rgba(var(--color-forest-rgb), 0.45) 0%,
+    rgba(var(--color-forest-rgb), 0) 30%,
+    rgba(var(--color-forest-rgb), 0.1) 52%,
+    rgba(var(--color-forest-rgb), 0.85) 100%
   );
 }
 
@@ -262,14 +266,14 @@
    hero__title"` — so this adds only what the photo backdrop demands. */
 .hero__title {
   color: var(--color-white);
-  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35);
+  text-shadow: var(--shadow-text);
 }
 
 .hero__subhead {
   color: var(--color-on-dark);
   font-size: var(--text-lg);
   margin: 0.85rem 0 0;
-  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+  text-shadow: var(--shadow-text-sm);
 }
 
 .hero__content .btn,
@@ -437,7 +441,7 @@
    breakpoint. Used by CardRow and the MDX logo-cards block. */
 .card-grid {
   display: grid;
-  gap: 1.5rem;
+  gap: var(--space-lg);
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
@@ -577,12 +581,12 @@ a.card:hover,
 
 .accent-list--2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
+  gap: var(--space-lg);
 }
 
 .accent-list--3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
+  gap: var(--space-md);
 }
 
 /* Surface comes from the shared card recipe above; the moss edge is the only
@@ -809,7 +813,7 @@ a.card:hover,
  * can't do. The width maths below is what makes that work.
  * -------------------------------------------------------------------- */
 .link-grid {
-  --gap: 1.5rem;
+  --gap: var(--space-lg);
   /* Column count comes from LinkCardSection (set by item count); the fallback
      covers the hand-authored grid in kids.astro. */
   --cols: var(--link-cols, 2);
@@ -868,7 +872,7 @@ a.card:hover,
 
 /* The outer block, carrying the vertical rhythm around a photo. */
 .media {
-  margin: var(--space-m) 0;
+  margin: var(--space-xl) 0;
 }
 
 /* When the media block is a canvas section's whole content, the grid's
@@ -951,7 +955,7 @@ a.card:hover,
 .letter-layout {
   display: grid;
   grid-template-columns: 1fr 320px;
-  gap: var(--space-m);
+  gap: var(--space-xl);
   align-items: start;
 }
 
@@ -990,7 +994,7 @@ a.card:hover,
 @media (max-width: 900px) {
   .letter-layout {
     grid-template-columns: 1fr;
-    gap: var(--space-s);
+    gap: var(--space-lg);
   }
 
   .letter-sidebar {
@@ -1033,9 +1037,9 @@ a.card:hover,
   height: 2px;
   background: linear-gradient(
     90deg,
-    rgba(106, 149, 41, 0.3) 0%,
-    rgba(106, 149, 41, 0.75) 50%,
-    rgba(26, 46, 12, 0.45) 100%
+    rgba(var(--color-moss-rgb), 0.3) 0%,
+    rgba(var(--color-moss-rgb), 0.75) 50%,
+    rgba(var(--color-forest-rgb), 0.45) 100%
   );
 }
 
@@ -1062,7 +1066,7 @@ a.card:hover,
   font-size: var(--text-ui);
   color: var(--color-white);
   background: var(--color-moss-ink);
-  box-shadow: 0 6px 16px rgba(26, 46, 12, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .roadmap strong {
@@ -1253,12 +1257,12 @@ a.card:hover,
     grid-auto-flow: column;
     justify-content: start;
     align-items: baseline;
-    gap: 0.5rem;
+    gap: var(--space-xs);
   }
 
   .day-events__item {
     grid-template-columns: 5.5rem 1fr;
-    gap: 0.75rem;
+    gap: var(--space-sm);
   }
 }
 
@@ -1275,7 +1279,7 @@ a.card:hover,
    only one-offs, so counts of 1, 3 and 4 are the normal case, not the edge. */
 .event-grid {
   display: grid;
-  gap: 1.5rem;
+  gap: var(--space-lg);
   grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
 }
 
@@ -1287,7 +1291,7 @@ a.card:hover,
 .event-card {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-xs);
   height: 100%;
   padding: clamp(1.5rem, 2.2vw, 1.85rem);
   text-decoration: none;
@@ -1297,7 +1301,7 @@ a.card:hover,
 .event-card__when {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
+  gap: var(--space-xs);
   font-size: var(--text-2xs);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
@@ -1324,7 +1328,7 @@ a.card:hover,
 .event-card__meta {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-xs);
   flex-wrap: wrap;
   font-size: var(--text-ui);
   color: var(--color-clay-ink);
@@ -1374,7 +1378,7 @@ a.card:hover,
 .rhythm__day {
   break-inside: avoid;
   display: grid;
-  gap: 0.5rem;
+  gap: var(--space-xs);
   align-content: start;
   padding-bottom: var(--space-md);
 }
@@ -1411,7 +1415,7 @@ a.card:hover,
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 1.25rem;
+  gap: var(--space-md);
   padding: 1rem 1.35rem;
 }
 
@@ -1464,7 +1468,7 @@ a.card:hover,
 .event-row__meta {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-xs);
   flex-wrap: wrap;
   margin-top: 0.35rem;
   font-size: var(--text-ui);

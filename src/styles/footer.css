@@ -21,7 +21,7 @@
 /* Breaks out of `.site-main`'s shell width to span the viewport, the same way
    `.canvas` does. `overflow: hidden` clips the grid overlay below to the panel. */
 .site-footer {
-  margin-top: var(--space-m);
+  margin-top: var(--space-xl);
   max-width: none;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
@@ -158,11 +158,11 @@
 .site-footer a {
   color: var(--color-white);
   text-decoration: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 1px solid var(--color-on-dark-line);
   line-height: 1.15;
   transition:
-    color var(--duration-fast) ease,
-    border-color var(--duration-fast) ease;
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
 }
 
 .site-footer a:hover {

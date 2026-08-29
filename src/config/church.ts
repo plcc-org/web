@@ -15,8 +15,8 @@
  * `<meta name="theme-color">` and the web manifest can't read a custom
  * property, so the values have to be literals somewhere. Keep them here rather
  * than at the two use sites, and keep them in step with --color-moss and
- * --color-stone in src/styles/tokens.css — nothing enforces that, so this
- * comment is the enforcement.
+ * --color-stone in src/styles/tokens.css — test/brand.test.ts fails the build
+ * if the pair drifts.
  */
 export const brand = {
   /** = --color-moss */

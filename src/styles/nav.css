@@ -28,7 +28,7 @@
   --safe-top: env(safe-area-inset-top, 0px);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: var(--z-header);
   padding-top: calc(1.75rem + var(--safe-top));
   padding-bottom: 1.75rem;
   background: transparent;
@@ -145,12 +145,12 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: var(--space-lg);
   max-width: var(--width-shell);
   margin-inline: auto;
   /* Keep the bar clear of the rounded corners / notch in landscape. */
-  padding-left: max(var(--space-s), env(safe-area-inset-left, 0px));
-  padding-right: max(var(--space-s), env(safe-area-inset-right, 0px));
+  padding-left: max(var(--space-lg), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--space-lg), env(safe-area-inset-right, 0px));
 }
 
 /* Wordmark plus hamburger. Never shrinks, so a long nav list wraps rather than
@@ -190,7 +190,7 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
   text-decoration: none;
   color: inherit;
   white-space: nowrap;
-  transition: all var(--duration-fast) ease;
+  transition: all var(--duration-fast) var(--ease-out);
   padding: 0.25rem 0;
   border-bottom: 2px solid transparent;
 }
@@ -205,7 +205,7 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
 .site-nav__home {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-sm);
   border-bottom: none;
   line-height: 0;
 }
@@ -268,7 +268,7 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
     cursor: pointer;
     padding: 0.5rem;
     border-radius: var(--radius-sm);
-    transition: background var(--duration-fast) ease;
+    transition: background var(--duration-fast) var(--ease-out);
   }
 
   .site-nav__toggle:hover {
@@ -282,8 +282,8 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
     background: var(--color-forest);
     border-radius: var(--radius-pill);
     transition:
-      transform 200ms ease,
-      opacity 200ms ease;
+      transform var(--duration-fast) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-out);
     transform-origin: center;
   }
 
@@ -307,7 +307,7 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
     gap: 0;
     margin-top: 0.75rem;
     padding: 0.5rem 0 1rem;
-    border-top: 1px solid rgba(26, 46, 12, 0.1);
+    border-top: 1px solid var(--color-mist);
   }
 
   .site-nav.is-open .site-nav__list {
