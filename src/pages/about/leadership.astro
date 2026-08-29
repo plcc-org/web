@@ -5,7 +5,7 @@ import Photo from '../../components/Photo.astro'
 import { getCollection } from 'astro:content'
 import { renderMarkdown } from '../../lib/markdown'
 import { imageFromRef } from '../../lib/images'
-import { withBase } from '../../lib/url'
+import { resolveHref } from '../../lib/url'
 
 // Portraits are stored as path strings and resolved here, the same way the CMS
 // block wrappers resolve theirs — see the note on the collection in
@@ -92,7 +92,7 @@ const leaders = await Promise.all(
                 <div class="leader-detail__prose measure" set:html={renderMarkdown(leader.data.bio)} />
                 {leader.data.link?.href && (
                   <p class="leader-detail__meta">
-                    <a href={withBase(leader.data.link.href)}>{leader.data.link.label}</a>
+                    <a href={resolveHref(leader.data.link.href)}>{leader.data.link.label}</a>
                   </p>
                 )}
                 <button type="button" class="leader-detail__close" aria-label="Back to all staff">

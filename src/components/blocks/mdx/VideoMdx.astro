@@ -2,53 +2,39 @@
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 // MDX wrapper for the Video block: a YouTube or Vimeo embed in the same stone
 // frame as a captioned photo. The editor pastes the ordinary share link; the
-// embed URL is derived here at build time, on the privacy-friendly hosts
-// (youtube-nocookie, Vimeo dnt) so the page stays tracker-free until play.
+// embed URL is derived at build time by the parser shared with the CMS form
+// (tina/video-rules.mjs), on the privacy-friendly hosts (youtube-nocookie,
+// Vimeo dnt) so the page stays tracker-free until play.
+//
+// An unusable link renders as a visible placeholder rather than throwing: a
+// freshly inserted block arrives with an empty url, and a throw here 500s the
+// /tina-island preview the moment the block lands — before the editor has had
+// any chance to paste the link. The form's ui.validate carries the message;
+// this frame keeps the block clickable while it's incomplete.
+import { embedFrom } from '../../../../tina/video-rules.mjs'
 type Props = { url: string; title: string; caption?: string } & BlockProps
 const { url, title, caption } = Astro.props
 
-function embedFrom(raw: string): string | undefined {
-  let parsed: URL
-  try {
-    parsed = new URL(raw)
-  } catch {
-    return undefined
-  }
-  const host = parsed.hostname.replace(/^www\.|^m\./, '')
-  if (host === 'youtu.be') {
-    const id = parsed.pathname.split('/')[1]
-    return id ? `https://www.youtube-nocookie.com/embed/${id}` : undefined
-  }
-  if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
-    const id = parsed.searchParams.get('v') ?? parsed.pathname.match(/^\/(?:shorts|live|embed)\/([\w-]+)/)?.[1]
-    return id ? `https://www.youtube-nocookie.com/embed/${id}` : undefined
-  }
-  if (host === 'vimeo.com' || host === 'player.vimeo.com') {
-    const id = parsed.pathname.match(/\d+/)?.[0]
-    return id ? `https://player.vimeo.com/video/${id}?dnt=1` : undefined
-  }
-  return undefined
-}
-
 const embed = embedFrom(url)
-if (!embed) {
-  throw new Error(
-    `Video block: could not read a video from "${url}". ` +
-      'Paste a YouTube or Vimeo link, e.g. https://www.youtube.com/watch?v=… or https://vimeo.com/123456789.'
-  )
-}
 ---
 
 <section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
   <figure class="media media--flush">
     <div class="media__frame media__embed">
-      <iframe
-        src={embed}
-        title={title}
-        loading="lazy"
-        allow="fullscreen; picture-in-picture; encrypted-media; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen></iframe>
+      {
+        embed ? (
+          <iframe
+            src={embed}
+            title={title}
+            loading="lazy"
+            allow="fullscreen; picture-in-picture; encrypted-media; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          />
+        ) : (
+          <p class="media__caption">Video — paste a YouTube or Vimeo link in this block to show it here.</p>
+        )
+      }
     </div>
     {caption && <figcaption class="media__caption">{caption}</figcaption>}
   </figure>

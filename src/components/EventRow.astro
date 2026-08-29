@@ -2,6 +2,7 @@
 import type { CalendarEvent } from '../lib/events/types'
 import { fmtDay, fmtDate, fmtTime } from '../lib/events/format'
 import { venueLabel } from '../lib/events/place'
+import { isWebUrl, resolveHref } from '../lib/url'
 
 // One row in an event list: a date chip, the title + category/time/location, and
 // a "Details" link. Shared by the full <EventsBoard> and the compact youth feed.
@@ -9,7 +10,7 @@ type Props = { event: CalendarEvent }
 
 const { event } = Astro.props
 const start = new Date(event.start)
-const external = event.url.startsWith('http')
+const external = isWebUrl(event.url)
 // Only when it isn't the church: Planning Center stamps the full campus address
 // onto nearly every event, and repeated down a list it drowns the few that are
 // genuinely somewhere else.
@@ -17,7 +18,7 @@ const venue = venueLabel(event.location)
 ---
 
 <article class="event-row">
-  <div class="event-row__date-chip" aria-hidden="true">
+  <div class="event-row__date-chip">
     <span class="event-row__dow">{fmtDay(start)}</span>
     <span class="event-row__dnum">{fmtDate(start)}</span>
   </div>
@@ -36,7 +37,7 @@ const venue = venueLabel(event.location)
   <div class="event-row__cta">
     <a
       class="btn btn--quiet btn--sm"
-      href={event.url}
+      href={resolveHref(event.url)}
       rel={external ? 'noopener' : undefined}
       target={external ? '_blank' : undefined}
     >

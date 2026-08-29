@@ -10,6 +10,7 @@ import type { CalendarEvent } from '../../lib/events/types'
 import { fmtDay, fmtDate, fmtTime } from '../../lib/events/format'
 import { pacificDay } from '../../lib/events/logic'
 import { venueLabel } from '../../lib/events/place'
+import { isWebUrl, resolveHref } from '../../lib/url'
 
 type Props = { events: CalendarEvent[] }
 
@@ -30,22 +31,24 @@ for (const e of events) {
       const first = new Date(list[0].start)
       return (
         <div class="week-panel__day">
-          <div class="week-panel__when">
+          {/* A real heading, matching WeekRhythm's day names — day groups are
+              the structure of this panel, not decoration. */}
+          <h3 class="week-panel__when">
             <span class="week-panel__dow">{fmtDay(first)}</span>
             <span class="week-panel__date">{fmtDate(first)}</span>
-          </div>
+          </h3>
 
           <ul class="week-panel__events">
             {list.map((e) => {
               const venue = venueLabel(e.location)
-              const external = e.url.startsWith('http')
+              const external = isWebUrl(e.url)
               return (
                 <li class="week-panel__event">
                   <span class="week-panel__time">{e.allDay ? 'All day' : fmtTime(new Date(e.start))}</span>
                   <span class="week-panel__what">
                     <a
                       class="week-panel__title"
-                      href={e.url}
+                      href={resolveHref(e.url)}
                       rel={external ? 'noopener' : undefined}
                       target={external ? '_blank' : undefined}
                     >

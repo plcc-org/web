@@ -22,3 +22,13 @@ const EXTERNAL_HREF = /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i
 export function resolveHref(href: string): string {
   return EXTERNAL_HREF.test(href) ? href : withBase(href)
 }
+
+// A different question from EXTERNAL_HREF: that one asks "must this href pass
+// through resolveHref untouched?" (which includes mailto:, tel: and #anchors);
+// this one asks "does following it leave the site?" — the test for opening in a
+// new tab. Kept here so components don't each grow their own startsWith('http'),
+// which quietly treats an internal path as same-tab but base-prefixes nothing.
+/** True for an absolute web URL — the "leaves the site, open in a new tab" test. */
+export function isWebUrl(href: string): boolean {
+  return /^https?:\/\//i.test(href)
+}

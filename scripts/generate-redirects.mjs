@@ -83,6 +83,29 @@ const seen = new Map()
 const rules = []
 const gone = []
 
+// Every path the site itself serves, so a short link can't shadow a real page —
+// Cloudflare answers `_redirects` before static assets, so `from: /visit` would
+// take /visit/ off the site silently, with a green build. Two sources: the CMS
+// pages collection (filename is the URL; index is the root) and the hand-built
+// routes in src/pages, minus dynamic segments and this script's own generated
+// gone-routes (they ARE short links).
+const sitePaths = new Set()
+const PAGES_CONTENT = 'src/content/pages'
+if (existsSync(PAGES_CONTENT)) {
+  for (const file of readdirSync(PAGES_CONTENT, { recursive: true })) {
+    if (typeof file !== 'string' || !file.endsWith('.mdx')) continue
+    const path = file.replace(/\.mdx$/, '')
+    sitePaths.add(path === 'index' ? '' : path.toLowerCase())
+  }
+}
+for (const file of readdirSync(PAGES_DIR, { recursive: true })) {
+  if (typeof file !== 'string' || !/\.(astro|ts)$/.test(file)) continue
+  if (file.includes('[')) continue
+  if (readFileSync(join(PAGES_DIR, file), 'utf-8').includes(GONE_MARKER)) continue
+  const path = file.replace(/\.(astro|ts)$/, '').replace(/\/?index$/, '')
+  sitePaths.add(path.toLowerCase())
+}
+
 const today = new Date()
 today.setHours(0, 0, 0, 0)
 const SOON_DAYS = 30
@@ -117,6 +140,12 @@ for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || 
     errors.push(`${where}: "${path}" is already defined in ${seen.get(path)}`)
     continue
   }
+  if (sitePaths.has(path)) {
+    errors.push(
+      `${where}: "/${path}" is a real page on the site — this ${isGone ? 'gone marker' : 'redirect'} would hide it.`
+    )
+    continue
+  }
 
   const reviewBy = parseReviewDate(expires)
   let status_note = ''
@@ -138,7 +167,10 @@ for (const file of readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.yaml') || 
   }
 
   const status = STATUS[kind]
-  rules.push(permanent ? '# permanent — no review date' : `# review by ${expires}${status_note}`)
+  // Date only: the CMS's picker historically wrote full ISO timestamps, and the
+  // time of day means nothing to a review date.
+  const reviewDate = String(expires ?? '').split('T')[0]
+  rules.push(permanent ? '# permanent — no review date' : `# review by ${reviewDate}${status_note}`)
   if (note) rules.push(`# ${note.replace(/\s+/g, ' ').trim()}`)
   // Both forms: Cloudflare matches the literal path, and people type — and
   // printed material carries — the trailing slash about half the time.
@@ -168,7 +200,7 @@ for (const { path, note, expires, permanent } of gone) {
     full,
     [
       `// ${GONE_MARKER} — generated from src/content/short-links, do not edit.`,
-      `// /${path} is gone for good (${permanent ? 'permanent' : `review by ${expires}`}).`,
+      `// /${path} is gone for good (${permanent ? 'permanent' : `review by ${String(expires ?? '').split('T')[0]}`}).`,
       note ? `// ${note.replace(/\s+/g, ' ').trim()}` : null,
       ``,
       `export const prerender = false`,

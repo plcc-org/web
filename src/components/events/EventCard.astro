@@ -12,6 +12,7 @@
 import type { EventSeries } from '../../lib/events/logic'
 import { fmtDay, fmtDate, fmtTime } from '../../lib/events/format'
 import { venueLabel } from '../../lib/events/place'
+import { isWebUrl, resolveHref } from '../../lib/url'
 
 type Props = { series: EventSeries }
 
@@ -19,10 +20,15 @@ const { series } = Astro.props
 const e = series.next
 const start = new Date(e.start)
 const venue = venueLabel(e.location)
-const external = e.url.startsWith('http')
+const external = isWebUrl(e.url)
 ---
 
-<a class="event-card" href={e.url} rel={external ? 'noopener' : undefined} target={external ? '_blank' : undefined}>
+<a
+  class="event-card"
+  href={resolveHref(e.url)}
+  rel={external ? 'noopener' : undefined}
+  target={external ? '_blank' : undefined}
+>
   <span class="event-card__when">
     <span class="event-card__dow">{fmtDay(start)}</span>
     <span class="event-card__date">{fmtDate(start)}</span>

@@ -14,6 +14,8 @@
 // Kept in .mjs so the round-trip harness (spike/roundtrip.mjs) can import it without a
 // build step.
 
+import { checkVideoUrl } from './video-rules.mjs'
+
 /** @typedef {Record<string, unknown>} FieldOpts */
 
 /**
@@ -91,12 +93,15 @@ const image = (name, label, opts = {}) => ({
   ui: { parse: imageRef, ...(typeof opts.ui === 'object' ? opts.ui : {}) },
 })
 
-/** @type {(name: string, label: string, defaultValue?: boolean, opts?: FieldOpts) => Record<string, unknown>} */
-const bool = (name, label, defaultValue = false, opts = {}) => ({
+// Note on defaults: `ui.defaultValue` is a no-op — tinacms never forwards it to
+// the rendered field — so a block's starting values live in a template-level
+// `defaultItem`, which insertMDX genuinely applies when the block is added.
+
+/** @type {(name: string, label: string, opts?: FieldOpts) => Record<string, unknown>} */
+const bool = (name, label, opts = {}) => ({
   name,
   label,
   type: 'boolean',
-  ui: { defaultValue },
   ...opts,
 })
 
@@ -107,13 +112,12 @@ const TONE = {
   forest: { label: 'Forest (dark)', value: 'forest' },
   none: { label: 'Plain (no band)', value: 'none' },
 }
-/** @type {(options: (keyof typeof TONE)[], defaultValue: string, opts?: FieldOpts) => Record<string, unknown>} */
-const tone = (options, defaultValue, opts = {}) => ({
+/** @type {(options: (keyof typeof TONE)[], opts?: FieldOpts) => Record<string, unknown>} */
+const tone = (options, opts = {}) => ({
   name: 'tone',
   label: 'Background',
   type: 'string',
   options: options.map((o) => TONE[o]),
-  ui: { defaultValue },
   ...opts,
 })
 
@@ -163,6 +167,17 @@ const itemProps = (key, fallback) => ({
 /** @type {(which: string, rest: string) => string} */
 const forVariants = (which, rest) => `Used by: ${which}. ${rest}`
 
+/**
+ * The variant the form currently has, wherever the callback finds itself: a field
+ * nested under `hero` gets the whole document as `allValues`, but keep the direct
+ * shape working too so the check can't silently die on a Tina change.
+ * @type {(allValues: unknown) => string | undefined}
+ */
+const heroVariant = (allValues) => {
+  const values = /** @type {{ hero?: { variant?: string }, variant?: string } | undefined} */ (allValues)
+  return values?.hero?.variant ?? values?.variant
+}
+
 export const heroFields = [
   {
     name: 'variant',
@@ -174,19 +189,34 @@ export const heroFields = [
       { label: 'Logo & photo — a programme wordmark instead of the title', value: 'wordmark' },
       { label: 'Cinematic — a full-width photo stack (the home page)', value: 'cinematic' },
     ],
-    ui: { defaultValue: 'photo' },
+    // No ui.defaultValue — it's a no-op (see the note above bool()). New pages
+    // are seeded 'photo' by the collection's defaultItem in tina/config.ts.
     description:
       'Pick this first — it decides which fields below are used. Each field says which kinds it applies to, ' +
       'and anything a kind doesn’t use is ignored.',
   },
+  // The two validates below mirror what the discriminated union in
+  // src/content.config.ts will reject at build time — a "Photo & text" hero
+  // saved without its photo used to preview fine and then fail a deploy the
+  // editor never sees. Same rule, moved to where the editor is standing.
   image('image', 'Hero photo', {
     description: forVariants('Photo & text, Logo & photo', 'The single portrait photo beside the title.'),
+    ui: {
+      validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
+        heroVariant(allValues) === 'photo' && !value ? 'A “Photo & text” hero needs a photo.' : undefined,
+    },
   }),
   text('alt', 'Photo description (alt text)', {
     description: forVariants(
       'Photo & text, Logo & photo',
       'Say what someone who can’t see it would need — “A volunteer making coffee before the service”, not “coffee”.'
     ),
+    ui: {
+      validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
+        heroVariant(allValues) === 'photo' && !value
+          ? 'A “Photo & text” hero needs a photo description for people who can’t see the photo.'
+          : undefined,
+    },
   }),
   {
     name: 'photos',
@@ -207,9 +237,19 @@ export const heroFields = [
   },
   image('logo', 'Wordmark logo', {
     description: forVariants('Logo & photo', 'Stands in for the heading, e.g. the Pine Lake Kids wordmark.'),
+    ui: {
+      validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
+        heroVariant(allValues) === 'wordmark' && !value ? 'A “Logo & photo” hero needs its wordmark logo.' : undefined,
+    },
   }),
   text('logoAlt', 'Logo description (alt text)', {
     description: forVariants('Logo & photo', 'What the wordmark says, e.g. “Pine Lake Kids”.'),
+    ui: {
+      validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
+        heroVariant(allValues) === 'wordmark' && !value
+          ? 'A “Logo & photo” hero needs the logo description — it stands in for the page heading.'
+          : undefined,
+    },
   }),
   text('eyebrow', 'Eyebrow', { description: 'Used by: all. A small label shown above the heading.' }),
   text('subhead', 'Subhead', { description: 'Used by: all. A line between the heading and the intro.' }),
@@ -242,13 +282,19 @@ export const templates = [
     label: 'Photo & text (split)',
     description:
       'A photo beside formatted text — left or right, on a tinted background. The main show-and-tell layout.',
+    defaultItem: { tone: 'sand', reverse: false },
+    // `isTitle` puts the heading on the block's collapsed bar in the editor, so a
+    // page of Splits doesn't read as identical grey bars. It demands
+    // `required: true`, which on a template field is form-side only (see the top
+    // of this file) — and every Split in the content already has a heading.
+    // The same applies to the other isTitle fields below.
     fields: [
       image('image', 'Photo', { required: true }),
       text('alt', 'Photo description (alt text)', { required: true }),
-      text('heading', 'Heading'),
+      text('heading', 'Heading', { isTitle: true, required: true }),
       text('eyebrow', 'Eyebrow'),
       bool('reverse', 'Photo on the right'),
-      tone(['sand', 'paper', 'forest'], 'sand'),
+      tone(['sand', 'paper', 'forest']),
       children(),
       text('buttonLabel', 'Button label'),
       text('buttonHref', 'Button link'),
@@ -258,7 +304,7 @@ export const templates = [
     name: 'Callout',
     label: 'Callout',
     description: 'A small boxed aside that sets one point apart — a reassurance, a key fact, a heads-up.',
-    fields: [text('heading', 'Heading'), children()],
+    fields: [text('heading', 'Heading', { isTitle: true, required: true }), children()],
   },
   {
     name: 'CaptionedPhoto',
@@ -277,10 +323,14 @@ export const templates = [
     fields: [
       text('url', 'Video link', {
         required: true,
+        // The same parse the renderer uses, so "will this link work?" is answered
+        // in the form rather than by a broken preview.
+        ui: { validate: (/** @type {unknown} */ value) => checkVideoUrl(value) },
         description:
           'The ordinary page address — https://www.youtube.com/watch?v=… or https://vimeo.com/… — not an embed code.',
       }),
       text('title', 'Video title', {
+        isTitle: true,
         required: true,
         description: 'A few words saying what the video is — screen readers announce it, like a photo description.',
       }),
@@ -299,7 +349,7 @@ export const templates = [
       'The last block on a page — a dark band that closes it against the footer, with an optional button. A parting invitation.',
     fields: [
       text('eyebrow', 'Eyebrow'),
-      text('heading', 'Heading'),
+      text('heading', 'Heading', { isTitle: true, required: true }),
       text('buttonLabel', 'Button label'),
       text('buttonHref', 'Button link'),
       children(),
@@ -330,6 +380,7 @@ export const templates = [
     name: 'CardRow',
     label: 'Text cards',
     description: 'A row of small cards, each a short title and a line or two — for a few parallel points.',
+    defaultItem: { columns: 'auto', large: false },
     fields: [
       text('eyebrow', 'Eyebrow'),
       text('heading', 'Heading'),
@@ -344,10 +395,9 @@ export const templates = [
           { label: 'Three', value: '3' },
           { label: 'Four', value: '4' },
         ],
-        ui: { defaultValue: 'auto' },
         description: 'Auto fits as many as will fit; a fixed count wraps the rest (e.g. four cards 2×2).',
       },
-      bool('large', 'Large cards', false, {
+      bool('large', 'Large cards', {
         description: 'A roomier, more editorial card with a prominent serif title.',
       }),
       {
@@ -373,7 +423,7 @@ export const templates = [
     label: 'Link cards',
     description: 'A grid of cards that each link to another page — for signposting to related content.',
     fields: [
-      text('heading', 'Heading'),
+      text('heading', 'Heading', { isTitle: true, required: true }),
       {
         name: 'links',
         label: 'Links',
@@ -393,12 +443,13 @@ export const templates = [
     name: 'Quote',
     label: 'Quote',
     description: 'A single featured pull-quote — a testimonial or short quotation set apart from the prose.',
+    defaultItem: { tone: 'none' },
     fields: [
-      textarea('quote', 'Quote', { required: true }),
+      textarea('quote', 'Quote', { isTitle: true, required: true }),
       text('attribution', 'Attribution', {
         description: 'Who said it — e.g. "A recent attendee", or a scripture reference. Optional.',
       }),
-      tone(['none', 'forest', 'sand', 'paper'], 'none', {
+      tone(['none', 'forest', 'sand', 'paper'], {
         description: 'Plain sets the quote in open space; a color renders it inside a band (a "verse band").',
       }),
     ],
@@ -407,6 +458,7 @@ export const templates = [
     name: 'FeaturedEvents',
     label: 'Featured events',
     description: 'A short list of upcoming events, pulled live from the events feed.',
+    defaultItem: { category: 'all', count: 3 },
     fields: [
       text('heading', 'Heading'),
       {
@@ -421,15 +473,15 @@ export const templates = [
           { label: 'Groups', value: 'Groups' },
           { label: 'Serve', value: 'Serve' },
         ],
-        ui: { defaultValue: 'all' },
       },
-      { name: 'count', label: 'How many to show', type: 'number', ui: { defaultValue: 3 } },
+      { name: 'count', label: 'How many to show', type: 'number' },
     ],
   },
   {
     name: 'KeyPoints',
     label: 'Key points',
     description: 'A moss-accented grid of titled points — the core-tenets / emphases treatment.',
+    defaultItem: { columns: '2' },
     fields: [
       text('eyebrow', 'Eyebrow'),
       text('heading', 'Heading'),
@@ -441,7 +493,6 @@ export const templates = [
           { label: 'Two across', value: '2' },
           { label: 'Three across', value: '3' },
         ],
-        ui: { defaultValue: '2' },
       },
       {
         name: 'items',
@@ -460,7 +511,7 @@ export const templates = [
     description: 'A row of cards, each topped by a program or partner logo, with text and an optional link.',
     fields: [
       text('eyebrow', 'Eyebrow'),
-      text('heading', 'Heading'),
+      text('heading', 'Heading', { isTitle: true, required: true }),
       {
         name: 'cards',
         label: 'Cards',
@@ -501,11 +552,12 @@ export const templates = [
     name: 'QuoteCarousel',
     label: 'Quotes carousel',
     description: 'A rotating band of testimonials, pulled live from the Homepage quotes list.',
+    defaultItem: { tone: 'sand' },
     fields: [
       text('eyebrow', 'Eyebrow'),
       text('heading', 'Heading'),
       textarea('intro', 'Intro line'),
-      tone(['sand', 'paper', 'forest'], 'sand'),
+      tone(['sand', 'paper', 'forest']),
     ],
   },
   {

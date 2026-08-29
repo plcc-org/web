@@ -12,6 +12,7 @@
 import type { EventSeries } from '../../lib/events/logic'
 import { fmtTime, fmtTime24, fmtWeekdayLong } from '../../lib/events/format'
 import { venueLabel } from '../../lib/events/place'
+import { isWebUrl, resolveHref } from '../../lib/url'
 
 type Props = { series: EventSeries[] }
 
@@ -53,14 +54,14 @@ const qualifier = (s: EventSeries, day: string) => (s.cadence && s.cadence !== `
           {list.map((s) => {
             const venue = venueLabel(s.location)
             const note = qualifier(s, day)
-            const external = s.url.startsWith('http')
+            const external = isWebUrl(s.url)
             return (
               <li class="rhythm__item">
                 <span class="rhythm__time">{s.next.allDay ? 'All day' : fmtTime(new Date(s.next.start))}</span>
                 <span class="rhythm__what">
                   <a
                     class="rhythm__title"
-                    href={s.url}
+                    href={resolveHref(s.url)}
                     rel={external ? 'noopener' : undefined}
                     target={external ? '_blank' : undefined}
                   >

@@ -75,7 +75,16 @@ for (const p of photos ?? []) {
   if (resolved) panes.push({ image: resolved, alt: p.alt || '' })
 }
 
+// Which shape renders is the variant the editor chose, never an inference from
+// which optional fields happen to be filled in — that inference is what the
+// variant select replaced. Concretely: a leftover `image` on a plain hero stays
+// ignored (as src/content.config.ts promises), a photo hero missing its photo
+// falls back to the text-only header (a preview-only state — zod rejects it at
+// build, and the form says so), and a wordmark hero keeps its logo standing in
+// for the heading whether or not it also has a photo.
 const cinematic = variant === 'cinematic' && panes.length > 0
+const split = (variant === 'photo' || variant === 'wordmark') && heroImg
+const wordmarkLogo = variant === 'wordmark' ? logoImg : undefined
 ---
 
 {
@@ -87,7 +96,7 @@ const cinematic = variant === 'cinematic' && panes.length > 0
         </a>
       )}
     </Hero>
-  ) : heroImg ? (
+  ) : split ? (
     <Split
       class:list={['to-full', flush && 'is-flush']}
       image={heroImg}
@@ -97,10 +106,10 @@ const cinematic = variant === 'cinematic' && panes.length > 0
       eyebrow={eyebrow}
       tinaField={tinaField}
     >
-      {logoImg ? (
+      {wordmarkLogo ? (
         <Fragment>
           <Photo
-            image={logoImg}
+            image={wordmarkLogo}
             alt={logoAlt || ''}
             class="page-hero__logo"
             loading="eager"
@@ -127,7 +136,22 @@ const cinematic = variant === 'cinematic' && panes.length > 0
   ) : (
     <header class="section page-intro" data-tina-field={tinaField}>
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-      <h1 class="display">{title}</h1>
+      {wordmarkLogo ? (
+        <Fragment>
+          <Photo
+            image={wordmarkLogo}
+            alt={logoAlt || ''}
+            class="page-hero__logo"
+            loading="eager"
+            fetchpriority="high"
+            widths={[340, 680]}
+            sizes="(max-width: 600px) 70vw, 340px"
+          />
+          <h1 class="visually-hidden">{title}</h1>
+        </Fragment>
+      ) : (
+        <h1 class="display">{title}</h1>
+      )}
       {subhead && <p class="subhead">{subhead}</p>}
       {lede && <p class="lede" set:html={renderInline(lede)} />}
       {buttonHref && (

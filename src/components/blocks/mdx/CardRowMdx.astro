@@ -22,5 +22,10 @@ const { eyebrow, heading, intro, columns, large, cards = [] } = Astro.props
 <section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
   {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
   {intro && <p class="measure" set:html={renderInline(intro)} />}
-  <CardRow items={cards} columns={columns} large={large} />
+  {
+    /* No heading means nothing sits between the page h1 and the card titles, so
+      they step up to h2 rather than leaving a gap in the outline — the same
+      rule KeyPointsMdx applies. /contact/ and /youth/ exercise it. */
+  }
+  <CardRow items={cards} columns={columns} large={large} headingAs={heading ? 'h3' : 'h2'} />
 </section>

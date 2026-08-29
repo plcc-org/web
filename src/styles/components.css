@@ -1178,6 +1178,8 @@ a.card:hover,
 .week-panel__when {
   display: grid;
   gap: 0.1rem;
+  /* An h3 (day groups are structure), styled entirely by its child spans. */
+  margin: 0;
 }
 
 .week-panel__dow {

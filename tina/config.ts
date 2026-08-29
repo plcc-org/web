@@ -8,13 +8,24 @@ import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs
  * A page address: lowercase, hyphen-separated, slashes kept so a page can sit in a
  * folder. Used for both halves of the filename field — see the note on `filename` below
  * for why one function can't cover it.
+ *
+ * Accents fold to their base letters (Café → cafe) rather than vanishing, and slash
+ * runs collapse with their surrounding hyphens ("About / Us" → about/us) — Tina's own
+ * filename guard permits leading, trailing and doubled slashes, each of which makes a
+ * broken URL.
  */
 const slug = (value: string) =>
   value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9/]+/g, '-')
+    .replace(/-*\/+-*/g, '/')
     .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
+    .replace(/^[-/]+|[-/]+$/g, '')
+
+/** The flat form for data files (leadership, youth moments, short links): no folders. */
+const flatSlug = (value: string) => slug(value).replace(/\//g, '-')
 
 // CMS configuration. The `pages` collection carries the page frontmatter (including the
 // nested `hero` object) and an 18-component body palette; the other three are YAML data
@@ -140,7 +151,15 @@ export default defineConfig({
         },
         // New pages start unpublished, as they did under the previous CMS. Without
         // this a page goes live the moment it's created.
-        defaultItem: () => ({ draft: true }),
+        //
+        // `hero.variant` must be seeded here: Tina's select renders with no
+        // placeholder option, so an empty value *displays* as the first option
+        // ("Photo & text") while the stored value stays '' — and the untouched
+        // page then fails the discriminated-union check in src/content.config.ts
+        // on a save the editor was shown as complete. (Field-level
+        // `ui.defaultValue` can't do this: tinacms never forwards it to the
+        // rendered field — only defaultItem works.)
+        defaultItem: () => ({ draft: true, hero: { variant: 'photo' } }),
         fields: [
           {
             name: 'title',
@@ -222,6 +241,16 @@ export default defineConfig({
         label: 'Leadership',
         path: 'src/content/leadership',
         format: 'yaml',
+        // Without `slugify`, Tina's default keeps capitals — "Becca Worl" seeds
+        // `Becca-Worl.yaml` next to the existing `becca-worl.yaml`. Same trap the
+        // pages collection documents; same fix, minus the folders pages allow.
+        ui: {
+          filename: {
+            description: 'The file this is saved as — set automatically from the name.',
+            slugify: (values) => flatSlug(values?.name ?? ''),
+            parse: (value: string) => flatSlug(value),
+          },
+        },
         defaultItem: () => ({ order: 0 }),
         fields: [
           { name: 'name', label: 'Name', type: 'string', isTitle: true, required: true },
@@ -264,6 +293,13 @@ export default defineConfig({
         label: 'Youth moments',
         path: 'src/content/youth-moments',
         format: 'yaml',
+        ui: {
+          filename: {
+            description: 'The file this is saved as — set automatically from the title.',
+            slugify: (values) => flatSlug(values?.title ?? ''),
+            parse: (value: string) => flatSlug(value),
+          },
+        },
         defaultItem: () => ({ featured: false, order: 0 }),
         fields: [
           { name: 'title', label: 'Title', type: 'string', isTitle: true, required: true },
@@ -346,6 +382,13 @@ export default defineConfig({
         // Tina has no list-view column configuration, so a 55-entry list shows
         // filenames only. Marking the fields you'd actually search by keeps a
         // link findable by the address printed on the flyer. See docs/cms.md.
+        ui: {
+          filename: {
+            description: 'The file this is saved as — set automatically from the name.',
+            slugify: (values) => flatSlug(values?.name ?? ''),
+            parse: (value: string) => flatSlug(value),
+          },
+        },
         defaultItem: () => ({ kind: 'shortcut', permanent: false }),
         fields: [
           {
@@ -355,7 +398,9 @@ export default defineConfig({
             isTitle: true,
             required: true,
             searchable: true,
-            description: 'Just a label for this list — it does not appear anywhere on the site.',
+            description:
+              'Names this entry in the list (and its file behind the scenes) — it never appears on the public ' +
+              'site. The address people actually visit is "Old address" below.',
           },
           {
             name: 'from',
@@ -381,7 +426,8 @@ export default defineConfig({
             },
             description:
               'Either a full address elsewhere (https://plcc.churchcenter.com/…) or a page on this site, ' +
-              'written with slashes at both ends — "/visit/". Leave empty for a page that is gone for good.',
+              'written with slashes at both ends — "/visit/". Leave empty for a page that is gone for good — ' +
+              'anything typed here is ignored for those.',
           },
           {
             name: 'kind',
@@ -414,7 +460,14 @@ export default defineConfig({
             type: 'datetime',
             // The cross-field rule: required unless the box above is ticked, forbidden
             // when it is. Both halves used to surface only as a failed build.
+            //
+            // `dateFormat` keeps the picker date-only, and `parse` stores the bare
+            // date — without it the picker writes a full ISO timestamp, which every
+            // hand-written file avoids and which leaks into the generated
+            // `_redirects` comments as "review by 2026-09-30T00:00:00.000Z".
             ui: {
+              dateFormat: 'YYYY-MM-DD',
+              parse: (value: unknown) => (typeof value === 'string' ? value.split('T')[0] : value),
               validate: (value: string, allValues: { permanent?: boolean }) => checkReview(allValues?.permanent, value),
             },
             description:
