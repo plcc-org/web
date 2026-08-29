@@ -6,6 +6,8 @@ import Photo from './Photo.astro'
 // blurred drift. The `video` path is dormant but kept deliberately — no CMS
 // field feeds it yet, and when one does, the glow-gradient stand-in, fade-in
 // and reduced-motion/no-script fallbacks below are the behaviour it needs.
+// A video hero should be given at least one image: it renders as the still
+// (`.hero__img`) those fallbacks show; with none, only the glow remains.
 
 type ImageItem = { image: ImageMetadata; alt: string }
 type Props = {
@@ -21,8 +23,13 @@ type Props = {
 
 const { video, images = [], eyebrow, title, subhead, tinaField } = Astro.props
 
-const heroPanes = images
+// A video hero takes precedence, and the first image becomes its still-photo
+// fallback (`.hero__img`) — what reduced-motion, no-script and ?video=0 show
+// instead of the video. Without a video, the images drive the drift strip.
+const useVideo = Boolean(video)
+const heroPanes = useVideo ? [] : images
 const usePhotos = heroPanes.length > 0
+const still = useVideo ? images[0] : undefined
 ---
 
 {
@@ -37,11 +44,7 @@ const usePhotos = heroPanes.length > 0
   }
 </script>
 
-<section
-  data-tina-field={tinaField}
-  class:list={['hero', { 'hero--has-video': video && !usePhotos, 'hero--photos': usePhotos }]}
-  data-hero
->
+<section data-tina-field={tinaField} class:list={['hero', { 'hero--has-video': useVideo }]} data-hero>
   <div class="hero__media">
     {
       usePhotos && (
@@ -67,7 +70,12 @@ const usePhotos = heroPanes.length > 0
       )
     }
     {
-      video && !usePhotos && (
+      still && (
+        <Photo image={still.image} alt="" class="hero__img" widths={[480, 720, 960]} sizes="100vw" loading="eager" />
+      )
+    }
+    {
+      useVideo && (
         <video class="hero__video" muted loop playsinline autoplay preload="none" aria-hidden="true" tabindex="-1">
           {/* src is held in data-src so nothing downloads until the script opts in */}
           <source data-src={video} type="video/mp4" />

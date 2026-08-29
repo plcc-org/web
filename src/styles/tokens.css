@@ -50,7 +50,10 @@
      numbers longhand where the lint can't see them. */
   --color-stone-rgb: 242, 238, 230; /* translucent stone, e.g. the sticky header */
   --color-forest-rgb: 26, 46, 12;
+  --color-forest-2-rgb: 45, 77, 24;
   --color-moss-rgb: 106, 149, 41;
+  --color-moss-2-rgb: 115, 148, 59;
+  --color-white-rgb: 255, 255, 255;
   --color-ember-rgb: 189, 101, 56;
   --color-sand: rgb(228, 219, 202); /* deeper warm band, alternating sections */
   --color-paper: rgb(250, 248, 244); /* lightest surface (cards) */

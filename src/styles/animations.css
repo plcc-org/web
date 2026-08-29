@@ -8,66 +8,85 @@
  * staggered variant with `reveal-staggered`.
  */
 
-:root.reveal-ready [data-reveal] {
+/* The rise is a one-shot animation, not a transition, and it moves `translate`,
+   not `transform`. Both choices exist so the reveal leaves no residue: a
+   transition would permanently occupy the `transition` property (clobbering a
+   card's own hover transition), and a settled `transform: none` would sit in
+   this layer overriding every component transform below it — the moments
+   grid's offset tiles and each card's hover lift. Once the animation ends,
+   nothing here is applied at all. */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes reveal-rise-sm {
+  from {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Hidden only until the observer marks the section visible; the keyframes take
+   over from there. `backwards` holds each child at the from-state through its
+   stagger delay. */
+/* `:where()` keeps these at the same specificity as the reduced-motion
+   override at the foot of the section, which must win the tie. */
+:root.reveal-ready [data-reveal]:where(:not(.is-visible)),
+:root.reveal-ready [data-reveal]:where(:not(.is-visible)) .reveal-staggered > * {
   opacity: 0;
-  transform: translateY(2rem);
-  transition:
-    opacity 0.8s var(--ease-out),
-    transform 0.8s var(--ease-out);
 }
 
 :root.reveal-ready [data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* Staggered children for lists or grids */
-:root.reveal-ready .reveal-staggered > * {
-  opacity: 0;
-  transform: translateY(1rem);
-  transition:
-    opacity 0.6s var(--ease-out),
-    transform 0.6s var(--ease-out);
+  animation: reveal-rise 0.8s var(--ease-out) backwards;
 }
 
 :root.reveal-ready [data-reveal].is-visible .reveal-staggered > * {
-  opacity: 1;
-  transform: none;
+  animation: reveal-rise-sm 0.6s var(--ease-out) backwards;
 }
 
 /* Stagger delays — 100ms per child, up to 8 */
 :root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(1) {
-  transition-delay: 0ms;
+  animation-delay: 0ms;
 }
 :root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(2) {
-  transition-delay: 100ms;
+  animation-delay: 100ms;
 }
 :root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(3) {
-  transition-delay: 200ms;
+  animation-delay: 200ms;
 }
 :root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(4) {
-  transition-delay: 300ms;
+  animation-delay: 300ms;
 }
 :root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(5) {
-  transition-delay: 400ms;
+  animation-delay: 400ms;
 }
 :root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(6) {
-  transition-delay: 500ms;
+  animation-delay: 500ms;
 }
 :root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(7) {
-  transition-delay: 600ms;
+  animation-delay: 600ms;
 }
 :root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(8) {
-  transition-delay: 700ms;
+  animation-delay: 700ms;
 }
 
 /* Belt-and-suspenders: never hide content under reduced motion, even if armed */
 @media (prefers-reduced-motion: reduce) {
   :root.reveal-ready [data-reveal],
-  :root.reveal-ready .reveal-staggered > * {
+  :root.reveal-ready [data-reveal] .reveal-staggered > * {
     opacity: 1;
-    transform: none;
-    transition: none;
+    animation: none;
   }
 }
 
@@ -77,14 +96,17 @@
  * without JS or under reduced motion the hero renders normally. The eyebrow,
  * title, subhead, and CTA rise and fade in sequence.
  */
+/* Moves `translate`, not `transform`: `hero-enter` is never removed, so the
+   `forwards` fill holds this keyframe's end state for the life of the page —
+   were it `transform: none`, the CTA's hover lift could never apply. */
 @keyframes hero-rise {
   from {
     opacity: 0;
-    transform: translateY(1.25rem);
+    translate: 0 1.25rem;
   }
   to {
     opacity: 1;
-    transform: none;
+    translate: 0 0;
   }
 }
 

@@ -56,7 +56,11 @@
   /* "Glow" placeholder shown while the video loads (and behind a transparent
      video element until its first frames arrive). */
   background:
-    radial-gradient(140% 120% at 50% 115%, rgba(115, 148, 59, 0.5) 0%, rgba(45, 77, 24, 0) 55%),
+    radial-gradient(
+      140% 120% at 50% 115%,
+      rgba(var(--color-moss-2-rgb), 0.5) 0%,
+      rgba(var(--color-forest-2-rgb), 0) 55%
+    ),
     linear-gradient(180deg, var(--color-forest-2) 0%, var(--color-forest) 100%);
 }
 
