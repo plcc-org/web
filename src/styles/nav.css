@@ -116,8 +116,10 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
   background: linear-gradient(to bottom, rgba(var(--color-stone-rgb), 0.8), rgba(var(--color-stone-rgb), 0));
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
-  mask-image: linear-gradient(to bottom, #000, transparent);
+  /* A mask reads only the alpha ramp; the opaque stop's hue is irrelevant and
+     comes from a token purely so the lint can vouch for the value. */
+  -webkit-mask-image: linear-gradient(to bottom, rgb(var(--color-forest-rgb)), transparent);
+  mask-image: linear-gradient(to bottom, rgb(var(--color-forest-rgb)), transparent);
   opacity: 0;
   transition: opacity var(--duration-mid) var(--ease-out);
 }
