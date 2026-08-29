@@ -4,9 +4,12 @@ import { withBase } from '../lib/url'
 import { churchGraph, jsonLdDocument } from '../lib/structured-data'
 import { brand } from '../config/church'
 import '../styles/global.css'
-import instagramGlyphUrl from '../assets/images/Instagram_Glyph_White.svg?url'
+// SVG icons live outside src/assets/images on purpose: that directory is the
+// CMS media root, and an SVG in it shows up in the photo picker but silently
+// fails to render (the image globs accept raster formats only).
+import instagramGlyphUrl from '../assets/icons/Instagram_Glyph_White.svg?url'
 import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
-import podcastIconUrl from '../assets/images/podcast_icon_white.svg?url'
+import podcastIconUrl from '../assets/icons/podcast_icon_white.svg?url'
 import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
 import socialImageSource from '../assets/images/plcc-social-card.png'
 import iconSource from '../assets/images/plcc-logo-icon.jpg'

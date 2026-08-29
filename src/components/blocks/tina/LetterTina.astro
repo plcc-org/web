@@ -2,6 +2,7 @@
 import type { ImageMetadata } from 'astro'
 import Letter from '../../Letter.astro'
 import { imageFromRef } from '../../../lib/images'
+import { altFor } from '../../../lib/photos'
 import TinaChildren from './TinaChildren.astro'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
@@ -18,7 +19,7 @@ const img = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata |
 ---
 
 <section class="to-wide" data-reveal data-tina-field={blockField(Astro.props)}>
-  <Letter image={img} alt={alt} signoffName={signoffName} signoffRole={signoffRole}>
+  <Letter image={img} alt={await altFor(alt, image)} signoffName={signoffName} signoffRole={signoffRole}>
     <TinaChildren content={children as never} />
   </Letter>
 </section>

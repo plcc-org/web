@@ -374,6 +374,58 @@ export default defineConfig({
           },
         ],
       },
+      // The photo catalog (src/content/photos/photos.json): one description per
+      // photo, written once and inherited by every page that shows it — a block's
+      // own "Photo description" field is a per-page override, not a requirement
+      // (altFor in src/lib/photos.ts). Modelled like Homepage quotes: a single
+      // JSON file as a one-document collection, create/delete removed.
+      //
+      // `id` is the catalog key — the bare filename in src/assets/images. The
+      // image picker hands the field a full path/URL, so `parse` strips it to the
+      // basename on save, and `format` re-prefixes the stored form so the picker
+      // and thumbnail still recognise it.
+      {
+        name: 'photoCatalog',
+        label: 'Photo descriptions',
+        path: 'src/content/photos',
+        format: 'json',
+        ui: { allowedActions: { create: false, delete: false } },
+        fields: [
+          {
+            name: 'photos',
+            label: 'Photos',
+            type: 'object',
+            list: true,
+            openFormOnCreate: true,
+            ui: { itemProps: (item) => ({ label: item?.id || 'Photo' }) },
+            fields: [
+              {
+                name: 'id',
+                label: 'Photo file',
+                type: 'image',
+                required: true,
+                ui: {
+                  parse: (value: unknown) =>
+                    typeof value === 'string' && value ? (value.split('/').pop()?.split('?')[0] ?? value) : value,
+                  format: (value: unknown) =>
+                    typeof value === 'string' && value && !value.includes('/') ? `/assets/images/${value}` : value,
+                },
+              },
+              {
+                name: 'alt',
+                label: 'Description (alt text)',
+                type: 'string',
+                required: true,
+                ui: { component: 'textarea' },
+                description:
+                  'Say what someone who can’t see the photo would need — “A volunteer making coffee before the ' +
+                  'service”, not “coffee”. Every page that shows this photo uses this description unless it sets ' +
+                  'its own.',
+              },
+            ],
+          },
+        ],
+      },
       {
         name: 'shortLinks',
         label: 'Short links',

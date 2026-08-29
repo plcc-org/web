@@ -39,10 +39,12 @@ Even if you don't open the docs, never violate these:
 - **Tokens first.** Reference `var(--color-…)`, `var(--text-…)`, `var(--space-…)`. Never
   hard-code colors, sizes, radii, or shadows. → [design-system.md](./docs/design-system.md)
 - **Portrait-first photos**, rendered through `<Photo>`. Photo bytes live in
-  `src/assets/images`; each photo's `alt` lives once in the catalog (`src/content/photos.json`)
-  and is looked up by filename. Pages select photos by filename and own the ordering; the
-  catalog stays agnostic of usage. Logos/adornments aren't catalogued — pass their `alt`
-  directly. Avoid landscape crops. → [development.md](./docs/development.md)
+  `src/assets/images`; each photo's `alt` is written once in the catalog
+  (`src/content/photos/photos.json`, editable in the CMS as "Photo descriptions") and
+  inherited everywhere the photo appears — a block's own alt field is a per-page
+  override, resolved by `altFor()` (`src/lib/photos.ts`). Logos/adornments aren't
+  catalogued — pass their `alt` directly. Avoid landscape crops.
+  → [development.md](./docs/development.md)
 - **Internal links use the `withBase()` helper** (`src/lib/url.ts`): `href={withBase('about/')}`.
   → [development.md](./docs/development.md)
 - **Content lives in `src/content/` collections** (defined in `src/content.config.ts`),

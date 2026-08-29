@@ -1,13 +1,14 @@
 ---
 import Split from '../../Split.astro'
 import { imageFromRef } from '../../../lib/images'
+import { altFor } from '../../../lib/photos'
 import { resolveHref } from '../../../lib/url'
 import TinaChildren from './TinaChildren.astro'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 type Props = {
   image?: string
-  alt: string
+  alt?: string
   reverse?: boolean
   tone?: 'paper' | 'sand' | 'forest'
   eyebrow?: string
@@ -24,7 +25,7 @@ const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
   tinaField={blockField(Astro.props)}
   class="to-full"
   image={resolved}
-  alt={alt}
+  alt={await altFor(alt, image)}
   reverse={reverse}
   tone={tone}
   eyebrow={eyebrow}

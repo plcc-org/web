@@ -1,17 +1,18 @@
 ---
 import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
+import { altFor } from '../../../lib/photos'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // MDX wrapper for a single framed, captioned photo.
-type Props = { image?: string; alt: string; caption?: string } & BlockProps
+type Props = { image?: string; alt?: string; caption?: string } & BlockProps
 const { image, alt, caption } = Astro.props
 const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
 ---
 
 <section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
   <figure class="media">
-    <Photo image={resolved} alt={alt} class="media__img media__img--cover" />
+    <Photo image={resolved} alt={await altFor(alt, image)} class="media__img media__img--cover" />
     {caption && <figcaption class="media__caption">{caption}</figcaption>}
   </figure>
 </section>

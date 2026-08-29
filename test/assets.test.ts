@@ -41,7 +41,10 @@ describe('image references resolve to assets', () => {
 })
 
 describe('photo catalog', () => {
-  const catalog = JSON.parse(readFileSync('src/content/photos.json', 'utf-8')) as { id: string; alt: string }[]
+  const catalog = JSON.parse(readFileSync('src/content/photos/photos.json', 'utf-8')).photos as {
+    id: string
+    alt: string
+  }[]
 
   it('every catalogued photo file exists', () => {
     const missing = catalog.filter((p) => !assets.has(p.id)).map((p) => p.id)
@@ -51,5 +54,11 @@ describe('photo catalog', () => {
   it('every catalogued photo has non-empty alt', () => {
     const blank = catalog.filter((p) => !p.alt?.trim()).map((p) => p.id)
     expect(blank).toEqual([])
+  })
+
+  it('has no duplicate entries', () => {
+    const seen = new Set<string>()
+    const dupes = catalog.filter((p) => (seen.has(p.id) ? true : (seen.add(p.id), false))).map((p) => p.id)
+    expect(dupes).toEqual([])
   })
 })

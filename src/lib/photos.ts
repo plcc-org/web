@@ -1,19 +1,32 @@
 import { getCollection } from 'astro:content'
+import { imageKey } from './images'
 
-// The photo catalog (src/content/photos.json) is the single source of truth for
-// every editorial photo's alt text, keyed by its filename in src/assets/images.
-// <Photo> resolves the image bytes by filename (src/lib/images.ts) and the alt
-// text here, so pages only need to name a photo — selection lives with the page,
-// metadata lives with the catalog. Logos and adornments aren't catalogued and
-// pass their own alt to <Photo> directly.
+// The photo catalog (src/content/photos/photos.json): every editorial photo in
+// src/assets/images, keyed by filename, with its alt text written once. A block
+// that shows a catalogued photo may leave its alt field blank — altFor falls
+// back to the catalog — so one description serves every page the photo appears
+// on, and an inline alt, where present, is a deliberate per-page override.
+// Logos and adornments aren't catalogued and always pass their own alt.
 let alts: Map<string, string> | null = null
 
-export async function photoAlt(filename: string): Promise<string> {
+async function catalogAlt(filename: string): Promise<string | undefined> {
   if (!alts) {
     const entries = await getCollection('photos')
     alts = new Map(entries.map((e) => [e.id, e.data.alt]))
   }
-  const alt = alts.get(filename)
-  if (alt === undefined) console.warn(`[photos] no catalog entry for "${filename}"`)
+  return alts.get(filename)
+}
+
+/**
+ * The alt text for a stored image reference: the inline override when the
+ * editor wrote one, else the catalog entry for that file. '' when neither
+ * exists — scripts/check-site.mjs fails the run on a content image that
+ * renders with an empty alt, so a miss can't ship silently.
+ */
+export async function altFor(inline: string | undefined, ref: string | undefined): Promise<string> {
+  if (inline) return inline
+  if (!ref) return ''
+  const alt = await catalogAlt(imageKey(ref))
+  if (alt === undefined) console.warn(`[photos] no inline alt and no catalog entry for "${ref}"`)
   return alt ?? ''
 }

@@ -4,6 +4,7 @@ import Split from '../../Split.astro'
 import Hero from '../../Hero.astro'
 import Photo from '../../Photo.astro'
 import { imageFromRef } from '../../../lib/images'
+import { altFor } from '../../../lib/photos'
 import { renderInline } from '../../../lib/markdown'
 import { resolveHref } from '../../../lib/url'
 
@@ -64,6 +65,7 @@ const resolve = async (ref?: string) =>
 
 const heroImg = await resolve(image)
 const logoImg = await resolve(logo)
+const heroAlt = await altFor(alt, image)
 
 // Drop any pane whose upload can't be resolved, rather than rendering a gap.
 // `photos ?? []`, not just the destructuring default: every hero carries the
@@ -72,7 +74,7 @@ const logoImg = await resolve(logo)
 const panes: { image: ImageMetadata; alt: string }[] = []
 for (const p of photos ?? []) {
   const resolved = await resolve(p.image)
-  if (resolved) panes.push({ image: resolved, alt: p.alt || '' })
+  if (resolved) panes.push({ image: resolved, alt: await altFor(p.alt, p.image) })
 }
 
 // Which shape renders is the variant the editor chose, never an inference from
@@ -100,7 +102,7 @@ const wordmarkLogo = variant === 'wordmark' ? logoImg : undefined
     <Split
       class:list={['to-full', flush && 'is-flush']}
       image={heroImg}
-      alt={alt}
+      alt={heroAlt}
       reverse
       tone="sand"
       eyebrow={eyebrow}

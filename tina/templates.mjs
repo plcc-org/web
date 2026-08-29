@@ -156,16 +156,28 @@ const itemProps = (key, fallback) => ({
  * editor reads rather than is shown. If Tina implements non-list templates, the
  * shape here maps onto them directly.
  *
- * `required` is deliberately absent except inside the photo list. These are
- * collection fields: a required one becomes non-null in GraphQL, and the indexer
- * then rejects any already-saved page missing it (see the note in
- * tina/config.ts). The photo list is the one safe case — no page had one before
- * it existed — and alt text is worth validating at the point of upload.
+ * `required` is deliberately absent except inside the photo list's image field.
+ * These are collection fields: a required one becomes non-null in GraphQL, and
+ * the indexer then rejects any already-saved page missing it (see the note in
+ * tina/config.ts). Alt fields on photo slots are optional on purpose: blank
+ * falls back to the photo catalog (see CATALOG_ALT above), and check-site.mjs
+ * fails the build on an image that renders with no alt from either source.
  * -------------------------------------------------------------------- */
 
 /** Which variants a field applies to, prepended to its description. */
 /** @type {(which: string, rest: string) => string} */
 const forVariants = (which, rest) => `Used by: ${which}. ${rest}`
+
+/**
+ * The description for every alt field on a *catalogued-photo* slot. Blank falls
+ * back to the photo's entry in "Photo descriptions" (altFor, src/lib/photos.ts),
+ * so the description is written once and inherited everywhere the photo appears.
+ * Logo alt fields don't get this — logos aren't catalogued — and keep their own
+ * required/validate treatment.
+ */
+const CATALOG_ALT =
+  'Usually leave this blank — the photo’s saved description (the “Photo descriptions” list) is used. Write one ' +
+  'here only to say something specific to this page.'
 
 /**
  * The variant the form currently has, wherever the callback finds itself: a field
@@ -207,16 +219,7 @@ export const heroFields = [
     },
   }),
   text('alt', 'Photo description (alt text)', {
-    description: forVariants(
-      'Photo & text, Logo & photo',
-      'Say what someone who can’t see it would need — “A volunteer making coffee before the service”, not “coffee”.'
-    ),
-    ui: {
-      validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
-        heroVariant(allValues) === 'photo' && !value
-          ? 'A “Photo & text” hero needs a photo description for people who can’t see the photo.'
-          : undefined,
-    },
+    description: forVariants('Photo & text, Logo & photo', CATALOG_ALT),
   }),
   {
     name: 'photos',
@@ -232,7 +235,7 @@ export const heroFields = [
     ui: itemProps('alt', 'Photo'),
     fields: [
       image('image', 'Photo', { required: true }),
-      text('alt', 'Photo description (alt text)', { required: true }),
+      text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
     ],
   },
   image('logo', 'Wordmark logo', {
@@ -290,7 +293,7 @@ export const templates = [
     // The same applies to the other isTitle fields below.
     fields: [
       image('image', 'Photo', { required: true }),
-      text('alt', 'Photo description (alt text)', { required: true }),
+      text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
       text('heading', 'Heading', { isTitle: true, required: true }),
       text('eyebrow', 'Eyebrow'),
       bool('reverse', 'Photo on the right'),
@@ -312,7 +315,7 @@ export const templates = [
     description: 'A single framed photo with an optional caption.',
     fields: [
       image('image', 'Photo', { required: true }),
-      text('alt', 'Photo description (alt text)', { required: true }),
+      text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
       text('caption', 'Caption'),
     ],
   },
@@ -371,7 +374,7 @@ export const templates = [
         ui: itemProps('alt', 'Photo'),
         fields: [
           image('image', 'Photo', { required: true }),
-          text('alt', 'Photo description (alt text)', { required: true }),
+          text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
         ],
       },
     ],
@@ -537,7 +540,13 @@ export const templates = [
       text('eyebrow', 'Eyebrow'),
       image('logo', 'Logo (optional)'),
       text('logoAlt', 'Logo description (alt text)', {
-        description: 'Required only when a logo is set.',
+        description: 'What the logo says or shows. Needed whenever a logo is set.',
+        ui: {
+          validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
+            /** @type {{ logo?: string } | undefined} */ (allValues)?.logo && !value
+              ? 'A logo needs a description for people who can’t see it.'
+              : undefined,
+        },
       }),
       children(),
     ],
@@ -584,9 +593,7 @@ export const templates = [
     description: 'A personal letter — flowing prose beside a portrait, closing with a signature.',
     fields: [
       image('image', 'Portrait (optional)'),
-      text('alt', 'Portrait description (alt text)', {
-        description: 'Required only when a portrait is set.',
-      }),
+      text('alt', 'Portrait description (alt text)', { description: CATALOG_ALT }),
       text('signoffName', 'Signature — name'),
       text('signoffRole', 'Signature — role/title'),
       children(),

@@ -101,9 +101,14 @@ file, so it belongs in the list with everything else.
 > and the homepage's four "Start here" doors are a **Link cards** block on the home page.
 > Each set had exactly one reader, so by the rule above none of them earned a collection.
 
-**Photos are deliberately not a collection.** The 110-entry catalog (`src/content/photos.json`)
-is build-time infrastructure for the hand-built pages. Editors add photos by **uploading them
-into a page block**, where the photo and its (required) description live together.
+**Photo descriptions live in one place.** The catalog
+(`src/content/photos/photos.json`, the **Photo descriptions** collection in the sidebar)
+holds one alt-text description per photo, written once and inherited by every page that
+shows the photo. A block's own "Photo description" field is a per-page override — usually
+left blank. Editors add photos by **uploading them into a page block**, then either write
+the description there or add an entry under Photo descriptions so every future use gets it
+for free. The build's crawl fails on any content image that ends up with no description
+from either source, so a miss can't ship silently.
 
 ### Short links
 

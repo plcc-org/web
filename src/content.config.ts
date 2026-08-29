@@ -28,16 +28,21 @@ const yamlList =
 //   • Short flat lists → a single YAML file (file), edited as a list.
 // Schemas (Zod) make alt text required and give editor + build-time validation.
 
-// The photo catalog: one JSON file (src/content/photos.json) listing every
-// editorial photo in src/assets/images by filename, with its alt text. This is
-// the single source of truth for photo *metadata* — pages select photos by
-// filename and <Photo> looks up the alt here (see src/lib/photos.ts). The image
-// bytes are resolved and optimized separately, by filename (see src/lib/images.ts),
-// so the catalog stays agnostic of where or how each photo is used. Logos and
+// The photo catalog: one JSON file listing every editorial photo in
+// src/assets/images by filename, with its alt text written once. Blocks showing
+// a catalogued photo may leave their alt blank — altFor (src/lib/photos.ts)
+// falls back to the entry here — and an inline alt is a per-page override. The
+// image bytes are resolved and optimized separately (src/lib/images.ts), so the
+// catalog stays agnostic of where or how each photo is used. Logos and
 // adornments (Instagram/YouTube marks, ministry logos, the PWA icon) are not
-// photos and pass their own alt directly to <Photo>.
+// photos and pass their own alt directly.
+//
+// Wrapped as `{ "photos": [...] }` in its own directory, like the quotes list,
+// so the CMS can edit it as a one-document collection ("Photo descriptions").
 const photos = defineCollection({
-  loader: file('src/content/photos.json'),
+  loader: file('src/content/photos/photos.json', {
+    parser: (text) => JSON.parse(text).photos,
+  }),
   schema: z.object({
     id: z.string(),
     alt: z.string().min(1),
@@ -154,8 +159,12 @@ const pages = defineCollection({
     // field as '' rather than omitting it, and '' satisfies z.string() — so the
     // exact mistake this union exists to catch would pass. Same trap as the `||`
     // in src/pages/[...slug].astro.
+    // `alt` is optional on photo slots: a blank one falls back to the photo
+    // catalog at render (altFor in src/lib/photos.ts), and check-site.mjs fails
+    // the build on any content image that still renders with an empty alt. The
+    // wordmark's `logoAlt` stays required — logos aren't catalogued.
     hero: z.discriminatedUnion('variant', [
-      z.object({ variant: z.literal('photo'), image: z.string().min(1), alt: z.string().min(1), ...heroText }),
+      z.object({ variant: z.literal('photo'), image: z.string().min(1), alt: z.string().optional(), ...heroText }),
       z.object({ variant: z.literal('plain'), ...heroText }),
       z.object({
         variant: z.literal('wordmark'),
@@ -167,7 +176,7 @@ const pages = defineCollection({
       }),
       z.object({
         variant: z.literal('cinematic'),
-        photos: z.array(z.object({ image: z.string().min(1), alt: z.string().min(1) })).min(1),
+        photos: z.array(z.object({ image: z.string().min(1), alt: z.string().optional() })).min(1),
         ...heroText,
       }),
     ]),

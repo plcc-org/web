@@ -1,23 +1,19 @@
 ---
 import { Image, getImage } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
-import { imageLoader, assetPath } from '../lib/images'
-import { photoAlt } from '../lib/photos'
+import { assetPath } from '../lib/images'
 import { withBase } from '../lib/url'
 
-// Thin wrapper around Astro's <Image>. Provide EITHER:
-//   • `image` — a resolved ImageMetadata (e.g. a content-collection image() field), or
-//   • `filename` — a name in src/assets/images, resolved via import.meta.glob.
-// Alt text: for catalogued photos, omit `alt` and it's looked up by filename from
-// the photo catalog (src/content/photos.json). Pass `alt` explicitly for logos and
-// adornments (not in the catalog) or to override. Emits an optimized, responsive
-// WebP <img> with intrinsic width/height (no layout shift). Renders nothing if a
-// filename can't be resolved, so callers don't need their own fallback. Astro caps
-// generated widths at the source width, so oversized `widths` are harmless.
+// Thin wrapper around Astro's <Image>: a resolved `image` (from imageFromRef or
+// a content-collection field) plus its `alt`. Callers rendering catalogued
+// photos resolve the alt with altFor (src/lib/photos.ts), which falls back to
+// the photo catalog when the page didn't write its own. Emits an optimized,
+// responsive WebP <img> with intrinsic width/height (no layout shift). Renders
+// nothing without an image, so callers don't need their own fallback. Astro
+// caps generated widths at the source width, so oversized `widths` are harmless.
 
 type Props = {
   image?: ImageMetadata
-  filename?: string
   alt?: string
   class?: string
   widths?: number[]
@@ -29,7 +25,6 @@ type Props = {
 
 const {
   image,
-  filename,
   alt,
   class: className,
   widths = [480, 960, 1440],
@@ -39,12 +34,8 @@ const {
   format = 'webp',
 } = Astro.props
 
-const loader = !image && filename ? imageLoader(filename) : undefined
-const src = image ?? (loader ? (await loader()).default : undefined)
-if (!src && filename) {
-  console.warn(`[Photo] image not found in src/assets/images: ${filename}`)
-}
-const resolvedAlt = alt ?? (filename ? await photoAlt(filename) : '')
+const src = image
+const resolvedAlt = alt ?? ''
 
 // Fall back to the unoptimised original when no image service is available.
 //

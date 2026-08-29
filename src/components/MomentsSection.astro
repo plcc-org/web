@@ -2,16 +2,14 @@
 import type { ImageMetadata } from 'astro'
 import Photo from './Photo.astro'
 
-// A staggered photo band. Photos come either as catalog `filename`s (alt looked
-// up via the catalog) or as resolved `images` with their own alt (e.g. a
-// CMS-uploaded "photo band" page block).
+// A staggered photo band: resolved images, each with its alt (the "Photo band"
+// page block resolves both through imageFromRef + altFor).
 type ImageItem = { image: ImageMetadata; alt: string }
 type Props = {
   /** Visual-editor block marker; see src/lib/tina/block-field.ts. */
   tinaField?: string
   heading?: string | null
   eyebrow?: string | null
-  photos?: string[]
   images?: ImageItem[]
   sectionClass?: string
   reveal?: boolean
@@ -20,16 +18,13 @@ type Props = {
 const {
   heading = 'Moments from Pine Lake',
   eyebrow = null,
-  photos = [],
-  images,
+  images = [],
   sectionClass = 'section',
   reveal = false,
   tinaField,
 } = Astro.props
 
-// Normalize to a single tile list <Photo> can consume either way.
-const tiles: Array<{ filename?: string; image?: ImageMetadata; alt?: string }> =
-  images ?? photos.map((filename) => ({ filename }))
+const tiles = images
 ---
 
 <section data-tina-field={tinaField} {...reveal && { 'data-reveal': true }} class:list={['moments', sectionClass]}>
@@ -47,7 +42,6 @@ const tiles: Array<{ filename?: string; image?: ImageMetadata; alt?: string }> =
       tiles.map((tile, i) => (
         <figure class:list={['moments__tile', i % 2 === 1 && 'moments__tile--offset']}>
           <Photo
-            filename={tile.filename}
             image={tile.image}
             alt={tile.alt}
             class="moments__img"

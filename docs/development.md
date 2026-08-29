@@ -42,7 +42,7 @@ src/
     leadership/     One file per leader
     youth-moments/  Youth photo captions
     short-links/    Redirects + 410s (NOT an Astro collection — see below)
-    photos.json     The photo catalog: filename → alt
+    photos/         The photo catalog (photos.json): filename → alt, written once
     quotes.yaml, events-pco.json
   content.config.ts Collection definitions + Zod schemas
   layouts/          BaseLayout.astro (head, header, footer, skip link, JSON-LD)
@@ -298,25 +298,28 @@ Photos are the primary visual material, and the pipeline keeps them fast and con
   out of the deploy — don't prune the source.
 - Render through **`<Photo>`** (`src/components/Photo.astro`), a wrapper over Astro's
   `<Image>` that emits an optimized, responsive WebP with intrinsic dimensions (no layout
-  shift). Pass it **either** an `image` (a resolved `ImageMetadata`, e.g. from
-  `imageFromRef`) **or** a `filename` from `src/assets/images` (resolved via
-  `src/lib/images.ts`). It renders nothing if a filename can't be resolved.
-- **The photo catalog is the single source of truth for photo metadata.** Every editorial
-  photo has one entry in `src/content/photos.json` (the `photos` collection): its `id` is
-  the filename and `alt` is its description. The catalog is **agnostic of how photos are
-  used** — it knows nothing about pages, sections, or order.
-- **Pages drive selection.** A page names the photos it wants, by filename: `<Photo>` /
-  `<Split>` / `<Hero>` take a `filename`, and `<MomentsSection photos={[…]}>` takes an
-  ordered list. The `alt` is looked up from the catalog by filename (`src/lib/photos.ts`),
-  so pages don't repeat it. To rotate a Moments gallery, edit the page's filename list.
+  shift). It takes a resolved `image` (`ImageMetadata`, from `imageFromRef`) plus its
+  `alt`, and renders nothing without an image.
+- **The photo catalog is the single source of truth for photo descriptions.** Every
+  editorial photo has one entry in `src/content/photos/photos.json` (the `photos`
+  collection; "Photo descriptions" in the CMS): its `id` is the filename and `alt` is its
+  description, written once. The catalog is **agnostic of how photos are used** — it
+  knows nothing about pages, sections, or order.
+- **Blocks inherit the catalog description.** A block's alt field is optional: blank
+  falls back to the catalog entry for that file, an inline value is a per-page override.
+  The resolution lives in `altFor()` (`src/lib/photos.ts`), called by every image-bearing
+  block adapter. The crawl (`scripts/check-site.mjs`, run in `postbuild`) fails on a
+  content image that renders with no description from either source.
 - **Logos and adornments are not photos.** Partner logos (`ecc.png`), the Pine Lake Youth
   mark, the Instagram/YouTube icons and the PWA icon are _not_ in the catalog; pass their
-  `alt` explicitly to `<Photo>`. A decorative image needs **both** `alt=""` and
-  `aria-hidden="true"` — the crawl treats `alt=""` on its own as an oversight and fails.
+  `alt` explicitly to `<Photo>`. SVG icons live in `src/assets/icons/`, outside the CMS
+  media root, so they can't be picked as photos. A decorative image needs **both**
+  `alt=""` and `aria-hidden="true"` — the crawl treats `alt=""` on its own as an
+  oversight and fails.
 - **CMS page blocks carry their own photos.** Blocks on CMS-built pages store an uploaded
-  image and its alt together via CMS image fields, resolved at render time
+  image reference via CMS image fields, resolved at render time
   through `imageFromRef` rather than Astro's `image()` helper — so one reference works
-  from both flat and nested pages. They don't touch the catalog. The stored form is
+  from both flat and nested pages. The stored form is
   **`/assets/images/…`**, and that shape is load-bearing: it is the only one the CMS
   round-trips unchanged, and a relative path comes back mangled with the photo silently
   gone. See [cms.md](./cms.md#gotchas).

@@ -532,17 +532,17 @@ automatically flips to a light fill so it doesn't read green-on-green.
 
 **Favour portrait (4:5 or taller); avoid landscape crops.**
 
-- Photo **bytes** live in `src/assets/images/`. Photo **metadata** lives once in
-  `src/content/photos.json` — `{ id, alt }` where `id` is the filename. The catalog is
-  the single source of truth for `alt` and stays agnostic of where a photo is used.
-- Render through **`<Photo>`**, a wrapper over Astro's `<Image>` that resolves a filename
-  to bytes via `imageLoader()` and its `alt` via `photoAlt()`, emitting responsive WebP
-  with intrinsic dimensions (no layout shift). Props: `filename` (or a pre-resolved
-  `image`), `alt?`, `class?`, `widths?`, `sizes?`, `loading?`, `fetchpriority?`,
-  `format?`. Renders nothing if the filename can't resolve.
-- **Alt text:** for catalogued photos, **omit `alt`** — it's looked up by filename. Pass
-  it explicitly only for logos and adornments. A decorative image needs **both** `alt=""`
-  and `aria-hidden="true"`.
+- Photo **bytes** live in `src/assets/images/`. Photo **descriptions** live once in
+  `src/content/photos/photos.json` — `{ id, alt }` where `id` is the filename. The
+  catalog is the single source of truth for `alt` and stays agnostic of where a photo is
+  used; a block's inline alt is a per-page override (`altFor()`, `src/lib/photos.ts`).
+- Render through **`<Photo>`**, a wrapper over Astro's `<Image>` emitting responsive WebP
+  with intrinsic dimensions (no layout shift). Props: `image` (resolved
+  `ImageMetadata`), `alt?`, `class?`, `widths?`, `sizes?`, `loading?`, `fetchpriority?`,
+  `format?`. Renders nothing without an image.
+- **Alt text:** for catalogued photos, blocks may **leave alt blank** — the catalog
+  entry is used. Pass it explicitly for logos and adornments (never catalogued). A
+  decorative image needs **both** `alt=""` and `aria-hidden="true"`.
 - Pages **select photos by filename and own the ordering**; the catalog never encodes
   usage.
 - The library is deliberately larger than what the site renders, so there's a real pool
