@@ -1,12 +1,16 @@
-// Pure, dependency-free event helpers (no astro: imports), so they can be unit
-// tested directly. Used by the provider and the Church Center adapter.
+// Pure event helpers (no astro: imports), so they can be unit tested directly.
+// Used by the provider and the Church Center adapter.
 
 import type { CalendarEvent, EventCategory } from './types'
+import { church } from '../../config/church'
+
+/** Weekday names in week order — shared by the curated adapter and WeekRhythm. */
+export const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const
 
 // The church is in Pacific time and CI is not, so every date decision here
 // pins the zone rather than trusting the host.
 const PACIFIC_DAY = new Intl.DateTimeFormat('en-CA', {
-  timeZone: 'America/Los_Angeles',
+  timeZone: church.timezone,
   year: 'numeric',
   month: '2-digit',
   day: '2-digit',

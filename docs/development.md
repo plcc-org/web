@@ -361,27 +361,6 @@ hold — they drift back a little at a time, and each step looks harmless.
 Several of these exist because the failure has **no symptom on the rendered page**. A
 production build that isn't indexable looks perfect and simply never appears in search.
 
-### Comparing two builds
-
-Everything above checks one build against a rule. `npm run compare` checks a build against
-_another build_ — it reduces each to what a reader sees (title, description, headings,
-links, images, structure, text) and diffs them page by page, so anything that changed but
-shouldn't have shows up as a hit with no rule needed in advance.
-
-```bash
-npm run build
-npm run compare              # exits 1 on any difference
-npm run compare -- --detail  # and show them (name pages to narrow it)
-npm run compare:serve        # baseline on :4101, this build on :4102
-```
-
-The baseline is a second worktree, so it can hold whichever dependencies that revision
-needs; `spike/compare-builds.mjs` documents the one-time setup. This was built to prove
-the CMS migration changed nothing, and earned its keep immediately: it caught `tel:` links
-rendering as `#`, a production build silently running as development, and a wrapper div
-that dropped every full-bleed block out of the `.canvas` layout rules — all invisible to
-every check above, because each build looks perfectly consistent on its own.
-
 ### Unit tests
 
 `test/*.test.ts`, run by `npm test`:

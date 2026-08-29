@@ -8,6 +8,6 @@ const { eyebrow, heading, children } = Astro.props
 ---
 
 <section class="section" data-reveal data-tina-field={blockField(Astro.props)}>
-  {(eyebrow || heading) && <SectionHeader eyebrow={eyebrow || undefined} heading={heading || undefined} />}
+  <SectionHeader eyebrow={eyebrow} heading={heading} />
   <div class="measure"><TinaChildren content={children as never} /></div>
 </section>

@@ -16,9 +16,6 @@ async function loadFromSource(source: EventSource): Promise<CalendarEvent[]> {
     case 'pco':
       // Planning Center Calendar data captured daily by CI (see pco.ts).
       return pcoEvents()
-    case 'ics':
-      // Not implemented; the provider falls back to curated.
-      throw new Error(`events source "${source}" is not implemented yet`)
     case 'curated':
     default:
       return curatedEvents()

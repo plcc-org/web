@@ -33,10 +33,7 @@
     "generate:favicon": "node scripts/generate-favicon.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "dev:tina": "ASTRO_DEV=1 tinacms dev -c \"astro dev\"",
-    "_comment_compare": "Regression check for the Tina migration: renders both builds down to what a reader sees and diffs them. Needs a built baseline in the sibling worktree — see spike/compare-builds.mjs. `compare:serve` puts the two builds on adjacent ports for a side-by-side look.",
-    "compare": "node spike/compare-builds.mjs",
-    "compare:serve": "node spike/serve-builds.mjs"
+    "dev:tina": "ASTRO_DEV=1 tinacms dev -c \"astro dev\""
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.8",

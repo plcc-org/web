@@ -99,13 +99,9 @@
   background-image: radial-gradient(80% 60% at 15% 0%, rgba(189, 101, 56, 0.06) 0%, rgba(189, 101, 56, 0) 60%);
 }
 
-/* Narrower band content; centered also centers the text (closing CTAs, quotes) */
-.band--narrow .band__inner,
+/* Centered band content, capped at a readable column (closing CTAs, quotes) */
 .band--centered .band__inner {
   max-width: var(--measure-wide);
-}
-
-.band--centered .band__inner {
   margin-inline: auto;
   text-align: center;
 }
@@ -336,12 +332,6 @@
 /* ----------------------------------------------------------------------
  * Surfaces & callouts
  * -------------------------------------------------------------------- */
-
-/* A soft white-to-stone wash. For a panel that wants to lift off the page
-   without becoming a card. */
-.surface-gradient-soft {
-  background: var(--surface-gradient-soft);
-}
 
 /* An aside within a section (see Callout.astro) — a sand block with a moss edge
    on the leading side. The one place a coloured rule marks a whole block, so

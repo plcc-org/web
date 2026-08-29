@@ -14,8 +14,8 @@ For the stack and conventions, see [development.md](./development.md); for hosti
 
 - The editor lives at **`/admin`**, and it works two ways. The **forms view** lists a page's
   blocks and opens each one as a typed form. **Visual editing** shows the real rendered page
-  beside the form: click a heading or a photo on the page and its field focuses in the
-  sidebar, and typing updates the page live.
+  beside the form: click anywhere in a section and its block's form focuses in the
+  sidebar (the markers are per block, not per field), and typing updates the page live.
 - **The public site stays static.** Editing produces a Git commit; the commit triggers a
   build; the build ships static HTML. Visitors never hit a server — the only on-demand route
   is `/tina-island/*`, which re-renders a region while an editor is typing.
@@ -23,7 +23,9 @@ For the stack and conventions, see [development.md](./development.md); for hosti
   (the block palette), with **`tina/short-link-rules.mjs`** holding the per-entry short-link
   rules it shares with the build script. Its schemas must stay aligned with the Astro content
   schemas in `src/content.config.ts` — Astro validates the same files at build time, and the
-  two catch different mistakes. **Change one, change the other.**
+  two catch different mistakes. **Change one, change the other.** (One deliberate exception:
+  `shortLinks` has no zod schema — nothing renders those files, and
+  `scripts/generate-redirects.mjs` is their validator.)
 - **`tina/tina-lock.json` is the third thing to change**, and the one nothing reminds you
   about. See below.
 
@@ -75,21 +77,22 @@ first because it's what an editor is nearly always here for; the shared lists th
 page blocks follow; Short links sits last, being routing config rather than content and
 the least often touched.
 
-| In the CMS          | What it is                                    | Kind    |
-| ------------------- | --------------------------------------------- | ------- |
-| **Pages**           | CMS-built pages (hero + a body of blocks)     | content |
-| **Leadership**      | Pastors & staff — reusable people entities    | shared  |
-| **Youth moments**   | Signature youth trips/retreats (curated)      | shared  |
-| **Homepage quotes** | Rotating testimonials (reusable social proof) | shared  |
-| **Short links**     | Vanity URLs pointing off-site                 | routing |
+| In the CMS             | What it is                                    | Kind    |
+| ---------------------- | --------------------------------------------- | ------- |
+| **Pages**              | CMS-built pages (hero + a body of blocks)     | content |
+| **Leadership**         | Pastors & staff — reusable people entities    | shared  |
+| **Youth moments**      | Signature youth trips/retreats (curated)      | shared  |
+| **Homepage quotes**    | Rotating testimonials (reusable social proof) | shared  |
+| **Photo descriptions** | One alt-text description per photo, site-wide | shared  |
+| **Short links**        | Vanity URLs pointing off-site                 | routing |
 
-All five sit under one **Collections** heading. One of them — **Homepage quotes** — is a
-single YAML file holding one list, so clicking it skips the list view and opens that form
-directly. It offers no "add" or "delete" at the file level (`allowedActions` in
+All six sit under one **Collections** heading. Two of them — **Homepage quotes** and
+**Photo descriptions** — are a single file holding one list, so their list view shows a
+single row to click through. They offer no "add" or "delete" at the file level (`allowedActions` in
 `tina/config.ts`): the one file is the only file. Adding and removing quotes _within_ the
 list is the normal thing to do and works as usual.
 
-It is deliberately not marked `ui.global`. That flag exists for genuine site configuration
+Neither is marked `ui.global`. That flag exists for genuine site configuration
 and moves a collection out of the Collections list into the **Site** section next to Media
 Manager — which, copied from Tina's own starter, split the sidebar in two and hid half the
 editable lists from the people who edit them. This is content that happens to live in one
@@ -116,8 +119,9 @@ from either source, so a miss can't ship silently.
 from the platform, so the short link has to outlive whatever it points at — Church Center
 mints a new event ID every year, and the printed URL can't change.
 
-Add one under **Short links**. The "Short link" field is the bit after `plcc.org/`, and the
-file is named from it, so typing `camp` gives you `plcc.org/camp`. Two things worth knowing:
+Add one under **Short links**. The **Old address** field is the address itself — `/camp`
+makes `plcc.org/camp` — and **Name** just labels the entry in the list (and names its file
+behind the scenes). Two things worth knowing:
 
 - **Leave the kind as "a shortcut" unless you're certain.** A shortcut stays yours to
   re-point next year. "Permanently moved" tells browsers to remember the destination more
@@ -128,8 +132,8 @@ file is named from it, so typing `camp` gives you `plcc.org/camp`. Two things wo
   `/visit/`. The build fails if you try, rather than quietly taking a page off the site.
 
 **Every short link needs a "Review by" date.** A sign-up shortcut: when the thing it points
-at ends. A moved page: about a year, by which point search engines have caught up. The list
-view shows these dates, so it's obvious at a glance what needs attention.
+at ends. A moved page: about a year, by which point search engines have caught up. Every
+build prints the links due (or overdue) for review, so they surface without anyone asking.
 
 The date is a prompt, not a switch — **the link keeps working past it.** A URL printed on a
 flyer doesn't stop existing because a date passed, and quietly 404ing it would be a worse
@@ -172,8 +176,8 @@ A page has two parts:
 
 2. **A body** — a **rich-text editor** where you type formatted prose and insert **blocks**
    from the **Embed** menu at the left of the toolbar. Each block is a pre-styled section,
-   so anything you build stays on-brand. Blocks show inline as labelled cards (with a photo
-   thumbnail where relevant), and you edit a block's text right on the card.
+   so anything you build stays on-brand. Blocks show inline as labelled bars — most carry
+   their own heading as the label — and clicking one opens its fields in a panel.
 
 ### Editing blocks
 
@@ -233,8 +237,10 @@ then for.
 
 Notes for editors:
 
-- **Photos** are drag-and-drop. Always fill the **photo description (alt text)** — it's
-  required (the site won't build without it) and it's what makes the site accessible.
+- **Photos** are drag-and-drop. Their **description (alt text)** usually comes from the
+  photo's entry in **Photo descriptions** — leave the block's own field blank unless this
+  page needs different wording. A photo with no description from either source fails the
+  build, so it can't ship silently.
 - **Text** accepts Markdown: `**bold**`, `_italic_`, `[links](…)`, and `- bullet` lists.
   Straight quotes and dashes become curly typographic forms automatically.
 - Internal links should be root-relative: `/visit/`, `/kids/`.
@@ -246,21 +252,26 @@ The palette above tells you what each block _is_. This is the question you actua
 
 Start here and take the first match:
 
-| If what you have is…                               | Reach for          |
-| -------------------------------------------------- | ------------------ |
-| A few paragraphs that just need to be read         | **Rich text**      |
-| Something better _shown_ than described            | **Photo & text**   |
-| One point you don't want people to skim past       | **Callout**        |
-| One sentence someone said, worth its own space     | **Quote**          |
-| Three or four parallel things, each a line or two  | **Text cards**     |
-| Three or four places to go next                    | **Link cards**     |
-| A sequence where the order matters                 | **Roadmap**        |
-| A set of principles where the order doesn't        | **Key points**     |
-| A single photo that needs explaining               | **Photo**          |
-| A minute of video that says it better than a page  | **Video**          |
-| A moment of visual breathing room                  | **Photo gallery**  |
-| The one thing you want the reader to do at the end | **Closing banner** |
-| A personal note in someone's own voice             | **Letter**         |
+| If what you have is…                                 | Reach for           |
+| ---------------------------------------------------- | ------------------- |
+| A few paragraphs that just need to be read           | **Rich text**       |
+| Something better _shown_ than described              | **Photo & text**    |
+| One point you don't want people to skim past         | **Callout**         |
+| One sentence someone said, worth its own space       | **Quote**           |
+| Three or four parallel things, each a line or two    | **Text cards**      |
+| Three or four places to go next                      | **Link cards**      |
+| A sequence where the order matters                   | **Roadmap**         |
+| A set of principles where the order doesn't          | **Key points**      |
+| A single photo that needs explaining                 | **Photo**           |
+| A minute of video that says it better than a page    | **Video**           |
+| A moment of visual breathing room                    | **Photo gallery**   |
+| The one thing you want the reader to do at the end   | **Closing banner**  |
+| A personal note in someone's own voice               | **Letter**          |
+| A note that belongs to a partner or programme        | **Aside**           |
+| Cards where a logo is the identity, not a photo      | **Logo cards**      |
+| "What's coming up" that should stay current itself   | **Featured events** |
+| The youth year's tentpoles, from the shared list     | **Youth moments**   |
+| Voices of the church, rotating, from the shared list | **Quotes carousel** |
 
 Three rules of thumb behind that table:
 
@@ -269,6 +280,9 @@ Three rules of thumb behind that table:
   a lie about how to read them.
 - **Cards are for parallel things.** If your three cards aren't the same _kind_ of thing,
   they should be prose.
+- **Callout speaks in the site's voice; Aside speaks beside it.** A Callout is our own
+  emphasized point, with a heading. An Aside sets a note apart — often with a partner or
+  programme logo — as something adjacent to the page rather than of it.
 - **One Closing banner per page, and it goes last.** It's the loudest block, and it closes
   flush against the footer — put a second one mid-page and both go quiet.
 
@@ -357,8 +371,8 @@ An unresolvable image doesn't fail the build — it just doesn't appear.
   the rendering.
 - Internal code names differ from editor labels (the label is what editors see): `Section` =
   "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `Video` = "Video",
-  `PhotoBand` = "Photo gallery", `CardRow` = "Text cards", `Closing` = "Closing banner",
-  `Quote` = "Quote",
+  `PhotoBand` = "Photo gallery", `CardRow` = "Text cards", `Callout` = "Callout",
+  `LinkCards` = "Link cards", `Closing` = "Closing banner", `Quote` = "Quote",
   `FeaturedEvents` = "Featured events", `KeyPoints` = "Key points", `LogoCards` =
   "Logo cards", `Aside` = "Aside", `YouthMomentsBlock` = "Youth moments", `QuoteCarousel` =
   "Quotes carousel", `Roadmap` = "Roadmap", `Letter` = "Letter".
@@ -435,7 +449,7 @@ are the whole mitigation.
 Two mechanisms look like they'd fix that. Neither does:
 
 - **Conditional visibility** needs a React component in `ui.component` reading form state.
-  `tina/templates.mjs` is plain `.mjs` so `spike/roundtrip.mjs` can import it without a
+  `tina/templates.mjs` is plain `.mjs` so Node scripts can import it without a
   build step, and `tina/config.ts` deliberately holds no JSX.
 - **`type: 'object'` with `templates`** is the documented "pick a shape, see only its fields"
   mechanism, and it is **only implemented for lists**. In `@tinacms/schema-tools` 2.8.3 — the
@@ -625,7 +639,7 @@ change, or every existing inbound link breaks.
 - **Object props need identifier keys.** Tina's MDX parser accepts
   `items={[{title: "A"}]}` but not `items={[{"title": "A"}]}`, and rejects bare boolean
   attributes (`reverse` must be `reverse={true}`). The editor always writes the accepted
-  form; this only bites when hand-editing MDX. `spike/codemod.mjs` normalises a file.
+  form; this only bites when hand-editing MDX.
 - **Smart quotes must be real characters.** Astro's MDX pipeline used to apply smartypants;
   the CMS renderer doesn't, so a straight `'` now renders straight. Type the real `’`.
 - **Link hrefs go through an allowlist.** The CMS renderer rewrites any href it doesn't
@@ -642,10 +656,13 @@ change, or every existing inbound link breaks.
   a _collection_, where `required` becomes a non-null GraphQL field and the indexer then
   rejects any already-saved page missing it (see the note at the top of `tina/config.ts`).
   The cinematic hero's photo list is the one safe case — no page had one before it existed —
-  so its alt is required.
+  so its photo is required; alt fields on photo slots are optional on purpose and fall back
+  to the Photo descriptions catalog, with the build's crawl as the backstop.
 - **The short-links list has no columns.** The CMS has no list-view column configuration, so
-  55 entries show as filenames. `from`, `destination` and `note` are marked searchable, so
-  search the list by the address printed on the flyer rather than scrolling it.
+  55 entries show as filenames — which is why the filename is derived from the Name field
+  and worth keeping descriptive. (The deployed admin has no search box: Tina's list search
+  needs a TinaCloud search token this site doesn't configure, so `searchable` marks change
+  nothing there. Scan by filename.)
 - **Short-link rules run in two places, on purpose.** `tina/short-link-rules.mjs` holds
   everything decidable from one entry — the address shape, the reserved prefixes, the
   destination, and "a review date unless it's marked permanent" — and both

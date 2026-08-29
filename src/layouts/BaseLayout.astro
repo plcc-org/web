@@ -2,7 +2,8 @@
 import { getImage, Font } from 'astro:assets'
 import { withBase } from '../lib/url'
 import { churchGraph, jsonLdDocument } from '../lib/structured-data'
-import { brand } from '../config/church'
+import { brand, church, serviceTimeDisplay } from '../config/church'
+import { squareIcon } from '../lib/icons'
 import '../styles/global.css'
 // SVG icons live outside src/assets/images on purpose: that directory is the
 // CMS media root, and an SVG in it shows up in the photo picker but silently
@@ -12,11 +13,13 @@ import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
 import podcastIconUrl from '../assets/icons/podcast_icon_white.svg?url'
 import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
 import socialImageSource from '../assets/images/plcc-social-card.png'
-import iconSource from '../assets/images/plcc-logo-icon.jpg'
 import faviconSource from '../assets/images/plcc-logo.png'
 
 type Props = {
+  /** The bare page title — the layout appends " | Pine Lake Covenant Church". */
   title?: string
+  /** A verbatim tab title that wins over `title` (the home page's custom one). */
+  seoTitle?: string
   description?: string
   noindex?: boolean
   /**
@@ -28,12 +31,10 @@ type Props = {
   structuredData?: Record<string, unknown>[]
 }
 
-const {
-  title = 'Pine Lake Covenant Church',
-  description = 'A church in Sammamish, discovering life with Jesus together.',
-  noindex = false,
-  structuredData = [],
-}: Props = Astro.props
+const { title, seoTitle, description = church.description, noindex = false, structuredData = [] }: Props = Astro.props
+
+// The suffix lives here, once, so pages pass bare titles.
+const tabTitle = seoTitle || (title ? `${title} | ${church.name}` : church.name)
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
 
@@ -43,7 +44,7 @@ const SOCIAL_IMAGE_ALT = 'The Pine Lake Covenant Church wordmark on a deep green
 
 // Social share image (1200x630), Apple touch icon, and favicons, generated at build time.
 const socialImage = await getImage({ src: socialImageSource, width: 1200, height: 630, fit: 'cover', format: 'png' })
-const appleTouchIcon = await getImage({ src: iconSource, width: 180, height: 180, fit: 'cover', format: 'png' })
+const appleTouchIcon = await squareIcon(180)
 // Favicon uses the transparent logo so it sits cleanly on any tab background.
 const favicon16 = await getImage({ src: faviconSource, width: 16, height: 16, format: 'png' })
 const favicon32 = await getImage({ src: faviconSource, width: 32, height: 32, format: 'png' })
@@ -74,7 +75,7 @@ const jsonLd = origin
     <Font cssVariable="--font-fraunces" preload={[{ style: 'normal' }]} />
     <Font cssVariable="--font-instrument-sans" preload={[{ style: 'normal' }]} />
 
-    <title>{title}</title>
+    <title>{tabTitle}</title>
     <meta name="description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
@@ -89,8 +90,8 @@ const jsonLd = origin
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Pine Lake Covenant Church" />
-    <meta property="og:title" content={title} />
+    <meta property="og:site_name" content={church.name} />
+    <meta property="og:title" content={tabTitle} />
     <meta property="og:description" content={description} />
     {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={socialImageUrl} />
@@ -103,7 +104,7 @@ const jsonLd = origin
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={tabTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageUrl} />
     <meta name="twitter:image:alt" content={SOCIAL_IMAGE_ALT} />
@@ -217,24 +218,17 @@ const jsonLd = origin
         </nav>
 
         <div class="site-footer__info">
-          <strong>Pine Lake Covenant Church</strong>
+          <strong>{church.name}</strong>
           <span class="site-footer__divider">|</span>
-          <span>Sundays at 10:00am</span>
+          <span>{church.service.day}s at {serviceTimeDisplay()}</span>
           <span class="site-footer__divider">|</span>
-          <a href="https://maps.apple/p/1EFyth--T~mePq" target="_blank" rel="noopener"
-            >1715 228th Ave SE, Sammamish, WA 98075</a
-          >
+          <a href={church.mapUrl} target="_blank" rel="noopener">{church.addressLine}</a>
           <span class="site-footer__divider">|</span>
-          <a href="mailto:office@plcc.org">office@plcc.org</a>
+          <a href={`mailto:${church.email}`}>{church.email}</a>
         </div>
 
         <div class="site-footer__links">
-          <a
-            href="https://www.instagram.com/pinelakecov/"
-            target="_blank"
-            rel="noopener"
-            class="site-footer__social-link"
-          >
+          <a href={church.social.instagram} target="_blank" rel="noopener" class="site-footer__social-link">
             <img
               src={instagramGlyphUrl}
               alt=""
@@ -244,12 +238,7 @@ const jsonLd = origin
             <span>Instagram</span>
           </a>
           <span class="site-footer__divider">|</span>
-          <a
-            href="https://www.youtube.com/@PineLkCovChurch"
-            target="_blank"
-            rel="noopener"
-            class="site-footer__social-link"
-          >
+          <a href={church.social.youtube} target="_blank" rel="noopener" class="site-footer__social-link">
             <img
               src={youtubeIconUrl}
               alt=""
@@ -259,12 +248,7 @@ const jsonLd = origin
             <span>YouTube</span>
           </a>
           <span class="site-footer__divider">|</span>
-          <a
-            href="https://podcasts.apple.com/us/podcast/pine-lake-covenant-church-podcast/id1771382825"
-            target="_blank"
-            rel="noopener"
-            class="site-footer__social-link"
-          >
+          <a href={church.social.podcast} target="_blank" rel="noopener" class="site-footer__social-link">
             <img
               src={podcastIconUrl}
               alt=""
@@ -275,7 +259,7 @@ const jsonLd = origin
           </a>
         </div>
 
-        <p class="site-footer__legal">© {new Date().getFullYear()} Pine Lake Covenant Church</p>
+        <p class="site-footer__legal">© {new Date().getFullYear()} {church.name}</p>
       </div>
     </footer>
   </body>

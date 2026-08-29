@@ -1,17 +1,16 @@
 import type { APIRoute } from 'astro'
-import { getImage } from 'astro:assets'
-import iconSource from '../assets/images/plcc-logo-icon.jpg'
-import { brand } from '../config/church'
+import { brand, church } from '../config/church'
+import { squareIcon } from '../lib/icons'
 
 // Web app manifest with build-time generated PNG icons.
 export const GET: APIRoute = async () => {
-  const icon192 = await getImage({ src: iconSource, width: 192, height: 192, fit: 'cover', format: 'png' })
-  const icon512 = await getImage({ src: iconSource, width: 512, height: 512, fit: 'cover', format: 'png' })
+  const icon192 = await squareIcon(192)
+  const icon512 = await squareIcon(512)
 
   const manifest = {
-    name: 'Pine Lake Covenant Church',
-    short_name: 'Pine Lake',
-    description: 'A church in Sammamish, discovering life with Jesus together.',
+    name: church.name,
+    short_name: church.shortName,
+    description: church.description,
     start_url: import.meta.env.BASE_URL,
     scope: import.meta.env.BASE_URL,
     display: 'standalone',

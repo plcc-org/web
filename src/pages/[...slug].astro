@@ -17,7 +17,7 @@ import { PAGE_WRAPPER } from '../lib/tina/islands'
 // module can't provide. Two consequences worth knowing:
 //
 //   - `astro build` alone no longer works. getStaticPaths queries Tina, so the
-//     build must run inside `tinacms build` (see `build:tina`), which starts the
+//     build must run inside `tinacms build` (see `npm run build`), which starts the
 //     data layer for the duration.
 //   - Nothing here calls getCollection('pages') any more, but the collection in
 //     src/content.config.ts is still load-bearing: Astro's content layer syncs
@@ -58,14 +58,15 @@ if (!page) return new Response('Not Found', { status: 404 })
 // (the only cinematic hero) does.
 const lede = page.hero && 'lede' in page.hero ? (page.hero.lede ?? '') : ''
 const description = page.seoDescription || renderPlain(lede)
-
-// Nearly every page wants "<title> | Pine Lake Covenant Church"; the home page
-// leads with the church and qualifies it ("… | Sammamish"), which is the shape
-// search results want for the site's root. `||` again, for the '' reason above.
-const title = page.seoTitle || `${page.title} | Pine Lake Covenant Church`
 ---
 
-<BaseLayout title={title} description={description}>
+{
+  /* BaseLayout owns the " | Pine Lake Covenant Church" suffix; seoTitle is the
+    verbatim override (the home page leads with the church and qualifies it —
+    "… | Sammamish" — the shape search results want for a site root).
+    `||`, not `??`, for the ''-vs-missing reason above. */
+}
+<BaseLayout title={page.title} seoTitle={page.seoTitle || undefined} description={description}>
   <TinaIsland name="page" wrapper={PAGE_WRAPPER} params={{ relativePath }} primary>
     <PageBody data={page} />
   </TinaIsland>

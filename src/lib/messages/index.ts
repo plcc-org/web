@@ -8,6 +8,8 @@
 // endpoint carrying sermon metadata. A YouTube title is all we get — no
 // speaker, series or passage — which is why the page renders dates, not names.
 
+import { decodeEntities } from '../markdown'
+
 const CHANNEL_ID = 'UC1eeiv-tSWoCkB33rskGggw'
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`
 
@@ -48,14 +50,6 @@ const asService = (service: SundayServiceSeed): SundayService => ({
   thumbnailUrl: `https://i.ytimg.com/vi/${service.videoId}/hqdefault.jpg`,
 })
 
-const decodeXml = (input: string) =>
-  input
-    .replaceAll('&amp;', '&')
-    .replaceAll('&quot;', '"')
-    .replaceAll('&#39;', "'")
-    .replaceAll('&lt;', '<')
-    .replaceAll('&gt;', '>')
-
 const formatPublishedDate = (iso: string) => {
   const parsed = new Date(iso)
   if (Number.isNaN(parsed.getTime())) {
@@ -71,7 +65,7 @@ const extractSundayServicesFromFeed = (xml: string): SundayService[] => {
   return entryMatches
     .map((match) => match[1])
     .map((entryXml) => {
-      const title = decodeXml(entryXml.match(/<title>([\s\S]*?)<\/title>/)?.[1]?.trim() ?? '')
+      const title = decodeEntities(entryXml.match(/<title>([\s\S]*?)<\/title>/)?.[1]?.trim() ?? '')
       if (!title.startsWith('Sunday Service')) {
         return null
       }
@@ -82,7 +76,7 @@ const extractSundayServicesFromFeed = (xml: string): SundayService[] => {
       }
 
       const linkHref =
-        decodeXml(entryXml.match(/<link[^>]*rel="alternate"[^>]*href="([^"]+)"[^>]*\/?\s*>/)?.[1] ?? '') ||
+        decodeEntities(entryXml.match(/<link[^>]*rel="alternate"[^>]*href="([^"]+)"[^>]*\/?\s*>/)?.[1] ?? '') ||
         `https://www.youtube.com/watch?v=${videoId}`
 
       const publishedIso = entryXml.match(/<published>([\s\S]*?)<\/published>/)?.[1]?.trim() ?? ''

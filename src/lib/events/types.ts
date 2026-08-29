@@ -1,10 +1,12 @@
 // Canonical event domain types. Every events adapter (curated, the Planning
-// Center capture, and later ICS) normalizes into CalendarEvent so the pages
-// never depend on the source.
+// Center capture) normalizes into CalendarEvent so the pages never depend on
+// the source. A new source (a public ICS feed, say) earns its value here when
+// it exists — a declared-but-unimplemented one only ever threw into the
+// fallback.
 
 export type EventCategory = 'Everyone' | 'Families' | 'Youth' | 'Groups' | 'Serve'
 
-export type EventSource = 'curated' | 'pco' | 'ics'
+export type EventSource = 'curated' | 'pco'
 
 export type CalendarEvent = {
   /** Stable id from the source — used for dedupe and as a render key. */

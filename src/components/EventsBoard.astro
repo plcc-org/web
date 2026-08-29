@@ -16,19 +16,18 @@ import ThisWeekPanel from './events/ThisWeekPanel.astro'
 import EventCard from './events/EventCard.astro'
 import WeekRhythm from './events/WeekRhythm.astro'
 import { withBase } from '../lib/url'
-import { buildSections } from '../lib/events/logic'
+import type { buildSections } from '../lib/events/logic'
 import type { CalendarEvent } from '../lib/events/types'
 import { church } from '../config/church'
 
 type Props = {
   events: CalendarEvent[]
+  /** Computed once by the page (which also feeds `rendered` to JSON-LD). */
+  sections: ReturnType<typeof buildSections>
 }
 
-const { events } = Astro.props
-
-// Section membership and the overlap rules live in logic.ts, where a test can
-// hold them — they're the part of this page most likely to drift.
-const { thisWeek, oneOffs, rhythms } = buildSections(events)
+const { events, sections } = Astro.props
+const { thisWeek, oneOffs, rhythms } = sections
 
 const empty = events.length === 0
 ---

@@ -1,17 +1,22 @@
 ---
 // The calm, text-only page header used on reading pages (no photo opener):
-// eyebrow + display heading + optional subhead, with the lede passed as a slot.
+// eyebrow + display heading + optional subhead, with the lede (and anything
+// after it — a button, say) passed as the slot. Also the "Text only" hero
+// (PageHero's plain branch), which is the same header from CMS frontmatter.
 
 type Props = {
   eyebrow?: string
   title: string
   subhead?: string
+  class?: string
+  /** Visual-editor marker; see src/lib/tina/block-field.ts. */
+  tinaField?: string
 }
 
-const { eyebrow, title, subhead } = Astro.props
+const { eyebrow, title, subhead, class: className, tinaField } = Astro.props
 ---
 
-<header class="section page-intro">
+<header class:list={['section', 'page-intro', className]} data-tina-field={tinaField}>
   {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   <h1 class="display">{title}</h1>
   {subhead && <p class="subhead">{subhead}</p>}

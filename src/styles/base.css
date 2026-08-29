@@ -3,9 +3,11 @@
  *
  * Element-level styling only: the reset, the document surface, the heading
  * scale, and the two pieces of chrome that belong to no component (the grain
- * overlay and the skip link). Everything here is unclassed, so any rule with a
- * class beats it — which is the point. If a change needs a class to be applied,
- * it belongs in layout.css or components.css instead.
+ * overlay and the skip link). Nearly everything here is unclassed, so any rule
+ * with a class beats it — which is the point; the exceptions are the shell
+ * classes the chrome itself needs (.site-main, .site-footer, .skip-link). If a
+ * change needs any other class to be applied, it belongs in layout.css or
+ * components.css instead.
  * ==================================================================== */
 
 *,

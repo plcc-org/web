@@ -1,0 +1,34 @@
+---
+// The per-day event list shared by ThisWeekPanel and WeekRhythm: a time column,
+// a linked title, and an optional note underneath (venue, cadence — whatever
+// the caller decided says something the heading and time don't already).
+import { isWebUrl, resolveHref } from '../../lib/url'
+
+type Item = { time: string; title: string; url: string; note?: string }
+type Props = { items: Item[] }
+const { items } = Astro.props
+---
+
+<ul class="day-events">
+  {
+    items.map((e) => {
+      const external = isWebUrl(e.url)
+      return (
+        <li class="day-events__item">
+          <span class="day-events__time">{e.time}</span>
+          <span class="day-events__what">
+            <a
+              class="day-events__title"
+              href={resolveHref(e.url)}
+              rel={external ? 'noopener' : undefined}
+              target={external ? '_blank' : undefined}
+            >
+              {e.title}
+            </a>
+            {e.note && <span class="day-events__note">{e.note}</span>}
+          </span>
+        </li>
+      )
+    })
+  }
+</ul>

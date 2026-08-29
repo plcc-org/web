@@ -1,17 +1,15 @@
 ---
 // The recurring "eyebrow + heading" block that opens most sections.
 // Composable: drop it inside any <section>. A trailing lede/body stays inline.
+// Both parts guard themselves, so callers pass what they have unconditionally.
 
 type Props = {
   eyebrow?: string
   heading?: string
-  /** Heading level — sections use h2 by default. */
-  as?: 'h2' | 'h3'
-  id?: string
 }
 
-const { eyebrow, heading, as: Heading = 'h2', id }: Props = Astro.props
+const { eyebrow, heading }: Props = Astro.props
 ---
 
 {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-{heading && <Heading id={id}>{heading}</Heading>}
+{heading && <h2>{heading}</h2>}

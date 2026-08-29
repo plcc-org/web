@@ -20,7 +20,7 @@ const { quote, attribution, tone = 'none' } = Astro.props
       </blockquote>
     </section>
   ) : (
-    <Band tone={tone} centered reveal>
+    <Band tone={tone} centered reveal tinaField={blockField(Astro.props)}>
       <blockquote class="verse">
         <p>{quote}</p>
         {attribution && <footer>{attribution}</footer>}

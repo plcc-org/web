@@ -47,6 +47,8 @@ export const church = {
   mapUrl: 'https://maps.apple/p/1EFyth--T~mePq',
   /** Approximate; used for the schema.org geo hint only. */
   geo: { latitude: 47.5852, longitude: -122.0405 },
+  /** IANA zone for every church-local date/time decision (events, service day). */
+  timezone: 'America/Los_Angeles',
   social: {
     instagram: 'https://www.instagram.com/pinelakecov/',
     youtube: 'https://www.youtube.com/@PineLkCovChurch',
@@ -64,6 +66,13 @@ export const church = {
     durationMinutes: 75,
   },
 } as const
+
+/** The service time as prose renders it — "10:00am" — derived from `opens`. */
+export function serviceTimeDisplay(): string {
+  const [h, m] = church.service.opens.split(':').map(Number)
+  const hour12 = ((h + 11) % 12) + 1
+  return `${hour12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`
+}
 
 /** Service end time, derived so it can't drift from `opens` + `durationMinutes`. */
 export function serviceCloses(): string {

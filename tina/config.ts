@@ -1,5 +1,5 @@
 import { defineConfig } from 'tinacms'
-// @ts-expect-error — plain-JS template palette, shared with the spike harness.
+// @ts-expect-error — plain-JS template palette, shared with Node scripts.
 import { templates, heroFields, imageRef } from './templates.mjs'
 // @ts-expect-error — plain-JS, shared with scripts/generate-redirects.mjs.
 import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs'
@@ -183,14 +183,17 @@ export default defineConfig({
             name: 'seoDescription',
             label: 'SEO description',
             type: 'string',
-            description: 'A one-sentence summary for search results and link previews.',
+            ui: { component: 'textarea' },
+            description:
+              'A one-sentence summary for search results and link previews — aim for under about 155 characters, ' +
+              'or search engines trim it mid-sentence.',
           },
           {
             name: 'draft',
-            label: 'Draft',
+            label: 'Hidden from the public site (draft)',
             type: 'boolean',
             description:
-              "New pages start as drafts — they're visible in preview but not published. Untick to publish when ready.",
+              'New pages start hidden — visible in preview, not published. Untick to put the page live on the next save.',
           },
           {
             name: 'hero',

@@ -1,7 +1,7 @@
 /* ======================================================================
  * blocks.css — the MDX block palette (src/components/blocks/mdx/).
  *
- * These are the blocks an editor assembles a page from in Keystatic, as
+ * These are the blocks an editor assembles a page from in the CMS, as
  * opposed to components.css (the pieces a developer assembles a layout from).
  * See docs/cms.md for the palette and which block to reach for.
  *
@@ -131,18 +131,18 @@
  * Both are contained rather than cropped: these are logos with their own
  * whitespace, so `object-fit: contain` keeps them off their own edges.
  * ==================================================================== */
-.page-hero__logo {
+.page-hero__logo,
+.logo-card__logo {
   display: block;
-  width: clamp(13.75rem, 48vw, 20rem);
   height: auto;
   object-fit: contain;
   margin: 0 0 1rem;
 }
 
+.page-hero__logo {
+  width: clamp(13.75rem, 48vw, 20rem);
+}
+
 .logo-card__logo {
-  display: block;
   width: clamp(11.25rem, 37.5vw, 15rem);
-  height: auto;
-  object-fit: contain;
-  margin: 0 0 1rem;
 }

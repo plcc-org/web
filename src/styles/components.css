@@ -258,13 +258,10 @@
 /* Text shadows here are doing accessibility work, not decoration: a photo
    backdrop can put a bright patch behind any word, and the scrim alone can't
    guarantee contrast. */
+/* Type comes from `.display` (layout.css) — Hero renders `class="display
+   hero__title"` — so this adds only what the photo backdrop demands. */
 .hero__title {
   color: var(--color-white);
-  font-size: var(--text-display);
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-tight);
-  margin: 0;
-  font-variation-settings: var(--serif-display);
   text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35);
 }
 
@@ -1198,7 +1195,9 @@ a.card:hover,
   line-height: 1.1;
 }
 
-.week-panel__events {
+/* The per-day event list (EventDayItems.astro), shared by the this-week panel
+   and the rhythm section — one set of rules for both. */
+.day-events {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1206,7 +1205,7 @@ a.card:hover,
   gap: 0.6rem;
 }
 
-.week-panel__event {
+.day-events__item {
   display: grid;
   grid-template-columns: 6rem 1fr;
   align-items: baseline;
@@ -1215,13 +1214,13 @@ a.card:hover,
 
 /* Tabular figures so the times form a clean column; the fixed width holds that
    column when one row reads "All day". */
-.week-panel__time {
+.day-events__time {
   font-variant-numeric: tabular-nums;
   font-size: var(--text-ui);
   color: var(--color-clay-ink);
 }
 
-.week-panel__title {
+.day-events__title {
   font-family: var(--font-serif);
   font-size: var(--text-md);
   font-weight: 700;
@@ -1230,12 +1229,14 @@ a.card:hover,
   text-decoration: none;
 }
 
-.week-panel__title:hover {
+.day-events__title:hover {
   color: var(--color-moss-ink);
 }
 
-/* Venue only — an on-campus event renders nothing here, which is the point. */
-.week-panel__venue {
+/* Whatever the caller decided says more than the heading and time — the venue
+   in the week panel (on-campus renders nothing, which is the point), cadence
+   and venue in the rhythm list. */
+.day-events__note {
   display: block;
   margin-top: 0.15rem;
   font-size: var(--text-ui);
@@ -1255,7 +1256,7 @@ a.card:hover,
     gap: 0.5rem;
   }
 
-  .week-panel__event {
+  .day-events__item {
     grid-template-columns: 5.5rem 1fr;
     gap: 0.75rem;
   }
@@ -1389,56 +1390,6 @@ a.card:hover,
   color: var(--color-clay-ink);
   padding-bottom: 0.35rem;
   border-bottom: 1px solid var(--color-moss-line);
-}
-
-.rhythm__items {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.6rem;
-}
-
-.rhythm__item {
-  display: grid;
-  grid-template-columns: 6rem 1fr;
-  align-items: baseline;
-  gap: var(--space-md);
-}
-
-.rhythm__time {
-  font-variant-numeric: tabular-nums;
-  font-size: var(--text-ui);
-  color: var(--color-clay-ink);
-}
-
-.rhythm__title {
-  font-family: var(--font-serif);
-  font-size: var(--text-md);
-  font-weight: 700;
-  line-height: 1.25;
-  color: var(--color-forest);
-  text-decoration: none;
-}
-
-.rhythm__title:hover {
-  color: var(--color-moss-ink);
-}
-
-/* The cadence, and the venue if it isn't the church. Present only when it says
-   something the weekday heading and the time don't already. */
-.rhythm__note {
-  display: block;
-  margin-top: 0.15rem;
-  font-size: var(--text-ui);
-  color: var(--color-clay-ink);
-}
-
-@media (max-width: 560px) {
-  .rhythm__item {
-    grid-template-columns: 5.5rem 1fr;
-    gap: 0.75rem;
-  }
 }
 
 /* ----------------------------------------------------------------------

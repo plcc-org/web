@@ -331,15 +331,15 @@
 /* ------------------------------------------------------------------ *
  * The archive grid
  * ------------------------------------------------------------------ */
-.section__header {
+.archive-section__header {
   margin-bottom: 1rem;
 }
 
-.section__header h2 {
+.archive-section__header h2 {
   margin: 0;
 }
 
-.section__header p {
+.archive-section__header p {
   margin: 0.35rem 0 0;
   color: var(--color-clay-ink);
 }

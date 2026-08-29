@@ -7,27 +7,23 @@
 // Church Center links become available.
 
 import type { CalendarEvent, EventCategory } from '../types'
+import { church } from '../../../config/church'
+import { pacificDay, WEEKDAY_NAMES } from '../logic'
 
 // --- Pacific-time helpers --------------------------------------------------
 // CI runs in UTC, so we compute Pacific wall-clock dates explicitly (DST-aware
 // via Intl) rather than relying on the host timezone.
 
 function pacificToday(): { y: number; m: number; d: number } {
-  const s = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/Los_Angeles',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(new Date())
-  const [y, m, d] = s.split('-').map(Number)
+  const [y, m, d] = pacificDay(new Date()).split('-').map(Number)
   return { y, m: m - 1, d }
 }
 
-/** Offset string ("-07:00" / "-08:00") for America/Los_Angeles on a given date. */
+/** Offset string ("-07:00" / "-08:00") for the church timezone on a given date. */
 function pacificOffset(y: number, m: number, d: number, hour: number): string {
   const probe = new Date(Date.UTC(y, m, d, hour))
   const name = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'America/Los_Angeles',
+    timeZone: church.timezone,
     timeZoneName: 'longOffset',
   })
     .formatToParts(probe)
@@ -71,8 +67,6 @@ type WeeklyRhythm = {
   /** How many upcoming instances to surface. */
   instances: number
 }
-
-const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 const WEEKLY_RHYTHMS: WeeklyRhythm[] = [
   {

@@ -42,18 +42,21 @@ export function renderPlain(md: string | null | undefined): string {
 }
 
 /**
- * Decode the entities this pipeline can produce: the five `marked` escapes, plus
- * the numeric forms smartypants uses for curly quotes and dashes (`&#8217;`).
+ * Decode the entities the site's text pipelines produce: numeric and hex forms
+ * (smartypants curly quotes, `&#8217;`), the five XML escapes, and `&nbsp;`.
  * Ampersands are decoded last so `&amp;#8217;` — a literal, escaped entity in
  * the source — doesn't get double-decoded into a quote mark.
+ *
+ * The one entity decoder in the codebase — the YouTube feed parser and the
+ * events text cleanup import it rather than growing their own smaller ones.
  */
-function decodeEntities(html: string): string {
+export function decodeEntities(html: string): string {
   return html
     .replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)))
     .replace(/&#x([\da-f]+);/gi, (_, hex: string) => String.fromCodePoint(parseInt(hex, 16)))
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
 }

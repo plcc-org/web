@@ -10,7 +10,7 @@ import type { CalendarEvent } from '../../lib/events/types'
 import { fmtDay, fmtDate, fmtTime } from '../../lib/events/format'
 import { pacificDay } from '../../lib/events/logic'
 import { venueLabel } from '../../lib/events/place'
-import { isWebUrl, resolveHref } from '../../lib/url'
+import EventDayItems from './EventDayItems.astro'
 
 type Props = { events: CalendarEvent[] }
 
@@ -38,28 +38,15 @@ for (const e of events) {
             <span class="week-panel__date">{fmtDate(first)}</span>
           </h3>
 
-          <ul class="week-panel__events">
-            {list.map((e) => {
-              const venue = venueLabel(e.location)
-              const external = isWebUrl(e.url)
-              return (
-                <li class="week-panel__event">
-                  <span class="week-panel__time">{e.allDay ? 'All day' : fmtTime(new Date(e.start))}</span>
-                  <span class="week-panel__what">
-                    <a
-                      class="week-panel__title"
-                      href={resolveHref(e.url)}
-                      rel={external ? 'noopener' : undefined}
-                      target={external ? '_blank' : undefined}
-                    >
-                      {e.title}
-                    </a>
-                    {venue && <span class="week-panel__venue">{venue}</span>}
-                  </span>
-                </li>
-              )
-            })}
-          </ul>
+          <EventDayItems
+            items={list.map((e) => ({
+              time: e.allDay ? 'All day' : fmtTime(new Date(e.start)),
+              title: e.title,
+              url: e.url,
+              // Venue only — an on-campus event renders nothing, which is the point.
+              note: venueLabel(e.location) || undefined,
+            }))}
+          />
         </div>
       )
     })

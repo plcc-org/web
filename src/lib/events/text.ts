@@ -1,15 +1,14 @@
-// Text cleanup shared by the calendar mappers. Pure and dependency-free (no
-// astro: imports), so it unit tests directly.
+// Text cleanup shared by the calendar mappers. Pure (no astro: imports), so it
+// unit tests directly.
+
+import { decodeEntities } from '../markdown'
 
 /** Longest summary we'll show on a card, in characters. */
 export const SUMMARY_MAX = 180
 
 export function stripHtml(html: string | undefined | null): string {
   if (!html) return ''
-  return html
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
+  return decodeEntities(html.replace(/<[^>]*>/g, ' '))
     .replace(/\s+/g, ' ')
     .trim()
 }

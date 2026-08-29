@@ -80,11 +80,11 @@ with `EventSource` in `src/lib/events/types.ts` — there's a comment on both si
 | --------- | -------------- | --------------------------------------------------------------------------------------------------------- |
 | `pco`     | **production** | The Planning Center Calendar API, captured daily to `src/data/events-pco.json`. Default in production.    |
 | `curated` | **live**       | Hand-maintained real events, generated from recurrence rules. The dev default and the permanent fallback. |
-| `ics`     | not built      | A public ICS feed, if one is ever exposed. Throws; provider falls back.                                   |
 
-`ics` exists as an enum value with a deliberate `throw` rather than as an absent case,
-so the seam is visible in the code and selecting it gives a clear error rather than a
-silent default.
+A new source (a public ICS feed, say) plugs in behind the same interface: add it to
+`EventSource` in `src/lib/events/types.ts`, the env enum in `astro.config.mjs`, and the
+provider's switch — when it exists. A declared-but-unimplemented value only ever threw
+into the fallback.
 
 ---
 

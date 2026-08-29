@@ -11,8 +11,8 @@
 // field can. `scripts/check-site.mjs` stays the backstop for alt text either way — it
 // catches an image that was already saved, which is the case validation can't reach.
 //
-// Kept in .mjs so the round-trip harness (spike/roundtrip.mjs) can import it without a
-// build step.
+// Kept in .mjs so Node scripts and the CMS config can import it without a build step
+// (the same reason as short-link-rules.mjs and video-rules.mjs).
 
 import { checkVideoUrl } from './video-rules.mjs'
 
@@ -143,8 +143,8 @@ const itemProps = (key, fallback) => ({
  * and Tina can't do that. Two dead ends, both tried:
  *
  *   - Conditional visibility needs a React component in `ui.component` reading
- *     form state. This file is plain .mjs so spike/roundtrip.mjs can import it
- *     without a build step, and config.ts deliberately holds no JSX.
+ *     form state. This file is plain .mjs, importable without a build step, and
+ *     config.ts deliberately holds no JSX.
  *   - `type: 'object'` with `templates` — the documented "pick a shape, see only
  *     its fields" mechanism — is only implemented for *lists*. Non-list is
  *     literally `component: field.list ? 'blocks' : 'not-implemented'`
@@ -175,6 +175,11 @@ const forVariants = (which, rest) => `Used by: ${which}. ${rest}`
  * Logo alt fields don't get this — logos aren't catalogued — and keep their own
  * required/validate treatment.
  */
+const eyebrow = () =>
+  text('eyebrow', 'Eyebrow', {
+    description: 'A small label shown above the heading — e.g. “In the community”. Optional.',
+  })
+
 const CATALOG_ALT =
   'Usually leave this blank — the photo’s saved description (the “Photo descriptions” list) is used. Write one ' +
   'here only to say something specific to this page.'
@@ -274,11 +279,7 @@ export const templates = [
     description: 'A heading and formatted paragraphs — bold, links, lists. The default for written content.',
     // The only wrapper whose heading is optional, so its prose may be the first
     // thing under the page's h1 — h2 stays available here alone.
-    fields: [
-      text('eyebrow', 'Eyebrow (small label above the heading)'),
-      text('heading', 'Heading'),
-      children(['h2', 'h3', 'h4']),
-    ],
+    fields: [eyebrow(), text('heading', 'Heading'), children(['h2', 'h3', 'h4'])],
   },
   {
     name: 'Split',
@@ -295,12 +296,12 @@ export const templates = [
       image('image', 'Photo', { required: true }),
       text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
       text('heading', 'Heading', { isTitle: true, required: true }),
-      text('eyebrow', 'Eyebrow'),
+      eyebrow(),
       bool('reverse', 'Photo on the right'),
       tone(['sand', 'paper', 'forest']),
       children(),
-      text('buttonLabel', 'Button label'),
-      text('buttonHref', 'Button link'),
+      text('buttonLabel', 'Button label', { description: '“Learn more” if left blank.' }),
+      text('buttonHref', 'Button link', { description: 'Needed for the button to show — a label alone does nothing.' }),
     ],
   },
   {
@@ -351,10 +352,10 @@ export const templates = [
     description:
       'The last block on a page — a dark band that closes it against the footer, with an optional button. A parting invitation.',
     fields: [
-      text('eyebrow', 'Eyebrow'),
+      eyebrow(),
       text('heading', 'Heading', { isTitle: true, required: true }),
-      text('buttonLabel', 'Button label'),
-      text('buttonHref', 'Button link'),
+      text('buttonLabel', 'Button label', { description: '“Learn more” if left blank.' }),
+      text('buttonHref', 'Button link', { description: 'Needed for the button to show — a label alone does nothing.' }),
       children(),
     ],
   },
@@ -364,7 +365,7 @@ export const templates = [
     description: 'Several photos shown together as a staggered band — a visual break.',
     fields: [
       text('heading', 'Heading'),
-      text('eyebrow', 'Eyebrow'),
+      eyebrow(),
       {
         name: 'photos',
         label: 'Photos',
@@ -385,7 +386,7 @@ export const templates = [
     description: 'A row of small cards, each a short title and a line or two — for a few parallel points.',
     defaultItem: { columns: 'auto', large: false },
     fields: [
-      text('eyebrow', 'Eyebrow'),
+      eyebrow(),
       text('heading', 'Heading'),
       textarea('intro', 'Intro', { description: 'An optional lead line shown above the cards.' }),
       {
@@ -413,9 +414,11 @@ export const templates = [
         fields: [
           text('title', 'Title', { required: true }),
           textarea('body', 'Text', { required: true }),
-          text('href', 'Link (optional)'),
+          text('href', 'Link (optional)', {
+            description: 'Makes the whole card a link. The label below is optional.',
+          }),
           text('linkLabel', 'Link label (optional)', {
-            description: 'Shows a “label →” call-to-action at the foot of the card.',
+            description: 'Shows a “label →” call-to-action at the foot of the card. Needs the link above.',
           }),
         ],
       },
@@ -460,7 +463,9 @@ export const templates = [
   {
     name: 'FeaturedEvents',
     label: 'Featured events',
-    description: 'A short list of upcoming events, pulled live from the events feed.',
+    description:
+      'A short list of upcoming events, pulled live from the events feed. In a stretch with no matching events, ' +
+      'the block shows nothing at all.',
     defaultItem: { category: 'all', count: 3 },
     fields: [
       text('heading', 'Heading'),
@@ -468,6 +473,7 @@ export const templates = [
         name: 'category',
         label: 'Category',
         type: 'string',
+        description: 'Show only events tagged with this category.',
         options: [
           { label: 'All categories', value: 'all' },
           { label: 'Everyone', value: 'Everyone' },
@@ -477,7 +483,16 @@ export const templates = [
           { label: 'Serve', value: 'Serve' },
         ],
       },
-      { name: 'count', label: 'How many to show', type: 'number' },
+      {
+        name: 'count',
+        label: 'How many to show',
+        type: 'number',
+        description: 'Between 1 and 12; three fits most pages.',
+        ui: {
+          validate: (/** @type {unknown} */ value) =>
+            typeof value === 'number' && (value < 1 || value > 12) ? 'Pick a number from 1 to 12.' : undefined,
+        },
+      },
     ],
   },
   {
@@ -486,7 +501,7 @@ export const templates = [
     description: 'A moss-accented grid of titled points — the core-tenets / emphases treatment.',
     defaultItem: { columns: '2' },
     fields: [
-      text('eyebrow', 'Eyebrow'),
+      eyebrow(),
       text('heading', 'Heading'),
       {
         name: 'columns',
@@ -513,7 +528,7 @@ export const templates = [
     label: 'Logo cards',
     description: 'A row of cards, each topped by a program or partner logo, with text and an optional link.',
     fields: [
-      text('eyebrow', 'Eyebrow'),
+      eyebrow(),
       text('heading', 'Heading', { isTitle: true, required: true }),
       {
         name: 'cards',
@@ -526,8 +541,8 @@ export const templates = [
           image('image', 'Logo', { required: true }),
           text('alt', 'Logo description (alt text)', { required: true }),
           textarea('body', 'Text', { required: true }),
-          text('linkLabel', 'Link label'),
-          text('href', 'Link URL'),
+          text('linkLabel', 'Link label', { description: '“Learn more” if left blank.' }),
+          text('href', 'Link URL', { description: 'Needed for the link to show — a label alone does nothing.' }),
         ],
       },
     ],
@@ -537,7 +552,7 @@ export const templates = [
     label: 'Aside',
     description: 'A tinted note set apart from the page — formatted text beside an optional small logo.',
     fields: [
-      text('eyebrow', 'Eyebrow'),
+      eyebrow(),
       image('logo', 'Logo (optional)'),
       text('logoAlt', 'Logo description (alt text)', {
         description: 'What the logo says or shows. Needed whenever a logo is set.',
@@ -555,26 +570,21 @@ export const templates = [
     name: 'YouthMomentsBlock',
     label: 'Youth moments',
     description: 'The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.',
-    fields: [text('eyebrow', 'Eyebrow'), text('heading', 'Heading')],
+    fields: [eyebrow(), text('heading', 'Heading')],
   },
   {
     name: 'QuoteCarousel',
     label: 'Quotes carousel',
     description: 'A rotating band of testimonials, pulled live from the Homepage quotes list.',
     defaultItem: { tone: 'sand' },
-    fields: [
-      text('eyebrow', 'Eyebrow'),
-      text('heading', 'Heading'),
-      textarea('intro', 'Intro line'),
-      tone(['sand', 'paper', 'forest']),
-    ],
+    fields: [eyebrow(), text('heading', 'Heading'), textarea('intro', 'Intro line'), tone(['sand', 'paper', 'forest'])],
   },
   {
     name: 'Roadmap',
     label: 'Roadmap',
     description: 'A numbered timeline — steps as nodes on a connecting line, each with a title and a line.',
     fields: [
-      text('eyebrow', 'Eyebrow'),
+      eyebrow(),
       text('heading', 'Heading'),
       {
         name: 'steps',

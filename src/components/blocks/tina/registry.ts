@@ -1,5 +1,5 @@
-// Block name → Astro component, for <TinaMarkdown>. The Tina equivalent of the
-// `components` map in src/pages/[...slug].astro.
+// Block name → Astro component, for <TinaMarkdown> — how the block palette in
+// tina/templates.mjs maps onto the site's components at render time.
 //
 // Only the six wrapper blocks need a Tina-specific adapter: under MDX their
 // prose arrives through `<slot />`, and through Tina it arrives as a `children`

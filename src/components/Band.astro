@@ -6,8 +6,8 @@
 // - flush:    sits flush against the footer (for a page's closing band) — the
 //             trailing stone gap is removed globally via `.band--flush` (no
 //             per-page CSS). Use only on the last element of a page.
-// - narrow:   caps the inner content at a readable column (left-aligned).
-// - centered: like narrow, but also centers the text (CTAs, pull-quotes).
+// - centered: caps the inner content at a readable column and centers the
+//             text (CTAs, pull-quotes).
 // - eyebrow / heading: optional; rendered at the top of the band.
 
 type Props = {
@@ -15,7 +15,6 @@ type Props = {
   tinaField?: string
   tone?: 'forest' | 'sand' | 'paper'
   flush?: boolean
-  narrow?: boolean
   centered?: boolean
   eyebrow?: string
   heading?: string
@@ -26,7 +25,6 @@ type Props = {
 const {
   tone = 'sand',
   flush = false,
-  narrow = false,
   centered = false,
   eyebrow,
   heading,
@@ -39,15 +37,7 @@ const {
 <section
   data-tina-field={tinaField}
   {...reveal && { 'data-reveal': true }}
-  class:list={[
-    'band',
-    `band--${tone}`,
-    'to-full',
-    flush && 'band--flush',
-    narrow && 'band--narrow',
-    centered && 'band--centered',
-    className,
-  ]}
+  class:list={['band', `band--${tone}`, 'to-full', flush && 'band--flush', centered && 'band--centered', className]}
 >
   <div class="band__inner">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}

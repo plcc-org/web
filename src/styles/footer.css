@@ -1,5 +1,5 @@
 /* ======================================================================
- * footer.css — the full-bleed site footer (see Footer.astro).
+ * footer.css — the full-bleed site footer (markup in BaseLayout.astro).
  *
  * A dark forest panel closing every page (markup lives in BaseLayout.astro),
  * in four stacked areas:

@@ -7,19 +7,22 @@ import { eventGraph } from '../../lib/structured-data'
 
 const events = await getUpcomingEvents()
 
+// Sectioning happens once, here, and is shared with the board — the overlap
+// rules live in logic.ts, where a test can hold them.
+const sections = buildSections(events)
+
 // Event JSON-LD describes `rendered`, not every event in the window. The
 // board collapses a recurring series to a single entry, so emitting one node
 // per occurrence would advertise dates that appear nowhere on the page —
 // structured data for content the reader can't see.
 const origin = Astro.site?.origin
-const { rendered } = buildSections(events)
-const structuredData = origin ? eventGraph(origin, rendered) : []
+const structuredData = origin ? eventGraph(origin, sections.rendered) : []
 ---
 
 <BaseLayout
-  title="What’s On | Pine Lake Covenant Church"
+  title="What’s On"
   description="What’s coming up at Pine Lake — Sunday gatherings, groups, family events, and ways to help out around Sammamish."
   structuredData={structuredData}
 >
-  <EventsBoard events={events} />
+  <EventsBoard events={events} sections={sections} />
 </BaseLayout>

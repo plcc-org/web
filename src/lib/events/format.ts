@@ -2,7 +2,9 @@
 // them in the church's local timezone so the build server's tz (UTC in CI) can't
 // shift displayed times. Shared by <EventsBoard> and <EventRow>.
 
-const TZ = 'America/Los_Angeles'
+import { church } from '../../config/church'
+
+const TZ = church.timezone
 
 export const fmtDay = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'short', timeZone: TZ })
 export const fmtDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: TZ })

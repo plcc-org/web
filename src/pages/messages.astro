@@ -1,24 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import PageIntro from '../components/PageIntro.astro'
+import { church } from '../config/church'
 import { getSundayServices } from '../lib/messages'
 
 const { latest: latestService, archive: archiveServices } = await getSundayServices()
 ---
 
 <BaseLayout
-  title="Messages | Pine Lake Covenant Church"
+  title="Messages"
   description="Watch recent Sunday services from Pine Lake Covenant Church in Sammamish — teaching, music, and prayer, whenever suits you."
 >
   <div class="canvas archive-page">
-    <header class="section page-intro archive-header">
-      <p class="eyebrow">Sunday Messages</p>
-      <h1 class="display">Worship with us anytime</h1>
-
+    <PageIntro eyebrow="Sunday Messages" title="Worship with us anytime" class="archive-header">
       <p class="lede">
         Catch up on recent Sunday services or revisit a message that encouraged you. Start with the latest service
         below, then browse the archive.
       </p>
-    </header>
+    </PageIntro>
 
     <section class="section service-hero" aria-labelledby="latest-service-heading">
       <div class="service-hero__media">
@@ -40,20 +39,10 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
 
         <div class="service-hero__actions">
           <a class="btn" href={latestService.watchUrl} target="_blank" rel="noopener">Watch on YouTube</a>
-          <a
-            class="btn btn--ghost"
-            href="https://www.youtube.com/@PineLkCovChurch/streams"
-            target="_blank"
-            rel="noopener"
-          >
+          <a class="btn btn--ghost" href={`${church.social.youtube}/streams`} target="_blank" rel="noopener">
             All services on YouTube
           </a>
-          <a
-            class="btn btn--ghost"
-            href="https://podcasts.apple.com/us/podcast/pine-lake-covenant-church-podcast/id1771382825"
-            target="_blank"
-            rel="noopener"
-          >
+          <a class="btn btn--ghost" href={church.social.podcast} target="_blank" rel="noopener">
             Listen on Apple Podcasts
           </a>
         </div>
@@ -61,7 +50,7 @@ const { latest: latestService, archive: archiveServices } = await getSundayServi
     </section>
 
     <section class="section to-wide" aria-labelledby="archive-heading">
-      <div class="section__header">
+      <div class="archive-section__header">
         <p class="eyebrow">Archive</p>
         <h2 id="archive-heading">Service archive</h2>
         <p>Recent Sunday services in reverse chronological order.</p>
