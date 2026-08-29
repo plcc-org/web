@@ -94,8 +94,11 @@ const image = (name, label, opts = {}) => ({
 })
 
 // Note on defaults: `ui.defaultValue` is a no-op — tinacms never forwards it to
-// the rendered field — so a block's starting values live in a template-level
-// `defaultItem`, which insertMDX genuinely applies when the block is added.
+// the rendered field — so a block's starting values live in the template's
+// `ui.defaultItem`, which insertMDX genuinely applies when the block is added.
+// It must sit under `ui`: schema-tools' rich-text field resolution keeps only
+// label/key/name/fields plus whatever `ui` carries, so a top-level defaultItem
+// on a rich-text template is silently dropped (verified in the running editor).
 
 /** @type {(name: string, label: string, opts?: FieldOpts) => Record<string, unknown>} */
 const bool = (name, label, opts = {}) => ({
@@ -286,7 +289,7 @@ export const templates = [
     label: 'Photo & text (split)',
     description:
       'A photo beside formatted text — left or right, on a tinted background. The main show-and-tell layout.',
-    defaultItem: { tone: 'sand', reverse: false },
+    ui: { defaultItem: { tone: 'sand', reverse: false } },
     // `isTitle` puts the heading on the block's collapsed bar in the editor, so a
     // page of Splits doesn't read as identical grey bars. It demands
     // `required: true`, which on a template field is form-side only (see the top
@@ -384,7 +387,7 @@ export const templates = [
     name: 'CardRow',
     label: 'Text cards',
     description: 'A row of small cards, each a short title and a line or two — for a few parallel points.',
-    defaultItem: { columns: 'auto', large: false },
+    ui: { defaultItem: { columns: 'auto', large: false } },
     fields: [
       eyebrow(),
       text('heading', 'Heading'),
@@ -449,7 +452,7 @@ export const templates = [
     name: 'Quote',
     label: 'Quote',
     description: 'A single featured pull-quote — a testimonial or short quotation set apart from the prose.',
-    defaultItem: { tone: 'none' },
+    ui: { defaultItem: { tone: 'none' } },
     fields: [
       textarea('quote', 'Quote', { isTitle: true, required: true }),
       text('attribution', 'Attribution', {
@@ -466,7 +469,7 @@ export const templates = [
     description:
       'A short list of upcoming events, pulled live from the events feed. In a stretch with no matching events, ' +
       'the block shows nothing at all.',
-    defaultItem: { category: 'all', count: 3 },
+    ui: { defaultItem: { category: 'all', count: 3 } },
     fields: [
       text('heading', 'Heading'),
       {
@@ -499,7 +502,7 @@ export const templates = [
     name: 'KeyPoints',
     label: 'Key points',
     description: 'A moss-accented grid of titled points — the core-tenets / emphases treatment.',
-    defaultItem: { columns: '2' },
+    ui: { defaultItem: { columns: '2' } },
     fields: [
       eyebrow(),
       text('heading', 'Heading'),
@@ -576,7 +579,7 @@ export const templates = [
     name: 'QuoteCarousel',
     label: 'Quotes carousel',
     description: 'A rotating band of testimonials, pulled live from the Homepage quotes list.',
-    defaultItem: { tone: 'sand' },
+    ui: { defaultItem: { tone: 'sand' } },
     fields: [eyebrow(), text('heading', 'Heading'), textarea('intro', 'Intro line'), tone(['sand', 'paper', 'forest'])],
   },
   {
