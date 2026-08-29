@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
-// @ts-expect-error — plain-JS template palette, shared with the CMS config.
 import { templates, heroFields, image, imageRef } from '../tina/templates.mjs'
 
 // Every image field in the CMS schema must go through the image() helper, which
@@ -31,7 +30,7 @@ describe('image fields all carry the imageRef parse', () => {
     const offenders: string[] = []
     const roots: { name: string; fields: Field[] }[] = [
       { name: 'hero', fields: heroFields as Field[] },
-      ...(templates as { name: string; fields: Field[] }[]),
+      ...(templates as unknown as { name: string; fields: Field[] }[]),
     ]
     for (const root of roots) {
       for (const { path, field } of walk(root.fields, root.name)) {

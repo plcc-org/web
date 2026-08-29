@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest'
-import { readFileSync } from 'node:fs'
 import { imageRef, heroFields, templates } from '../tina/templates.mjs'
 
 // Guards the save-side normaliser on every CMS image field.
@@ -67,15 +66,6 @@ describe('every CMS image field normalises on save', () => {
     expect(bare).toEqual([])
   })
 
-  // The leadership portrait is defined in tina/config.ts, which can't be imported
-  // here (it pulls the whole tinacms browser bundle), so hold it by source: every
-  // image field declared there must wire up imageRef on the same declaration.
-  it('config.ts image fields have ui.parse too', () => {
-    const source = readFileSync('tina/config.ts', 'utf-8')
-    // One level of nesting is allowed so the field's own `ui: { … }` doesn't end the match.
-    const field = /\{(?:[^{}]|\{[^{}]*\})*type: 'image'(?:[^{}]|\{[^{}]*\})*\}/g
-    const imageFields = source.match(field) ?? []
-    expect(imageFields.length).toBeGreaterThan(0)
-    for (const field of imageFields) expect(field).toContain('parse: imageRef')
-  })
+  // tina/config.ts declares no image field by hand — image-fields.test.ts holds
+  // that by source, and the image() helper carries the parse hook, covered above.
 })
