@@ -1,6 +1,6 @@
 import { defineConfig } from 'tinacms'
 // @ts-expect-error — plain-JS template palette, shared with Node scripts.
-import { templates, heroFields, imageRef } from './templates.mjs'
+import { templates, heroFields, image } from './templates.mjs'
 // @ts-expect-error — plain-JS, shared with scripts/generate-redirects.mjs.
 import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs'
 
@@ -264,16 +264,12 @@ export default defineConfig({
             required: true,
             description: 'As it should read under the name — "Lead Pastor", "Director, Communications".',
           },
-          // ui.parse pins the stored shape to /assets/images/<file> — see imageRef
-          // in templates.mjs for why every image field carries it.
-          {
-            name: 'portrait',
-            label: 'Portrait',
-            type: 'image',
+          // image() pins the stored shape to /assets/images/<file> — see the
+          // helper in templates.mjs for why no image field is written by hand.
+          image('portrait', 'Portrait', {
             required: true,
-            ui: { parse: imageRef },
             description: 'A portrait-orientation photo — the page crops it 4:5, so landscape shots lose their edges.',
-          },
+          }),
           {
             name: 'portraitAlt',
             label: 'Portrait description (alt text)',
@@ -418,13 +414,7 @@ export default defineConfig({
             // Rows label by filename — the stored value carries the path prefix.
             ui: { itemProps: (item) => ({ label: item?.id?.split('/').pop() || 'Photo' }) },
             fields: [
-              {
-                name: 'id',
-                label: 'Photo file',
-                type: 'image',
-                required: true,
-                ui: { parse: imageRef },
-              },
+              image('id', 'Photo file', { required: true }),
               {
                 name: 'alt',
                 label: 'Description (alt text)',

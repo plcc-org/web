@@ -84,8 +84,17 @@ export const imageRef = (value) => {
   return base ? `/assets/images/${base}` : value
 }
 
-/** @type {(name: string, label: string, opts?: FieldOpts) => Record<string, unknown>} */
-const image = (name, label, opts = {}) => ({
+/**
+ * The ONLY way to declare an image field, anywhere in the CMS schema — exported
+ * so tina/config.ts uses it too, and test/image-fields.test.ts fails the build
+ * on an image field written by hand. The helper exists to make the imageRef
+ * parse impossible to forget: an image field without it stores whatever shape
+ * the picker or TinaCloud hands it, which looks fine locally and breaks only in
+ * the deployed admin (mangled thumbnails, refs that don't round-trip) — the
+ * photo catalog shipped exactly that once.
+ * @type {(name: string, label: string, opts?: FieldOpts) => Record<string, unknown>}
+ */
+export const image = (name, label, opts = {}) => ({
   name,
   label,
   type: 'image',

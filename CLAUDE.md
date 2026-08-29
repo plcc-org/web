@@ -43,7 +43,9 @@ Even if you don't open the docs, never violate these:
   (`src/content/photos/photos.json`, editable in the CMS as "Photo descriptions") and
   inherited everywhere the photo appears — a block's own alt field is a per-page
   override, resolved by `altFor()` (`src/lib/photos.ts`). Logos/adornments aren't
-  catalogued — pass their `alt` directly. Avoid landscape crops.
+  catalogued — pass their `alt` directly. Avoid landscape crops. In the CMS schema,
+  image fields are declared only via the `image()` helper (`tina/templates.mjs`), which
+  pins the stored shape TinaCloud can round-trip — enforced by `test/image-fields.test.ts`.
   → [development.md](./docs/development.md)
 - **Internal links use the `withBase()` helper** (`src/lib/url.ts`): `href={withBase('about/')}`.
   → [development.md](./docs/development.md)

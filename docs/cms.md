@@ -389,6 +389,12 @@ An unresolvable image doesn't fail the build — it just doesn't appear.
   name specially — and write an adapter that renders it via `TinaChildren`. Keep the two in
   step: an unregistered name renders as a visible red placeholder rather than failing the
   build.
+- **Image fields are only ever declared with the `image()` helper** (`tina/templates.mjs`)
+  — in blocks and in `tina/config.ts` collections alike. It bakes in the `imageRef` parse
+  that pins the stored value to `/assets/images/<file>`, the one shape TinaCloud
+  round-trips unchanged. A hand-rolled image field is the trap that looks fine locally and
+  breaks only in the deployed admin (the photo catalog shipped it once);
+  `test/image-fields.test.ts` now fails the build on one.
 
 ### What becomes a CMS page or block (and what stays as code)
 
