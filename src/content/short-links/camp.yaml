@@ -1,7 +1,9 @@
 name: camp
 from: /camp
-destination: https://plcc.churchcenter.com/registrations/events/3370274
+destination: /kids/
 kind: shortcut
-expires: 2026-09-30
-note: Sports Camp registration. Church Center mints a new event ID each year, so this
-  needs re-pointing every spring.
+expires: 2027-02-28
+note: Sports Camp. Church Center mints a new event ID each year, so this points at
+  the registration while it is open and at Pine Lake Kids the rest of the year. The
+  review date sits before registration opens rather than after camp ends — between
+  those two points anyone reading last year's flyer lands on a closed registration.
