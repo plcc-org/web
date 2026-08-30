@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-08-29T16:14:09.181Z",
+  "capturedAt": "2026-08-30T16:04:16.284Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-29T07%3A00%3A00Z&where[starts_at][lte]=2026-10-24T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-08-30T07%3A00%3A00Z&where[starts_at][lte]=2026-10-25T07%3A00%3A00Z"
   },
   "data": [
     {
@@ -263,6 +263,10 @@
             {
               "type": "Tag",
               "id": "241924"
+            },
+            {
+              "type": "Tag",
+              "id": "426752"
             }
           ]
         }
@@ -545,6 +549,43 @@
     },
     {
       "type": "EventInstance",
+      "id": "227517253",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227517253",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-09-13T19:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Fall Kickoff",
+        "published_ends_at": "2026-09-13T19:30:00Z",
+        "published_starts_at": "2026-09-13T18:30:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-09-13T18:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647641"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21647641"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227517253/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227517253"
+      }
+    },
+    {
+      "type": "EventInstance",
       "id": "226271449",
       "attributes": {
         "all_day_event": false,
@@ -765,6 +806,10 @@
             {
               "type": "Tag",
               "id": "241924"
+            },
+            {
+              "type": "Tag",
+              "id": "426752"
             }
           ]
         }
@@ -1605,6 +1650,10 @@
             {
               "type": "Tag",
               "id": "241924"
+            },
+            {
+              "type": "Tag",
+              "id": "426752"
             }
           ]
         }
@@ -2207,6 +2256,10 @@
             {
               "type": "Tag",
               "id": "241924"
+            },
+            {
+              "type": "Tag",
+              "id": "426752"
             }
           ]
         }
@@ -2434,6 +2487,21 @@
       }
     },
     {
+      "type": "Tag",
+      "id": "426752",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#81D973",
+        "created_at": "2026-08-29T22:31:00Z",
+        "name": "Tuesdays Together",
+        "position": 65536,
+        "updated_at": "2026-08-29T22:31:00Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/426752"
+      }
+    },
+    {
       "type": "Event",
       "id": "19716510",
       "attributes": {
@@ -2478,6 +2546,22 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/151451"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21647641",
+      "attributes": {
+        "description": "<div>\n  <div>Join us as we launch our 2026-2027 ministry year, block party-style, with a food truck, treats, games and a bounce house!</div>\n</div>\n",
+        "image_url": null,
+        "name": "Fall Kickoff",
+        "registration_url": null,
+        "summary": null,
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21647641",
+        "html": "https://calendar.planningcenteronline.com/events/21647641"
       }
     },
     {
@@ -2637,8 +2721,8 @@
     }
   ],
   "meta": {
-    "total_count": 48,
-    "count": 48,
+    "total_count": 49,
+    "count": 49,
     "can_order_by": [
       "created_at",
       "updated_at",
