@@ -9,8 +9,9 @@ src/content/pages/
 #
 # Nothing catches drift here on its own: the capture job pushes with
 # GITHUB_TOKEN, and GitHub does not trigger workflows on those commits, so its
-# own output never runs through format:check.
-src/content/events-pco.json
+# own output never runs through format:check — a stale path here only surfaces
+# on the next human push. Keep this in sync with OUT in capture-events.mjs.
+src/data/events-pco.json
 # Written by the CMS on every schema build. Machine JSON — keep Prettier out so
 # its formatting never drifts from the generator's output and fails format:check.
 tina/tina-lock.json
