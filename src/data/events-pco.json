@@ -1,51 +1,9 @@
 {
-  "capturedAt": "2026-09-02T15:59:22.975Z",
+  "capturedAt": "2026-09-03T15:48:34.954Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-02T07%3A00%3A00Z&where[starts_at][lte]=2026-10-28T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-03T07%3A00%3A00Z&where[starts_at][lte]=2026-10-29T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "232157757",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/232157757",
-        "compact_recurrence_description": "Does not repeat",
-        "ends_at": "2026-09-02T22:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Blood Drive  ",
-        "published_ends_at": "2026-09-02T22:00:00Z",
-        "published_starts_at": "2026-09-02T15:00:00Z",
-        "recurrence": "None",
-        "starts_at": "2026-09-02T15:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/19716510"
-          },
-          "data": {
-            "type": "Event",
-            "id": "19716510"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/232157757/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241923"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/232157757"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "166276664",
@@ -741,6 +699,80 @@
     },
     {
       "type": "EventInstance",
+      "id": "233922289",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233922289",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-09-20T20:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Practice of Prayer Group",
+        "published_ends_at": "2026-09-20T20:00:00Z",
+        "published_starts_at": "2026-09-20T18:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-20T18:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22361812"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22361812"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922289/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922289"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "235076270",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076270",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-09-21T03:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Faithful Finances Group",
+        "published_ends_at": "2026-09-21T03:00:00Z",
+        "published_starts_at": "2026-09-21T01:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-21T01:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22492719"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076270/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076270"
+      }
+    },
+    {
+      "type": "EventInstance",
       "id": "167801643",
       "attributes": {
         "all_day_event": false,
@@ -1071,6 +1103,43 @@
     },
     {
       "type": "EventInstance",
+      "id": "235076271",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076271",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-09-28T03:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Faithful Finances Group",
+        "published_ends_at": "2026-09-28T03:00:00Z",
+        "published_starts_at": "2026-09-28T01:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-09-28T01:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22492719"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076271/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076271"
+      }
+    },
+    {
+      "type": "EventInstance",
       "id": "226271450",
       "attributes": {
         "all_day_event": false,
@@ -1351,6 +1420,80 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/168875348"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "233922291",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233922291",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-04T20:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Practice of Prayer Group",
+        "published_ends_at": "2026-10-04T20:00:00Z",
+        "published_starts_at": "2026-10-04T18:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-04T18:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22361812"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22361812"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922291/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922291"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "235076272",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076272",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-05T03:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Faithful Finances Group",
+        "published_ends_at": "2026-10-05T03:00:00Z",
+        "published_starts_at": "2026-10-05T01:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-05T01:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22492719"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076272/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076272"
       }
     },
     {
@@ -1685,6 +1828,80 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/169504531"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "233922292",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233922292",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-11T20:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Practice of Prayer Group",
+        "published_ends_at": "2026-10-11T20:00:00Z",
+        "published_starts_at": "2026-10-11T18:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-11T18:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22361812"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22361812"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922292/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922292"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "235076273",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076273",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-12T03:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Faithful Finances Group",
+        "published_ends_at": "2026-10-12T03:00:00Z",
+        "published_starts_at": "2026-10-12T01:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-12T01:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22492719"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076273/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076273"
       }
     },
     {
@@ -2061,6 +2278,80 @@
     },
     {
       "type": "EventInstance",
+      "id": "233922293",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233922293",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-18T20:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Practice of Prayer Group",
+        "published_ends_at": "2026-10-18T20:00:00Z",
+        "published_starts_at": "2026-10-18T18:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-18T18:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22361812"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22361812"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922293/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922293"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "235076274",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076274",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-19T03:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Faithful Finances Group",
+        "published_ends_at": "2026-10-19T03:00:00Z",
+        "published_starts_at": "2026-10-19T01:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-19T01:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22492719"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076274/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076274"
+      }
+    },
+    {
+      "type": "EventInstance",
       "id": "170075834",
       "attributes": {
         "all_day_event": false,
@@ -2395,6 +2686,43 @@
     },
     {
       "type": "EventInstance",
+      "id": "235076275",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076275",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-10-26T03:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Faithful Finances Group",
+        "published_ends_at": "2026-10-26T03:00:00Z",
+        "published_starts_at": "2026-10-26T01:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-26T01:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22492719"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076275/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076275"
+      }
+    },
+    {
+      "type": "EventInstance",
       "id": "226271452",
       "attributes": {
         "all_day_event": false,
@@ -2580,40 +2908,51 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611762"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "232157794",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/232157794",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-10-28T22:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Blood Drive   ",
+        "published_ends_at": "2026-10-28T22:00:00Z",
+        "published_starts_at": "2026-10-28T15:00:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-10-28T15:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/19716517"
+          },
+          "data": {
+            "type": "Event",
+            "id": "19716517"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/232157794/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/232157794"
+      }
     }
   ],
   "included": [
-    {
-      "type": "Event",
-      "id": "19716510",
-      "attributes": {
-        "description": "<div>\n  <div>Make an appointment to donate at plcc.org/blood</div>\n</div>\n",
-        "image_url": null,
-        "name": "Blood Drive  ",
-        "registration_url": null,
-        "summary": null,
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/19716510",
-        "html": "https://calendar.planningcenteronline.com/events/19716510"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241923",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#E7DEFA",
-        "created_at": "2023-05-21T17:25:54Z",
-        "name": "Community Event",
-        "position": -8192,
-        "updated_at": "2026-07-11T02:45:17Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241923"
-      }
-    },
     {
       "type": "Event",
       "id": "4368161",
@@ -2674,6 +3013,21 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/events/6719956",
         "html": "https://calendar.planningcenteronline.com/events/6719956"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241923",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#E7DEFA",
+        "created_at": "2023-05-21T17:25:54Z",
+        "name": "Community Event",
+        "position": -8192,
+        "updated_at": "2026-07-11T02:45:17Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241923"
       }
     },
     {
@@ -2971,6 +3325,38 @@
     },
     {
       "type": "Event",
+      "id": "22361812",
+      "attributes": {
+        "description": "<div>\n  <div>The Practice of Prayer will help you learn to set aside dedicated time to intentionally be with God, in order to become like him and partner with him in the world.</div>\n</div>\n",
+        "image_url": null,
+        "name": "Practice of Prayer Group",
+        "registration_url": null,
+        "summary": "The Practice of Prayer will help you learn to set aside dedicated time to intentionally be with God, in order to become like him and partner with him in the world.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22361812",
+        "html": "https://calendar.planningcenteronline.com/events/22361812"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "22492719",
+      "attributes": {
+        "description": "<div>\n  <div>Money doesn’t have to be stressful or complicated. Financial Peace University is a biblically based course that offers practical, simple steps for building healthy financial habits—whether you’re single, married, young, or experienced with money. The video-based course is facilitated by Loren Gustafson, who brings extensive experience in financial services, technology, and higher education. Topics covered in the 9 sessions:</div><ul><li>Saving strategies</li><li>Relating to money</li><li>Cash flow planning</li><li>Getting out of debt</li><li>Using Credit</li><li>Insurance</li><li>Negotiating</li><li>Investing</li><li>Giving</li></ul><div>This group will meet for 90 minutes per session, and participants are strongly encouraged (but not required) to attend all sessions. Sign up today and begin making peace with your finances!&nbsp;</div>\n</div>\n",
+        "image_url": null,
+        "name": "Faithful Finances Group",
+        "registration_url": null,
+        "summary": "Money doesn’t have to be stressful or complicated. Financial Peace University is a biblically based course that offers practical, simple steps for building healthy financial habits—whether you’re single, married, young, or experienced with money. The video-based course is facilitated by Loren Gustafson, who brings extensive experience in financial services, technology, and higher education.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22492719",
+        "html": "https://calendar.planningcenteronline.com/events/22492719"
+      }
+    },
+    {
+      "type": "Event",
       "id": "21468816",
       "attributes": {
         "description": "<div>\n  A time for ladies to take a break from the busy week and connect with one another!\n</div>\n",
@@ -3000,11 +3386,27 @@
         "self": "https://api.planningcenteronline.com/calendar/v2/events/21647675",
         "html": "https://calendar.planningcenteronline.com/events/21647675"
       }
+    },
+    {
+      "type": "Event",
+      "id": "19716517",
+      "attributes": {
+        "description": "<div>\n  <div>Make an appointment to donate at plcc.org/blood</div>\n</div>\n",
+        "image_url": null,
+        "name": "Blood Drive   ",
+        "registration_url": null,
+        "summary": null,
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/19716517",
+        "html": "https://calendar.planningcenteronline.com/events/19716517"
+      }
     }
   ],
   "meta": {
-    "total_count": 55,
-    "count": 55,
+    "total_count": 65,
+    "count": 65,
     "can_order_by": [
       "created_at",
       "updated_at",
