@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-09-03T15:48:34.954Z",
+  "capturedAt": "2026-09-04T15:46:54.758Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-03T07%3A00%3A00Z&where[starts_at][lte]=2026-10-29T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-04T07%3A00%3A00Z&where[starts_at][lte]=2026-10-30T07%3A00%3A00Z"
   },
   "data": [
     {
@@ -2950,6 +2950,56 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/232157794"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "234582998",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/234582998",
+        "compact_recurrence_description": "Every Thursday",
+        "ends_at": "2026-10-29T19:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Bible Study Fellowship (BSF)    ",
+        "published_ends_at": "2026-10-29T19:30:00Z",
+        "published_starts_at": "2026-10-29T16:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-10-29T16:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22432056"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22432056"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/234582998/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151429"
+            },
+            {
+              "type": "Tag",
+              "id": "241925"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/234582998"
+      }
     }
   ],
   "included": [
@@ -3405,8 +3455,8 @@
     }
   ],
   "meta": {
-    "total_count": 65,
-    "count": 65,
+    "total_count": 66,
+    "count": 66,
     "can_order_by": [
       "created_at",
       "updated_at",
