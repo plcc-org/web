@@ -1,55 +1,9 @@
 {
-  "capturedAt": "2026-09-06T14:56:56.150Z",
+  "capturedAt": "2026-09-07T17:16:17.391Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-06T07%3A00%3A00Z&where[starts_at][lte]=2026-11-01T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-07T07%3A00%3A00Z&where[starts_at][lte]=2026-11-02T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "166276664",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/166276664",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-09-06T18:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Sunday Service",
-        "published_ends_at": "2026-09-06T18:00:00Z",
-        "published_starts_at": "2026-09-06T17:00:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-09-06T17:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
-          },
-          "data": {
-            "type": "Event",
-            "id": "4368161"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/166276664/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241928"
-            },
-            {
-              "type": "Tag",
-              "id": "241940"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/166276664"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "166359684",
@@ -3000,55 +2954,92 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/234582998"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "171026844",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/171026844",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-11-01T19:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-11-01T19:00:00Z",
+        "published_starts_at": "2026-11-01T18:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-11-01T18:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/171026844/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/171026844"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "235076276",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076276",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-11-02T04:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Faithful Finances Group",
+        "published_ends_at": "2026-11-02T04:00:00Z",
+        "published_starts_at": "2026-11-02T02:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-11-02T02:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22492719"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076276/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076276"
+      }
     }
   ],
   "included": [
-    {
-      "type": "Event",
-      "id": "4368161",
-      "attributes": {
-        "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
-        "image_url": null,
-        "name": "Sunday Service",
-        "registration_url": null,
-        "summary": "We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/4368161",
-        "html": "https://calendar.planningcenteronline.com/events/4368161"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241928",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#F6E7BB",
-        "created_at": "2023-05-21T17:26:49Z",
-        "name": "Worship Service",
-        "position": 77824,
-        "updated_at": "2026-07-11T04:28:33Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241928"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241940",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#C69CE8",
-        "created_at": "2023-05-21T17:38:22Z",
-        "name": "Worship",
-        "position": 98304,
-        "updated_at": "2026-07-11T04:28:25Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241940"
-      }
-    },
     {
       "type": "Event",
       "id": "6719956",
@@ -3246,6 +3237,52 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241935"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "4368161",
+      "attributes": {
+        "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "image_url": null,
+        "name": "Sunday Service",
+        "registration_url": null,
+        "summary": "We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/4368161",
+        "html": "https://calendar.planningcenteronline.com/events/4368161"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241928",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F6E7BB",
+        "created_at": "2023-05-21T17:26:49Z",
+        "name": "Worship Service",
+        "position": 77824,
+        "updated_at": "2026-07-11T04:28:33Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241928"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241940",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#C69CE8",
+        "created_at": "2023-05-21T17:38:22Z",
+        "name": "Worship",
+        "position": 98304,
+        "updated_at": "2026-07-11T04:28:25Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241940"
       }
     },
     {
@@ -3455,8 +3492,8 @@
     }
   ],
   "meta": {
-    "total_count": 66,
-    "count": 66,
+    "total_count": 67,
+    "count": 67,
     "can_order_by": [
       "created_at",
       "updated_at",
