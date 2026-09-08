@@ -90,7 +90,9 @@ All six sit under one **Collections** heading. Two of them — **Homepage quotes
 **Photo descriptions** — are a single file holding one list, so their list view shows a
 single row to click through. They offer no "add" or "delete" at the file level (`allowedActions` in
 `tina/config.ts`): the one file is the only file. Adding and removing quotes _within_ the
-list is the normal thing to do and works as usual.
+list is the normal thing to do and works as usual. `src/content/quotes/` holds a second
+file, `quotes-and-placeholders.yaml` — the draft pool the live quotes were chosen from,
+which nothing renders. A `match` on the collection keeps it out of the admin.
 
 Neither is marked `ui.global`. That flag exists for genuine site configuration
 and moves a collection out of the Collections list into the **Site** section next to Media

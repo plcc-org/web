@@ -362,6 +362,10 @@ export default defineConfig({
         label: 'Homepage quotes',
         path: 'src/content/quotes',
         format: 'yaml',
+        // The directory also holds quotes-and-placeholders.yaml, a reference copy
+        // of the draft pool that nothing renders. Pin the collection to
+        // quotes.yaml so the admin lists one document, not two.
+        match: { include: 'quotes' },
         ui: { allowedActions: { create: false, delete: false } },
         fields: [
           {
