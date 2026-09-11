@@ -1,59 +1,9 @@
 {
-  "capturedAt": "2026-09-10T15:51:41.727Z",
+  "capturedAt": "2026-09-11T15:53:29.831Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-10T07%3A00%3A00Z&where[starts_at][lte]=2026-11-05T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-11T07%3A00%3A00Z&where[starts_at][lte]=2026-11-06T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "234582991",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/234582991",
-        "compact_recurrence_description": "Every Thursday",
-        "ends_at": "2026-09-10T19:30:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Bible Study Fellowship (BSF)    ",
-        "published_ends_at": "2026-09-10T19:30:00Z",
-        "published_starts_at": "2026-09-10T16:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-09-10T16:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22432056"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22432056"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/234582991/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "151429"
-            },
-            {
-              "type": "Tag",
-              "id": "241925"
-            },
-            {
-              "type": "Tag",
-              "id": "241935"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/234582991"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "167083809",
@@ -3137,70 +3087,59 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227519865"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "234582999",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/234582999",
+        "compact_recurrence_description": "Every Thursday",
+        "ends_at": "2026-11-05T20:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Bible Study Fellowship (BSF)    ",
+        "published_ends_at": "2026-11-05T20:30:00Z",
+        "published_starts_at": "2026-11-05T17:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-11-05T17:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22432056"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22432056"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/234582999/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151429"
+            },
+            {
+              "type": "Tag",
+              "id": "241925"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/234582999"
+      }
     }
   ],
   "included": [
-    {
-      "type": "Event",
-      "id": "22432056",
-      "attributes": {
-        "description": "<div>\n  <div>&nbsp;BSF offers free, in-depth Bible studies in community for people of all ages around the world. <a href=\"https://www.bsfinternational.org/\"><strong>Learn more about BSF</strong></a>&nbsp;</div>\n</div>\n",
-        "image_url": null,
-        "name": "Bible Study Fellowship (BSF)    ",
-        "registration_url": null,
-        "summary": "BSF offers free, in-depth Bible studies in community for people of all ages around the world. For more information, go to https://www.bsfinternational.org/\n\nChildren's program available for kids birth through 6 years old.",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/22432056",
-        "html": "https://calendar.planningcenteronline.com/events/22432056"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "151429",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#F297CD",
-        "created_at": "2021-08-31T17:37:26Z",
-        "name": "BSF",
-        "position": 32768,
-        "updated_at": "2023-11-14T04:50:20Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/151429"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241925",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#F9D266",
-        "created_at": "2023-05-21T17:26:05Z",
-        "name": "Class, Seminar or Course",
-        "position": 6144,
-        "updated_at": "2023-05-21T17:31:12Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241925"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241935",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#81D973",
-        "created_at": "2023-05-21T17:37:35Z",
-        "name": "Adults",
-        "position": 16384,
-        "updated_at": "2026-07-11T04:28:26Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241935"
-      }
-    },
     {
       "type": "Event",
       "id": "4368161",
@@ -3372,6 +3311,51 @@
       }
     },
     {
+      "type": "Tag",
+      "id": "151429",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F297CD",
+        "created_at": "2021-08-31T17:37:26Z",
+        "name": "BSF",
+        "position": 32768,
+        "updated_at": "2023-11-14T04:50:20Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/151429"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241925",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F9D266",
+        "created_at": "2023-05-21T17:26:05Z",
+        "name": "Class, Seminar or Course",
+        "position": 6144,
+        "updated_at": "2023-05-21T17:31:12Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241925"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241935",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#81D973",
+        "created_at": "2023-05-21T17:37:35Z",
+        "name": "Adults",
+        "position": 16384,
+        "updated_at": "2026-07-11T04:28:26Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241935"
+      }
+    },
+    {
       "type": "Event",
       "id": "22324060",
       "attributes": {
@@ -3446,6 +3430,22 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/426752"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "22432056",
+      "attributes": {
+        "description": "<div>\n  <div>&nbsp;BSF offers free, in-depth Bible studies in community for people of all ages around the world. <a href=\"https://www.bsfinternational.org/\"><strong>Learn more about BSF</strong></a>&nbsp;</div>\n</div>\n",
+        "image_url": null,
+        "name": "Bible Study Fellowship (BSF)    ",
+        "registration_url": null,
+        "summary": "BSF offers free, in-depth Bible studies in community for people of all ages around the world. For more information, go to https://www.bsfinternational.org/\n\nChildren's program available for kids birth through 6 years old.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22432056",
+        "html": "https://calendar.planningcenteronline.com/events/22432056"
       }
     },
     {
