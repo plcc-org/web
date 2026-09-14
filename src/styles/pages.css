@@ -2,14 +2,17 @@
  * pages.css — styling for one page's markup, where the page is a one-off and
  * the classes would never be reused.
  *
- * Two pages qualify, each in its own section below:
+ * Three pages qualify, each in its own section below:
  *
- *   Leadership   src/pages/about/leadership.astro   portrait grid + profiles
- *   Messages     src/pages/messages.astro           service archive
+ *   Leadership     src/pages/about/leadership.astro   portrait grid + profiles
+ *   Messages       src/pages/messages.astro           service archive
+ *   Sunday links   src/pages/links/index.astro        a phone-first list of links
  *
- * A third page arriving here is worth a pause: it usually means the shape is
+ * Another page arriving here is worth a pause: it usually means the shape is
  * more general than it looked, and belongs in components.css as a named
- * component instead.
+ * component instead. (Sunday links had that pause. Its rows are built for one
+ * job — a thumb working down a list after tapping a tag — and nothing else on
+ * the site is a bare list of links.)
  *
  * Loaded last, so these rules win any tie with the shared stylesheets.
  *
@@ -394,4 +397,144 @@
 
 .service-card__body a {
   font-weight: 600;
+}
+
+/* ======================================================================
+ * Sunday links (src/pages/links/index.astro)
+ *
+ * Opened on a phone, from a tag or QR code in the building, by someone who wants
+ * one link and wants it now. So: one narrow column, the week's links as a single
+ * card of full-width rows, and the every-week groups beneath as plain rules —
+ * present, but visibly the second thing.
+ * ==================================================================== */
+
+.sunday-links {
+  max-width: var(--measure-narrow);
+  margin-inline: auto;
+  padding-block: var(--space-xs) var(--space-xl);
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.sunday-links__week,
+.sunday-links__group {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.sunday-links__every-week {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.sunday-links__intro .eyebrow {
+  margin-bottom: var(--space-xs);
+}
+
+.sunday-links__title {
+  margin: 0;
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-variation-settings: var(--serif-h1);
+}
+
+.sunday-links__heading {
+  margin: 0;
+  font-size: var(--text-xl);
+  line-height: var(--leading-tight);
+  font-variation-settings: var(--serif-h3);
+}
+
+/* Shown only under ?preview, so an editor can't mistake next week for this one. */
+.sunday-links__preview {
+  margin: 0;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-clay);
+  border-radius: var(--radius-soft);
+  background: var(--color-sand);
+  color: var(--color-ink);
+  font-size: var(--text-ui);
+  font-weight: 600;
+}
+
+.sunday-links__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.sunday-links__list > li + li {
+  border-top: 1px solid var(--color-mist);
+}
+
+/* The whole row is the target, and at least 3.5rem tall — comfortably past the
+   44px minimum, because these get tapped one-handed while walking in. */
+.sunday-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-height: 3.5rem;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-ink);
+  font-size: var(--text-md);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.sunday-link:active {
+  background-color: var(--color-stone);
+}
+
+@media (hover: hover) {
+  .sunday-link:hover {
+    background-color: var(--color-stone);
+  }
+}
+
+/* The card clips its rows, which would clip an outside focus ring too. */
+.sunday-link:focus-visible {
+  outline-offset: -3px;
+}
+
+.sunday-link__icon {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-moss-ink);
+}
+
+/* The every-week groups: the same rows between hairlines, with no card. */
+.sunday-links__list--quiet {
+  background: transparent;
+  border: 0;
+  border-block: 1px solid var(--color-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.sunday-links__list--quiet .sunday-link {
+  padding-inline: 0;
+  font-size: var(--text-base);
+  font-weight: 400;
+}
+
+.sunday-links__list--quiet .sunday-link:active {
+  background-color: transparent;
+  color: var(--color-moss-ink);
+}
+
+@media (hover: hover) {
+  .sunday-links__list--quiet .sunday-link:hover {
+    background-color: transparent;
+    color: var(--color-moss-ink);
+  }
 }

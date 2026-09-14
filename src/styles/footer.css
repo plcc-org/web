@@ -1,8 +1,8 @@
 /* ======================================================================
- * footer.css — the full-bleed site footer (markup in BaseLayout.astro).
+ * footer.css — the full-bleed site footer (markup in components/chrome/SiteFooter.astro).
  *
- * A dark forest panel closing every page (markup lives in BaseLayout.astro),
- * in four stacked areas:
+ * A dark forest panel closing every page with the full chrome, in four stacked
+ * areas:
  *
  *   sitemap   every page below a hub, in four labelled columns
  *   info      the church's name, address, and service time

@@ -1,0 +1,15 @@
+---
+import { withBase } from '../../lib/url'
+import { church, serviceTimeDisplay } from '../../config/church'
+
+// The footer that goes with SlimHeader: who we are, when and where, and the way out to
+// the rest of the site.
+---
+
+<footer class="slim-footer">
+  <p><strong>{church.name}</strong></p>
+  <p>
+    {church.service.day}s at {serviceTimeDisplay()} · <a href={church.mapUrl}>{church.addressLine}</a>
+  </p>
+  <p><a href={withBase()}>Go to the full website <span aria-hidden="true">→</span></a></p>
+</footer>

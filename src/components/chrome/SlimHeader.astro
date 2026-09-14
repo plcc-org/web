@@ -1,0 +1,14 @@
+---
+import { withBase } from '../../lib/url'
+import wordmarkUrl from '../../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
+
+// The header for a page someone reached by tapping a tag in the building rather than
+// by browsing: just the wordmark, home. No nav and no script — what they came for is
+// the content directly beneath it.
+---
+
+<header class="slim-header">
+  <a href={withBase()} class="slim-header__home" aria-label="Pine Lake Covenant Church — Home">
+    <span class="site-nav__home-logo" style={`--logo-wordmark-url: url('${wordmarkUrl}')`} aria-hidden="true"></span>
+  </a>
+</header>

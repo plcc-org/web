@@ -74,8 +74,11 @@ export default defineConfig({
     // The admin SPA is a static file under public/admin, so unlike an SSR-only
     // route it *would* be picked up by the sitemap. The island endpoint is
     // on-demand and already excluded; the filter covers it as a guard. Mirrors
-    // the Disallow list in src/pages/robots.txt.ts.
-    sitemap({ filter: (page) => !/\/(admin|tina-island|api)(\/|$)/.test(new URL(page).pathname) }),
+    // the Disallow list in src/pages/robots.txt.ts. /links/ is a real page but
+    // noindex — it's for people already in the building, and changes weekly — so a
+    // sitemap listing it would contradict the page itself. It isn't disallowed in
+    // robots.txt, because a crawler has to be able to fetch it to see the noindex.
+    sitemap({ filter: (page) => !/\/(admin|tina-island|api|links)(\/|$)/.test(new URL(page).pathname) }),
   ],
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL

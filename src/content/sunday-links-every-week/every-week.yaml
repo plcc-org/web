@@ -1,0 +1,23 @@
+groups:
+  - heading: Next steps
+    links:
+      - label: Sign up for email newsletters
+        url: https://plcc.churchcenter.com/people/forms/530525
+      - label: Sign up for text alerts
+        url: https://plcc.churchcenter.com/people/forms/1100672
+      - label: What’s happening this week
+        url: /events/
+      - label: See open event sign-ups
+        url: https://plcc.churchcenter.com/registrations
+      - label: Find a small group
+        url: https://plcc.churchcenter.com/groups/
+      - label: Volunteer to serve
+        url: https://plcc.churchcenter.com/people/forms/638242
+  - heading: Additional resources
+    links:
+      - label: Email the pastors
+        url: mailto:pastors@plcc.org
+      - label: Get the Church Center app
+        url: https://plcc.churchcenter.com/setup
+      - label: Messages
+        url: /messages/

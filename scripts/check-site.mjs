@@ -119,6 +119,7 @@ for (const file of htmlFiles) {
 // pages are already guarded by the crawler and must not be listed here.
 const externalPermalinks = [
   { route: '', used: 'yard sign + building signage, printed bulletin, social profiles, Google Business listing' },
+  { route: 'links', used: 'NFC tags + QR codes in the building (Sunday links — the old site used the same address)' },
 ]
 for (const { route } of externalPermalinks) {
   if (!existsSync(`${DIST}/${route ? `${route}/` : ''}index.html`)) errors.push(`missing public permalink  /${route}`)

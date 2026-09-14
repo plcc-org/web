@@ -1,0 +1,103 @@
+---
+import TinaIsland from '@tinacms/astro/TinaIsland.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import SundayWeek from '../../components/sunday-links/SundayWeek.astro'
+import EveryWeekGroups from '../../components/sunday-links/EveryWeekGroups.astro'
+import { church } from '../../config/church'
+import { getEveryWeek, getSundayWeek, listSundayWeeks } from '../../lib/tina/data'
+import { EVERY_WEEK_WRAPPER, SUNDAY_WEEK_WRAPPER } from '../../lib/tina/islands'
+import { churchToday, formatSunday, pickWeeks } from '../../../tina/sunday-links.mjs'
+
+// Sunday links: what the NFC tags and QR codes in the building open, at the address
+// the old site used. The one page on the site written for people already here rather
+// than for newcomers (docs/philosophy.md) — so no photos, no nav, and it's kept out of
+// search.
+//
+// Which Sunday shows is decided twice. The build picks the latest Sunday on or before
+// today, and the nightly build (5am Pacific) is what normally switches the page over
+// on a Sunday morning. Next week's links also ship in an inert <template>, and the
+// inline script below swaps them in when either
+//   - the church-local date has reached that Sunday — the safety net for a night the
+//     build didn't run, so a Sunday never opens on last week's links; or
+//   - the address has ?preview, which is how an editor sees next week before it's
+//     live. It says so in a banner.
+// The script runs as the page parses, before anything below it renders. Without JS the
+// page shows the build's choice, which is right whenever the nightly build has run.
+const today = churchToday(church.timezone)
+const { live, next } = pickWeeks(await listSundayWeeks(), today)
+const [liveWeek, nextWeek, everyWeek] = await Promise.all([
+  live && getSundayWeek(live.relativePath),
+  next && getSundayWeek(next.relativePath),
+  getEveryWeek(),
+])
+
+const nothingNext = live
+  ? `Preview: nothing is scheduled after ${formatSunday(live.sunday)} yet.`
+  : 'Preview: no Sunday links are scheduled yet.'
+---
+
+<BaseLayout
+  title="Sunday links"
+  description="This Sunday’s links at Pine Lake Covenant Church, for the tags and QR codes in the building."
+  noindex
+  chrome="slim"
+>
+  <div class="sunday-links">
+    <p class="sunday-links__preview" id="sunday-links-preview" data-nothing-next={nothingNext} hidden></p>
+
+    <div id="sunday-links-week">
+      {
+        live && liveWeek ? (
+          <TinaIsland
+            name="sundayWeek"
+            wrapper={SUNDAY_WEEK_WRAPPER}
+            params={{ relativePath: live.relativePath }}
+            primary
+          >
+            <SundayWeek data={liveWeek.data?.sundayLinks} />
+          </TinaIsland>
+        ) : (
+          <SundayWeek />
+        )
+      }
+    </div>
+
+    {
+      next && nextWeek && (
+        <template id="sunday-links-next" data-sunday={next.sunday} data-label={formatSunday(next.sunday)}>
+          <TinaIsland
+            name="sundayWeek"
+            wrapper={SUNDAY_WEEK_WRAPPER}
+            params={{ relativePath: next.relativePath }}
+            primary
+          >
+            <SundayWeek data={nextWeek.data?.sundayLinks} />
+          </TinaIsland>
+        </template>
+      )
+    }
+
+    <script is:inline define:vars={{ timeZone: church.timezone }}>
+      const next = document.getElementById('sunday-links-next')
+      const banner = document.getElementById('sunday-links-preview')
+      const preview = new URLSearchParams(location.search).has('preview')
+      const today = new Intl.DateTimeFormat('en-CA', {
+        timeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }).format(new Date())
+      if (next && (preview || today >= next.dataset.sunday)) {
+        document.getElementById('sunday-links-week').replaceChildren(next.content)
+        if (preview) banner.textContent = `Preview: these links go live ${next.dataset.label}.`
+      } else if (preview) {
+        banner.textContent = banner.dataset.nothingNext
+      }
+      banner.hidden = !preview
+    </script>
+
+    <TinaIsland name="sundayEveryWeek" wrapper={EVERY_WEEK_WRAPPER}>
+      <EveryWeekGroups data={everyWeek.data?.sundayLinksEveryWeek} />
+    </TinaIsland>
+  </div>
+</BaseLayout>

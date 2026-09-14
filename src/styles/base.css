@@ -133,6 +133,39 @@ img {
   padding: var(--space-lg);
 }
 
+/* Slim chrome (BaseLayout `chrome="slim"`, used by /links/): a wordmark above and a
+   short footer below, both on the page's own ground rather than panels, and sharing
+   one narrow column with the content so the three edges line up on a phone. The
+   wordmark itself reuses `.site-nav__home-logo` from nav.css. */
+.slim-header {
+  padding: calc(var(--space-md) + env(safe-area-inset-top, 0px)) var(--space-lg) var(--space-md);
+  border-bottom: 1px solid var(--color-mist);
+}
+
+.slim-header__home {
+  display: block;
+  max-width: var(--measure-narrow);
+  margin-inline: auto;
+  line-height: 0;
+}
+
+.slim-footer {
+  max-width: calc(var(--measure-narrow) + 2 * var(--space-lg));
+  margin-inline: auto;
+  padding: var(--space-lg) var(--space-lg) calc(var(--space-xl) + env(safe-area-inset-bottom, 0px));
+  color: var(--color-ink-soft);
+  font-size: var(--text-ui);
+  line-height: var(--leading-normal);
+}
+
+.slim-footer p {
+  margin: 0 0 var(--space-xs);
+}
+
+.slim-footer strong {
+  color: var(--color-ink);
+}
+
 /* Accessibility: keyboard skip-to-content */
 /* Parked off-screen by a transform rather than `display: none`, so it stays
    focusable and slides in as the first Tab stop on the page. */

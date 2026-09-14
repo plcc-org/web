@@ -3,6 +3,11 @@ import { defineConfig } from 'tinacms'
 import { templates, heroFields, image } from './templates.mjs'
 // @ts-expect-error — plain-JS, shared with scripts/generate-redirects.mjs.
 import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs'
+// @ts-expect-error — plain-JS, shared with the /links/ page and scripts/prune-sunday-links.mjs.
+import { checkSunday, churchToday, linkListField, nextSunday, toIsoDate } from './sunday-links.mjs'
+// @ts-expect-error — plain-JS, shared with test/date-field.test.ts.
+import { dateOnly } from './date-field.mjs'
+import { church } from '../src/config/church'
 
 /**
  * A page address: lowercase, hyphen-separated, slashes kept so a page can sit in a
@@ -236,6 +241,83 @@ export default defineConfig({
               'with the reader’s situation rather than our programme (“When life is overwhelming…”, not “We have ' +
               'a meals ministry”), and keep anything that changes — dates, times, one-off events — on What’s On ' +
               'rather than here.',
+          },
+        ],
+      },
+      // The links behind the NFC tags and QR codes in the building (/links/), one file
+      // per Sunday. The page shows the latest Sunday on or before today, so next week's
+      // list can be prepared any time and goes live by itself — at the nightly build
+      // early on Sunday, with an inline date check on the page as the safety net. Past
+      // weeks are deleted by the nightly job (scripts/prune-sunday-links.mjs), which is
+      // why there is no archive to manage. See docs/cms.md, "Sunday links".
+      //
+      // Second in the sidebar: after Pages, it's the thing an editor opens most often —
+      // every week.
+      {
+        name: 'sundayLinks',
+        label: 'Sunday links',
+        path: 'src/content/sunday-links',
+        format: 'yaml',
+        ui: {
+          // Flat on purpose: the page, the zod loader and the prune script all read the
+          // top level of the directory only, so a week filed in a folder would vanish.
+          allowedActions: { createFolder: false, createNestedFolder: false },
+          // A week that hasn't started yet opens on /links/next/, which renders it
+          // directly. Not /links/?preview: the admin builds its preview address from the
+          // route's path alone, so a query string never reaches the page.
+          router: ({ document }) =>
+            toIsoDate(document.sunday) > churchToday(church.timezone) ? '/links/next/' : '/links/',
+          // The file is named for its Sunday and follows the date field, including on
+          // Duplicate — which reopens the create form seeded with the copied values, so
+          // changing the date is also what moves the copy off the original's filename.
+          filename: {
+            readonly: true,
+            description: 'Named for the Sunday — set from the date below.',
+            slugify: (values) => toIsoDate(values?.sunday) || nextSunday(churchToday(church.timezone)),
+          },
+        },
+        defaultItem: () => ({ sunday: nextSunday(churchToday(church.timezone)) }),
+        fields: [
+          {
+            name: 'sunday',
+            label: 'Sunday',
+            type: 'datetime',
+            required: true,
+            // A bare date on disk, shown as that same day in the picker — see
+            // tina/date-field.mjs for the day-shift it prevents.
+            ui: { ...dateOnly, validate: (value: unknown) => checkSunday(value) },
+            description:
+              'The Sunday these links are for. They go live early that morning and stay up until the next ' +
+              'Sunday’s list replaces them. To start next week, open this week’s list, choose Duplicate, and ' +
+              'change the date. See it before it goes live at plcc.org/links/?preview.',
+          },
+          linkListField(
+            'This Sunday’s links, top to bottom as they appear on the page. The links that never change live ' +
+              'under “Sunday links: every week”.'
+          ),
+        ],
+      },
+      // The groups under the weekly list ("Next steps", "Additional resources"). One file
+      // holding one list, modelled like Homepage quotes: create and delete removed.
+      {
+        name: 'sundayLinksEveryWeek',
+        label: 'Sunday links: every week',
+        path: 'src/content/sunday-links-every-week',
+        format: 'yaml',
+        ui: { allowedActions: { create: false, delete: false }, router: () => '/links/' },
+        fields: [
+          {
+            name: 'groups',
+            label: 'Groups',
+            type: 'object',
+            list: true,
+            openFormOnCreate: true,
+            description: 'Shown under the weekly links, in this order — drag to reorder.',
+            ui: { itemProps: (item) => ({ label: item?.heading || 'New group' }) },
+            fields: [
+              { name: 'heading', label: 'Heading', type: 'string', required: true },
+              linkListField('Top to bottom as they appear on the page.'),
+            ],
           },
         ],
       },
@@ -521,13 +603,13 @@ export default defineConfig({
             // The cross-field rule: required unless the box above is ticked, forbidden
             // when it is. Both halves used to surface only as a failed build.
             //
-            // `dateFormat` keeps the picker date-only, and `parse` stores the bare
-            // date — without it the picker writes a full ISO timestamp, which every
-            // hand-written file avoids and which leaks into the generated
-            // `_redirects` comments as "review by 2026-09-30T00:00:00.000Z".
+            // `dateOnly` keeps the picker date-only and stores the bare date — without
+            // it the picker writes a full ISO timestamp, which every hand-written file
+            // avoids and which leaks into the generated `_redirects` comments as
+            // "review by 2026-09-30T00:00:00.000Z". It also stops the picker showing,
+            // and saving, the wrong day west of UTC (tina/date-field.mjs).
             ui: {
-              dateFormat: 'YYYY-MM-DD',
-              parse: (value: unknown) => (typeof value === 'string' ? value.split('T')[0] : value),
+              ...dateOnly,
               validate: (value: string, allValues: { permanent?: boolean }) => checkReview(allValues?.permanent, value),
             },
             description:

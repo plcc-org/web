@@ -122,6 +122,12 @@ That's deliberate — it replaced a separate timer-based rebuild, so there's one
 mechanism instead of two. It also means the daily rebuild is what ages out past
 events, since `normalizeUpcoming` evaluates "past" at build time.
 
+The same job has one passenger: before building, it runs
+`scripts/prune-sunday-links.mjs`, which deletes the Sunday links weeks older than the
+live one, and commits that separately (`chore(links): clear past Sundays`). The daily
+build is also what switches `/links/` over on a Sunday morning — see
+[cms.md](./cms.md#sunday-links).
+
 ### The three guards worth knowing about
 
 - **The capture refuses to write an empty result.** A zero-event response throws rather

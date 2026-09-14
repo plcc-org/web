@@ -19,6 +19,12 @@ The primary audience is **people outside the church** — young families and fir
 guests — not the people already here. For insiders, we have other additional ways to connect, including the "In the Loop" newsletter, the Church Center site, and of course the service and announcements on Sundays; newcomers can't connect in those ways.
 So we optimize for the newcomer, on purpose.
 
+**One deliberate exception: `/links/`**, the page the NFC tags and QR codes in the
+building open. It's for people already sitting in the room — the Connect Card, today's
+Scripture, this week's sign-ups — so it's a plain list, kept out of search, with no nav
+and none of the newcomer framing. It's a utility, not a door, and it shouldn't grow into
+a second front page; see [cms.md](./cms.md#sunday-links).
+
 ---
 
 ## The core idea: help people see themselves

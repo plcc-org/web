@@ -73,28 +73,31 @@ just a page's content and belongs in that page's editor.
 
 This table is also the **sidebar order**, top to bottom — `tina/config.ts` lists the
 collections in exactly this sequence, and Tina renders them in schema order. Pages comes
-first because it's what an editor is nearly always here for; the shared lists that feed
-page blocks follow; Short links sits last, being routing config rather than content and
-the least often touched.
+first because it's what an editor is nearly always here for; Sunday links next, because
+it changes every week; the shared lists that feed page blocks follow; Short links sits
+last, being routing config rather than content and the least often touched.
 
-| In the CMS             | What it is                                    | Kind    |
-| ---------------------- | --------------------------------------------- | ------- |
-| **Pages**              | CMS-built pages (hero + a body of blocks)     | content |
-| **Leadership**         | Pastors & staff — reusable people entities    | shared  |
-| **Youth moments**      | Signature youth trips/retreats (curated)      | shared  |
-| **Homepage quotes**    | Rotating testimonials (reusable social proof) | shared  |
-| **Photo descriptions** | One alt-text description per photo, site-wide | shared  |
-| **Short links**        | Vanity URLs pointing off-site                 | routing |
+| In the CMS                   | What it is                                     | Kind    |
+| ---------------------------- | ---------------------------------------------- | ------- |
+| **Pages**                    | CMS-built pages (hero + a body of blocks)      | content |
+| **Sunday links**             | This Sunday's links at `/links/`, one per week | weekly  |
+| **Sunday links: every week** | The groups of links under every week           | content |
+| **Leadership**               | Pastors & staff — reusable people entities     | shared  |
+| **Youth moments**            | Signature youth trips/retreats (curated)       | shared  |
+| **Homepage quotes**          | Rotating testimonials (reusable social proof)  | shared  |
+| **Photo descriptions**       | One alt-text description per photo, site-wide  | shared  |
+| **Short links**              | Vanity URLs pointing off-site                  | routing |
 
-All six sit under one **Collections** heading. Two of them — **Homepage quotes** and
-**Photo descriptions** — are a single file holding one list, so their list view shows a
+All eight sit under one **Collections** heading. Three of them — **Sunday links: every
+week**, **Homepage quotes** and **Photo descriptions** — are a single file holding one
+list, so their list view shows a
 single row to click through. They offer no "add" or "delete" at the file level (`allowedActions` in
 `tina/config.ts`): the one file is the only file. Adding and removing quotes _within_ the
 list is the normal thing to do and works as usual. `src/content/quotes/` holds a second
 file, `quotes-and-placeholders.yaml` — the draft pool the live quotes were chosen from,
 which nothing renders. A `match` on the collection keeps it out of the admin.
 
-Neither is marked `ui.global`. That flag exists for genuine site configuration
+None of the three is marked `ui.global`. That flag exists for genuine site configuration
 and moves a collection out of the Collections list into the **Site** section next to Media
 Manager — which, copied from Tina's own starter, split the sidebar in two and hid half the
 editable lists from the people who edit them. This is content that happens to live in one
@@ -114,6 +117,57 @@ left blank. Editors add photos by **uploading them into a page block**, then eit
 the description there or add an entry under Photo descriptions so every future use gets it
 for free. The build's crawl fails on any content image that ends up with no description
 from either source, so a miss can't ship silently.
+
+### Sunday links
+
+`plcc.org/links` is what the NFC tags and QR codes in the building open — the same
+address the old site used. It's the one page for people who are already here: this
+Sunday's links at the top, and the links that never change in groups beneath. It opens
+on a phone, so it's a plain list with no nav, and it's kept out of search.
+
+**Each Sunday is its own entry** under **Sunday links**, named for its date. The page
+shows the most recent Sunday on or before today, which is what makes the weekly routine
+short:
+
+- **To prepare next Sunday**, open this week's entry, choose **Duplicate**, and change the
+  date — the file name follows it. Then add, remove, or drag links into order, and save.
+- **It goes live by itself** early that Sunday, with the nightly build at about 5am (or
+  straight away if someone saves on the Sunday). If the nightly build ever fails, the
+  page still switches on the day: next week's links ship with the page, and a few lines
+  of script show them once the date arrives.
+- **To see it before then**, open `plcc.org/links/?preview` (`plcc.dev/links/?preview` on
+  staging). A banner says it's a preview and when it goes live. Saving publishes to the
+  preview within a few minutes, the time a site build takes. Inside the CMS, visual
+  editing opens a week that isn't live yet at `/links/next/`, which shows next Sunday's
+  links the same way.
+- **Old weeks delete themselves.** The nightly job removes every week before the live
+  one, so the list only ever holds this week and the ones being prepared. Nothing is
+  archived, so there's nothing to tidy.
+- **The list shows dates, not "live" and "next".** Tina's list view can't show a computed
+  label without custom UI. With old weeks cleared, the earliest date is the live one.
+
+The groups beneath — "Next steps", "Additional resources" — are under **Sunday links:
+every week**, a single document like Homepage quotes: groups in order, each with its
+links in order.
+
+A link opens one of three things, and the form checks which as you type: a website
+(`https://…`, pasted from the address bar), an email (`mailto:name@plcc.org`), or a page
+on this site (`/events/`). The icon on the page follows from that. Links open in the same
+tab, unlike the rest of the site — someone working down the list on a phone should be
+able to tap Back and land on it again.
+
+Two entries with the same date fail the build, because nothing can tell which one was
+meant.
+
+For developers: the rules and date logic live in `tina/sunday-links.mjs`, shared by the
+form, the zod schema, the page and the prune script. `/links/` renders next week too,
+inside a `<template>` the inline script swaps in on the day or under `?preview`.
+`/links/next/` renders next week on its own, because it's what the collection's `router`
+points a future week at: the admin builds its preview address from the route's path
+alone, so `?preview` never reaches the page there. The date field's hooks live in
+`tina/date-field.mjs` — Tina's own date picker shows and saves the wrong day west of UTC.
+The slim chrome is `BaseLayout chrome="slim"`
+([design-system.md](./design-system.md#8-header--footer)).
 
 ### Short links
 

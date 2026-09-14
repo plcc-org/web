@@ -1,0 +1,26 @@
+---
+import { tinaField } from '@tinacms/astro/tina-field'
+import LinkList from './LinkList.astro'
+import { formatSunday, toIsoDate } from '../../../tina/sunday-links.mjs'
+
+// One Sunday's links: the date, the page heading, and the list. The heading lives in
+// here rather than on the page so the whole block — date included — is one region the
+// page can swap for next week's (see src/pages/links/index.astro) and the CMS can
+// re-render while an editor types.
+type Props = { data?: Record<string, any> | null }
+
+const { data } = Astro.props
+const sunday = toIsoDate(data?.sunday)
+---
+
+<header class="sunday-links__intro">
+  {
+    sunday && (
+      <p class="eyebrow" data-tina-field={data && tinaField(data, 'sunday')}>
+        {formatSunday(sunday)}
+      </p>
+    )
+  }
+  <h1 class="sunday-links__title">Sunday links</h1>
+</header>
+<LinkList links={data?.links} />

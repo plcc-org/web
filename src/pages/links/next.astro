@@ -1,0 +1,56 @@
+---
+import TinaIsland from '@tinacms/astro/TinaIsland.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import SundayWeek from '../../components/sunday-links/SundayWeek.astro'
+import EveryWeekGroups from '../../components/sunday-links/EveryWeekGroups.astro'
+import { church } from '../../config/church'
+import { getEveryWeek, getSundayWeek, listSundayWeeks } from '../../lib/tina/data'
+import { EVERY_WEEK_WRAPPER, SUNDAY_WEEK_WRAPPER } from '../../lib/tina/islands'
+import { churchToday, formatSunday, pickWeeks } from '../../../tina/sunday-links.mjs'
+
+// Next Sunday's links on their own, under the preview banner — where the CMS opens a
+// week that hasn't gone live yet, so it can be edited visually (the `router` on the
+// Sunday links collection). /links/?preview shows the same thing, but the admin builds
+// its preview address from the route's path alone, so a query string never reaches the
+// page; this route needs none.
+//
+// Kept out of search and the sitemap like /links/ itself, and not linked from anywhere.
+const { live, next } = pickWeeks(await listSundayWeeks(), churchToday(church.timezone))
+const [nextWeek, everyWeek] = await Promise.all([next && getSundayWeek(next.relativePath), getEveryWeek()])
+
+const banner = next
+  ? `Preview: these links go live ${formatSunday(next.sunday)}.`
+  : live
+    ? `Preview: nothing is scheduled after ${formatSunday(live.sunday)} yet.`
+    : 'Preview: no Sunday links are scheduled yet.'
+---
+
+<BaseLayout
+  title="Next Sunday’s links"
+  description="A preview of next Sunday’s links at Pine Lake Covenant Church, before they go live."
+  noindex
+  chrome="slim"
+>
+  <div class="sunday-links">
+    <p class="sunday-links__preview">{banner}</p>
+
+    {
+      next && nextWeek ? (
+        <TinaIsland
+          name="sundayWeek"
+          wrapper={SUNDAY_WEEK_WRAPPER}
+          params={{ relativePath: next.relativePath }}
+          primary
+        >
+          <SundayWeek data={nextWeek.data?.sundayLinks} />
+        </TinaIsland>
+      ) : (
+        <SundayWeek />
+      )
+    }
+
+    <TinaIsland name="sundayEveryWeek" wrapper={EVERY_WEEK_WRAPPER}>
+      <EveryWeekGroups data={everyWeek.data?.sundayLinksEveryWeek} />
+    </TinaIsland>
+  </div>
+</BaseLayout>

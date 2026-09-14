@@ -1,0 +1,21 @@
+---
+import LinkList from './LinkList.astro'
+import { blockField } from '../../lib/tina/block-field'
+
+// The groups of links that don't change week to week ("Next steps", "Additional
+// resources"), under the weekly list and deliberately quieter than it.
+type Group = { heading?: string | null; links?: unknown[] | null; _content_source?: unknown }
+type Props = { data?: { groups?: (Group | null)[] | null } | null }
+
+const { data } = Astro.props
+const groups = (data?.groups ?? []).filter((group): group is Group => Boolean(group?.heading))
+---
+
+{
+  groups.map((group) => (
+    <section class="sunday-links__group" data-tina-field={blockField(group)}>
+      <h2 class="sunday-links__heading">{group.heading}</h2>
+      <LinkList links={group.links as never} quiet />
+    </section>
+  ))
+}

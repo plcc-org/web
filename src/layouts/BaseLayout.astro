@@ -2,16 +2,14 @@
 import { getImage, Font } from 'astro:assets'
 import { withBase } from '../lib/url'
 import { churchGraph, jsonLdDocument } from '../lib/structured-data'
-import { brand, church, serviceTimeDisplay } from '../config/church'
+import { brand, church } from '../config/church'
 import { squareIcon } from '../lib/icons'
+import SiteHeader from '../components/chrome/SiteHeader.astro'
+import SiteFooter from '../components/chrome/SiteFooter.astro'
+import ScrollReveal from '../components/chrome/ScrollReveal.astro'
+import SlimHeader from '../components/chrome/SlimHeader.astro'
+import SlimFooter from '../components/chrome/SlimFooter.astro'
 import '../styles/global.css'
-// SVG icons live outside src/assets/images on purpose: that directory is the
-// CMS media root, and an SVG in it shows up in the photo picker but silently
-// fails to render (the image globs accept raster formats only).
-import instagramGlyphUrl from '../assets/icons/Instagram_Glyph_White.svg?url'
-import youtubeIconUrl from '../assets/images/yt_icon_white_digital.png?url'
-import podcastIconUrl from '../assets/icons/podcast_icon_white.svg?url'
-import wordmarkUrl from '../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
 import socialImageSource from '../assets/images/plcc-social-card.png'
 import faviconSource from '../assets/images/plcc-logo.png'
 
@@ -29,9 +27,23 @@ type Props = {
    * instance — pass it; most pages don't need this.
    */
   structuredData?: Record<string, unknown>[]
+  /**
+   * `full` is the site's header, nav and footer. `slim` is a wordmark and a short
+   * footer with no script, for a page people open on a phone from a tag in the
+   * building (/links/) — see docs/design-system.md. Only the full chrome's
+   * components carry scripts, so a slim page ships none of them.
+   */
+  chrome?: 'full' | 'slim'
 }
 
-const { title, seoTitle, description = church.description, noindex = false, structuredData = [] }: Props = Astro.props
+const {
+  title,
+  seoTitle,
+  description = church.description,
+  noindex = false,
+  structuredData = [],
+  chrome = 'full',
+}: Props = Astro.props
 
 // The suffix lives here, once, so pages pass bare titles.
 const tabTitle = seoTitle || (title ? `${title} | ${church.name}` : church.name)
@@ -116,222 +128,13 @@ const jsonLd = origin
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <header class="site-header">
-      <nav class="site-nav" aria-label="Primary">
-        <div class="site-nav__bar">
-          <a href={withBase()} class="site-nav__home" aria-label="Pine Lake Covenant Church — Home">
-            <span class="site-nav__home-logo" style={`--logo-wordmark-url: url('${wordmarkUrl}')`} aria-hidden="true"
-            ></span>
-          </a>
-          <button
-            class="site-nav__toggle"
-            aria-expanded="false"
-            aria-controls="primary-nav-menu"
-            aria-label="Open navigation menu"
-          >
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </button>
-        </div>
-        <ul class="site-nav__list" id="primary-nav-menu">
-          <li><a href={withBase('new/')}>I’m New</a></li>
-          <li><a href={withBase('about/')}>About</a></li>
-          <li><a href={withBase('families/')}>Families</a></li>
-          <li><a href={withBase('neighbors/')}>For Our Neighbors</a></li>
-          <li><a href={withBase('church-life/')}>Church Life</a></li>
-          <li><a href={withBase('events/')}>What’s On</a></li>
-          <li><a href={withBase('messages/')}>Messages</a></li>
-          <li><a href={withBase('visit/')} class="btn btn--sm site-nav__cta">Plan a Visit</a></li>
-        </ul>
-      </nav>
-    </header>
+    {chrome === 'slim' ? <SlimHeader /> : <SiteHeader />}
 
     <main class="site-main" id="main-content">
       <slot />
     </main>
 
-    <footer class="site-footer">
-      <div class="site-footer__main">
-        {
-          /* The nav is capped at eight items, which leaves every page below a hub reachable
-            only from that hub. These columns are the persistent path to them. */
-        }
-        <nav class="site-footer__sitemap" aria-label="Footer">
-          <div class="site-footer__column">
-            <div class="site-footer__group">
-              <h2 class="site-footer__heading">Visit</h2>
-              <ul>
-                <li><a href={withBase('new/')}>I’m New</a></li>
-                <li><a href={withBase('visit/')}>Plan a Visit</a></li>
-                <li><a href={withBase('events/')}>What’s On</a></li>
-                <li><a href={withBase('messages/')}>Messages</a></li>
-                <li><a href={withBase('contact/')}>Contact</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="site-footer__column">
-            <div class="site-footer__group">
-              <h2 class="site-footer__heading"><a href={withBase('about/')}>About</a></h2>
-              <ul>
-                <li><a href={withBase('about/leadership/')}>Leadership</a></li>
-                <li><a href={withBase('about/pastors-letter/')}>A Welcome from Austin Bailey</a></li>
-                <li><a href={withBase('vision/')}>Mission &amp; Vision</a></li>
-                <li><a href={withBase('beliefs/')}>What We Believe</a></li>
-                <li><a href={withBase('about/covenant/')}>The Evangelical Covenant Church</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="site-footer__column">
-            <div class="site-footer__group">
-              <h2 class="site-footer__heading"><a href={withBase('families/')}>Families</a></h2>
-              <ul>
-                <li><a href={withBase('kids/')}>Pine Lake Kids</a></li>
-                <li><a href={withBase('youth/')}>Pine Lake Youth</a></li>
-                <li><a href={withBase('momco/')}>MomCo</a></li>
-              </ul>
-            </div>
-            <div class="site-footer__group">
-              <h2 class="site-footer__heading"><a href={withBase('church-life/')}>Church Life</a></h2>
-              <ul>
-                <li><a href={withBase('church-life/pine-lake-academy/')}>Pine Lake Academy</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="site-footer__column">
-            <div class="site-footer__group">
-              <h2 class="site-footer__heading">
-                <a href={withBase('neighbors/')}>For Our Neighbors</a>
-              </h2>
-              <ul>
-                <li><a href={withBase('neighbors/care/')}>Care &amp; Support</a></li>
-                <li><a href={withBase('neighbors/meals/')}>Meals of Care</a></li>
-                <li><a href={withBase('neighbors/serve/')}>Serving Locally</a></li>
-                <li><a href={withBase('neighbors/stephen-ministry/')}>Stephen Ministry</a></li>
-                <li><a href={withBase('neighbors/weddings/')}>Weddings &amp; Memorials</a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-
-        <div class="site-footer__info">
-          <strong>{church.name}</strong>
-          <span class="site-footer__divider">|</span>
-          <span>{church.service.day}s at {serviceTimeDisplay()}</span>
-          <span class="site-footer__divider">|</span>
-          <a href={church.mapUrl} target="_blank" rel="noopener">{church.addressLine}</a>
-          <span class="site-footer__divider">|</span>
-          <a href={`mailto:${church.email}`}>{church.email}</a>
-        </div>
-
-        <div class="site-footer__links">
-          <a href={church.social.instagram} target="_blank" rel="noopener" class="site-footer__social-link">
-            <img
-              src={instagramGlyphUrl}
-              alt=""
-              aria-hidden="true"
-              class="site-footer__social-icon site-footer__social-icon--instagram"
-            />
-            <span>Instagram</span>
-          </a>
-          <span class="site-footer__divider">|</span>
-          <a href={church.social.youtube} target="_blank" rel="noopener" class="site-footer__social-link">
-            <img
-              src={youtubeIconUrl}
-              alt=""
-              aria-hidden="true"
-              class="site-footer__social-icon site-footer__social-icon--youtube"
-            />
-            <span>YouTube</span>
-          </a>
-          <span class="site-footer__divider">|</span>
-          <a href={church.social.podcast} target="_blank" rel="noopener" class="site-footer__social-link">
-            <img
-              src={podcastIconUrl}
-              alt=""
-              aria-hidden="true"
-              class="site-footer__social-icon site-footer__social-icon--podcast"
-            />
-            <span>Podcast</span>
-          </a>
-        </div>
-
-        <p class="site-footer__legal">© {new Date().getFullYear()} {church.name}</p>
-      </div>
-    </footer>
+    {chrome === 'slim' ? <SlimFooter /> : <SiteFooter />}
+    {chrome === 'full' && <ScrollReveal />}
   </body>
 </html>
-
-<script>
-  // Frost the sticky header once the page has scrolled past the top.
-  const header = document.querySelector<HTMLElement>('.site-header')
-  const setScrolled = () => header?.classList.toggle('is-scrolled', window.scrollY > 8)
-  setScrolled()
-  window.addEventListener('scroll', setScrolled, { passive: true })
-
-  const toggle = document.querySelector<HTMLButtonElement>('.site-nav__toggle')
-  const nav = toggle?.closest('.site-nav')
-
-  toggle?.addEventListener('click', () => {
-    const isOpen = nav?.classList.toggle('is-open') ?? false
-    toggle.setAttribute('aria-expanded', String(isOpen))
-    toggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu')
-  })
-
-  // Close when clicking outside the nav
-  document.addEventListener('click', (e) => {
-    if (nav?.classList.contains('is-open') && !nav.contains(e.target as Node)) {
-      nav.classList.remove('is-open')
-      toggle?.setAttribute('aria-expanded', 'false')
-      toggle?.setAttribute('aria-label', 'Open navigation menu')
-    }
-  })
-
-  // Close when a nav link is followed
-  nav?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('is-open')
-      toggle?.setAttribute('aria-expanded', 'false')
-      toggle?.setAttribute('aria-label', 'Open navigation menu')
-    })
-  })
-
-  // Scroll reveal — arm only when JS is present and motion is welcome, so
-  // content stays visible without JS or under prefers-reduced-motion.
-  //
-  // Also skipped inside an iframe, and this guard is load-bearing — not just a
-  // preference. Two reasons:
-  //
-  //   1. A reveal starts at opacity 0 and waits for the IntersectionObserver. In
-  //      a CMS preview pane that observer never fires for anything below the
-  //      fold, so the page body stays invisible and the editor looks broken.
-  //   2. The observer snapshots [data-reveal] once, here. The CMS re-renders a
-  //      block on every keystroke, and the replacement elements are never
-  //      observed — so they would stay at opacity 0 for good. The editor bridge
-  //      dispatches no post-swap event, so there is nothing to re-arm against
-  //      short of a MutationObserver.
-  //
-  // (2) is why relaxing this guard needs more than deleting the condition. An
-  // editing surface wants the content, not the entrance.
-  const inPreviewFrame = window.self !== window.top
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const revealables = document.querySelectorAll('[data-reveal]')
-  if (!reduceMotion && !inPreviewFrame && revealables.length) {
-    document.documentElement.classList.add('reveal-ready')
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
-    )
-    revealables.forEach((el) => observer.observe(el))
-  }
-</script>

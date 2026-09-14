@@ -526,6 +526,15 @@ automatically flips to a light fill so it doesn't read green-on-green.
   across. Keep its columns aligned with the nav's sections; if a new page has no footer
   column it belongs in, that's a signal about the IA, not a reason to skip the link.
 
+- **Slim chrome** (`BaseLayout chrome="slim"`, styles in `base.css`) — for a page
+  someone opens on a phone from a tag in the building, where the content is the whole
+  point: the wordmark linking home, and a short footer (name, service time, address, a
+  link to the full site), both on the page's own ground and in the content's narrow
+  column. No nav and no script. The full header, footer and scroll-reveal each carry
+  their own script inside their component (`src/components/chrome/`), so a slim page
+  ships none of them. Only `/links/` uses it; it isn't a way to make any page look
+  cleaner — a page without the nav is a page a newcomer can't navigate away from.
+
 ---
 
 ## 9. Photography & the image system

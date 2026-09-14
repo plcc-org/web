@@ -1,5 +1,5 @@
 /* ======================================================================
- * nav.css — the site header and primary navigation (markup in BaseLayout.astro).
+ * nav.css — the site header and primary navigation (markup in components/chrome/SiteHeader.astro).
  *
  * One bar with three jobs, and most of the file is the interaction between
  * them:

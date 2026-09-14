@@ -34,6 +34,8 @@ src/
   assets/images/    Photo library (source for the <Image> pipeline; CMS uploads land here)
   components/       Astro components (Hero, Split, MomentsSection, cards, …)
     blocks/mdx/     Thin wrappers exposing site components to CMS-authored MDX
+    chrome/         Header + footer, full and slim (BaseLayout's `chrome` prop)
+    sunday-links/   The /links/ page's week, groups and link rows
   config/
     site.ts         Environment-aware site/base/index config (resolves DEPLOY_ENV)
     church.ts       Name, address, service time — the facts that must not drift
@@ -45,15 +47,18 @@ src/
     photos/         The photo catalog (photos.json): filename → alt, written once
     quotes/         quotes.yaml, the homepage carousel list; beside it
                     quotes-and-placeholders.yaml, reference only (nothing loads it)
+    sunday-links/   One file per Sunday for /links/ (past weeks pruned nightly)
+    sunday-links-every-week/  The groups of links under every week
   data/             Machine-written data (events-pco.json, the nightly PCO capture)
   content.config.ts Collection definitions + Zod schemas
-  layouts/          BaseLayout.astro (head, header, footer, skip link, JSON-LD)
+  layouts/          BaseLayout.astro (head, chrome, skip link, JSON-LD)
   lib/              Image registry, photo catalog, URL/markdown helpers, events, messages
   pages/            Routes (file-based); [...slug].astro renders the pages collection
   styles/           Design tokens + global CSS (entry: global.css)
 scripts/            Build and verification scripts (see "The build pipeline")
 test/               Vitest unit tests
-tina/               TinaCMS config: config.ts (collections) + templates.mjs (block palette)
+tina/               TinaCMS config: config.ts (collections) + templates.mjs (block palette),
+                    plus rules shared with scripts (short-link-rules.mjs, sunday-links.mjs)
 public/             Static assets served as-is (favicon, manifest, _headers)
 docs/               Project documentation (you are here)
 nginx/, Dockerfile  Container image for serving the built site

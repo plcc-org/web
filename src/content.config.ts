@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content'
 import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
+import { checkLinkUrl, checkSunday, toIsoDate } from '../tina/sunday-links.mjs'
 
 // quotes is a single YAML file holding one array. The CMS edits it as a list
 // field, which serializes to `{ <key>: [...] }`. Parse tolerantly so both the
@@ -200,4 +201,42 @@ const pages = defineCollection({
   }),
 })
 
-export const collections = { photos, youthMoments, leadership, quotes, pages }
+// Sunday links (/links/). The page itself renders from the CMS's GraphQL client, for
+// visual editing, as pages do — these two collections are here for what the zod
+// check catches that the CMS can't: a hand-edited file with a Tuesday date or a bare
+// domain. The rules are the ones the CMS form runs (tina/sunday-links.mjs), so a save
+// the editor was shown as valid can't fail here.
+const sundayLink = z.object({
+  label: z.string().min(1),
+  url: z.string().superRefine((url, ctx) => {
+    const problem = checkLinkUrl(url)
+    if (problem) ctx.addIssue({ code: 'custom', message: problem })
+  }),
+})
+
+// One file per Sunday. `sunday` arrives as a Date when the YAML date is unquoted
+// (Astro's loader is js-yaml), so it's normalised before the check.
+const sundayLinks = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: './src/content/sunday-links' }),
+  schema: z.object({
+    sunday: z
+      .union([z.string(), z.date()])
+      .transform(toIsoDate)
+      .superRefine((date, ctx) => {
+        const problem = checkSunday(date)
+        if (problem) ctx.addIssue({ code: 'custom', message: problem })
+      }),
+    links: z.array(sundayLink).default([]),
+  }),
+})
+
+const sundayLinksEveryWeek = defineCollection({
+  loader: file('src/content/sunday-links-every-week/every-week.yaml', { parser: yamlList('groups') }),
+  schema: z.object({
+    id: z.string(),
+    heading: z.string().min(1),
+    links: z.array(sundayLink).default([]),
+  }),
+})
+
+export const collections = { photos, youthMoments, leadership, quotes, pages, sundayLinks, sundayLinksEveryWeek }
