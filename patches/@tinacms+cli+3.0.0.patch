@@ -1,8 +1,8 @@
 diff --git a/node_modules/@tinacms/cli/dist/index.js b/node_modules/@tinacms/cli/dist/index.js
-index 4ddfbc7..68ef9df 100644
+index 9699770..9b3dc62 100644
 --- a/node_modules/@tinacms/cli/dist/index.js
 +++ b/node_modules/@tinacms/cli/dist/index.js
-@@ -4191,7 +4191,13 @@ ${dangerText(e.message)}
+@@ -4197,7 +4197,13 @@ ${dangerText(e.message)}
          });
        }
      }

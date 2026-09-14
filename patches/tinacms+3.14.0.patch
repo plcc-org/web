@@ -1,8 +1,8 @@
 diff --git a/node_modules/tinacms/dist/index.js b/node_modules/tinacms/dist/index.js
-index ff9004f..d63ba69 100644
+index 9a17c17..645f20e 100644
 --- a/node_modules/tinacms/dist/index.js
 +++ b/node_modules/tinacms/dist/index.js
-@@ -18356,7 +18356,50 @@ const useEmbedHandles = (editor, element, baseFieldName) => {
+@@ -18423,7 +18423,50 @@ const useEmbedHandles = (editor, element, baseFieldName) => {
    const handleRemove = () => {
      handleRemoveBase(editor, element);
    };
@@ -54,7 +54,7 @@ index ff9004f..d63ba69 100644
  };
  const ImgEmbed = ({
    attributes,
-@@ -18551,7 +18594,18 @@ const BlockEmbed = ({
+@@ -18618,7 +18661,18 @@ const BlockEmbed = ({
  }) => {
    const selected = useSelected();
    const { templates, fieldName } = useTemplates();
@@ -74,7 +74,7 @@ index ff9004f..d63ba69 100644
    useHotkey("enter", () => {
      editor.tf.insertNodes([
        { type: ParagraphPlugin.key, children: [{ text: "" }] }
-@@ -18578,7 +18632,16 @@ const BlockEmbed = ({
+@@ -18645,7 +18699,16 @@ const BlockEmbed = ({
        className: "truncate cursor-pointer w-full relative inline-flex items-center justify-start px-4 py-2 rounded-l border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
      },
      label
@@ -92,7 +92,7 @@ index ff9004f..d63ba69 100644
  };
  const getLabel = (activeTemplate, formProps) => {
    const titleField = activeTemplate.fields.find((field) => field.isTitle);
-@@ -18612,7 +18675,35 @@ const EmbedNestedForm = ({
+@@ -18679,7 +18742,35 @@ const EmbedNestedForm = ({
      }
    );
  };
@@ -129,7 +129,7 @@ index ff9004f..d63ba69 100644
    return /* @__PURE__ */ React__default.createElement(Popover, null, /* @__PURE__ */ React__default.createElement(PopoverTrigger, { className: "-ml-px cursor-pointer h-full relative inline-flex items-center px-1 py-0.5 rounded-r border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" }, /* @__PURE__ */ React__default.createElement(EllipsisIcon, { title: "Open options" })), /* @__PURE__ */ React__default.createElement(
      PopoverContent,
      {
-@@ -18629,6 +18720,18 @@ const DotMenu = ({ onOpen, onRemove }) => {
+@@ -18696,6 +18787,18 @@ const DotMenu = ({ onOpen, onRemove }) => {
          )
        },
        "Edit"
@@ -148,7 +148,7 @@ index ff9004f..d63ba69 100644
      ), /* @__PURE__ */ React__default.createElement(
        "button",
        {
-@@ -18969,7 +19072,28 @@ const insertInlineElement = (editor, inlineElement) => {
+@@ -19036,7 +19139,28 @@ const insertInlineElement = (editor, inlineElement) => {
  const insertBlockElement = (editor, blockElement) => {
    editor.tf.withoutNormalizing(() => {
      const block = editor.api.block();

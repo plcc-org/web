@@ -41,7 +41,7 @@ behaviour being demonstrated, not assumed.
 
 ## `@tinacms/cli` — don't compile the admin SPA on every build
 
-**File:** `@tinacms+cli+2.7.0.patch`
+**File:** `@tinacms+cli+3.0.0.patch`
 
 **Upstream behaviour.** `tinacms build` compiles the 11 MB admin single-page app
 unconditionally.
@@ -59,13 +59,13 @@ editing is unaffected.
 `npm run dev:tina` still serves the editor at `/admin/index.html`.
 
 **Delete it when.** The CLI grows a flag of its own for this. There was no equivalent as of
-2.7.0.
+3.0.0.
 
 ---
 
 ## `tinacms` — block editing in the page body
 
-**File:** `tinacms+3.13.0.patch`
+**File:** `tinacms+3.14.0.patch`
 
 The page body is a `rich-text` field whose real content is a sequence of block templates
 (see `tina/templates.mjs`). Every one of those blocks is a Slate **void** node, and the
@@ -75,13 +75,15 @@ Three hunks, all in `dist/index.js`.
 `tinacms` is pinned to an exact version in `package.json` for this reason: the patch lands
 in a rollup bundle whose contents shift on every release.
 
-**The patched copy has to be the only copy.** The editor is served by `@tinacms/app`, and
-a newer app than the one built for the pinned `tinacms` brings its own `tinacms` nested
-under it — which `patch-package` never touches, so the editor runs stock while the build
-stays green. `package.json`'s `overrides` pins `@tinacms/app` to the release built against
-the pinned `tinacms` (its changelog names the `tinacms` version it was built with); bump
-the two together. `test/patched-deps.test.ts` fails if the lockfile holds a second copy of
-any patched package, or one at a version its patch file doesn't name.
+**The patched copy has to be the only copy, so bump the whole group together.** The pin
+is exact but `@tinacms/cli` and `@tinacms/app` take caret ranges, and they move as soon as
+Tina publishes. If the pin lags behind the `tinacms` they want, npm keeps the pinned copy
+at the top level and nests a second, newer one under `@tinacms/app`. That nested copy is
+the one serving the editor, and `patch-package` only patches the top-level path its
+filename names, so the editor runs stock while every build stays green. The fix is to
+move the pin forward to the `tinacms` the group wants, not to hold the rest of the group
+back. `test/patched-deps.test.ts` fails if the lockfile holds a second copy of any
+patched package, or one at a version its patch file doesn't name.
 
 ### 1. Inserting a block no longer overwrites the selected one
 
@@ -133,7 +135,7 @@ field:
 Don't save while testing — reload to discard.
 
 **Delete it when.** Upstream fixes void-node insertion and ships block-level reordering in
-the rich-text editor. Neither existed as of 3.13.0, and the void bug is worth reporting: it
+the rich-text editor. Neither existed as of 3.14.0, and the void bug is worth reporting: it
 is a data-loss bug for any Tina site whose body is built from templates.
 
 **Related, and deliberately not patched.** The slash (`/`) menu offers only headings and
