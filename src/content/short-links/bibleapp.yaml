@@ -1,0 +1,10 @@
+name: bibleapp
+from: /bibleapp
+destination: https://www.bible.com/events/49662881
+kind: shortcut
+expires: 2026-10-31
+note: Today's Scripture in the Bible App, carried over from the old site's
+  plcc.org/bibleapp. Each Sunday is its own Bible App event with a new ID, so this
+  points at the current week's and has to be re-pointed weekly (the Sunday links
+  page carries the same link). The review date is a prompt to decide whether
+  anything still prints this address, not the end of a sign-up.
