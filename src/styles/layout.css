@@ -85,6 +85,12 @@
   color: var(--color-white);
 }
 
+/* Eyebrows default to moss ink, which is 1.2–2.1:1 on the forest gradient.
+   Moss-light keeps the label green and clears AA where text sits. */
+:is(.band--forest, .split--forest) .eyebrow {
+  color: var(--color-moss-light);
+}
+
 .band--sand {
   background: var(--color-sand);
 }

@@ -144,7 +144,7 @@ Stylelint (`npm run lint:css`), not merely encouraged.
 | `--color-moss`         | `rgb(106, 149, 41)`     | Brand green — **decoration only** (see below)    |
 | `--color-moss-2`       | `rgb(115, 148, 59)`     | Brighter moss — the wordmark, keylines           |
 | `--color-moss-ink`     | `rgb(74, 104, 29)`      | Moss **as text**, and as a fill under white text |
-| `--color-moss-light`   | `#cde6b2`               | Moss legible on a dark panel (footer links)      |
+| `--color-moss-light`   | `#cde6b2`               | Moss on a dark panel: footer links, eyebrows     |
 | `--color-clay`         | `rgb(166, 123, 91)`     | Warm secondary — rules, marks, fills             |
 | `--color-clay-ink`     | `rgb(120, 89, 66)`      | Clay **as text**: captions, metadata, subheads   |
 | `--color-ember`        | `rgb(189, 101, 56)`     | Warm secondary accent — used sparingly           |

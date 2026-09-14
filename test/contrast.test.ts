@@ -22,8 +22,10 @@ const tokens = readFileSync(new URL('../src/styles/tokens.css', import.meta.url)
 
 function token(name: string): [number, number, number] {
   const m = tokens.match(new RegExp(`--${name}:\\s*rgb\\((\\d+),\\s*(\\d+),\\s*(\\d+)\\)`))
-  if (!m) throw new Error(`--${name} is not defined in tokens.css as an rgb() triple`)
-  return [Number(m[1]), Number(m[2]), Number(m[3])]
+  if (m) return [Number(m[1]), Number(m[2]), Number(m[3])]
+  const hex = tokens.match(new RegExp(`--${name}:\\s*#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})\\b`, 'i'))
+  if (hex) return [parseInt(hex[1], 16), parseInt(hex[2], 16), parseInt(hex[3], 16)]
+  throw new Error(`--${name} is not defined in tokens.css as an rgb() triple or #rrggbb`)
 }
 
 const WHITE: [number, number, number] = [255, 255, 255]
@@ -64,6 +66,18 @@ describe('accent text meets WCAG AA', () => {
       expect(contrast(WHITE, token(ink))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT)
     })
   }
+
+  // Eyebrows on a forest band or split (layout.css). `--gradient-forest` is
+  // translucent over the stone page, so the surface is a composite: its 60% stop
+  // is forest-2 at 0.92. Centered text sits mid-band, darker than that stop, so
+  // the stop is the floor. (The far 100% corner fails for every ink, white
+  // headings included — nothing is laid out there.)
+  it('--color-moss-light on the forest gradient', () => {
+    const over = (fg: number[], alpha: number, bg: number[]) =>
+      fg.map((v, i) => v * alpha + bg[i] * (1 - alpha)) as [number, number, number]
+    const surface = over(token('color-forest-2'), 0.92, token('color-stone'))
+    expect(contrast(token('color-moss-light'), surface)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT)
+  })
 })
 
 describe('the full-strength accents are documented as unusable for text', () => {
