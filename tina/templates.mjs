@@ -284,6 +284,22 @@ export const heroFields = [
   text('buttonHref', 'Hero button link', { description: 'Used by: all. Optional.' }),
 ]
 
+/**
+ * The page's SEO description is optional only while the hero's intro line can stand in
+ * for it — the rule src/pages/[...slug].astro renders by, and the one
+ * scripts/check-site.mjs fails the build on. A cinematic hero never shows its intro line,
+ * so it can't stand in there even if one was left behind by a variant switch.
+ * @type {(value: unknown, allValues: unknown) => string | undefined}
+ */
+export const checkSeoDescription = (value, allValues) => {
+  if (typeof value === 'string' && value.trim()) return undefined
+  const lede = /** @type {{ hero?: { lede?: unknown } } | undefined} */ (allValues)?.hero?.lede
+  const hasLede = heroVariant(allValues) !== 'cinematic' && typeof lede === 'string' && lede.trim() !== ''
+  return hasLede
+    ? undefined
+    : 'This page has no intro line, so it needs an SEO description — search results and link previews show it.'
+}
+
 export const templates = [
   {
     name: 'Section',

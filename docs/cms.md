@@ -723,6 +723,11 @@ change, or every existing inbound link breaks.
   The cinematic hero's photo list is the one safe case — no page had one before it existed —
   so its photo is required; alt fields on photo slots are optional on purpose and fall back
   to the Photo descriptions catalog, with the build's crawl as the backstop.
+- **A page needs an SEO description or an intro line.** Either becomes the page's meta
+  description, and the build's crawl fails a page with neither. `required` can't express
+  "one of two", so `seoDescription` carries a `ui.validate` (`checkSeoDescription` in
+  `tina/templates.mjs`) that asks for one only when the hero has no intro line — which
+  includes every cinematic hero, since cinematic never shows its intro line.
 - **The short-links list has no columns.** The CMS has no list-view column configuration, so
   55 entries show as filenames — which is why the filename is derived from the Name field
   and worth keeping descriptive. (The deployed admin has no search box: Tina's list search

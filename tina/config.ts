@@ -1,6 +1,6 @@
 import { defineConfig } from 'tinacms'
 // @ts-expect-error — plain-JS template palette, shared with Node scripts.
-import { templates, heroFields, image } from './templates.mjs'
+import { templates, heroFields, image, checkSeoDescription } from './templates.mjs'
 // @ts-expect-error — plain-JS, shared with scripts/generate-redirects.mjs.
 import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs'
 // @ts-expect-error — plain-JS, shared with the /links/ page and scripts/prune-sunday-links.mjs.
@@ -188,10 +188,14 @@ export default defineConfig({
             name: 'seoDescription',
             label: 'SEO description',
             type: 'string',
-            ui: { component: 'textarea' },
+            ui: {
+              component: 'textarea',
+              validate: (value: string, allValues: unknown) => checkSeoDescription(value, allValues),
+            },
             description:
               'A one-sentence summary for search results and link previews — aim for under about 155 characters, ' +
-              'or search engines trim it mid-sentence.',
+              'or search engines trim it mid-sentence. Optional when the hero has an intro line, which is used ' +
+              'instead.',
           },
           {
             name: 'draft',
