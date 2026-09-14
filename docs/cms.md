@@ -678,8 +678,11 @@ change, or every existing inbound link breaks.
   compiler out of memory — `defineConfig` from `tinacms` pulls in too large a type graph,
   even at `--max-old-space-size=4096`. The CMS schema is therefore the one file CI can't
   verify. See `tsconfig.json`.
-- **CMS pages are Prettier-ignored** (`src/content/pages/` in `.prettierignore`) — Prettier's
-  MDX reflow breaks block-component children. The CMS owns their formatting.
+- **All CMS content is Prettier-ignored** (`src/content/` in `.prettierignore`). The CMS
+  owns its formatting, and an editor's save must never fail CI — a trailing space Tina left
+  in a bio once failed `format:check`, which stops CI before tests and builds. Content is
+  validated by zod and the build scripts instead. For MDX pages Prettier would also do harm:
+  its reflow breaks block-component children.
 - **The toolbar is deliberately short.** `overrides.toolbar` on the body field keeps ten
   controls and drops the rest: raw, table, code, code block, mermaid, highlight and
   strikethrough are all offered by default and **none of them are styled anywhere in

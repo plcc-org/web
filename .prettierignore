@@ -1,9 +1,14 @@
 dist/
 node_modules/
 public/
-# CMS-authored MDX pages — the CMS owns their formatting; Prettier's MDX
-# reflow breaks block-component children (e.g. <Split> wrapping a list).
-src/content/pages/
+# Everything the CMS edits. The CMS owns this formatting, and an editor's save
+# must never fail CI: a harmless trailing space in a bio (a TinaCMS save to
+# leadership/scott-jones.yaml) failed format:check, which stops CI before tests
+# and builds run — a failure the editor can neither see nor fix. Content is
+# checked where it matters, by the zod schemas and the build scripts. For MDX
+# pages Prettier is worse than unnecessary: its reflow breaks block-component
+# children (e.g. <Split> wrapping a list).
+src/content/
 # Written by scripts/capture-events.mjs (daily CI). Machine-written JSON — keep
 # Prettier out so its formatting never drifts from the capture's output.
 #
