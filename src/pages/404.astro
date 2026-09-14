@@ -5,7 +5,27 @@ import Band from '../components/Band.astro'
 
 // Deliberately just a heading and the verse. The footer site map is the way
 // out, so a list of suggested pages here would only blunt the joke.
+//
+// The script is for the CMS. Visual editing opens a page at its real address, and
+// a page saved since the last deploy — or any draft — has no HTML there yet. Inside
+// the admin iframe, retry the same address under /tina-preview/, which renders it
+// live from TinaCloud. Checking the parent is the admin (same origin, so readable)
+// keeps it from firing for anyone else; skipping the prefix stops a page TinaCloud
+// doesn't have either from looping.
+const base = import.meta.env.BASE_URL
 ---
+
+<script is:inline define:vars={{ base }}>
+  try {
+    const path = location.pathname
+    const inAdmin = window.self !== window.top && window.top.location.pathname.startsWith(`${base}admin`)
+    if (inAdmin && path.startsWith(base) && !path.startsWith(`${base}tina-preview/`)) {
+      location.replace(`${base}tina-preview/${path.slice(base.length)}${location.search}`)
+    }
+  } catch {
+    // A cross-origin parent throws on location — not the admin, so nothing to do.
+  }
+</script>
 
 <BaseLayout title="Page Not Found" description="The page you are looking for could not be found." noindex={true}>
   <div class="canvas">

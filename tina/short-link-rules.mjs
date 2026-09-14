@@ -28,6 +28,7 @@ export const RESERVED = new Set([
   'robots.txt',
   'sitemap-index.xml',
   'tina-island',
+  'tina-preview',
 ])
 
 /** The comparable form of an old address: lowercased, no leading or trailing slashes. */

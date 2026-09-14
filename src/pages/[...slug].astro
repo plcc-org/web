@@ -1,15 +1,17 @@
 ---
 import TinaIsland from '@tinacms/astro/TinaIsland.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { renderPlain } from '../lib/markdown'
 import PageBody from '../components/blocks/tina/PageBody.astro'
 import { getPage, listPages } from '../lib/tina/data'
 import { PAGE_WRAPPER } from '../lib/tina/islands'
+import { pageDescription } from '../lib/tina/page-meta'
 
 // Renders CMS-built pages. Each entry is an MDX file: a structured hero in
 // frontmatter plus a body the editor composes from the block palette. The
 // filename is the URL slug (src/content/pages/church-life.mdx → /church-life/).
-// Drafts show in dev and are excluded from production builds.
+// Drafts show in dev and are excluded from production builds. The deployed editor
+// reaches a draft, or a page saved since the last deploy, through
+// src/pages/tina-preview/[...slug].astro instead.
 //
 // Content comes from Tina's GraphQL client rather than getCollection() +
 // render(). That is what visual editing requires: the rendered DOM has to carry
@@ -44,20 +46,7 @@ const result = await getPage(relativePath)
 const page = result.data?.pages
 if (!page) return new Response('Not Found', { status: 404 })
 
-// Hero ledes are authored as Markdown, so strip it before reusing one as the
-// meta description — a raw `_word_` in a search snippet is the tell that a
-// description was reused without being looked at.
-// `||`, not `??`: the CMS writes an untouched optional string as '' rather than
-// omitting it, and an empty description is exactly as useless as a missing one —
-// it just isn't nullish, so `??` kept it and the page shipped with no description
-// at all. Seen on /families/ after an editor saved a page they hadn't given one.
-// `hero` is a union over the four hero templates and only three of them carry a
-// lede — a cinematic hero has a subhead over the photo stack and no room for
-// one. Hence the `in` narrowing rather than a plain optional chain; a page
-// without a lede falls back to its seoDescription, which is what the home page
-// (the only cinematic hero) does.
-const lede = page.hero && 'lede' in page.hero ? (page.hero.lede ?? '') : ''
-const description = page.seoDescription || renderPlain(lede)
+const description = pageDescription(page)
 ---
 
 {

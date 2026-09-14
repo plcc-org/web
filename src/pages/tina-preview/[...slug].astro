@@ -1,0 +1,39 @@
+---
+import TinaIsland from '@tinacms/astro/TinaIsland.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import PageBody from '../../components/blocks/tina/PageBody.astro'
+import { getPage } from '../../lib/tina/data'
+import { PAGE_WRAPPER } from '../../lib/tina/islands'
+import { pageDescription } from '../../lib/tina/page-meta'
+
+// The editor's view of a CMS page that has no prerendered HTML: one created since
+// the last deploy, or a draft, which production builds leave out. Rendered on
+// request from TinaCloud, which has a page the moment it's saved, through the same
+// island the real page uses — so visual editing works before the build does.
+//
+// Nothing links here. The 404 page sends the admin iframe here when the address it
+// opened doesn't exist (see src/pages/404.astro), and real pages keep being edited
+// on their real prerendered HTML.
+//
+// Framed requests only, so a draft doesn't have a public address someone can pass
+// around. Not a security boundary — /tina-island renders any page to a same-site
+// request — just a way to keep drafts from being linkable.
+export const prerender = false
+
+// An empty 404 lets Astro render the site's 404 page, whose redirect skips this
+// prefix, so a page TinaCloud doesn't have either ends there rather than looping.
+if (Astro.request.headers.get('sec-fetch-dest') !== 'iframe') return new Response(null, { status: 404 })
+
+const relativePath = `${Astro.params.slug ?? 'index'}.mdx`
+const result = await getPage(relativePath)
+const page = result.data?.pages
+if (!page) return new Response(null, { status: 404 })
+
+Astro.response.headers.set('Cache-Control', 'no-store')
+---
+
+<BaseLayout title={page.title} seoTitle={page.seoTitle || undefined} description={pageDescription(page)} noindex>
+  <TinaIsland name="page" wrapper={PAGE_WRAPPER} params={{ relativePath }} primary>
+    <PageBody data={page} />
+  </TinaIsland>
+</BaseLayout>

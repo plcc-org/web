@@ -25,8 +25,9 @@ Everything is served from the root, so `base` is `/`. Internal links still go th
 `withBase()` helper (harmless at root, and it keeps the subpath option open) — see
 [development.md](./development.md).
 
-The site is **static** except for the CMS's visual-editing endpoint (`/tina-island/*`),
-which runs as a Cloudflare function. See [cms.md](./cms.md) for the CMS and its one-time
+The site is **static** except for two CMS routes — the visual-editing endpoint
+(`/tina-island/*`) and the editor's preview of pages not yet deployed (`/tina-preview/*`) —
+which run as a Cloudflare function. See [cms.md](./cms.md) for the CMS and its one-time
 Cloudflare setup.
 
 ---
@@ -60,7 +61,7 @@ what ages past events off "What's On". If the calendar ever looks stale, check t
 before anything else. See [events.md](./events.md).
 
 Cloudflare is the only host, and the site needs it to stay that way: visual editing depends
-on one function route (`/tina-island/*`), so a static-only host
+on its function routes (`/tina-island/*`, `/tina-preview/*`), so a static-only host
 can't serve the CMS. The production cutover (point `plcc.org` DNS at Cloudflare) is covered
 in [cms.md](./cms.md#3-cutover-and-production).
 

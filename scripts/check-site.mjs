@@ -156,7 +156,7 @@ if (!existsSync(robotsPath)) {
   if (isProduction) {
     if (!/^Allow: \/$/m.test(robots)) errors.push('robots.txt: production build is not indexable')
     if (!/^Sitemap: https?:\/\//m.test(robots)) errors.push('robots.txt: production build has no Sitemap line')
-    for (const path of ['/admin', '/tina-island', '/api/']) {
+    for (const path of ['/admin', '/tina-island', '/tina-preview', '/api/']) {
       if (!robots.includes(`Disallow: ${path}`)) errors.push(`robots.txt: production build does not disallow ${path}`)
     }
   } else if (!/^Disallow: \/$/m.test(robots)) {

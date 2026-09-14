@@ -53,9 +53,10 @@ export default defineConfig({
   site: siteConfig.site,
   base: siteConfig.base,
   // Cloudflare Workers host. `output` stays static (the default): every public
-  // page is prerendered to HTML at build time. Tina injects one on-demand route
-  // (`/tina-island/*`, which powers visual editing); the adapter ships only that
-  // as a function.
+  // page is prerendered to HTML at build time. Two routes run on demand, both for
+  // the CMS: `/tina-island/*`, which Tina injects to power visual editing, and
+  // `/tina-preview/*`, the editor's view of a page not yet deployed. The adapter
+  // ships only those as a function.
   //
   // `imageService: 'compile'` keeps Astro's build-time (sharp) image
   // optimization for our prerendered pages — emitting static, content-hashed
@@ -72,13 +73,13 @@ export default defineConfig({
     mdx(),
     tina(),
     // The admin SPA is a static file under public/admin, so unlike an SSR-only
-    // route it *would* be picked up by the sitemap. The island endpoint is
-    // on-demand and already excluded; the filter covers it as a guard. Mirrors
+    // route it *would* be picked up by the sitemap. The island and preview routes
+    // are on-demand and already excluded; the filter covers them as a guard. Mirrors
     // the Disallow list in src/pages/robots.txt.ts. /links/ is a real page but
     // noindex — it's for people already in the building, and changes weekly — so a
     // sitemap listing it would contradict the page itself. It isn't disallowed in
     // robots.txt, because a crawler has to be able to fetch it to see the noindex.
-    sitemap({ filter: (page) => !/\/(admin|tina-island|api|links)(\/|$)/.test(new URL(page).pathname) }),
+    sitemap({ filter: (page) => !/\/(admin|tina-island|tina-preview|api|links)(\/|$)/.test(new URL(page).pathname) }),
   ],
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL

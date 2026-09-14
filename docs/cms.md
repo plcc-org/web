@@ -17,8 +17,9 @@ For the stack and conventions, see [development.md](./development.md); for hosti
   beside the form: click anywhere in a section and its block's form focuses in the
   sidebar (the markers are per block, not per field), and typing updates the page live.
 - **The public site stays static.** Editing produces a Git commit; the commit triggers a
-  build; the build ships static HTML. Visitors never hit a server — the only on-demand route
-  is `/tina-island/*`, which re-renders a region while an editor is typing.
+  build; the build ships static HTML. Visitors never hit a server — the only on-demand routes
+  are `/tina-island/*`, which re-renders a region while an editor is typing, and
+  `/tina-preview/*`, which shows the editor a page that hasn't deployed yet.
 - The config is **`tina/config.ts`** (collections and fields) plus **`tina/templates.mjs`**
   (the block palette), with **`tina/short-link-rules.mjs`** holding the per-entry short-link
   rules it shares with the build script. Its schemas must stay aligned with the Astro content
@@ -261,6 +262,11 @@ To make a new page: add a **Pages** entry, fill the hero, and stack blocks. New 
 as **drafts** — visible in preview but not on the published site — so uncheck **Draft** to
 publish when it's ready.
 
+**A new page opens in visual editing straight away** — before the site has rebuilt, and
+while it's still a draft. Text and blocks update as you type. The one thing that waits for
+the rebuild (a few minutes) is a photo you've **uploaded** since the last one: it shows up
+blank in the preview until then, though it's saved and will appear on the page.
+
 **The address is the first field on the form, and it's worth a moment.** It starts from the
 title, but the two don't have to match: it renders locked, and **clicking it unlocks it** —
 after which it stops following the title. So a page titled "Church Safety Policy" can live
@@ -418,6 +424,17 @@ An unresolvable image doesn't fail the build — it just doesn't appear.
   editing requires: the rendered DOM has to carry the `data-tina-field` markers the editor
   bridge maps forms onto, which a compiled MDX module can't provide. `src/content.config.ts`
   still declares the collection, so zod still validates the files at build time.
+- **Pages without prerendered HTML are edited through `/tina-preview/`.** Visual editing
+  opens a page at its real address, which a page saved since the last deploy doesn't have
+  yet — nor does any draft, since production builds leave drafts out. So `404.astro`
+  carries a script that, only inside the admin iframe, retries the address under
+  `/tina-preview/`: an on-demand route (`src/pages/tina-preview/[...slug].astro`) that
+  fetches the page from TinaCloud at request time and renders it through the same `page`
+  island. It answers only framed requests (`Sec-Fetch-Dest: iframe`), so a draft has no
+  shareable address; that's tidiness, not security — `/tina-island` renders any page to a
+  same-site request anyway. Photos resolve against the build-time glob in
+  `src/lib/images.ts`, so one uploaded since the last deploy renders blank there until the
+  rebuild.
 - The body renders through `<TinaMarkdown>` with the component map in
   **`src/components/blocks/tina/registry.ts`**. Wrapper blocks (those with prose inside —
   `Section`, `Split`, `Callout`, `Closing`, `Aside`, `Letter`) need a Tina-specific adapter in

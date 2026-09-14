@@ -15,7 +15,8 @@ import { siteConfig } from '../config/site'
 // its own auth, so this isn't a security control — it stops a multi-megabyte
 // admin bundle showing up in results for the church's own name. /tina-island is
 // the editing endpoint; it renders page fragments and has no business in search.
-const DISALLOWED = ['/admin', '/tina-island', '/api/']
+// /tina-preview renders drafts for the editor, and answers nothing else.
+const DISALLOWED = ['/admin', '/tina-island', '/tina-preview', '/api/']
 
 export const GET: APIRoute = ({ site }) => {
   const lines = ['User-agent: *']
