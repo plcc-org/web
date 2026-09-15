@@ -46,10 +46,10 @@ behaviour being demonstrated, not assumed.
 **Upstream behaviour.** `tinacms build` compiles the 11 MB admin single-page app
 unconditionally.
 
-**Why that's wrong here.** This site deploys as static files with no data layer behind
-them, so a deployed admin has nothing to talk to — `scripts/prune-admin.mjs` deletes it
-again immediately after. That is 60 seconds of every CI run and every Cloudflare build
-spent producing a directory the next step removes.
+**Why that's wrong here.** Only a build that deploys needs the admin. Cloudflare's does:
+it sets `TINA_PUBLISH_ADMIN=true` and serves `/admin` from the result. GitHub CI builds both
+deploy targets purely to verify them and discards the output, so there the compile is 60
+seconds per build, twice per run, producing a directory nothing serves.
 
 **What the patch does.** Makes that compile conditional on `TINA_PUBLISH_ADMIN=true`.
 `tinacms dev` is untouched: it serves the admin from Vite, not from this bundle, so local
@@ -58,8 +58,10 @@ editing is unaffected.
 **How to check it.** `npm run build` finishes without an `/admin` compile step, and
 `npm run dev:tina` still serves the editor at `/admin/index.html`.
 
-**Delete it when.** The CLI grows a flag of its own for this. There was no equivalent as of
-3.0.0.
+**Delete it when.** The CLI grows a flag of its own for this, or the compile stops being
+worth skipping. Upstream is moving to a prebuilt admin shell that would cut the per-project
+step to milliseconds: <https://github.com/tinacms/tinacms/issues/7237>. There was no flag as
+of 3.0.0.
 
 ---
 

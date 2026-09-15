@@ -1,12 +1,18 @@
 diff --git a/node_modules/@tinacms/cli/dist/index.js b/node_modules/@tinacms/cli/dist/index.js
-index 9699770..9b3dc62 100644
+index 9699770..c5f750a 100644
 --- a/node_modules/@tinacms/cli/dist/index.js
 +++ b/node_modules/@tinacms/cli/dist/index.js
-@@ -4197,7 +4197,13 @@ ${dangerText(e.message)}
+@@ -4197,7 +4197,19 @@ ${dangerText(e.message)}
          });
        }
      }
 -    await buildProductionSpa(configManager, database, codegen2.productionUrl);
++    // Patched (patches/@tinacms+cli+3.0.0.patch): compile the admin SPA only when
++    // the build is going to serve it. Cloudflare sets TINA_PUBLISH_ADMIN=true and
++    // ships /admin; GitHub CI builds only to verify and discards the output, so it
++    // skips the ~60s compile. See patches/README.md. Upstream is moving to a
++    // prebuilt admin that would make this moot:
++    // https://github.com/tinacms/tinacms/issues/7237
 +    if (process.env.TINA_PUBLISH_ADMIN === "true") {
 +      await buildProductionSpa(configManager, database, codegen2.productionUrl);
 +    } else {
