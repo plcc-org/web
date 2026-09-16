@@ -12,14 +12,14 @@ type Props = {
   alt?: string
   signoffName?: string
   signoffRole?: string
-  children?: unknown
+  body?: unknown
 } & BlockProps
-const { image, alt, signoffName, signoffRole, children } = Astro.props
+const { image, alt, signoffName, signoffRole, body } = Astro.props
 const img = image ? ((await imageFromRef(image)?.())?.default as ImageMetadata | undefined) : undefined
 ---
 
 <section class="to-wide" data-reveal data-tina-field={blockField(Astro.props)}>
   <Letter image={img} alt={await altFor(alt, image)} signoffName={signoffName} signoffRole={signoffRole}>
-    <TinaChildren content={children as never} />
+    <TinaChildren content={body as never} />
   </Letter>
 </section>

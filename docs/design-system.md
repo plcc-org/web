@@ -452,7 +452,7 @@ flat props to each component's real shape. They are **not** a second component s
 each one delegates.
 
 `src/components/blocks/tina/` holds the six blocks with prose inside them (`Section`,
-`Split`, `Callout`, `Cta`, `Aside`, `Letter`), whose body arrives as a `children` rich-text
+`Split`, `Callout`, `Cta`, `Aside`, `Letter`), whose prose arrives as a `body` rich-text
 tree and is rendered by `TinaChildren`. `src/components/blocks/mdx/` holds the twelve
 self-closing ones, which take plain props. Where no adaptation is needed at all the CMS key
 maps straight to the component (`Callout`, `Roadmap` do this). `registry.ts` is the map.

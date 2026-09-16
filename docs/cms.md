@@ -16,6 +16,8 @@ For the stack and conventions, see [development.md](./development.md); for hosti
   blocks and opens each one as a typed form. **Visual editing** shows the real rendered page
   beside the form: click anywhere in a section and its block's form focuses in the
   sidebar (the markers are per block, not per field), and typing updates the page live.
+  A page is **built from blocks, never typed into** — the body is a list of components, and
+  all prose sits inside one of them.
 - **The public site stays static.** Editing produces a Git commit; the commit triggers a
   build; the build ships static HTML. Visitors never hit a server — the only on-demand routes
   are `/tina-island/*`, which re-renders a region while an editor is typing, and
@@ -231,32 +233,32 @@ A page has two parts:
    an intro line. Cinematic doesn't — its photos need the space more than another sentence
    does.
 
-2. **A body** — a **rich-text editor** where you type formatted prose and insert **blocks**
-   from the **Embed** menu at the left of the toolbar. Each block is a pre-styled section,
-   so anything you build stays on-brand. Blocks show inline as labelled bars — most carry
-   their own heading as the label — and clicking one opens its fields in a panel.
+2. **A body** — a **list of blocks**. Each block is a pre-styled section, so anything you
+   build stays on-brand. Blocks show as labelled bars — most carry their own heading as the
+   label — and clicking one opens its fields in a panel.
+
+   **You never type into the body itself.** There is nowhere to: a page is assembled from
+   blocks, and prose lives inside a block, in that block's own **Content** field. That field
+   is a proper rich-text editor with bold, links, lists and headings.
 
 ### Editing blocks
 
-Each block card has a **…** menu on its right:
+| To…              | Do this                                                                   |
+| ---------------- | ------------------------------------------------------------------------- |
+| **Add a block**  | The **+** at the top right of the Body field, then pick from the palette. |
+| **Edit a block** | Click its bar. In visual editing, click the section on the page instead.  |
+| **Reorder**      | Drag it by the handle on the left of its bar.                             |
+| **Delete**       | The bin icon on the right of its bar.                                     |
 
-| Item                        | What it does                                               |
-| --------------------------- | ---------------------------------------------------------- |
-| **Edit**                    | Opens the block's fields. Clicking the card does the same. |
-| **Move up** / **Move down** | Reorders the block. Greyed out at the top and bottom.      |
-| **Duplicate**               | Copies the block, with its content, directly below.        |
-| **Insert blank line below** | Opens an empty line under the block — room for a new one.  |
-| **Remove**                  | Deletes the block.                                         |
+A new block lands at the **end** of the list — drag it up to where it belongs.
 
-To add a block, click where it should go and pick it from **Embed**. Selecting an existing
-block first puts the new one directly after it; **Insert blank line below** is the way to
-open a gap between two blocks that sit flush against each other.
+Each bar is labelled with the block's own heading where it has one, falling back to the kind
+of block (`ui.itemProps` in `tina/templates.mjs`), so a page doesn't read as a stack of
+identical grey bars.
 
-Three of those five items — everything but Edit and Remove — and the insert-after-the-
-selected-block behaviour come from `patches/tinacms+3.14.0.patch`. Stock, the editor has no
-way to reorder blocks at all, and inserting a block while another is selected **overwrites
-it**. See `patches/README.md`; the patch is re-derived by hand on every version bump, so if
-this section stops describing what the editor does, that is the first place to look.
+There is no Duplicate: to repeat a block, add a fresh one and fill it in. (The old body
+editor had one, but it came from a local patch on TinaCMS that this list made unnecessary —
+see `patches/README.md`.)
 
 To make a new page: add a **Pages** entry, fill the hero, and stack blocks. New pages start
 as **drafts** — visible in preview but not on the published site — so uncheck **Draft** to
@@ -422,7 +424,7 @@ An unresolvable image doesn't fail the build — it just doesn't appear.
   (`src/lib/tina/data.ts`), then renders it with `PageBody`, wrapped in `<TinaIsland>`.
 - **Content comes from Tina, not `getCollection()` + `render()`.** That is what visual
   editing requires: the rendered DOM has to carry the `data-tina-field` markers the editor
-  bridge maps forms onto, which a compiled MDX module can't provide. `src/content.config.ts`
+  bridge maps forms onto, which a compiled content module can't provide. `src/content.config.ts`
   still declares the collection, so zod still validates the files at build time.
 - **Pages without prerendered HTML are edited through `/tina-preview/`.** Visual editing
   opens a page at its real address, which a page saved since the last deploy doesn't have
@@ -435,13 +437,18 @@ An unresolvable image doesn't fail the build — it just doesn't appear.
   same-site request anyway. Photos resolve against the build-time glob in
   `src/lib/images.ts`, so one uploaded since the last deploy renders blank there until the
   rebuild.
-- The body renders through `<TinaMarkdown>` with the component map in
-  **`src/components/blocks/tina/registry.ts`**. Wrapper blocks (those with prose inside —
+- The body is a `blocks` list. `PageBody.astro` maps each one to a component through
+  **`src/components/blocks/tina/registry.ts`**, keyed by template name and recovered from the
+  block's `__typename` (`PagesBlocks<Name>`). Wrapper blocks (those with prose inside —
   `Section`, `Split`, `Callout`, `Closing`, `Aside`, `Letter`) need a Tina-specific adapter in
-  that folder, because their body arrives as a `children` rich-text tree rather than a
+  that folder, because their prose arrives as a `body` rich-text tree rather than a
   `<slot />`. The twelve self-closing blocks reuse their existing wrappers in
   **`src/components/blocks/mdx/`** unchanged. Either way it's the real site component doing
   the rendering.
+- Each block is **spread into** its component rather than wrapped in a marker element:
+  `.canvas` styles its direct children, so a wrapper `<div>` would drop the block out of
+  every layout rule. `_content_source` rides along in the props and the adapter puts
+  `data-tina-field` on the block's own root (`src/lib/tina/block-field.ts`).
 - Internal code names differ from editor labels (the label is what editors see): `Section` =
   "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `Video` = "Video",
   `PhotoBand` = "Photo gallery", `CardRow` = "Text cards", `Callout` = "Callout",
@@ -458,10 +465,15 @@ An unresolvable image doesn't fail the build — it just doesn't appear.
   hand them to `<Photo>` for build-time optimization.
 - Adding a block = a template in `tina/templates.mjs` **and** a matching component
   registered in `src/components/blocks/tina/registry.ts`. If the block has prose inside, give
-  its template a field named `children` of type `rich-text` — Tina's MDX parser treats that
-  name specially — and write an adapter that renders it via `TinaChildren`. Keep the two in
-  step: an unregistered name renders as a visible red placeholder rather than failing the
-  build.
+  its template a `body` field of type `rich-text` (the `prose()` helper) and write an adapter
+  that renders it via `TinaChildren`. Keep the two in step: an unregistered name throws at
+  build time rather than dropping the block silently off the page.
+- **A field name shared across templates has to agree on `required`.** Every template is a
+  GraphQL type in one union, and two members may not return `String!` and `String` under the
+  same name — codegen fails the build. `heading` and `image` are optional in some blocks by
+  design, so they use `needed()` (editor-side validation) instead of `required: true`. That
+  rules out `isTitle` on those fields too, since Tina demands `required` alongside it; the
+  block's collapsed label comes from `ui.itemProps` instead.
 - **Image fields are only ever declared with the `image()` helper** (`tina/templates.mjs`)
   — in blocks and in `tina/config.ts` collections alike. It bakes in the `imageRef` parse
   that pins the stored value to `/assets/images/<file>`, the one shape TinaCloud
@@ -478,7 +490,7 @@ different decisions:
 2. **CMS page** (an MDX entry: hero + blocks) — when the whole page is editor-territory and
    fits the hero-plus-blocks model.
 3. **CMS block** (a palette entry) — only when its content repeats and an editor can safely
-   compose it anywhere. Every block in the Embed menu is a promise it's safe to insert on any
+   compose it anywhere. Every block in the palette is a promise it's safe to insert on any
    page, so a one-off block makes the editor worse for the pages that aren't it.
 
 By this rule, these stay **hand-built `.astro`**, not CMS pages: `events/*` (the
@@ -512,7 +524,7 @@ Two places show the difference:
   wrong. Narrowed to the job it actually did, it's five fields and no layout choices.
 
 Closing banner got _smaller_. That's the usual outcome, and it's the tell: if splitting a
-block leaves you with two nearly identical entries in the Embed menu, the split was wrong and
+block leaves you with two nearly identical entries in the palette, the split was wrong and
 the option was real.
 
 The corollary is that a genuinely new shape earns a new template, not a flag on an old one —
@@ -538,8 +550,10 @@ Two mechanisms look like they'd fix that. Neither does:
   component: field.list ? 'blocks' : 'not-implemented'
   ```
 
-  A non-list object with templates renders as **"Unrecognized field type"** where the field
-  should be, which also breaks click-to-edit for it, since the form has nothing to focus.
+  The page body is a list, so it gets the working half — the body and this are the same
+  mechanism, which is why a blocks body works while a shape-picking hero doesn't. A non-list
+  object with templates renders as **"Unrecognized field type"** where the field should be,
+  which also breaks click-to-edit for it, since the form has nothing to focus.
   Nothing fails at build time: the schema compiles, the lock file matches, the site builds
   and deploys, and only the editor is broken. **This shipped once.** Check that line before
   reaching for `templates` on anything that isn't a list.
@@ -620,8 +634,8 @@ reference Cloudflare implementation
 ([ailabs-hq/tinacms-cloudflare](https://github.com/ailabs-hq/tinacms-cloudflare)) bridges
 that with ~50 untyped lines in a Next.js demo, alongside Auth.js and a KV adapter.
 
-**Git remains the source of truth either way**, so this is reversible: content is MDX in the
-repo, and moving to a self-hosted backend later changes the backend, not the content. That
+**Git remains the source of truth either way**, so this is reversible: content is plain text
+in the repo, and moving to a self-hosted backend later changes the backend, not the content. That
 is what makes starting on TinaCloud low-risk rather than a lock-in.
 
 **Verify `/tina-island` before the login.** On staging without credentials it returned 500
@@ -634,9 +648,9 @@ backend is actually reachable; a working login does not.
 **Git-backed media works against the deployed admin**, with one asymmetry to know about.
 TinaCloud mirrors `src/assets/images` at its CDN (`assets.tina.io/<clientId>/<file>`) — the
 media manager and its thumbnails come from there. On read it rewrites stored refs to that
-CDN URL for _direct_ image fields only; an image field nested inside a rich-text object
-list (PhotoBand photos, LogoCards cards) reaches the form un-rewritten, and on save the
-form value is written into the MDX verbatim. Two seams this repo owns keep that honest,
+CDN URL for _direct_ image fields only; an image field nested inside an object list
+(PhotoBand photos, LogoCards cards) reaches the form un-rewritten, and on save the form
+value is written into the page file verbatim. Two seams this repo owns keep that honest,
 with no patch to Tina itself: every image field's `ui.parse` normalises what a save may
 store to `/assets/images/<file>` (`imageRef` in `tina/templates.mjs`), and the tests in
 `test/image-ref.test.ts` / `test/image-parse.test.ts` pin the stored form, the normaliser,
@@ -698,30 +712,25 @@ change, or every existing inbound link breaks.
 - **All CMS content is Prettier-ignored** (`src/content/` in `.prettierignore`). The CMS
   owns its formatting, and an editor's save must never fail CI — a trailing space Tina left
   in a bio once failed `format:check`, which stops CI before tests and builds. Content is
-  validated by zod and the build scripts instead. For MDX pages Prettier would also do harm:
-  its reflow breaks block-component children.
-- **The toolbar is deliberately short.** `overrides.toolbar` on the body field keeps ten
-  controls and drops the rest: raw, table, code, code block, mermaid, highlight and
-  strikethrough are all offered by default and **none of them are styled anywhere in
-  `src/styles`**, so reaching one produced output nobody designed. Same principle as
-  `npm run lint:css` — enforced, not requested. Headings stop at **H2–H4**: the hero renders
-  the page's only `<h1>`, and `base.css` styles nothing below `h4`. Inside a block, prose
-  starts at **H3**, because the block's own heading is the `<h2>` — except in a Rich text
-  block, whose heading is optional, so H2 stays available there. Both settings are UI-only:
-  content already saved with a disallowed level still renders. Removing `raw` is also what
-  now enforces the old "no inline raw HTML" rule below. The list is ordered as well as
-  trimmed: the toolbar drops its **tail** into an overflow menu when it doesn't fit, which
-  is what the sidebar width in visual editing does to it, so **Embed** goes first — losing
-  the block insert menu is losing the thing a page body is built from.
-- **No _inline_ raw HTML in page bodies.** Now unreachable from the toolbar, but still true
-  if you hand-edit MDX: `<br>` inside a paragraph fails to parse and the block renders as an
-  "invalid markdown" node. Block-level HTML (a standalone `<div>…</div>`) does round-trip.
-  For a line break, use a **Markdown hard break** — two trailing spaces; the editor
-  normalises it to a backslash and Astro still renders `<br>`.
-- **Object props need identifier keys.** Tina's MDX parser accepts
-  `items={[{title: "A"}]}` but not `items={[{"title": "A"}]}`, and rejects bare boolean
-  attributes (`reverse` must be `reverse={true}`). The editor always writes the accepted
-  form; this only bites when hand-editing MDX.
+  validated by zod and the build scripts instead.
+- **The toolbar is deliberately short.** A block's **Content** field is the only place with
+  one, and `overrides.toolbar` on it keeps seven controls and drops the rest: raw, table,
+  code, code block, mermaid, highlight and strikethrough are all offered by default and
+  **none of them are styled anywhere in `src/styles`**, so reaching one produced output
+  nobody designed. Same principle as `npm run lint:css` — enforced, not requested. `image`
+  is out because these blocks carry their own image fields, and `embed` because
+  `TinaChildren.astro` renders a block's prose with the inline components alone — a block
+  nested inside a block would save fine and then render as nothing. Prose starts at **H3**,
+  because the block's own heading is the `<h2>` and the hero renders the page's only `<h1>`
+  — except in a Rich text block, whose heading is optional, so H2 stays available there.
+  `base.css` styles nothing below `h4`. Both settings are UI-only: content already saved
+  with a disallowed level still renders. Removing `raw` is also what now enforces the old
+  "no inline raw HTML" rule below.
+- **No _inline_ raw HTML in a block's prose.** Now unreachable from the toolbar, but still
+  true if you hand-edit a page file: `<br>` inside a paragraph fails to parse and the block
+  renders as an "invalid markdown" node. For a line break, use a **Markdown hard break** —
+  two trailing spaces; the editor normalises it to a backslash and Astro still renders
+  `<br>`.
 - **Smart quotes must be real characters.** Astro's MDX pipeline used to apply smartypants;
   the CMS renderer doesn't, so a straight `'` now renders straight. Type the real `’`.
 - **Link hrefs go through an allowlist.** The CMS renderer rewrites any href it doesn't
@@ -760,6 +769,6 @@ change, or every existing inbound link breaks.
 - **Block descriptions don't show in the insert menu.** They're in the schema and worth
   keeping, but the menu renders labels only — the "which block do I use?" table above is the
   substitute.
-- **Slash (`/`) inserts headings and lists only.** Blocks aren't in that menu; they're in
-  **Embed**.
+- **Slash (`/`) inserts headings and lists only**, inside a block's Content field. Blocks
+  aren't in that menu — they're added from the list at the bottom of the Body field.
 - **The `pages` directory must exist** even when empty (kept via `.gitkeep`).

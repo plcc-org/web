@@ -3,9 +3,8 @@ import TinaMarkdown from '@tinacms/astro/TinaMarkdown.astro'
 import type { TinaRichTextContent } from '@tinacms/astro/types'
 import { inlineComponents } from './inline'
 
-// Renders a wrapper block's body. Under MDX these arrive through `<slot />`;
-// through Tina they arrive as a `children` rich-text tree on the node's props,
-// so wrapper adapters delegate here instead of using a slot.
+// Renders a wrapper block's body: the `body` rich-text tree on the block, which
+// wrapper adapters delegate here rather than taking through a slot.
 //
 // No *blocks* are passed down: every wrapper in src/content/pages contains prose
 // only, never another block. Nesting one would need the full component map, which

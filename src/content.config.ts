@@ -3,6 +3,7 @@ import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
 import { checkLinkUrl, checkSunday, toIsoDate } from '../tina/sunday-links.mjs'
+import { templates } from '../tina/templates.mjs'
 
 // quotes is a single YAML file holding one array. The CMS edits it as a list
 // field, which serializes to `{ <key>: [...] }`. Parse tolerantly so both the
@@ -133,8 +134,8 @@ const heroText = {
 
 // CMS-built pages. Each is an MDX file: a structured hero in frontmatter plus an
 // MDX body the editor composes in the CMS's rich-text editor, inserting styled
-// components (Split, Callout, Photo band, …). The body's component tags map to
-// thin Astro wrappers at render time (see src/components/blocks/tina/registry.ts),
+// components (Split, Callout, Photo band, …). Each block's `_template` maps to a
+// thin Astro wrapper at render time (see src/components/blocks/tina/registry.ts),
 // so everything reuses the real site components.
 //
 // Nothing calls getCollection('pages') — src/pages/[...slug].astro renders from
@@ -142,6 +143,12 @@ const heroText = {
 // validates every *declared* collection regardless, and this schema is the only
 // thing that catches a page saved without a `hero`. Verified by test, not by
 // assumption.
+/**
+ * Every block an editor can add to a page, straight from the CMS palette, so a
+ * `_template` that no longer exists fails the build rather than rendering blank.
+ */
+const BLOCK_TEMPLATES = templates.map((template) => template.name) as [string, ...string[]]
+
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
   // Hero/block images are stored as path strings and resolved at render time via
@@ -198,6 +205,12 @@ const pages = defineCollection({
         ...heroText,
       }),
     ]),
+    // The page itself. Only `_template` is checked: it is the one field a block
+    // can't render without, and the Tina schema (tina/templates.mjs) is what
+    // validates the rest — restating eighteen templates here would be a second
+    // copy to keep in step, and the two would disagree the first time one moved.
+    // A page with no blocks is a legitimate stub, so the list is optional.
+    blocks: z.array(z.object({ _template: z.enum(BLOCK_TEMPLATES) }).passthrough()).optional(),
   }),
 })
 

@@ -1,7 +1,7 @@
 # Patched dependencies
 
-Two dependencies are patched in place. `patch-package` re-applies both on `postinstall`,
-so a fresh clone and CI get them without anyone remembering to.
+One dependency is patched in place. `patch-package` re-applies it on `postinstall`, so a
+fresh clone and CI get it without anyone remembering to.
 
 **A patch is a fork you have to carry.** Each one below records what upstream does, why
 that is wrong here, what the patch changes, how to check it still works, and the condition
@@ -62,84 +62,3 @@ editing is unaffected.
 worth skipping. Upstream is moving to a prebuilt admin shell that would cut the per-project
 step to milliseconds: <https://github.com/tinacms/tinacms/issues/7237>. There was no flag as
 of 3.0.0.
-
----
-
-## `tinacms` — block editing in the page body
-
-**File:** `tinacms+3.14.0.patch`
-
-The page body is a `rich-text` field whose real content is a sequence of block templates
-(see `tina/templates.mjs`). Every one of those blocks is a Slate **void** node, and the
-stock editor handles voids badly enough that inserting a block could destroy another one.
-Three hunks, all in `dist/index.js`.
-
-`tinacms` is pinned to an exact version in `package.json` for this reason: the patch lands
-in a rollup bundle whose contents shift on every release.
-
-**The patched copy has to be the only copy, so bump the whole group together.** The pin
-is exact but `@tinacms/cli` and `@tinacms/app` take caret ranges, and they move as soon as
-Tina publishes. If the pin lags behind the `tinacms` they want, npm keeps the pinned copy
-at the top level and nests a second, newer one under `@tinacms/app`. That nested copy is
-the one serving the editor, and `patch-package` only patches the top-level path its
-filename names, so the editor runs stock while every build stays green. The fix is to
-move the pin forward to the `tinacms` the group wants, not to hold the rest of the group
-back. `test/patched-deps.test.ts` fails if the lockfile holds a second copy of any
-patched package, or one at a version its patch file doesn't name.
-
-### 1. Inserting a block no longer overwrites the selected one
-
-**Upstream behaviour.** `insertBlockElement` asks `isCurrentBlockEmpty()` and, if the
-answer is yes, calls `setNodes` — replacing the current block in place instead of adding
-one.
-
-**Why that's wrong here.** `isCurrentBlockEmpty` tests "no text, no inline children, cursor
-at offset 0". A void node satisfies all three by construction, so it is _always_ "empty".
-Select a `Photo & text (split)` block, insert a `Quote`, and the Split becomes a Quote —
-the content is gone, with no warning and nothing to undo it but Ctrl-Z.
-
-**What the patch does.** Checks `editor.api.isVoid()` first and inserts _after_ the
-selected block. Separately, when there is no selection at all — the state the editor is in
-before it has been clicked into — the stock code returns early and the insert silently does
-nothing; the patch appends to the end of the document instead.
-
-### 2. Blocks can be reordered, duplicated, and separated
-
-**Upstream behaviour.** The `…` menu on a block offers exactly **Edit** and **Remove**.
-There is no move, no duplicate, no drag handle, and no way to open a gap between two
-adjacent blocks.
-
-**Why that's wrong here.** A page body here is almost entirely blocks — reordering them is
-ordinary editing, not an edge case. Without it the only way to move a section is to delete
-it and rebuild it from scratch, or to hand-edit the MDX.
-
-**What the patch does.** `useEmbedHandles` gains `handleMoveUp`, `handleMoveDown`,
-`handleDuplicate` and `handleInsertBelow` plus `canMoveUp` / `canMoveDown` bounds, and
-`DotMenu` renders them as **Move up**, **Move down**, **Duplicate** and **Insert blank line
-below** between Edit and Remove. Move is greyed out at the ends of the list. The handlers
-are optional props, so the inline-embed menu is unchanged.
-
-### 3. Wiring
-
-`BlockEmbed` passes the new handlers to `DotMenu`. Nothing else changes.
-
-**How to check it.** `npm run dev:tina`, open
-`http://localhost:4321/admin/index.html#/collections/edit/pages/families`, and on the Body
-field:
-
-- The `…` menu on a block lists Edit / Move up / Move down / Duplicate / Insert blank line
-  below / Remove, with Move up greyed out on the first block.
-- Move up and Move down reorder blocks; Duplicate copies one in place; Insert blank line
-  below opens an empty paragraph under it.
-- Click a block to select it, then insert a template from the **Embed** menu: the new block
-  lands _after_ the selected one and the selected one still exists.
-
-Don't save while testing — reload to discard.
-
-**Delete it when.** Upstream fixes void-node insertion and ships block-level reordering in
-the rich-text editor. Neither existed as of 3.14.0, and the void bug is worth reporting: it
-is a data-loss bug for any Tina site whose body is built from templates.
-
-**Related, and deliberately not patched.** The slash (`/`) menu offers only headings and
-lists — templates aren't in it. That is an inconvenience, not a hazard, and it would mean
-patching the combobox as well.

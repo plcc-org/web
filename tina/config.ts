@@ -215,36 +215,25 @@ export default defineConfig({
             fields: heroFields,
           },
           {
-            name: 'content',
+            name: 'blocks',
             label: 'Body',
-            type: 'rich-text',
-            isBody: true,
+            type: 'object',
+            list: true,
             templates,
-            // The toolbar is trimmed to the controls this site can actually render.
-            // Raw HTML, tables, code, code blocks, mermaid, highlight and strikethrough
-            // are all offered by default and none of them are styled anywhere in
-            // src/styles — an editor reaching one produces output nobody designed. This
-            // is the same principle as `npm run lint:css`: enforced, not requested.
+            // A page is assembled, never typed into: every top-level thing on it is one of
+            // the blocks in `templates`, and prose lives inside a block's own rich-text
+            // field rather than loose on the page. A `rich-text` body would offer a prose
+            // editor that also accepts blocks, which invites text no layout was designed
+            // for — it renders as a bare paragraph in the `.canvas` grid, framed by
+            // nothing. A blocks list can't express that value at all.
             //
-            // Headings stop at h2 because the hero renders the page's only h1, and at h4
-            // because base.css styles h1–h4 and nothing below. Both settings are UI-only:
-            // content already saved with a disallowed level still renders.
-            //
-            // `embed` leads because this list is also the drop order: the toolbar renders
-            // left to right and pushes whatever doesn't fit into an overflow menu, so the
-            // tail is what disappears. It disappears at the width visual editing actually
-            // runs at — the sidebar, not the full-width form — and the block insert menu
-            // is the control a page body is mostly built out of. Anywhere but first, it's
-            // the first thing an editor loses.
-            overrides: {
-              toolbar: ['embed', 'heading', 'link', 'image', 'quote', 'ul', 'ol', 'bold', 'italic', 'hr'],
-              headingLevels: ['h2', 'h3', 'h4'],
-            },
+            // This is the field Tina's own Astro starter uses for a page body, and it
+            // carries drag-to-reorder and click-to-edit natively.
             description:
-              'Type prose; use the insert menu to add styled blocks. Two habits carry most of the voice: start ' +
-              'with the reader’s situation rather than our programme (“When life is overwhelming…”, not “We have ' +
-              'a meals ministry”), and keep anything that changes — dates, times, one-off events — on What’s On ' +
-              'rather than here.',
+              'The page itself, built from blocks. Add one with the + above, drag to reorder, click to edit. ' +
+              'Two habits carry most of the voice: start with the reader’s situation rather than our ' +
+              'programme (“When life is overwhelming…”, not “We have a meals ministry”), and keep anything ' +
+              'that changes — dates, times, one-off events — on What’s On rather than here.',
           },
         ],
       },
