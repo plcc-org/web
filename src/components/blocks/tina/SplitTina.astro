@@ -15,9 +15,9 @@ type Props = {
   heading?: string
   buttonLabel?: string
   buttonHref?: string
-  children?: unknown
+  body?: unknown
 } & BlockProps
-const { image, alt, reverse = false, tone = 'sand', eyebrow, heading, buttonLabel, buttonHref, children } = Astro.props
+const { image, alt, reverse = false, tone = 'sand', eyebrow, heading, buttonLabel, buttonHref, body } = Astro.props
 const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
 ---
 
@@ -32,7 +32,7 @@ const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
   heading={heading}
   reveal
 >
-  <TinaChildren content={children as never} />
+  <TinaChildren content={body as never} />
   {
     buttonHref && (
       <p>

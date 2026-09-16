@@ -5,8 +5,7 @@ import TinaChildren from './TinaChildren.astro'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // The Closing banner: the dark band that ends a page against the footer. Its
-// prose arrives as a `children` rich-text tree on the node's props, not through
-// a slot.
+// prose arrives as a `body` rich-text tree on the block, not through a slot.
 //
 // Tone, flush and alignment are fixed here rather than offered as fields. A
 // closing band is one thing and always looks like it — leaving them adjustable
@@ -17,13 +16,13 @@ type Props = {
   heading?: string
   buttonLabel?: string
   buttonHref?: string
-  children?: unknown
+  body?: unknown
 } & BlockProps
-const { eyebrow, heading, buttonLabel, buttonHref, children } = Astro.props
+const { eyebrow, heading, buttonLabel, buttonHref, body } = Astro.props
 ---
 
 <Band tinaField={blockField(Astro.props)} tone="forest" centered flush eyebrow={eyebrow} heading={heading} reveal>
-  <TinaChildren content={children as never} />
+  <TinaChildren content={body as never} />
   {
     buttonHref && (
       <a class="btn" href={resolveHref(buttonHref)}>

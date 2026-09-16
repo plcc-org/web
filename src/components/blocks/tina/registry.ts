@@ -1,13 +1,14 @@
-// Block name → Astro component, for <TinaMarkdown> — how the block palette in
-// tina/templates.mjs maps onto the site's components at render time.
+// Template name → Astro component: how the block palette in tina/templates.mjs maps
+// onto the site's components at render time.
 //
-// Only the six wrapper blocks need a Tina-specific adapter: under MDX their
-// prose arrives through `<slot />`, and through Tina it arrives as a `children`
-// rich-text tree on the node's props. Every self-closing block takes plain props
-// and no slot, so its existing MDX adapter is reused unchanged.
-import type { CustomComponentsMap } from '@tinacms/astro/types'
-
-import { inlineComponents } from './inline'
+// Keys are the template `name` from templates.mjs. PageBody recovers that name from
+// each block's `__typename`, which Tina generates as `PagesBlocks<Name>` — so this
+// map is the one list, with nothing to keep in step with it.
+//
+// Only the six wrapper blocks need a Tina-specific adapter: the site components take
+// their prose through a slot, and a block carries it as a `body` rich-text tree
+// instead. Every self-closing block takes plain props, so its existing MDX adapter is
+// reused unchanged.
 import SectionTina from './SectionTina.astro'
 import SplitTina from './SplitTina.astro'
 import CalloutTina from './CalloutTina.astro'
@@ -28,9 +29,7 @@ import YouthMomentsMdx from '../mdx/YouthMomentsMdx.astro'
 import QuoteCarouselMdx from '../mdx/QuoteCarouselMdx.astro'
 import Roadmap from '../../Roadmap.astro'
 
-export const tinaComponents: CustomComponentsMap = {
-  ...inlineComponents,
-
+export const tinaBlocks = {
   Section: SectionTina,
   Split: SplitTina,
   Callout: CalloutTina,
@@ -51,3 +50,20 @@ export const tinaComponents: CustomComponentsMap = {
   QuoteCarousel: QuoteCarouselMdx,
   Roadmap: Roadmap,
 }
+
+/** The prefix Tina puts on every generated block type in the `pages` collection. */
+const TYPENAME_PREFIX = 'PagesBlocks'
+
+/**
+ * Reached through one lookup, these components' prop types *intersect* — TypeScript
+ * would ask every block to satisfy every other block's props, which none can. What a
+ * block may carry is settled by its template in tina/templates.mjs and checked by Tina
+ * against the same list, so this seam is deliberately loose.
+ */
+type BlockComponent = (props: Record<string, unknown>) => unknown
+
+/** The component for a block, by the `__typename` Tina returns for it. */
+export const blockComponent = (typename: unknown): BlockComponent | undefined =>
+  typeof typename === 'string' && typename.startsWith(TYPENAME_PREFIX)
+    ? (tinaBlocks[typename.slice(TYPENAME_PREFIX.length) as keyof typeof tinaBlocks] as BlockComponent | undefined)
+    : undefined

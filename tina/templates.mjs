@@ -2,14 +2,15 @@
 // The editor's two field sets: `heroFields` (a page's hero, in frontmatter) and `templates`
 // (every component an editor can insert into a page body).
 //
-// A block with prose inside it (a Split, a Callout) is a template with a field named
-// `children` of type `rich-text` — Tina's MDX parser treats that name specially and maps
-// it to the JSX element's children. A self-closing block is a template without one.
+// A block with prose inside it (a Split, a Callout) is a template with a `body` field of
+// type `rich-text`. A self-closing block is a template without one.
 //
-// `required` here is editor-side validation only: template fields serialise into the MDX
-// body, not the GraphQL schema, so marking one can't fail the build the way a collection
-// field can. `scripts/check-site.mjs` stays the backstop for alt text either way — it
-// catches an image that was already saved, which is the case validation can't reach.
+// `required` on a template field is real: a page's body is a `blocks` list, so every
+// template below becomes a GraphQL type and `required` makes its field non-null. Two
+// members of that union may not return `String!` and `String` under the same field name,
+// so a field name shared across templates has to agree — use `needed()` instead where it
+// can't (see its note). `scripts/check-site.mjs` stays the backstop for alt text either
+// way: it catches an image that was already saved, which is the case validation can't reach.
 //
 // Kept in .mjs so Node scripts and the CMS config can import it without a build step
 // (the same reason as short-link-rules.mjs and video-rules.mjs).
@@ -17,6 +18,27 @@
 import { checkVideoUrl } from './video-rules.mjs'
 
 /** @typedef {Record<string, unknown>} FieldOpts */
+
+/**
+ * Editor-side "fill this in", for a field whose name is shared with another block.
+ *
+ * `required: true` can't be used on those. A page's body is a `blocks` list, so every
+ * template is a real GraphQL type in one union, and two members of that union may not
+ * return `String!` and `String` under the same field name — GraphQL's field-merging
+ * rules reject the generated query outright, and codegen fails the build. `heading` is
+ * optional in a Rich text block by design and `image` is optional in a Letter, so the
+ * whole union has to spell both nullable.
+ *
+ * No guard is lost: `required` on a template field was always form-side only. This says
+ * the same thing in the one place that still can.
+ * @type {(message: string) => Record<string, unknown>}
+ */
+const needed = (message) => ({
+  ui: {
+    /** @type {(value: unknown) => string | undefined} */
+    validate: (value) => (typeof value === 'string' && value.trim() ? undefined : message),
+  },
+})
 
 /**
  * A wrapper block's prose.
@@ -33,8 +55,8 @@ import { checkVideoUrl } from './video-rules.mjs'
  * headingless one doesn't jump straight from h1 to h3.
  */
 /** @type {(headingLevels?: string[]) => Record<string, unknown>} */
-const children = (headingLevels = ['h3', 'h4']) => ({
-  name: 'children',
+const prose = (headingLevels = ['h3', 'h4']) => ({
+  name: 'body',
   label: 'Content',
   type: 'rich-text',
   overrides: {
@@ -305,29 +327,30 @@ export const templates = [
     name: 'Section',
     label: 'Rich text',
     description: 'A heading and formatted paragraphs — bold, links, lists. The default for written content.',
+    ui: { ...itemProps('heading', 'Rich text') },
     // The only wrapper whose heading is optional, so its prose may be the first
     // thing under the page's h1 — h2 stays available here alone.
-    fields: [eyebrow(), text('heading', 'Heading'), children(['h2', 'h3', 'h4'])],
+    fields: [eyebrow(), text('heading', 'Heading'), prose(['h2', 'h3', 'h4'])],
   },
   {
     name: 'Split',
     label: 'Photo & text (split)',
     description:
       'A photo beside formatted text — left or right, on a tinted background. The main show-and-tell layout.',
-    ui: { defaultItem: { tone: 'sand', reverse: false } },
-    // `isTitle` puts the heading on the block's collapsed bar in the editor, so a
-    // page of Splits doesn't read as identical grey bars. It demands
-    // `required: true`, which on a template field is form-side only (see the top
-    // of this file) — and every Split in the content already has a heading.
-    // The same applies to the other isTitle fields below.
+    ui: { defaultItem: { tone: 'sand', reverse: false }, ...itemProps('heading', 'Photo & text') },
+    // `ui.itemProps` puts the heading on the block's collapsed bar in the editor, so
+    // a page of Splits doesn't read as identical grey bars. `isTitle` would do the
+    // same, but Tina demands `required: true` alongside it and `heading` can't be
+    // non-null here — see `needed()`. The same applies to the other blocks that
+    // label their bar below.
     fields: [
-      image('image', 'Photo', { required: true }),
+      image('image', 'Photo', needed('This block needs a photo.')),
       text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
-      text('heading', 'Heading', { isTitle: true, required: true }),
+      text('heading', 'Heading', needed('This block needs a heading.')),
       eyebrow(),
       bool('reverse', 'Photo on the right'),
       tone(['sand', 'paper', 'forest']),
-      children(),
+      prose(),
       text('buttonLabel', 'Button label', { description: '“Learn more” if left blank.' }),
       text('buttonHref', 'Button link', { description: 'Needed for the button to show — a label alone does nothing.' }),
     ],
@@ -335,15 +358,17 @@ export const templates = [
   {
     name: 'Callout',
     label: 'Callout',
+    ui: { ...itemProps('heading', 'Callout') },
     description: 'A small boxed aside that sets one point apart — a reassurance, a key fact, a heads-up.',
-    fields: [text('heading', 'Heading', { isTitle: true, required: true }), children()],
+    fields: [text('heading', 'Heading', needed('This block needs a heading.')), prose()],
   },
   {
     name: 'CaptionedPhoto',
     label: 'Photo',
     description: 'A single framed photo with an optional caption.',
+    ui: { ...itemProps('caption', 'Photo') },
     fields: [
-      image('image', 'Photo', { required: true }),
+      image('image', 'Photo', needed('This block needs a photo.')),
       text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
       text('caption', 'Caption'),
     ],
@@ -352,6 +377,7 @@ export const templates = [
     name: 'Video',
     label: 'Video',
     description: 'A YouTube or Vimeo video in a photo-style frame — paste the link from your browser.',
+    ui: { ...itemProps('title', 'Video') },
     fields: [
       text('url', 'Video link', {
         required: true,
@@ -377,20 +403,22 @@ export const templates = [
     // the thing it was actually used for lets the layout be fixed in code.
     name: 'Closing',
     label: 'Closing banner',
+    ui: { ...itemProps('heading', 'Closing banner') },
     description:
       'The last block on a page — a dark band that closes it against the footer, with an optional button. A parting invitation.',
     fields: [
       eyebrow(),
-      text('heading', 'Heading', { isTitle: true, required: true }),
+      text('heading', 'Heading', needed('This block needs a heading.')),
       text('buttonLabel', 'Button label', { description: '“Learn more” if left blank.' }),
       text('buttonHref', 'Button link', { description: 'Needed for the button to show — a label alone does nothing.' }),
-      children(),
+      prose(),
     ],
   },
   {
     name: 'PhotoBand',
     label: 'Photo gallery',
     description: 'Several photos shown together as a staggered band — a visual break.',
+    ui: { ...itemProps('heading', 'Photo gallery') },
     fields: [
       text('heading', 'Heading'),
       eyebrow(),
@@ -412,7 +440,7 @@ export const templates = [
     name: 'CardRow',
     label: 'Text cards',
     description: 'A row of small cards, each a short title and a line or two — for a few parallel points.',
-    ui: { defaultItem: { columns: 'auto', large: false } },
+    ui: { defaultItem: { columns: 'auto', large: false }, ...itemProps('heading', 'Text cards') },
     fields: [
       eyebrow(),
       text('heading', 'Heading'),
@@ -455,9 +483,10 @@ export const templates = [
   {
     name: 'LinkCards',
     label: 'Link cards',
+    ui: { ...itemProps('heading', 'Link cards') },
     description: 'A grid of cards that each link to another page — for signposting to related content.',
     fields: [
-      text('heading', 'Heading', { isTitle: true, required: true }),
+      text('heading', 'Heading', needed('This block needs a heading.')),
       {
         name: 'links',
         label: 'Links',
@@ -477,7 +506,7 @@ export const templates = [
     name: 'Quote',
     label: 'Quote',
     description: 'A single featured pull-quote — a testimonial or short quotation set apart from the prose.',
-    ui: { defaultItem: { tone: 'none' } },
+    ui: { defaultItem: { tone: 'none' }, ...itemProps('quote', 'Quote') },
     fields: [
       textarea('quote', 'Quote', { isTitle: true, required: true }),
       text('attribution', 'Attribution', {
@@ -494,7 +523,7 @@ export const templates = [
     description:
       'A short list of upcoming events, pulled live from the events feed. In a stretch with no matching events, ' +
       'the block shows nothing at all.',
-    ui: { defaultItem: { category: 'all', count: 3 } },
+    ui: { defaultItem: { category: 'all', count: 3 }, ...itemProps('heading', 'Featured events') },
     fields: [
       text('heading', 'Heading'),
       {
@@ -527,7 +556,7 @@ export const templates = [
     name: 'KeyPoints',
     label: 'Key points',
     description: 'A moss-accented grid of titled points — the core-tenets / emphases treatment.',
-    ui: { defaultItem: { columns: '2' } },
+    ui: { defaultItem: { columns: '2' }, ...itemProps('heading', 'Key points') },
     fields: [
       eyebrow(),
       text('heading', 'Heading'),
@@ -554,10 +583,11 @@ export const templates = [
   {
     name: 'LogoCards',
     label: 'Logo cards',
+    ui: { ...itemProps('heading', 'Logo cards') },
     description: 'A row of cards, each topped by a program or partner logo, with text and an optional link.',
     fields: [
       eyebrow(),
-      text('heading', 'Heading', { isTitle: true, required: true }),
+      text('heading', 'Heading', needed('This block needs a heading.')),
       {
         name: 'cards',
         label: 'Cards',
@@ -579,6 +609,7 @@ export const templates = [
     name: 'Aside',
     label: 'Aside',
     description: 'A tinted note set apart from the page — formatted text beside an optional small logo.',
+    ui: { ...itemProps('eyebrow', 'Aside') },
     fields: [
       eyebrow(),
       image('logo', 'Logo (optional)'),
@@ -591,26 +622,28 @@ export const templates = [
               : undefined,
         },
       }),
-      children(),
+      prose(),
     ],
   },
   {
     name: 'YouthMomentsBlock',
     label: 'Youth moments',
     description: 'The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.',
+    ui: { ...itemProps('heading', 'Youth moments') },
     fields: [eyebrow(), text('heading', 'Heading')],
   },
   {
     name: 'QuoteCarousel',
     label: 'Quotes carousel',
     description: 'A rotating band of testimonials, pulled live from the Homepage quotes list.',
-    ui: { defaultItem: { tone: 'sand' } },
+    ui: { defaultItem: { tone: 'sand' }, ...itemProps('heading', 'Quotes carousel') },
     fields: [eyebrow(), text('heading', 'Heading'), textarea('intro', 'Intro line'), tone(['sand', 'paper', 'forest'])],
   },
   {
     name: 'Roadmap',
     label: 'Roadmap',
     description: 'A numbered timeline — steps as nodes on a connecting line, each with a title and a line.',
+    ui: { ...itemProps('heading', 'Roadmap') },
     fields: [
       eyebrow(),
       text('heading', 'Heading'),
@@ -629,27 +662,13 @@ export const templates = [
     name: 'Letter',
     label: 'Letter',
     description: 'A personal letter — flowing prose beside a portrait, closing with a signature.',
+    ui: { ...itemProps('signoffName', 'Letter') },
     fields: [
       image('image', 'Portrait (optional)'),
       text('alt', 'Portrait description (alt text)', { description: CATALOG_ALT }),
       text('signoffName', 'Signature — name'),
       text('signoffRole', 'Signature — role/title'),
-      children(),
+      prose(),
     ],
   },
 ]
-
-/**
- * The `rich-text` field definition the MDX parser/serializer expects.
- *
- * Deliberately without the `overrides` the same field carries in tina/config.ts: those
- * only constrain the editor's toolbar, and the harness parses and re-serialises rather
- * than editing. Nothing here needs to change when the toolbar does.
- */
-export const bodyField = {
-  name: 'content',
-  label: 'Body',
-  type: 'rich-text',
-  isBody: true,
-  templates,
-}

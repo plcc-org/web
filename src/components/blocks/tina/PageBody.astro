@@ -1,18 +1,21 @@
 ---
-import TinaMarkdown from '@tinacms/astro/TinaMarkdown.astro'
 import { tinaField } from '@tinacms/astro/tina-field'
 import PageHero from '../mdx/PageHero.astro'
-import { tinaComponents } from './registry'
+import { blockComponent } from './registry'
 
-// A CMS page rendered from Tina's GraphQL result rather than from a compiled
-// MDX module, so the bridge can wire each region to its form.
+// A CMS page rendered from Tina's GraphQL result, so the bridge can wire each
+// region to its form. The body is a list of blocks (tina/config.ts, `blocks`):
+// there is no prose at this level, only components.
 //
 // Nothing may come *between* `.canvas` and a block. `.canvas` is a full-bleed
 // grid that places its children by column, and layout.css addresses them as
 // direct children — `.canvas > *`, `.canvas > .to-full`,
 // `.canvas:has(> .is-flush)`. A wrapper div around a block silently drops it out
 // of every one of those rules, so a full-bleed hero or a flush closing band
-// renders inset instead. It looks like a margin bug and nothing fails.
+// renders inset instead. It looks like a margin bug and nothing fails. That is
+// why each block is spread into its component rather than wrapped in a marker
+// div: `_content_source` rides along in the props, and the adapter puts the
+// marker on the block's own root element (src/lib/tina/block-field.ts).
 //
 // A cinematic hero is the one thing that sits *outside* the canvas, as a sibling
 // before it. `.hero` does its own breakout — `width: 100vw; margin-inline:
@@ -20,11 +23,9 @@ import { tinaComponents } from './registry'
 // grid area rather than the viewport, so the hero lands off-centre and narrow.
 // Outside, it's the same DOM the hand-built home page had.
 //
-// So `data-tina-field` goes *on* the element, never on a wrapper around it: the
-// hero passes its marker down to whichever root it renders, and each block sets
-// its own (see src/lib/tina/block-field.ts). There is deliberately no marker for
-// the body as a whole — a wrapper is the only way to express one, and per-block
-// markers are better anyway, since clicking a block opens that block's form.
+// There is deliberately no marker for the body as a whole — a wrapper is the only
+// way to express one, and per-block markers are better anyway, since clicking a
+// block opens that block's form.
 type Props = { data: Record<string, any> }
 const { data } = Astro.props
 const hero = data.hero ?? {}
@@ -32,10 +33,21 @@ const hero = data.hero ?? {}
 // Which kind of hero the editor chose. A plain field, so it arrives verbatim.
 const variant = hero.variant || 'photo'
 const cinematic = variant === 'cinematic'
+
+// A block whose template has no component is a developer mistake — the palette in
+// tina/templates.mjs and the map in registry.ts have to agree. Fail the build
+// rather than drop the block silently off the page.
+// `any` for the component: see the note on BlockComponent in registry.ts.
+type Rendered = { Component: any; block: Record<string, any> }
+const blocks: Rendered[] = (data.blocks ?? []).filter(Boolean).map((block: Record<string, any>) => {
+  const Component = blockComponent(block.__typename)
+  if (!Component) throw new Error(`No component registered for block ${block.__typename}`)
+  return { Component, block }
+})
 ---
 
 {cinematic && <PageHero {...hero} variant={variant} title={data.title} tinaField={tinaField(data, 'hero')} />}
 <div class="canvas">
   {!cinematic && <PageHero {...hero} variant={variant} title={data.title} tinaField={tinaField(data, 'hero')} />}
-  <TinaMarkdown content={data.content} components={tinaComponents} />
+  {blocks.map(({ Component, block }) => <Component {...block} />)}
 </div>

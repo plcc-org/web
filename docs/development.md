@@ -33,7 +33,7 @@ worth preserving, not an accident.
 src/
   assets/images/    Photo library (source for the <Image> pipeline; CMS uploads land here)
   components/       Astro components (Hero, Split, MomentsSection, cards, …)
-    blocks/mdx/     Thin wrappers exposing site components to CMS-authored MDX
+    blocks/mdx/     Thin wrappers exposing site components to the CMS block palette
     chrome/         Header + footer, full and slim (BaseLayout's `chrome` prop)
     sunday-links/   The /links/ page's week, groups and link rows
   config/
@@ -272,10 +272,11 @@ point of having a CMS. This is Tina's dependency graph to fix, not ours.
 
 ### CMS-built pages
 
-Pages in the `pages` collection are **MDX files**, not block lists: a structured hero in
-frontmatter plus a body the editor composes in the CMS's rich-text editor, inserting
-components. `src/pages/[...slug].astro` fetches each page through the CMS's GraphQL client
-and renders the body with `<TinaMarkdown>`, using the component map in
+Pages in the `pages` collection are **`.mdx` files whose content is all frontmatter**: a
+structured hero, plus a `blocks` list the editor composes from the palette. Nothing lives
+below the frontmatter fence — a page is assembled from components, never typed into.
+`src/pages/[...slug].astro` fetches each page through the CMS's GraphQL client and
+`PageBody` maps each block to a component through
 `src/components/blocks/tina/registry.ts`. The filename is the URL slug
 (`src/content/pages/church-life.mdx` → `/church-life/`). Drafts render in dev and are
 excluded from production builds.
@@ -286,13 +287,12 @@ Adding a block type means touching **two** places, and they have to agree — se
 1. `tina/templates.mjs` — the editor UI for the block.
 2. `src/components/blocks/tina/registry.ts` — **the key must match the template `name`.**
    A block with prose inside needs an adapter in `src/components/blocks/tina/`, because its
-   body arrives as a `children` rich-text tree rather than a slot; a self-closing block can
+   prose arrives as a `body` rich-text tree rather than a slot; a self-closing block can
    reuse its existing wrapper in `src/components/blocks/mdx/` or map straight to the real
    component (`Callout` and `Roadmap` do exactly that).
 
-If a name isn't in the registry, the renderer emits a visible red placeholder rather than
-failing the build, so a mismatch between (1) and (2) shows up on the page, not in CI —
-check both.
+If a name isn't in the registry, `PageBody` throws at build time, so a mismatch between (1)
+and (2) fails CI rather than dropping the block silently off the page.
 
 ---
 
