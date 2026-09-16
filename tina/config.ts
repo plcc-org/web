@@ -220,6 +220,11 @@ export default defineConfig({
             type: 'object',
             list: true,
             templates,
+            // The palette opens as a grid of thumbnails rather than a list of names —
+            // each template carries a `previewSrc` picture of itself (see `preview()` in
+            // templates.mjs). Eighteen labels take reading; eighteen pictures don't, and
+            // the labels are still there under them.
+            ui: { visualSelector: true },
             // A page is assembled, never typed into: every top-level thing on it is one of
             // the blocks in `templates`, and prose lives inside a block's own rich-text
             // field rather than loose on the page. A `rich-text` body would offer a prose
