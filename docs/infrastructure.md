@@ -85,6 +85,46 @@ below are recorded here because nothing in the repo can assert them:
 `astro.config.mjs`, and Workers Builds only takes build variables from the dashboard.
 `resolveDeployEnv()` warns when it has to guess — see `src/config/site.ts`.
 
+### A branch build is not a main build
+
+`TINA_TOKEN` is stored as a **secret**, and a build off a branch does not appear to get
+it — its log says `build: no TinaCloud credentials — emitting a local client`, while the
+deploy off `main` has them. The plain variables (`PUBLIC_TINA_CLIENT_ID`,
+`TINA_PUBLISH_ADMIN`, `DEPLOY_ENV`) arrive either way.
+
+So that line in a **branch** build's log is expected, not a misconfiguration. On `main` it
+would be a real problem, and the one-line check that it isn't happening needs no dashboard:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' -X POST \
+  -H 'Content-Type: application/x-tina-preview+json' \
+  'https://plcc.dev/tina-island/page?relativePath=visit.mdx'
+```
+
+`200` means the deploy has working credentials — the island route only renders when
+`scripts/build.mjs` took its `--content=local` branch, which needs both halves. A bare
+`GET` returns `405` by design and tells you nothing.
+
+It also decides which build path runs: without the token `build.mjs` passes `--local`,
+which starts the local datalayer — the step below that can stall. Branch builds take that
+path; `main` doesn't.
+
+### A build stuck at "Indexing local files"
+
+Two documented causes land there, and both are pinned in the repo: a heap under 4 GB
+(`scripts/build.mjs` forces 4096 MB) and Node 25 (`.node-version` pins 22). If a build
+hangs there with **both already correct**, it is a Cloudflare-side stall, not this repo —
+one sat for 24 minutes and then failed on its own.
+
+The tell is in the _other_ commits: Workers Builds runs one build at a time per Worker, so
+a hung build holds the queue and later commits get **no Workers check at all** — not a
+queued one, simply absent. GitHub's `verify` on the same commit passing in ~2 minutes
+confirms it, since it runs the same build.
+
+Cancel the stuck build in the dashboard; the queue releases and the waiting commits build
+immediately. `wrangler` can't do it — its OAuth token is rejected by the builds API
+(`10000 Authentication error`), so this one needs the dashboard.
+
 ---
 
 ## Optional: run with Apple `container` (macOS)
