@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-09-16T16:09:50.377Z",
+  "capturedAt": "2026-09-17T16:16:24.047Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-16T07%3A00%3A00Z&where[starts_at][lte]=2026-11-11T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-17T07%3A00%3A00Z&where[starts_at][lte]=2026-11-12T07%3A00%3A00Z"
   },
   "data": [
     {
@@ -3045,6 +3045,48 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611764"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "171689926",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/171689926",
+        "compact_recurrence_description": "The second Wednesday of every month",
+        "ends_at": "2026-11-12T01:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Dementia/Alzheimer's Family Support Group",
+        "published_ends_at": "2026-11-12T00:00:00Z",
+        "published_starts_at": "2026-11-11T22:30:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-11-11T21:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/14317271"
+          },
+          "data": {
+            "type": "Event",
+            "id": "14317271"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/171689926/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151451"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/171689926"
+      }
     }
   ],
   "included": [
@@ -3484,8 +3526,8 @@
     }
   ],
   "meta": {
-    "total_count": 67,
-    "count": 67,
+    "total_count": 68,
+    "count": 68,
     "can_order_by": [
       "created_at",
       "updated_at",
