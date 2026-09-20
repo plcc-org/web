@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-09-19T15:23:36.244Z",
+  "capturedAt": "2026-09-20T15:28:51.461Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-19T07%3A00%3A00Z&where[starts_at][lte]=2026-11-14T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-20T07%3A00%3A00Z&where[starts_at][lte]=2026-11-15T07%3A00%3A00Z"
   },
   "data": [
     {
@@ -3087,6 +3087,43 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/234583000"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "233613248",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233613248",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-11-14T21:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Kris Kringle's Workshop: A Christmas Craft Event!",
+        "published_ends_at": "2026-11-14T20:00:00Z",
+        "published_starts_at": "2026-11-14T18:00:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-11-14T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22324246"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22324246"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233613248/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233613248"
+      }
     }
   ],
   "included": [
@@ -3523,11 +3560,27 @@
         "self": "https://api.planningcenteronline.com/calendar/v2/events/19716517",
         "html": "https://calendar.planningcenteronline.com/events/19716517"
       }
+    },
+    {
+      "type": "Event",
+      "id": "22324246",
+      "attributes": {
+        "description": "<div>\n  Are your kids looking for gift ideas for Christmas?! Come to our Christmas Craft event on November 21. We will have multiple stations where kids can make Christmas gifts for their loved ones. We will have several gift ideas to choose from and each gift is $5 or less!\n</div>\n",
+        "image_url": null,
+        "name": "Kris Kringle's Workshop: A Christmas Craft Event!",
+        "registration_url": null,
+        "summary": "Are your kids looking for gift ideas for Christmas?! Come to our Christmas Craft event on November 21. We will have multiple stations where kids can make Christmas gifts for their loved ones. We will have several gift ideas to choose from and each gift is $5 or less!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22324246",
+        "html": "https://calendar.planningcenteronline.com/events/22324246"
+      }
     }
   ],
   "meta": {
-    "total_count": 68,
-    "count": 68,
+    "total_count": 69,
+    "count": 69,
     "can_order_by": [
       "created_at",
       "updated_at",
