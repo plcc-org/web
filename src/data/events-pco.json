@@ -1,129 +1,9 @@
 {
-  "capturedAt": "2026-09-20T15:28:51.461Z",
+  "capturedAt": "2026-09-21T17:53:42.660Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-20T07%3A00%3A00Z&where[starts_at][lte]=2026-11-15T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-21T07%3A00%3A00Z&where[starts_at][lte]=2026-11-16T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "167712458",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/167712458",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-09-20T18:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Sunday Service",
-        "published_ends_at": "2026-09-20T18:00:00Z",
-        "published_starts_at": "2026-09-20T17:00:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-09-20T17:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
-          },
-          "data": {
-            "type": "Event",
-            "id": "4368161"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/167712458/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241928"
-            },
-            {
-              "type": "Tag",
-              "id": "241940"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/167712458"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "233922289",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233922289",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-09-20T20:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Practice of Prayer Group",
-        "published_ends_at": "2026-09-20T20:00:00Z",
-        "published_starts_at": "2026-09-20T18:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-09-20T18:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22361812"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22361812"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922289/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233922289"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "235076270",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076270",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-09-21T03:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Faithful Finances Group",
-        "published_ends_at": "2026-09-21T03:00:00Z",
-        "published_starts_at": "2026-09-21T01:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-09-21T01:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22492719"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076270/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076270"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "167801643",
@@ -3124,87 +3004,92 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233613248"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "172172089",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/172172089",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-11-15T19:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Sunday Service",
+        "published_ends_at": "2026-11-15T19:00:00Z",
+        "published_starts_at": "2026-11-15T18:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-11-15T18:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/4368161"
+          },
+          "data": {
+            "type": "Event",
+            "id": "4368161"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/172172089/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241928"
+            },
+            {
+              "type": "Tag",
+              "id": "241940"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/172172089"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "235076278",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076278",
+        "compact_recurrence_description": "Every Sunday",
+        "ends_at": "2026-11-16T04:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Faithful Finances Group",
+        "published_ends_at": "2026-11-16T04:00:00Z",
+        "published_starts_at": "2026-11-16T02:30:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-11-16T02:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22492719"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076278/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076278"
+      }
     }
   ],
   "included": [
-    {
-      "type": "Event",
-      "id": "4368161",
-      "attributes": {
-        "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
-        "image_url": null,
-        "name": "Sunday Service",
-        "registration_url": null,
-        "summary": "We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/4368161",
-        "html": "https://calendar.planningcenteronline.com/events/4368161"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241928",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#F6E7BB",
-        "created_at": "2023-05-21T17:26:49Z",
-        "name": "Worship Service",
-        "position": 77824,
-        "updated_at": "2026-07-11T04:28:33Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241928"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241940",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#C69CE8",
-        "created_at": "2023-05-21T17:38:22Z",
-        "name": "Worship",
-        "position": 98304,
-        "updated_at": "2026-07-11T04:28:25Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241940"
-      }
-    },
-    {
-      "type": "Event",
-      "id": "22361812",
-      "attributes": {
-        "description": "<div>\n  <div>The Practice of Prayer will help you learn to set aside dedicated time to intentionally be with God, in order to become like him and partner with him in the world.</div>\n</div>\n",
-        "image_url": null,
-        "name": "Practice of Prayer Group",
-        "registration_url": null,
-        "summary": "The Practice of Prayer will help you learn to set aside dedicated time to intentionally be with God, in order to become like him and partner with him in the world.",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/22361812",
-        "html": "https://calendar.planningcenteronline.com/events/22361812"
-      }
-    },
-    {
-      "type": "Event",
-      "id": "22492719",
-      "attributes": {
-        "description": "<div>\n  <div>Money doesn’t have to be stressful or complicated. Financial Peace University is a biblically based course that offers practical, simple steps for building healthy financial habits—whether you’re single, married, young, or experienced with money. The video-based course is facilitated by Loren Gustafson, who brings extensive experience in financial services, technology, and higher education. Topics covered in the 9 sessions:</div><ul><li>Saving strategies</li><li>Relating to money</li><li>Cash flow planning</li><li>Getting out of debt</li><li>Using Credit</li><li>Insurance</li><li>Negotiating</li><li>Investing</li><li>Giving</li></ul><div>This group will meet for 90 minutes per session, and participants are strongly encouraged (but not required) to attend all sessions. Sign up today and begin making peace with your finances!&nbsp;</div>\n</div>\n",
-        "image_url": null,
-        "name": "Faithful Finances Group",
-        "registration_url": null,
-        "summary": "Money doesn’t have to be stressful or complicated. Financial Peace University is a biblically based course that offers practical, simple steps for building healthy financial habits—whether you’re single, married, young, or experienced with money. The video-based course is facilitated by Loren Gustafson, who brings extensive experience in financial services, technology, and higher education.",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/22492719",
-        "html": "https://calendar.planningcenteronline.com/events/22492719"
-      }
-    },
     {
       "type": "Event",
       "id": "6719956",
@@ -3422,6 +3307,52 @@
     },
     {
       "type": "Event",
+      "id": "4368161",
+      "attributes": {
+        "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
+        "image_url": null,
+        "name": "Sunday Service",
+        "registration_url": null,
+        "summary": "We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/4368161",
+        "html": "https://calendar.planningcenteronline.com/events/4368161"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241928",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F6E7BB",
+        "created_at": "2023-05-21T17:26:49Z",
+        "name": "Worship Service",
+        "position": 77824,
+        "updated_at": "2026-07-11T04:28:33Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241928"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241940",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#C69CE8",
+        "created_at": "2023-05-21T17:38:22Z",
+        "name": "Worship",
+        "position": 98304,
+        "updated_at": "2026-07-11T04:28:25Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241940"
+      }
+    },
+    {
+      "type": "Event",
       "id": "21647675",
       "attributes": {
         "description": "<div>\n  <div>The PLCC Annual Meeting &amp; Ministry Fair is an opportunity to remember and celebrate the last year of ministry and look forward to the coming year! We'll have food and fun for the whole PLCC family, and members will vote on leadership positions. Whether you've attended for 40 years or 40 minutes, we invite you to join us!</div>\n</div>\n",
@@ -3434,6 +3365,22 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/events/21647675",
         "html": "https://calendar.planningcenteronline.com/events/21647675"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "22492719",
+      "attributes": {
+        "description": "<div>\n  <div>Money doesn’t have to be stressful or complicated. Financial Peace University is a biblically based course that offers practical, simple steps for building healthy financial habits—whether you’re single, married, young, or experienced with money. The video-based course is facilitated by Loren Gustafson, who brings extensive experience in financial services, technology, and higher education. Topics covered in the 9 sessions:</div><ul><li>Saving strategies</li><li>Relating to money</li><li>Cash flow planning</li><li>Getting out of debt</li><li>Using Credit</li><li>Insurance</li><li>Negotiating</li><li>Investing</li><li>Giving</li></ul><div>This group will meet for 90 minutes per session, and participants are strongly encouraged (but not required) to attend all sessions. Sign up today and begin making peace with your finances!&nbsp;</div>\n</div>\n",
+        "image_url": null,
+        "name": "Faithful Finances Group",
+        "registration_url": null,
+        "summary": "Money doesn’t have to be stressful or complicated. Financial Peace University is a biblically based course that offers practical, simple steps for building healthy financial habits—whether you’re single, married, young, or experienced with money. The video-based course is facilitated by Loren Gustafson, who brings extensive experience in financial services, technology, and higher education.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22492719",
+        "html": "https://calendar.planningcenteronline.com/events/22492719"
       }
     },
     {
@@ -3465,6 +3412,22 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241931"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "22361812",
+      "attributes": {
+        "description": "<div>\n  <div>The Practice of Prayer will help you learn to set aside dedicated time to intentionally be with God, in order to become like him and partner with him in the world.</div>\n</div>\n",
+        "image_url": null,
+        "name": "Practice of Prayer Group",
+        "registration_url": null,
+        "summary": "The Practice of Prayer will help you learn to set aside dedicated time to intentionally be with God, in order to become like him and partner with him in the world.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22361812",
+        "html": "https://calendar.planningcenteronline.com/events/22361812"
       }
     },
     {
@@ -3579,8 +3542,8 @@
     }
   ],
   "meta": {
-    "total_count": 69,
-    "count": 69,
+    "total_count": 68,
+    "count": 68,
     "can_order_by": [
       "created_at",
       "updated_at",
