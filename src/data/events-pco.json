@@ -1,55 +1,9 @@
 {
-  "capturedAt": "2026-09-22T16:18:41.060Z",
+  "capturedAt": "2026-09-23T16:08:11.050Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-22T07%3A00%3A00Z&where[starts_at][lte]=2026-11-17T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-23T07%3A00%3A00Z&where[starts_at][lte]=2026-11-18T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "233611757",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233611757",
-        "compact_recurrence_description": "Every Tuesday",
-        "ends_at": "2026-09-23T03:30:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Pine Lake Youth  ",
-        "published_ends_at": "2026-09-23T03:00:00Z",
-        "published_starts_at": "2026-09-23T01:00:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-09-22T23:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22324060"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22324060"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611757/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241924"
-            },
-            {
-              "type": "Tag",
-              "id": "241937"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611757"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "234582993",
@@ -186,43 +140,6 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227517301"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "235076271",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076271",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-09-28T03:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Faithful Finances Group",
-        "published_ends_at": "2026-09-28T03:00:00Z",
-        "published_starts_at": "2026-09-28T01:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-09-28T01:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22492719"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076271/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076271"
       }
     },
     {
@@ -507,43 +424,6 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/168875348"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "235076272",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076272",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-10-05T03:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Faithful Finances Group",
-        "published_ends_at": "2026-10-05T03:00:00Z",
-        "published_starts_at": "2026-10-05T01:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-10-05T01:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22492719"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076272/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076272"
       }
     },
     {
@@ -878,43 +758,6 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/169504531"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "235076273",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076273",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-10-12T03:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Faithful Finances Group",
-        "published_ends_at": "2026-10-12T03:00:00Z",
-        "published_starts_at": "2026-10-12T01:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-10-12T01:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22492719"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076273/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076273"
       }
     },
     {
@@ -1291,43 +1134,6 @@
     },
     {
       "type": "EventInstance",
-      "id": "235076274",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076274",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-10-19T03:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Faithful Finances Group",
-        "published_ends_at": "2026-10-19T03:00:00Z",
-        "published_starts_at": "2026-10-19T01:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-10-19T01:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22492719"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076274/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076274"
-      }
-    },
-    {
-      "type": "EventInstance",
       "id": "170075834",
       "attributes": {
         "all_day_event": false,
@@ -1662,43 +1468,6 @@
     },
     {
       "type": "EventInstance",
-      "id": "235076275",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076275",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-10-26T03:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Faithful Finances Group",
-        "published_ends_at": "2026-10-26T03:00:00Z",
-        "published_starts_at": "2026-10-26T01:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-10-26T01:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22492719"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076275/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076275"
-      }
-    },
-    {
-      "type": "EventInstance",
       "id": "226271452",
       "attributes": {
         "all_day_event": false,
@@ -2021,43 +1790,6 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/171026844"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "235076276",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076276",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-11-02T04:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Faithful Finances Group",
-        "published_ends_at": "2026-11-02T04:00:00Z",
-        "published_starts_at": "2026-11-02T02:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-11-02T02:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22492719"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076276/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076276"
       }
     },
     {
@@ -2392,43 +2124,6 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/171550966"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "235076277",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076277",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-11-09T04:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Faithful Finances Group",
-        "published_ends_at": "2026-11-09T04:00:00Z",
-        "published_starts_at": "2026-11-09T02:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-11-09T02:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22492719"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076277/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076277"
       }
     },
     {
@@ -2796,43 +2491,6 @@
     },
     {
       "type": "EventInstance",
-      "id": "235076278",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/235076278",
-        "compact_recurrence_description": "Every Sunday",
-        "ends_at": "2026-11-16T04:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Faithful Finances Group",
-        "published_ends_at": "2026-11-16T04:00:00Z",
-        "published_starts_at": "2026-11-16T02:30:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-11-16T02:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22492719"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22492719"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076278/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/235076278"
-      }
-    },
-    {
-      "type": "EventInstance",
       "id": "172254243",
       "attributes": {
         "all_day_event": false,
@@ -2976,55 +2634,101 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992318"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "233611765",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233611765",
+        "compact_recurrence_description": "Every Tuesday",
+        "ends_at": "2026-11-18T04:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Pine Lake Youth  ",
+        "published_ends_at": "2026-11-18T04:00:00Z",
+        "published_starts_at": "2026-11-18T02:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-11-18T00:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22324060"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22324060"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611765/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241924"
+            },
+            {
+              "type": "Tag",
+              "id": "241937"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611765"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "227553478",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227553478",
+        "compact_recurrence_description": "The first and third Tuesday of every month",
+        "ends_at": "2026-11-18T03:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Tuesdays Together",
+        "published_ends_at": "2026-11-18T03:00:00Z",
+        "published_starts_at": "2026-11-18T02:00:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-11-18T02:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647793"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21647793"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227553478/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241924"
+            },
+            {
+              "type": "Tag",
+              "id": "426752"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227553478"
+      }
     }
   ],
   "included": [
-    {
-      "type": "Event",
-      "id": "22324060",
-      "attributes": {
-        "description": "<div>\n  <div>Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.&nbsp; At Pine Lake Youth every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.&nbsp; This includes opportunities for gathering on Tuesday nights as a youth group, on Sunday mornings serving and assisting in the service, participating on leadership teams, life groups, events, and other community activities.&nbsp; We seek to welcome well, have fun well, worship well, and care well!&nbsp;</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1790841599&key=uploads%2F65711%2Fnjvvjva9gb6wiighp4dvibbj42d4&thumb=960x540%23&signature=73d8e61d58d8bdf7e5896fd435140769e001907b0af3c9afa140a05859351be1",
-        "name": "Pine Lake Youth  ",
-        "registration_url": null,
-        "summary": "Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.  Every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.  This includes opportunities for gathering on Tuesday nights, serving on Sunday mornings as well as other community activities. We seek to welcome well, have fun well, worship well, and care well! ",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/22324060",
-        "html": "https://calendar.planningcenteronline.com/events/22324060"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241924",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#CBEAFA",
-        "created_at": "2023-05-21T17:26:00Z",
-        "name": "Meal or Dessert",
-        "position": -4096,
-        "updated_at": "2023-05-21T17:30:57Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241924"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241937",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#FCDCCA",
-        "created_at": "2023-05-21T17:37:47Z",
-        "name": "Youth",
-        "position": 49152,
-        "updated_at": "2023-10-19T22:02:28Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241937"
-      }
-    },
     {
       "type": "Event",
       "id": "22432056",
@@ -3165,22 +2869,6 @@
     },
     {
       "type": "Event",
-      "id": "22492719",
-      "attributes": {
-        "description": "<div>\n  <div>Money doesn’t have to be stressful or complicated. Financial Peace University is a biblically based course that offers practical, simple steps for building healthy financial habits—whether you’re single, married, young, or experienced with money. The video-based course is facilitated by Loren Gustafson, who brings extensive experience in financial services, technology, and higher education. Topics covered in the 9 sessions:</div><ul><li>Saving strategies</li><li>Relating to money</li><li>Cash flow planning</li><li>Getting out of debt</li><li>Using Credit</li><li>Insurance</li><li>Negotiating</li><li>Investing</li><li>Giving</li></ul><div>This group will meet for 90 minutes per session, and participants are strongly encouraged (but not required) to attend all sessions. Sign up today and begin making peace with your finances!&nbsp;</div>\n</div>\n",
-        "image_url": null,
-        "name": "Faithful Finances Group",
-        "registration_url": null,
-        "summary": "Money doesn’t have to be stressful or complicated. Financial Peace University is a biblically based course that offers practical, simple steps for building healthy financial habits—whether you’re single, married, young, or experienced with money. The video-based course is facilitated by Loren Gustafson, who brings extensive experience in financial services, technology, and higher education.",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/22492719",
-        "html": "https://calendar.planningcenteronline.com/events/22492719"
-      }
-    },
-    {
-      "type": "Event",
       "id": "21468765",
       "attributes": {
         "description": "<div>\n  <div><strong>TWO WAYS TO PARTICIPATE!</strong></div><ol><li><strong>MomCo Monday Meetups (full membership)</strong></li><li><strong>MomCo Social Meetups only</strong></li></ol><div>Here at MomCo at Pine Lake, we gather and support moms. The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together. We believe in the simple but revolutionary idea that remarkable things happen when moms come together. If you are a mom with a child at home, of any age, we have a place for you!<br><br><a href=\"https://plcc.churchcenter.com/calendar?category=MomCo%2520%28The%2520Mom%2520Community%29&amp;view=list\"><strong>See upcoming dates</strong></a></div>\n</div>\n",
@@ -3285,6 +2973,52 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/events/20815103",
         "html": "https://calendar.planningcenteronline.com/events/20815103"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "22324060",
+      "attributes": {
+        "description": "<div>\n  <div>Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.&nbsp; At Pine Lake Youth every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.&nbsp; This includes opportunities for gathering on Tuesday nights as a youth group, on Sunday mornings serving and assisting in the service, participating on leadership teams, life groups, events, and other community activities.&nbsp; We seek to welcome well, have fun well, worship well, and care well!&nbsp;</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1790841599&key=uploads%2F65711%2Fnjvvjva9gb6wiighp4dvibbj42d4&thumb=960x540%23&signature=73d8e61d58d8bdf7e5896fd435140769e001907b0af3c9afa140a05859351be1",
+        "name": "Pine Lake Youth  ",
+        "registration_url": null,
+        "summary": "Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.  Every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.  This includes opportunities for gathering on Tuesday nights, serving on Sunday mornings as well as other community activities. We seek to welcome well, have fun well, worship well, and care well! ",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22324060",
+        "html": "https://calendar.planningcenteronline.com/events/22324060"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241924",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#CBEAFA",
+        "created_at": "2023-05-21T17:26:00Z",
+        "name": "Meal or Dessert",
+        "position": -4096,
+        "updated_at": "2023-05-21T17:30:57Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241924"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241937",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#FCDCCA",
+        "created_at": "2023-05-21T17:37:47Z",
+        "name": "Youth",
+        "position": 49152,
+        "updated_at": "2023-10-19T22:02:28Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241937"
       }
     },
     {
@@ -3415,8 +3149,8 @@
     }
   ],
   "meta": {
-    "total_count": 65,
-    "count": 65,
+    "total_count": 58,
+    "count": 58,
     "can_order_by": [
       "created_at",
       "updated_at",
