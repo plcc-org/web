@@ -29,80 +29,76 @@ const leaders = await Promise.all(
     <PageIntro eyebrow="About" title="Leadership" subhead="Our pastors and staff" />
     <section class="leader-section">
       <div class="leader-grid">
-        {
-          leaders.map((leader) => (
-            /* Heading-wrapping-a-button, per the ARIA Authoring Practices
+        {leaders.map((leader) => (
+          /* Heading-wrapping-a-button, per the ARIA Authoring Practices
                disclosure pattern. The names have to be headings or the roster
                contributes nothing to the document outline and heading
                navigation skips the page. A heading can't live *inside* a
                <button> (phrasing content only), so it wraps it — which makes
                the h2 the grid item, hence width:100% on the button. */
-            <h2 class="leader-card-heading">
-              <button
-                type="button"
-                class="leader-card"
-                data-leader={leader.id}
-                aria-expanded="false"
-                aria-controls={`detail-${leader.id}`}
-              >
-                <span class="leader-card__photo" data-portrait>
-                  <span class="media__frame ratio-4x5">
-                    <Photo
-                      image={leader.portrait}
-                      alt={leader.portraitAlt}
-                      class="media__img media__img--cover"
-                      widths={[280, 560]}
-                      sizes="(max-width: 600px) 100vw, 360px"
-                    />
-                  </span>
-                </span>
-                <span class="leader-card__name">{leader.data.name}</span>
-                <span class="leader-card__title">{leader.data.title}</span>
-              </button>
-            </h2>
-          ))
-        }
-      </div>
-
-      <div class="leader-focus">
-        {
-          leaders.map((leader) => (
-            <article
-              class="leader-detail"
-              id={`detail-${leader.id}`}
+          <h2 class="leader-card-heading">
+            <button
+              type="button"
+              class="leader-card"
               data-leader={leader.id}
-              aria-labelledby={`detail-${leader.id}-name`}
-              hidden
+              aria-expanded="false"
+              aria-controls={`detail-${leader.id}`}
             >
-              <div class="leader-detail__photo" data-portrait>
-                <div class="media__frame ratio-4x5">
+              <span class="leader-card__photo" data-portrait>
+                <span class="media__frame ratio-4x5">
                   <Photo
                     image={leader.portrait}
                     alt={leader.portraitAlt}
                     class="media__img media__img--cover"
-                    widths={[480, 960]}
-                    sizes="(max-width: 600px) 100vw, 420px"
+                    widths={[280, 560]}
+                    sizes="(max-width: 600px) 100vw, 360px"
                   />
-                </div>
+                </span>
+              </span>
+              <span class="leader-card__name">{leader.data.name}</span>
+              <span class="leader-card__title">{leader.data.title}</span>
+            </button>
+          </h2>
+        ))}
+      </div>
+
+      <div class="leader-focus">
+        {leaders.map((leader) => (
+          <article
+            class="leader-detail"
+            id={`detail-${leader.id}`}
+            data-leader={leader.id}
+            aria-labelledby={`detail-${leader.id}-name`}
+            hidden
+          >
+            <div class="leader-detail__photo" data-portrait>
+              <div class="media__frame ratio-4x5">
+                <Photo
+                  image={leader.portrait}
+                  alt={leader.portraitAlt}
+                  class="media__img media__img--cover"
+                  widths={[480, 960]}
+                  sizes="(max-width: 600px) 100vw, 420px"
+                />
               </div>
-              <div class="leader-detail__body">
-                <h2 id={`detail-${leader.id}-name`} class="leader-card__name leader-detail__name">
-                  {leader.data.name}
-                </h2>
-                <p class="leader-card__title leader-detail__title">{leader.data.title}</p>
-                <div class="leader-detail__prose measure" set:html={renderMarkdown(leader.data.bio)} />
-                {leader.data.link?.href && (
-                  <p class="leader-detail__meta">
-                    <a href={resolveHref(leader.data.link.href)}>{leader.data.link.label}</a>
-                  </p>
-                )}
-                <button type="button" class="leader-detail__close" aria-label="Back to all staff">
-                  <span aria-hidden="true">←</span> All staff
-                </button>
-              </div>
-            </article>
-          ))
-        }
+            </div>
+            <div class="leader-detail__body">
+              <h2 id={`detail-${leader.id}-name`} class="leader-card__name leader-detail__name">
+                {leader.data.name}
+              </h2>
+              <p class="leader-card__title leader-detail__title">{leader.data.title}</p>
+              <div class="leader-detail__prose measure" set:html={renderMarkdown(leader.data.bio)} />
+              {leader.data.link?.href && (
+                <p class="leader-detail__meta">
+                  <a href={resolveHref(leader.data.link.href)}>{leader.data.link.label}</a>
+                </p>
+              )}
+              <button type="button" class="leader-detail__close" aria-label="Back to all staff">
+                <span aria-hidden="true">←</span> All staff
+              </button>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   </div>

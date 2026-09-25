@@ -27,29 +27,25 @@ const {
 const tiles = images
 ---
 
-<section data-tina-field={tinaField} {...reveal && { 'data-reveal': true }} class={className}>
-  {
-    (eyebrow || heading) && (
-      <div class="moments__head">
-        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-        {heading && <h2 class="moments__heading">{heading}</h2>}
-      </div>
-    )
-  }
+<section data-tina-field={tinaField} {...(reveal && { 'data-reveal': true })} class={className}>
+  {(eyebrow || heading) && (
+    <div class="moments__head">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      {heading && <h2 class="moments__heading">{heading}</h2>}
+    </div>
+  )}
 
   <div class:list={['moments-grid', reveal && 'reveal-staggered']}>
-    {
-      tiles.map((tile, i) => (
-        <figure class:list={['moments__tile', i % 2 === 1 && 'moments__tile--offset']}>
-          <Photo
-            image={tile.image}
-            alt={tile.alt}
-            class="moments__img"
-            widths={[400, 700, 1080]}
-            sizes="(max-width: 768px) 50vw, 33vw"
-          />
-        </figure>
-      ))
-    }
+    {tiles.map((tile, i) => (
+      <figure class:list={['moments__tile', i % 2 === 1 && 'moments__tile--offset']}>
+        <Photo
+          image={tile.image}
+          alt={tile.alt}
+          class="moments__img"
+          widths={[400, 700, 1080]}
+          sizes="(max-width: 768px) 50vw, 33vw"
+        />
+      </figure>
+    ))}
   </div>
 </section>

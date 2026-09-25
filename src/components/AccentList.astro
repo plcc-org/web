@@ -22,12 +22,10 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4'
 ---
 
 <ul class:list={['accent-list', `accent-list--${columns}`]}>
-  {
-    items.map((item) => (
-      <li class="accent-card">
-        <Heading class="accent-card__title">{item.title}</Heading>
-        <p>{item.body}</p>
-      </li>
-    ))
-  }
+  {items.map((item) => (
+    <li class="accent-card">
+      <Heading class="accent-card__title">{item.title}</Heading>
+      <p>{item.body}</p>
+    </li>
+  ))}
 </ul>

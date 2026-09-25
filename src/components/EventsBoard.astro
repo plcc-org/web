@@ -38,51 +38,44 @@ const empty = events.length === 0
       Unless another place is named, everything is at our campus —{' '}
       <a class="events-place__address" href={church.mapUrl} rel="noopener" target="_blank">
         {church.address.street}, {church.address.locality}
-      </a>.
+      </a>
+      .
     </p>
   </PageIntro>
 
-  {
-    empty && (
-      <section>
-        <h2>Nothing on the calendar</h2>
-        <p class="events-empty">There’s nothing dated for the next eight weeks.</p>
-        <p>
-          <a class="btn btn--ghost" href={withBase('visit/')}>
-            Plan a visit <span aria-hidden="true">→</span>
-          </a>
-        </p>
-      </section>
-    )
-  }
+  {empty && (
+    <section>
+      <h2>Nothing on the calendar</h2>
+      <p class="events-empty">There’s nothing dated for the next eight weeks.</p>
+      <p>
+        <a class="btn btn--ghost" href={withBase('visit/')}>
+          Plan a visit <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    </section>
+  )}
 
-  {
-    thisWeek.length > 0 && (
-      <section>
-        <h2>This week</h2>
-        <ThisWeekPanel events={thisWeek} />
-      </section>
-    )
-  }
+  {thisWeek.length > 0 && (
+    <section>
+      <h2>This week</h2>
+      <ThisWeekPanel events={thisWeek} />
+    </section>
+  )}
 
-  {
-    oneOffs.length > 0 && (
-      <section>
-        <h2>Coming up</h2>
-        <div class="event-grid">
-          {oneOffs.map((s) => (
-            <EventCard series={s} />
-          ))}
-        </div>
-      </section>
-    )
-  }
+  {oneOffs.length > 0 && (
+    <section>
+      <h2>Coming up</h2>
+      <div class="event-grid">
+        {oneOffs.map((s) => (
+          <EventCard series={s} />
+        ))}
+      </div>
+    </section>
+  )}
 
-  {
-    rhythms.length > 0 && (
-      <Band tone="sand" heading="Regular rhythms">
-        <WeekRhythm series={rhythms} />
-      </Band>
-    )
-  }
+  {rhythms.length > 0 && (
+    <Band tone="sand" heading="Regular rhythms">
+      <WeekRhythm series={rhythms} />
+    </Band>
+  )}
 </div>

@@ -17,16 +17,14 @@ const logoImg = logo ? ((await imageFromRef(logo)?.())?.default as ImageMetadata
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
       <TinaChildren content={body as never} />
     </div>
-    {
-      logoImg && (
-        <Photo
-          image={logoImg}
-          alt={logoAlt || ''}
-          class="aside-note__logo"
-          widths={[260, 520]}
-          sizes="(max-width: 640px) 60vw, 220px"
-        />
-      )
-    }
+    {logoImg && (
+      <Photo
+        image={logoImg}
+        alt={logoAlt || ''}
+        class="aside-note__logo"
+        widths={[260, 520]}
+        sizes="(max-width: 640px) 60vw, 220px"
+      />
+    )}
   </div>
 </section>

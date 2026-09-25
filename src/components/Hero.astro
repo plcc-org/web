@@ -35,12 +35,10 @@ const usePhotos = heroPanes.length > 0
 const still = useVideo ? images[0] : undefined
 ---
 
-{
-  /* Arm the staggered entrance pre-paint (only when motion is welcome), so the
+{/* Arm the staggered entrance pre-paint (only when motion is welcome), so the
    content never flashes visible-then-hidden and stays fully visible without JS
    or under reduced motion. is:inline runs synchronously, before the hero paints;
-   a normal hoisted <script> would run too late. */
-}
+   a normal hoisted <script> would run too late. */}
 <script is:inline>
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('hero-enter')
@@ -49,42 +47,36 @@ const still = useVideo ? images[0] : undefined
 
 <section data-tina-field={tinaField} class:list={['hero', { 'hero--has-video': useVideo }]} data-hero>
   <div class="hero__media">
-    {
-      usePhotos && (
-        <div class="hero__strip" aria-hidden="true" style={`--pane-count:${heroPanes.length}`}>
-          {heroPanes.map((pane, i) => (
-            <div class="hero__pane" style={`--pane-index:${i}`}>
-              {/* Well below what a sharp full-bleed image would need: at a 10px
+    {usePhotos && (
+      <div class="hero__strip" aria-hidden="true" style={`--pane-count:${heroPanes.length}`}>
+        {heroPanes.map((pane, i) => (
+          <div class="hero__pane" style={`--pane-index:${i}`}>
+            {/* Well below what a sharp full-bleed image would need: at a 10px
                   blur a 720px source upscales without visible artefacts, so
                   paying for 1440 buys nothing. Checked by forcing each width
                   and comparing. */}
-              <Photo
-                image={pane.image}
-                alt={pane.alt}
-                class="hero__pane-img"
-                widths={[480, 720, 960]}
-                sizes="100vw"
-                loading="eager"
-                fetchpriority={i === 0 ? 'high' : undefined}
-              />
-            </div>
-          ))}
-        </div>
-      )
-    }
-    {
-      still && (
-        <Photo image={still.image} alt="" class="hero__img" widths={[480, 720, 960]} sizes="100vw" loading="eager" />
-      )
-    }
-    {
-      useVideo && (
-        <video class="hero__video" muted loop playsinline autoplay preload="none" aria-hidden="true" tabindex="-1">
-          {/* src is held in data-src so nothing downloads until the script opts in */}
-          <source data-src={video} type="video/mp4" />
-        </video>
-      )
-    }
+            <Photo
+              image={pane.image}
+              alt={pane.alt}
+              class="hero__pane-img"
+              widths={[480, 720, 960]}
+              sizes="100vw"
+              loading="eager"
+              fetchpriority={i === 0 ? 'high' : undefined}
+            />
+          </div>
+        ))}
+      </div>
+    )}
+    {still && (
+      <Photo image={still.image} alt="" class="hero__img" widths={[480, 720, 960]} sizes="100vw" loading="eager" />
+    )}
+    {useVideo && (
+      <video class="hero__video" muted loop playsinline autoplay preload="none" aria-hidden="true" tabindex="-1">
+        {/* src is held in data-src so nothing downloads until the script opts in */}
+        <source data-src={video} type="video/mp4" />
+      </video>
+    )}
   </div>
 
   <div class="hero__inner">

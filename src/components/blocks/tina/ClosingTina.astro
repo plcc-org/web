@@ -23,11 +23,9 @@ const { eyebrow, heading, buttonLabel, buttonHref, body } = Astro.props
 
 <Band tinaField={blockField(Astro.props)} tone="forest" centered flush eyebrow={eyebrow} heading={heading} reveal>
   <TinaChildren content={body as never} />
-  {
-    buttonHref && (
-      <a class="btn" href={resolveHref(buttonHref)}>
-        {buttonLabel || 'Learn more'}
-      </a>
-    )
-  }
+  {buttonHref && (
+    <a class="btn" href={resolveHref(buttonHref)}>
+      {buttonLabel || 'Learn more'}
+    </a>
+  )}
 </Band>

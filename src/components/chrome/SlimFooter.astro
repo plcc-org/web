@@ -7,9 +7,15 @@ import { church, serviceTimeDisplay } from '../../config/church'
 ---
 
 <footer class="slim-footer">
-  <p><strong>{church.name}</strong></p>
+  <p>
+    <strong>{church.name}</strong>
+  </p>
   <p>
     {church.service.day}s at {serviceTimeDisplay()} · <a href={church.mapUrl}>{church.addressLine}</a>
   </p>
-  <p><a href={withBase()}>Go to the full website <span aria-hidden="true">→</span></a></p>
+  <p>
+    <a href={withBase()}>
+      Go to the full website <span aria-hidden="true">→</span>
+    </a>
+  </p>
 </footer>

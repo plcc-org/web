@@ -627,14 +627,18 @@ A photo-led section page:
     <Callout>…</Callout>
 
     <!-- A second photo beat -->
-    <Split class="to-full" filename="…" tone="paper" heading="…">…</Split>
+    <Split class="to-full" filename="…" tone="paper" heading="…">
+      …
+    </Split>
 
     <!-- A gallery -->
     <MomentsSection eyebrow="Life together" photos={moments} sectionClass="to-wide" />
 
     <!-- Closing CTA, flush into the footer -->
     <Band tone="forest" flush centered heading="Come this Sunday">
-      <a class="btn" href={withBase('visit/')}>Plan a Visit</a>
+      <a class="btn" href={withBase('visit/')}>
+        Plan a Visit
+      </a>
     </Band>
   </div>
 </BaseLayout>

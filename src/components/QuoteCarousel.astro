@@ -24,42 +24,38 @@ const { quotes } = Astro.props
 
 <div class="quote-carousel" data-quote-carousel>
   <div class="quote-carousel__viewport">
-    {
-      quotes.map((quote, i) => (
-        <blockquote
-          class:list={['story-quote', 'pull-quote', 'quote-slide', i === 0 && 'is-active']}
-          aria-hidden={i !== 0}
-        >
-          <p>{quote.text}</p>
-          {quote.by && <footer>— {quote.by}</footer>}
-        </blockquote>
-      ))
-    }
+    {quotes.map((quote, i) => (
+      <blockquote
+        class:list={['story-quote', 'pull-quote', 'quote-slide', i === 0 && 'is-active']}
+        aria-hidden={i !== 0}
+      >
+        <p>{quote.text}</p>
+        {quote.by && <footer>— {quote.by}</footer>}
+      </blockquote>
+    ))}
   </div>
 
-  {
-    quotes.length > 1 && (
-      <div class="quote-carousel__controls">
-        <button type="button" class="quote-nav" data-dir="prev" aria-label="Previous quote">
-          <span aria-hidden="true">←</span>
-        </button>
-        <div class="quote-dots" role="group" aria-label="Choose a quote">
-          {quotes.map((_, i) => (
-            <button
-              type="button"
-              class:list={['quote-dot', i === 0 && 'is-active']}
-              data-index={i}
-              aria-label={`Quote ${i + 1} of ${quotes.length}`}
-              aria-current={i === 0 ? 'true' : 'false'}
-            />
-          ))}
-        </div>
-        <button type="button" class="quote-nav" data-dir="next" aria-label="Next quote">
-          <span aria-hidden="true">→</span>
-        </button>
+  {quotes.length > 1 && (
+    <div class="quote-carousel__controls">
+      <button type="button" class="quote-nav" data-dir="prev" aria-label="Previous quote">
+        <span aria-hidden="true">←</span>
+      </button>
+      <div class="quote-dots" role="group" aria-label="Choose a quote">
+        {quotes.map((_, i) => (
+          <button
+            type="button"
+            class:list={['quote-dot', i === 0 && 'is-active']}
+            data-index={i}
+            aria-label={`Quote ${i + 1} of ${quotes.length}`}
+            aria-current={i === 0 ? 'true' : 'false'}
+          />
+        ))}
       </div>
-    )
-  }
+      <button type="button" class="quote-nav" data-dir="next" aria-label="Next quote">
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  )}
 
   {/* Announces the new position, but only when the visitor moved it themselves. */}
   <p class="visually-hidden" role="status" data-quote-status></p>

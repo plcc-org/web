@@ -10,25 +10,23 @@ const { items } = Astro.props
 ---
 
 <ul class="day-events">
-  {
-    items.map((e) => {
-      const external = isWebUrl(e.url)
-      return (
-        <li class="day-events__item">
-          <span class="day-events__time">{e.time}</span>
-          <span>
-            <a
-              class="day-events__title"
-              href={resolveHref(e.url)}
-              rel={external ? 'noopener' : undefined}
-              target={external ? '_blank' : undefined}
-            >
-              {e.title}
-            </a>
-            {e.note && <span class="day-events__note">{e.note}</span>}
-          </span>
-        </li>
-      )
-    })
-  }
+  {items.map((e) => {
+    const external = isWebUrl(e.url)
+    return (
+      <li class="day-events__item">
+        <span class="day-events__time">{e.time}</span>
+        <span>
+          <a
+            class="day-events__title"
+            href={resolveHref(e.url)}
+            rel={external ? 'noopener' : undefined}
+            target={external ? '_blank' : undefined}
+          >
+            {e.title}
+          </a>
+          {e.note && <span class="day-events__note">{e.note}</span>}
+        </span>
+      </li>
+    )
+  })}
 </ul>

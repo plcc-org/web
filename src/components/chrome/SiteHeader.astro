@@ -11,7 +11,10 @@ import wordmarkUrl from '../../assets/images/Horizontal-Logo-White-on-Transparen
   <nav class="site-nav" aria-label="Primary">
     <div class="site-nav__bar">
       <a href={withBase()} class="site-nav__home" aria-label="Pine Lake Covenant Church — Home">
-        <span class="site-nav__home-logo" style={`--logo-wordmark-url: url('${wordmarkUrl}')`} aria-hidden="true"
+        <span
+          class="site-nav__home-logo"
+          style={`--logo-wordmark-url: url('${wordmarkUrl}')`}
+          aria-hidden="true"
         ></span>
       </a>
       <button
@@ -26,14 +29,32 @@ import wordmarkUrl from '../../assets/images/Horizontal-Logo-White-on-Transparen
       </button>
     </div>
     <ul class="site-nav__list" id="primary-nav-menu">
-      <li><a href={withBase('new/')}>I’m New</a></li>
-      <li><a href={withBase('about/')}>About</a></li>
-      <li><a href={withBase('families/')}>Families</a></li>
-      <li><a href={withBase('neighbors/')}>For Our Neighbors</a></li>
-      <li><a href={withBase('church-life/')}>Church Life</a></li>
-      <li><a href={withBase('events/')}>What’s On</a></li>
-      <li><a href={withBase('messages/')}>Messages</a></li>
-      <li><a href={withBase('visit/')} class="btn btn--sm site-nav__cta">Plan a Visit</a></li>
+      <li>
+        <a href={withBase('new/')}>I’m New</a>
+      </li>
+      <li>
+        <a href={withBase('about/')}>About</a>
+      </li>
+      <li>
+        <a href={withBase('families/')}>Families</a>
+      </li>
+      <li>
+        <a href={withBase('neighbors/')}>For Our Neighbors</a>
+      </li>
+      <li>
+        <a href={withBase('church-life/')}>Church Life</a>
+      </li>
+      <li>
+        <a href={withBase('events/')}>What’s On</a>
+      </li>
+      <li>
+        <a href={withBase('messages/')}>Messages</a>
+      </li>
+      <li>
+        <a href={withBase('visit/')} class="btn btn--sm site-nav__cta">
+          Plan a Visit
+        </a>
+      </li>
     </ul>
   </nav>
 </header>

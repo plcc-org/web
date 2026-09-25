@@ -29,35 +29,31 @@ const rest = moments.filter((m) => !m.featured)
     {heading && <h2 class="youth-moments__heading">{heading}</h2>}
   </div>
 
-  {
-    featured.length > 0 && (
-      <div class="moment-cards">
-        {featured.map((m) => (
-          <article class="moment-card">
-            <div class="moment-card__body">
-              {m.when && <p class="moment-card__cadence">{m.when}</p>}
-              <h3 class="moment-card__title">{m.title}</h3>
-              <p class="moment-card__blurb">{m.blurb}</p>
-            </div>
-          </article>
-        ))}
-      </div>
-    )
-  }
+  {featured.length > 0 && (
+    <div class="moment-cards">
+      {featured.map((m) => (
+        <article class="moment-card">
+          <div class="moment-card__body">
+            {m.when && <p class="moment-card__cadence">{m.when}</p>}
+            <h3 class="moment-card__title">{m.title}</h3>
+            <p class="moment-card__blurb">{m.blurb}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  )}
 
-  {
-    rest.length > 0 && (
-      <ul class="moment-list">
-        {rest.map((m) => (
-          <li class="moment-list__item">
-            <div class="moment-list__head">
-              <span class="moment-list__title">{m.title}</span>
-              {m.when && <span class="moment-list__cadence">{m.when}</span>}
-            </div>
-            <p class="moment-list__blurb">{m.blurb}</p>
-          </li>
-        ))}
-      </ul>
-    )
-  }
+  {rest.length > 0 && (
+    <ul class="moment-list">
+      {rest.map((m) => (
+        <li class="moment-list__item">
+          <div class="moment-list__head">
+            <span class="moment-list__title">{m.title}</span>
+            {m.when && <span class="moment-list__cadence">{m.when}</span>}
+          </div>
+          <p class="moment-list__blurb">{m.blurb}</p>
+        </li>
+      ))}
+    </ul>
+  )}
 </section>

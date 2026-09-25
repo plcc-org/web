@@ -37,23 +37,21 @@ const cols = columns && Number(columns) >= 2 ? Number(columns) : undefined
 ---
 
 <div class:list={['card-grid', cols && 'card-grid--cols', className]} style={cols ? `--card-cols:${cols}` : undefined}>
-  {
-    items.map((item) => {
-      const Tag = item.href ? 'a' : 'div'
-      return (
-        <Tag
-          class:list={['card', large && 'card--large', item.linkLabel && 'card--cta']}
-          {...(item.href ? { href: resolveHref(item.href) } : {})}
-        >
-          <Heading>{item.title}</Heading>
-          <div set:html={renderMarkdown(item.body)} />
-          {item.linkLabel && (
-            <span class="card__cta">
-              {item.linkLabel} <span aria-hidden="true">→</span>
-            </span>
-          )}
-        </Tag>
-      )
-    })
-  }
+  {items.map((item) => {
+    const Tag = item.href ? 'a' : 'div'
+    return (
+      <Tag
+        class:list={['card', large && 'card--large', item.linkLabel && 'card--cta']}
+        {...(item.href ? { href: resolveHref(item.href) } : {})}
+      >
+        <Heading>{item.title}</Heading>
+        <div set:html={renderMarkdown(item.body)} />
+        {item.linkLabel && (
+          <span class="card__cta">
+            {item.linkLabel} <span aria-hidden="true">→</span>
+          </span>
+        )}
+      </Tag>
+    )
+  })}
 </div>

@@ -14,18 +14,16 @@ const { eyebrow, heading, intro, tone = 'sand' } = Astro.props
 const quotes = (await getCollection('quotes')).map((q) => ({ text: q.data.text, by: q.data.by }))
 ---
 
-{
-  quotes.length > 0 && (
-    <Band
-      tinaField={blockField(Astro.props)}
-      class="band--wash"
-      tone={tone}
-      eyebrow={eyebrow || undefined}
-      heading={heading || undefined}
-      reveal
-    >
-      {intro && <p class="measure">{intro}</p>}
-      <QuoteCarousel quotes={quotes} />
-    </Band>
-  )
-}
+{quotes.length > 0 && (
+  <Band
+    tinaField={blockField(Astro.props)}
+    class="band--wash"
+    tone={tone}
+    eyebrow={eyebrow || undefined}
+    heading={heading || undefined}
+    reveal
+  >
+    {intro && <p class="measure">{intro}</p>}
+    <QuoteCarousel quotes={quotes} />
+  </Band>
+)}

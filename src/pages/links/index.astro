@@ -46,36 +46,32 @@ const nothingNext = live
     <p class="sunday-links__preview" id="sunday-links-preview" data-nothing-next={nothingNext} hidden></p>
 
     <div id="sunday-links-week">
-      {
-        live && liveWeek ? (
-          <TinaIsland
-            name="sundayWeek"
-            wrapper={SUNDAY_WEEK_WRAPPER}
-            params={{ relativePath: live.relativePath }}
-            primary
-          >
-            <SundayWeek data={liveWeek.data?.sundayLinks} />
-          </TinaIsland>
-        ) : (
-          <SundayWeek />
-        )
-      }
+      {live && liveWeek ? (
+        <TinaIsland
+          name="sundayWeek"
+          wrapper={SUNDAY_WEEK_WRAPPER}
+          params={{ relativePath: live.relativePath }}
+          primary
+        >
+          <SundayWeek data={liveWeek.data?.sundayLinks} />
+        </TinaIsland>
+      ) : (
+        <SundayWeek />
+      )}
     </div>
 
-    {
-      next && nextWeek && (
-        <template id="sunday-links-next" data-sunday={next.sunday} data-label={formatSunday(next.sunday)}>
-          <TinaIsland
-            name="sundayWeek"
-            wrapper={SUNDAY_WEEK_WRAPPER}
-            params={{ relativePath: next.relativePath }}
-            primary
-          >
-            <SundayWeek data={nextWeek.data?.sundayLinks} />
-          </TinaIsland>
-        </template>
-      )
-    }
+    {next && nextWeek && (
+      <template id="sunday-links-next" data-sunday={next.sunday} data-label={formatSunday(next.sunday)}>
+        <TinaIsland
+          name="sundayWeek"
+          wrapper={SUNDAY_WEEK_WRAPPER}
+          params={{ relativePath: next.relativePath }}
+          primary
+        >
+          <SundayWeek data={nextWeek.data?.sundayLinks} />
+        </TinaIsland>
+      </template>
+    )}
 
     <script is:inline define:vars={{ timeZone: church.timezone }}>
       const next = document.getElementById('sunday-links-next')
@@ -95,7 +91,6 @@ const nothingNext = live
       }
       banner.hidden = !preview
     </script>
-
     <TinaIsland name="sundayEveryWeek" wrapper={EVERY_WEEK_WRAPPER}>
       <EveryWeekGroups data={everyWeek.data?.sundayLinksEveryWeek} />
     </TinaIsland>

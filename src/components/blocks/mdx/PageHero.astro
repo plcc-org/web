@@ -90,86 +90,84 @@ const split = (variant === 'photo' || variant === 'wordmark') && heroImg
 const wordmarkLogo = variant === 'wordmark' ? logoImg : undefined
 ---
 
-{
-  cinematic ? (
-    <Hero images={panes} eyebrow={eyebrow} title={title} subhead={subhead} tinaField={tinaField}>
-      {buttonHref && (
+{cinematic ? (
+  <Hero images={panes} eyebrow={eyebrow} title={title} subhead={subhead} tinaField={tinaField}>
+    {buttonHref && (
+      <a class="btn" href={resolveHref(buttonHref)}>
+        {buttonLabel || 'Learn more'}
+      </a>
+    )}
+  </Hero>
+) : split ? (
+  <Split
+    class:list={['to-full', flush && 'is-flush']}
+    image={heroImg}
+    alt={heroAlt}
+    reverse
+    tone="sand"
+    eyebrow={eyebrow}
+    tinaField={tinaField}
+  >
+    {wordmarkLogo ? (
+      <Fragment>
+        <Photo
+          image={wordmarkLogo}
+          alt={logoAlt || ''}
+          class="page-hero__logo"
+          loading="eager"
+          fetchpriority="high"
+          widths={[340, 680]}
+          sizes="(max-width: 600px) 70vw, 340px"
+        />
+        {/* A real <h1> for the document outline, visually replaced by the logo above. */}
+        <h1 class="visually-hidden">{title}</h1>
+      </Fragment>
+    ) : (
+      <h1 class="display">{title}</h1>
+    )}
+    {subhead && <p class="subhead">{subhead}</p>}
+    {lede && <p class="lede" set:html={renderInline(lede)} />}
+    {buttonHref && (
+      <p>
         <a class="btn" href={resolveHref(buttonHref)}>
           {buttonLabel || 'Learn more'}
         </a>
-      )}
-    </Hero>
-  ) : split ? (
-    <Split
-      class:list={['to-full', flush && 'is-flush']}
-      image={heroImg}
-      alt={heroAlt}
-      reverse
-      tone="sand"
-      eyebrow={eyebrow}
-      tinaField={tinaField}
-    >
-      {wordmarkLogo ? (
-        <Fragment>
-          <Photo
-            image={wordmarkLogo}
-            alt={logoAlt || ''}
-            class="page-hero__logo"
-            loading="eager"
-            fetchpriority="high"
-            widths={[340, 680]}
-            sizes="(max-width: 600px) 70vw, 340px"
-          />
-          {/* A real <h1> for the document outline, visually replaced by the logo above. */}
-          <h1 class="visually-hidden">{title}</h1>
-        </Fragment>
-      ) : (
-        <h1 class="display">{title}</h1>
-      )}
-      {subhead && <p class="subhead">{subhead}</p>}
-      {lede && <p class="lede" set:html={renderInline(lede)} />}
-      {buttonHref && (
-        <p>
-          <a class="btn" href={resolveHref(buttonHref)}>
-            {buttonLabel || 'Learn more'}
-          </a>
-        </p>
-      )}
-    </Split>
-  ) : wordmarkLogo ? (
-    <header class="page-intro" data-tina-field={tinaField}>
-      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-      <Photo
-        image={wordmarkLogo}
-        alt={logoAlt || ''}
-        class="page-hero__logo"
-        loading="eager"
-        fetchpriority="high"
-        widths={[340, 680]}
-        sizes="(max-width: 600px) 70vw, 340px"
-      />
-      {/* A real <h1> for the document outline, visually replaced by the logo above. */}
-      <h1 class="visually-hidden">{title}</h1>
-      {subhead && <p class="subhead">{subhead}</p>}
-      {lede && <p class="lede" set:html={renderInline(lede)} />}
-      {buttonHref && (
-        <p>
-          <a class="btn" href={resolveHref(buttonHref)}>
-            {buttonLabel || 'Learn more'}
-          </a>
-        </p>
-      )}
-    </header>
-  ) : (
-    <PageIntro eyebrow={eyebrow} title={title} subhead={subhead} tinaField={tinaField}>
-      {lede && <p class="lede" set:html={renderInline(lede)} />}
-      {buttonHref && (
-        <p>
-          <a class="btn" href={resolveHref(buttonHref)}>
-            {buttonLabel || 'Learn more'}
-          </a>
-        </p>
-      )}
-    </PageIntro>
-  )
-}
+      </p>
+    )}
+  </Split>
+) : wordmarkLogo ? (
+  <header class="page-intro" data-tina-field={tinaField}>
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <Photo
+      image={wordmarkLogo}
+      alt={logoAlt || ''}
+      class="page-hero__logo"
+      loading="eager"
+      fetchpriority="high"
+      widths={[340, 680]}
+      sizes="(max-width: 600px) 70vw, 340px"
+    />
+    {/* A real <h1> for the document outline, visually replaced by the logo above. */}
+    <h1 class="visually-hidden">{title}</h1>
+    {subhead && <p class="subhead">{subhead}</p>}
+    {lede && <p class="lede" set:html={renderInline(lede)} />}
+    {buttonHref && (
+      <p>
+        <a class="btn" href={resolveHref(buttonHref)}>
+          {buttonLabel || 'Learn more'}
+        </a>
+      </p>
+    )}
+  </header>
+) : (
+  <PageIntro eyebrow={eyebrow} title={title} subhead={subhead} tinaField={tinaField}>
+    {lede && <p class="lede" set:html={renderInline(lede)} />}
+    {buttonHref && (
+      <p>
+        <a class="btn" href={resolveHref(buttonHref)}>
+          {buttonLabel || 'Learn more'}
+        </a>
+      </p>
+    )}
+  </PageIntro>
+)}

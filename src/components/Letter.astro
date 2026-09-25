@@ -14,32 +14,22 @@ const { image, alt, signoffName, signoffRole } = Astro.props
 <div class:list={['letter-layout', !image && 'letter-layout--solo']}>
   <div class="letter text-body-large">
     <slot />
-    {
-      (signoffName || signoffRole) && (
-        <footer class="letter__footer">
-          <p>
-            {signoffName && <strong>{signoffName}</strong>}
-            {signoffName && signoffRole && <br />}
-            {signoffRole}
-          </p>
-        </footer>
-      )
-    }
+    {(signoffName || signoffRole) && (
+      <footer class="letter__footer">
+        <p>
+          {signoffName && <strong>{signoffName}</strong>}
+          {signoffName && signoffRole && <br />}
+          {signoffRole}
+        </p>
+      </footer>
+    )}
   </div>
 
-  {
-    image && (
-      <aside class="letter-sidebar">
-        <div class="letter-portrait">
-          <Photo
-            image={image}
-            alt={alt}
-            class="media__img"
-            widths={[320, 640]}
-            sizes="(max-width: 900px) 100vw, 320px"
-          />
-        </div>
-      </aside>
-    )
-  }
+  {image && (
+    <aside class="letter-sidebar">
+      <div class="letter-portrait">
+        <Photo image={image} alt={alt} class="media__img" widths={[320, 640]} sizes="(max-width: 900px) 100vw, 320px" />
+      </div>
+    </aside>
+  )}
 </div>

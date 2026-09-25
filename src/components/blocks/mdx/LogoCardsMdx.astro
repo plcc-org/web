@@ -24,28 +24,26 @@ for (const c of cards) {
 <section data-reveal data-tina-field={blockField(Astro.props)}>
   <SectionHeader eyebrow={eyebrow} heading={heading} />
   <div class="card-grid">
-    {
-      items.map((c) => (
-        <div class="card">
-          {c.image && (
-            <Photo
-              image={c.image}
-              alt={c.alt}
-              class="logo-card__logo"
-              widths={[240, 480, 720]}
-              sizes="(max-width: 768px) 80vw, 240px"
-            />
-          )}
-          {c.body && <Fragment set:html={renderMarkdown(c.body)} />}
-          {/* href alone is enough — the label falls back, matching CardRow's
+    {items.map((c) => (
+      <div class="card">
+        {c.image && (
+          <Photo
+            image={c.image}
+            alt={c.alt}
+            class="logo-card__logo"
+            widths={[240, 480, 720]}
+            sizes="(max-width: 768px) 80vw, 240px"
+          />
+        )}
+        {c.body && <Fragment set:html={renderMarkdown(c.body)} />}
+        {/* href alone is enough — the label falls back, matching CardRow's
               rule so the two card blocks behave alike. */}
-          {c.href && (
-            <p>
-              <a href={resolveHref(c.href)}>{c.linkLabel || 'Learn more'} →</a>
-            </p>
-          )}
-        </div>
-      ))
-    }
+        {c.href && (
+          <p>
+            <a href={resolveHref(c.href)}>{c.linkLabel || 'Learn more'} →</a>
+          </p>
+        )}
+      </div>
+    ))}
   </div>
 </section>

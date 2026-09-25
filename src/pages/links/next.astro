@@ -34,20 +34,13 @@ const banner = next
   <div class="sunday-links">
     <p class="sunday-links__preview">{banner}</p>
 
-    {
-      next && nextWeek ? (
-        <TinaIsland
-          name="sundayWeek"
-          wrapper={SUNDAY_WEEK_WRAPPER}
-          params={{ relativePath: next.relativePath }}
-          primary
-        >
-          <SundayWeek data={nextWeek.data?.sundayLinks} />
-        </TinaIsland>
-      ) : (
-        <SundayWeek />
-      )
-    }
+    {next && nextWeek ? (
+      <TinaIsland name="sundayWeek" wrapper={SUNDAY_WEEK_WRAPPER} params={{ relativePath: next.relativePath }} primary>
+        <SundayWeek data={nextWeek.data?.sundayLinks} />
+      </TinaIsland>
+    ) : (
+      <SundayWeek />
+    )}
 
     <TinaIsland name="sundayEveryWeek" wrapper={EVERY_WEEK_WRAPPER}>
       <EveryWeekGroups data={everyWeek.data?.sundayLinksEveryWeek} />
