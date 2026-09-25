@@ -4,7 +4,7 @@ import { imageFromRef } from '../../../lib/images'
 import { altFor } from '../../../lib/photos'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
-// MDX wrapper for a single framed, captioned photo.
+// Block adapter for a single framed, captioned photo.
 type Props = { image?: string; alt?: string; caption?: string } & BlockProps
 const { image, alt, caption } = Astro.props
 const resolved = image ? (await imageFromRef(image)?.())?.default : undefined

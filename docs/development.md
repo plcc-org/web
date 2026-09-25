@@ -116,7 +116,7 @@ The Astro build itself is four steps, not one.
 ### `prebuild`
 
 ```
-rm -rf node_modules/.vite && node scripts/generate-redirects.mjs
+npm run clean:vite && node scripts/generate-redirects.mjs
 ```
 
 - **Clearing the Vite cache** is not superstition: the Cloudflare workerd build and
@@ -213,10 +213,9 @@ Two things this is **not**, both checked before landing:
   [cms.md](./cms.md) still stands.
 
 Re-generate the patch with `npx patch-package @tinacms/cli` if you bump the CLI, and drop
-it entirely if Tina ever grows a flag for this — there is none as of 3.0.0. This is one of
-two patched dependencies; both are recorded in
-[`patches/README.md`](../patches/README.md), which is also where the upgrade procedure
-lives.
+it entirely if Tina ever grows a flag for this — there is none as of 3.0.0. It is the only
+patched dependency, recorded in [`patches/README.md`](../patches/README.md), which is also
+where the upgrade procedure lives.
 
 ### What is still slow
 
@@ -288,8 +287,8 @@ Adding a block type means touching **two** places, and they have to agree — se
 2. `src/components/blocks/tina/registry.ts` — **the key must match the template `name`.**
    A block with prose inside needs an adapter in `src/components/blocks/tina/`, because its
    prose arrives as a `body` rich-text tree rather than a slot; a self-closing block can
-   reuse its existing wrapper in `src/components/blocks/mdx/` or map straight to the real
-   component (`Callout` and `Roadmap` do exactly that).
+   reuse its existing adapter in `src/components/blocks/mdx/` or map straight to the real
+   component (`Roadmap` does exactly that).
 
 If a name isn't in the registry, `PageBody` throws at build time, so a mismatch between (1)
 and (2) fails CI rather than dropping the block silently off the page.
@@ -397,14 +396,12 @@ of these checks, so CI is the whole gate. Green, then merge.
 
 Three things a bump can break that aren't obvious from the diff:
 
-- **`@tinacms/cli` and `tinacms`** both carry patches, applied on every install and
-  documented — motivation, hunk by hunk — in **[`patches/README.md`](../patches/README.md)**.
-  A bump invalidates them, and `patch-package` then warns rather than fails, so the fix
-  quietly reverts. Neither is a mechanical re-generate: the `tinacms` one lands in a rollup
-  bundle, so it has to be re-derived by intent against the new source, which is why that
-  package is pinned to an exact version rather than a caret. The procedure is written down
-  as the `/upgrade-patched-dep` command — fetch upstream, rebase our changes onto it,
-  verify the editor still behaves, then replace the version.
+- **`@tinacms/cli`** carries a patch, applied on every install and documented — motivation,
+  hunk by hunk — in **[`patches/README.md`](../patches/README.md)**. A bump invalidates it,
+  and `patch-package` then warns rather than fails, so the fix quietly reverts. The
+  procedure is written down as the `/upgrade-patched-dep` command — fetch upstream, rebase
+  our changes onto it, verify the build still skips the admin compile, then replace the
+  version.
 - **Node** is pinned in `.node-version`, not by Dependabot. It stays on 22 until Tina's
   datalayer race on 25 is fixed — see the note in `ci.yml`.
 - **TypeScript** stays on 6. TypeScript 7 is the native Go compiler, and its npm package

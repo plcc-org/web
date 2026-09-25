@@ -23,7 +23,7 @@
  *   Quotes        QuoteCarousel         the story-quote card and its carousel
  *
  * No component carries its own <style> block; all component CSS lives here, in
- * blocks.css (the MDX block palette) or in pages.css (one-page styling). See
+ * blocks.css (the CMS block palette) or in pages.css (one-page styling). See
  * §2 of docs/design-system.md for why.
  * ==================================================================== */
 
@@ -1096,7 +1096,7 @@ a.card:hover,
  * Three presentations, because the calendar holds two different kinds of thing.
  * `.week-panel` is the next seven days as one surface. `.event-card` is a dated
  * one-off. `.rhythm-*` is a recurring series shown once, grouped by weekday.
- * `.event-row` is the dense list form, kept for the featured-events MDX block.
+ * `.event-row` is the dense list form, kept for the featured-events block.
  *
  * The unifying idea is that the page states a time and a name, and stays quiet
  * about everything a reader already knows — which is why no on-campus event
@@ -1379,7 +1379,7 @@ a.card:hover,
 }
 
 /* ----------------------------------------------------------------------
- * The row form — the dense list, kept for the featured-events MDX block
+ * The row form — the dense list, kept for the featured-events block
  * (FeaturedEventsMdx.astro, used on /youth/).
  *
  * Structure: `.event-list` > `.event-row`, each row being a

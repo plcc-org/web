@@ -3,10 +3,9 @@ import { readdirSync, readFileSync } from 'node:fs'
 
 // Each patch in patches/ lands on one installed copy of its package. patch-package
 // patches the top-level `node_modules/<name>` only, so a second copy nested under some
-// other package is left stock — and nothing fails. That happens whenever the exact
-// tinacms pin lags the group: @tinacms/cli's caret range reaches a newer @tinacms/app,
-// which nests the newer tinacms it wants, and since the app is what serves the editor,
-// the block-editing patch silently stops applying while the build stays green.
+// other package is left stock — and nothing fails. That happens when a patched
+// package's version lags what the rest of its group asks for: npm nests the newer copy
+// the others want, and the patch silently stops applying while the build stays green.
 //
 // So, from the lockfile (what `npm ci` installs in CI and on Cloudflare): every patched
 // package is installed exactly once, at the version its patch file names.

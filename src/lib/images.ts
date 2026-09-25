@@ -6,7 +6,7 @@ type ImageModule = { default: ImageMetadata }
 // (e.g. "church-life/sunset.jpg"). Tina uploads flat, so today every key is a
 // bare filename; the recursion is tolerance for a legacy nested key, which must
 // degrade to a missing photo rather than resolve somewhere else (pinned in
-// test/image-ref.test.ts). The MDX block wrappers resolve their stored
+// test/image-ref.test.ts). The block adapters resolve their stored
 // reference ("…/assets/images/<key>") through imageFromRef so CMS-uploaded
 // photos get the same build-time optimization as the rest of the site.
 const allLoaders = import.meta.glob<ImageModule>('../assets/images/**/*.{jpg,jpeg,png,webp,avif}')

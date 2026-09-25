@@ -5,7 +5,7 @@ import { imageFromRef } from '../../../lib/images'
 import { altFor } from '../../../lib/photos'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
-// MDX wrapper for the Photo band block. Each photo's uploaded reference resolves
+// Block adapter for the Photo band block. Each photo's uploaded reference resolves
 // through imageFromRef to optimized ImageMetadata (and its alt through the
 // catalog fallback), then renders via the existing staggered MomentsSection band.
 type Props = {

@@ -44,7 +44,7 @@ tokens → base → prose → nav → layout → components → blocks → foote
 | `nav.css`        | `nav`        | Header / primary navigation (incl. mobile hamburger and the hero overlay state).            |
 | `layout.css`     | `layout`     | The canvas grid, bands, typographic utilities, buttons.                                     |
 | `components.css` | `components` | The pieces a developer assembles a layout from — Hero, Split, cards, media, events, quotes. |
-| `blocks.css`     | `blocks`     | The MDX block palette an editor assembles a page from (see [cms.md](./cms.md)).             |
+| `blocks.css`     | `blocks`     | The CMS block palette an editor assembles a page from (see [cms.md](./cms.md)).             |
 | `footer.css`     | `footer`     | Full-bleed site footer.                                                                     |
 | `utilities.css`  | `utilities`  | Pills, tags, and utility chips.                                                             |
 | `animations.css` | `animations` | Opt-in scroll reveals and the hero entrance (§6).                                           |
@@ -99,7 +99,7 @@ price of the three points above; the second is answered by keeping each file's
 sections in the order its header lists.
 
 **Where a new rule goes:** shared vocabulary and any named component →
-`components.css`; an MDX block → `blocks.css`; a single page's non-reusable
+`components.css`; a CMS block → `blocks.css`; a single page's non-reusable
 markup → `pages.css`. If a page's styling starts looking reusable, it's a
 component, and it moves.
 
@@ -171,11 +171,11 @@ strength moss reaches 2.6:1 on sand and clay 2.7:1, against the 4.5:1 WCAG AA as
 body text. Each therefore comes in two strengths, and **which one you reach for is
 decided by whether type is involved**, not by how it looks:
 
-| Use                                                       | Token                                   |
-| --------------------------------------------------------- | --------------------------------------- |
-| Keylines, rules, dots, borders, the wordmark              | `--color-moss` / `--color-clay`         |
-| The accent as text on a light surface                     | `--color-moss-ink` / `--color-clay-ink` |
-| A fill sitting under white text (`.btn`, `.chip--active`) | `--color-*-ink`                         |
+| Use                                          | Token                                   |
+| -------------------------------------------- | --------------------------------------- |
+| Keylines, rules, dots, borders, the wordmark | `--color-moss` / `--color-clay`         |
+| The accent as text on a light surface        | `--color-moss-ink` / `--color-clay-ink` |
+| A fill sitting under white text (`.btn`)     | `--color-*-ink`                         |
 
 The last row is the one that surprises people: a moss button is the same contrast pair
 upside down, so it takes the ink too. Both inks are the full-strength hue scaled toward
@@ -351,9 +351,6 @@ still passes; it just looks wrong. If a block needs an attribute (an editor mark
 analytics hook), put it **on** the block, passing it through as a prop where the root is a
 shared component. This has bitten us once, on all 20 CMS pages at the same time.
 
-`.section` is a **semantic marker with no CSS of its own**. It exists to make the
-document structure readable; spacing comes from the canvas.
-
 ### Bands
 
 Full-bleed coloured sections with re-contained inner content. Prefer the **`<Band>`**
@@ -368,8 +365,8 @@ component (§7) over hand-writing the markup.
 Tones: `band--forest` (dark gradient, light text — headings forced white), `band--sand`,
 `band--paper`. Modifiers:
 
-- `band--narrow` / `band--centered` — cap the inner column at `--measure-wide`;
-  `centered` also centres the text (closing CTAs, pull-quotes).
+- `band--centered` — caps the inner column at `--measure-wide` and centres the text
+  (closing CTAs, pull-quotes).
 - `band--wash` — an opt-in, barely-there ember radial for depth in a light band. Layers
   _over_ the band's existing fill, so it composes with a tone rather than replacing it.
 - `band--flush` — closes a page flush against the dark footer.
@@ -421,29 +418,29 @@ Props reflect each component's actual `Props` type.
 
 ### Page-level
 
-| Component           | What it is                                                                                                                                                                                                                                                                                                                                     |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`Hero`**          | Full-bleed cinematic header. Takes `photos: string[]` — a cross-fading, blurred, slowly drifting stack behind the headline — or a `filename` still, or a `video`. Content anchors bottom-left under a forest scrim.                                                                                                                            |
-| **`Split`**         | **The workhorse.** Asymmetric portrait photo + text; photo bleeds to the viewport edge as `.to-full`. Props: `filename`, `alt`, `reverse?`, `tone?` (`paper`/`sand`/`forest`), `eyebrow?`, `heading?`, `class?`, `id?`. For a photo-led page hero, omit `heading` and put an `<h1 class="display">` in the slot. Stacks to one column ≤ 860px. |
-| **`Band`**          | Full-bleed coloured section (§5). Props: `tone?` (`sand` default), `flush?`, `narrow?`, `centered?`, `eyebrow?`, `heading?`, `class?`.                                                                                                                                                                                                         |
-| **`PageIntro`**     | Calm, photo-less reading-page header: eyebrow, `display` h1, optional italic subhead, slot.                                                                                                                                                                                                                                                    |
-| **`SectionHeader`** | The recurring eyebrow-over-heading pair. No styling of its own. Props: `eyebrow?`, `heading?`, `as?` (`h2` default), `id?`.                                                                                                                                                                                                                    |
+| Component           | What it is                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`Hero`**          | Full-bleed cinematic header. Takes `images: {image, alt}[]` — a cross-fading, blurred, slowly drifting stack behind the headline — plus `title`, `eyebrow?`, `subhead?` and a slot for the call to action. (A `video?` path exists but no CMS field feeds it yet.) Content anchors bottom-left under a forest scrim.                                                         |
+| **`Split`**         | **The workhorse.** Asymmetric portrait photo + text; photo bleeds to the viewport edge as `.to-full`. Props: `image?` (resolved `ImageMetadata`), `alt?`, `reverse?`, `tone?` (`paper`/`sand`/`forest`), `eyebrow?`, `heading?`, `class?`, `reveal?`. For a photo-led page hero, omit `heading` and put an `<h1 class="display">` in the slot. Stacks to one column ≤ 860px. |
+| **`Band`**          | Full-bleed coloured section (§5). Props: `tone?` (`sand` default), `flush?`, `centered?`, `eyebrow?`, `heading?`, `class?`, `reveal?`.                                                                                                                                                                                                                                       |
+| **`PageIntro`**     | Calm, photo-less reading-page header: eyebrow, `display` h1, optional italic subhead, slot.                                                                                                                                                                                                                                                                                  |
+| **`SectionHeader`** | The recurring eyebrow-over-heading pair, always an `h2`. No styling of its own. Props: `eyebrow?`, `heading?`.                                                                                                                                                                                                                                                               |
 
 ### Content
 
-| Component                          | What it is                                                                                                                                                                                                              |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`MomentsSection`**               | Portrait gallery: 3-up (2-up on mobile) grid of 4:5 tiles with an editorial stagger and hover zoom. Props: `photos: string[]` (filenames — the page owns selection and order), `heading?`, `eyebrow?`, `sectionClass?`. |
-| **`CardRow`**                      | A row of titled cards with body copy and an optional link. The CMS `CardRow` block maps here.                                                                                                                           |
-| **`LinkCardSection`**              | A grid of navigational `.link-card` tiles (title + meta).                                                                                                                                                               |
-| **`AccentList`**                   | Point cards with a moss left accent, behind the Beliefs tenets and Covenant emphases. Props: `items: {title, body}[]`, `columns?` (2 default \| 3). Renders a `<ul>` — use for sets of points, not ordered sequences.   |
-| **`Roadmap`**                      | A numbered step sequence with moss markers. The ordered counterpart to `AccentList`.                                                                                                                                    |
-| **`Callout`**                      | A bordered aside panel — sand fill, moss left accent — for a single point of emphasis or reassurance.                                                                                                                   |
-| **`Letter`**                       | The long-form letter layout (Pastor's Letter).                                                                                                                                                                          |
-| **`QuoteCarousel`**                | A rotating set of `.story-quote` cards. Pauses on hover and focus.                                                                                                                                                      |
-| **`YouthMoments`**                 | The youth photo-and-caption band.                                                                                                                                                                                       |
-| **`EventsBoard`** / **`EventRow`** | "What's On": chips, featured grid, weekly list, rhythms. See [events.md](./events.md).                                                                                                                                  |
-| **`Photo`**                        | See §9.                                                                                                                                                                                                                 |
+| Component                          | What it is                                                                                                                                                                                                            |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`MomentsSection`**               | Portrait gallery: 3-up (2-up on mobile) grid of 4:5 tiles with an editorial stagger and hover zoom. Props: `images: {image, alt}[]` (the page owns selection and order), `heading?`, `eyebrow?`, `class?`, `reveal?`. |
+| **`CardRow`**                      | A row of titled cards with body copy and an optional link. The CMS `CardRow` block maps here.                                                                                                                         |
+| **`LinkCardSection`**              | A grid of navigational `.link-card` tiles (title + meta).                                                                                                                                                             |
+| **`AccentList`**                   | Point cards with a moss left accent, behind the Beliefs tenets and Covenant emphases. Props: `items: {title, body}[]`, `columns?` (2 default \| 3). Renders a `<ul>` — use for sets of points, not ordered sequences. |
+| **`Roadmap`**                      | A numbered step sequence with moss markers. The ordered counterpart to `AccentList`.                                                                                                                                  |
+| **`Callout`**                      | A bordered aside panel — sand fill, moss left accent — for a single point of emphasis or reassurance.                                                                                                                 |
+| **`Letter`**                       | The long-form letter layout (Pastor's Letter).                                                                                                                                                                        |
+| **`QuoteCarousel`**                | A rotating set of `.story-quote` cards. Pauses on hover and focus.                                                                                                                                                    |
+| **`YouthMoments`**                 | The youth photo-and-caption band.                                                                                                                                                                                     |
+| **`EventsBoard`** / **`EventRow`** | "What's On": featured grid, weekly list, rhythms. See [events.md](./events.md).                                                                                                                                       |
+| **`Photo`**                        | See §9.                                                                                                                                                                                                               |
 
 ### The block layer
 
@@ -469,7 +466,7 @@ and `.service-card`. `card-grid` is `repeat(auto-fit, minmax(240px, 1fr))`.
 
 **Link cards lift on hover; static `div.card` do not.**
 
-> The events surfaces (`.event-card`, `.rhythm-card`, `.event-row`) use `--radius-soft`
+> The events surfaces (`.event-card`, `.rhythm`, `.event-row`) use `--radius-soft`
 > and a different fill — a visibly older card look that predates the current system. New
 > work should use the shared recipe.
 
@@ -497,7 +494,7 @@ automatically flips to a light fill so it doesn't read green-on-green.
 - `.section-callout` — a sand panel with a moss left accent for asides.
 - `.media` / `.media__frame` / `.media__img` / `.media__caption` — framed photo and
   figure primitives.
-- `.chip` / `.chip--active`, `.tag` (`utilities.css`) — pills and labels.
+- `.tag` (`utilities.css`) — a non-interactive label, such as an event's category.
 - `.leader-grid` / `.leader-card` (`pages.css`) — the leadership roster.
 
 ---

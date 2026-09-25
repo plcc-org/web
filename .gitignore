@@ -28,12 +28,9 @@ pnpm-debug.log*
 # generated from src/content/short-links by scripts/generate-redirects.mjs
 public/_redirects
 
-# TinaCMS spike: generated client/types and the built admin SPA.
+# TinaCMS: generated client/types and the built admin SPA.
 tina/__generated__/
 public/admin/
-
-# Per-page snapshots written by spike/compare-builds.mjs.
-spike/.compare/
 
 # Per-machine Claude Code settings (and any /doctor backups of them).
 .claude/settings.local.json*

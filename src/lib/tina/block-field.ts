@@ -3,7 +3,7 @@ import { tinaField } from '@tinacms/astro/tina-field'
 // Whole-block edit markers for the visual editor.
 //
 // The CMS stamps `_content_source` onto every nested object in a query result,
-// including each block's props, and its MDX renderer spreads those props into the
+// including each block's props, and PageBody spreads those props into the
 // registered component — so every block adapter already receives what it needs to
 // identify itself. `blockField(Astro.props)` turns that into the attribute value
 // the editor bridge maps a click onto; outside the editor it returns undefined and

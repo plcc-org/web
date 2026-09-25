@@ -9,7 +9,7 @@
 //
 // Astro's own `image()` collection helper doesn't behave this way (leadership
 // portraits emit webp variants only), but it applies to frontmatter fields, and
-// most of these images are referenced from MDX block props, which no schema
+// most of these images are referenced from CMS block props, which no schema
 // validates. So the glob stays and the emitted originals are pruned here.
 //
 // Deciding by reference is safe because every public page is prerendered: the

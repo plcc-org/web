@@ -258,9 +258,7 @@ Each bar is labelled with the block's own heading where it has one, falling back
 of block (`ui.itemProps` in `tina/templates.mjs`), so a page doesn't read as a stack of
 identical grey bars.
 
-There is no Duplicate: to repeat a block, add a fresh one and fill it in. (The old body
-editor had one, but it came from a local patch on TinaCMS that this list made unnecessary —
-see `patches/README.md`.)
+There is no Duplicate: to repeat a block, add a fresh one and fill it in.
 
 To make a new page: add a **Pages** entry, fill the hero, and stack blocks. New pages start
 as **drafts** — visible in preview but not on the published site — so uncheck **Draft** to
@@ -552,8 +550,8 @@ Two mechanisms look like they'd fix that. Neither does:
   `tina/templates.mjs` is plain `.mjs` so Node scripts can import it without a
   build step, and `tina/config.ts` deliberately holds no JSX.
 - **`type: 'object'` with `templates`** is the documented "pick a shape, see only its fields"
-  mechanism, and it is **only implemented for lists**. In `@tinacms/schema-tools` 2.8.3 — the
-  current release — the mapping is literally:
+  mechanism, and it is **only implemented for lists**. In `@tinacms/schema-tools` 2.10.0 the
+  mapping is literally:
 
   ```js
   component: field.list ? 'blocks' : 'not-implemented'
@@ -779,5 +777,6 @@ change, or every existing inbound link breaks.
   keeping, but the menu renders labels only — the "which block do I use?" table above is the
   substitute.
 - **Slash (`/`) inserts headings and lists only**, inside a block's Content field. Blocks
-  aren't in that menu — they're added from the list at the bottom of the Body field.
-- **The `pages` directory must exist** even when empty (kept via `.gitkeep`).
+  aren't in that menu — they're added with the **+** on the Body field.
+- **The `pages` directory must exist** even when empty — add a `.gitkeep` if it's ever
+  emptied.

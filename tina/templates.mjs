@@ -138,7 +138,7 @@ export const image = (name, label, opts = {}) => ({
 
 // Note on defaults: `ui.defaultValue` is a no-op — tinacms never forwards it to
 // the rendered field — so a block's starting values live in the template's
-// `ui.defaultItem`, which insertMDX genuinely applies when the block is added.
+// `ui.defaultItem`, which the editor genuinely applies when the block is added.
 // It must sit under `ui`: schema-tools' rich-text field resolution keeps only
 // label/key/name/fields plus whatever `ui` carries, so a top-level defaultItem
 // on a rich-text template is silently dropped (verified in the running editor).

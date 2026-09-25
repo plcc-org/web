@@ -58,7 +58,7 @@ describe('accent text meets WCAG AA', () => {
     }
   }
 
-  // The inks double as fills under white text (.btn, .chip--active, .skip-link,
+  // The inks double as fills under white text (.btn, .skip-link,
   // the Roadmap step markers) — the same pair inverted, so it needs the same
   // floor. Stylelint can't see a fill/text pairing, so it's checked here.
   for (const ink of ['color-moss-ink', 'color-clay-ink'] as const) {

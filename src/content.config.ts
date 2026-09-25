@@ -132,11 +132,11 @@ const heroText = {
   buttonHref: z.string().optional(),
 }
 
-// CMS-built pages. Each is an MDX file: a structured hero in frontmatter plus an
-// MDX body the editor composes in the CMS's rich-text editor, inserting styled
-// components (Split, Callout, Photo band, …). Each block's `_template` maps to a
-// thin Astro wrapper at render time (see src/components/blocks/tina/registry.ts),
-// so everything reuses the real site components.
+// CMS-built pages. Each is an .mdx file that is all frontmatter: a structured hero
+// plus a `blocks` list the editor stacks in the CMS (Split, Callout, Photo band, …).
+// Each block's `_template` maps to a thin Astro adapter at render time (see
+// src/components/blocks/tina/registry.ts), so everything reuses the real site
+// components.
 //
 // Nothing calls getCollection('pages') — src/pages/[...slug].astro renders from
 // the CMS's GraphQL client. Do not delete this collection anyway: Astro syncs and

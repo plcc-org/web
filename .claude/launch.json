@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "tina-spike",
+      "name": "tina",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev:tina"],
       "port": 4321

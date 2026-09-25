@@ -33,8 +33,8 @@ Work in this order:
    reproducing a fix for it.
 
 5. **Verify the behaviour.** Follow the "How to check it" steps in the `patches/README.md`
-   entry. Run the real thing — for `tinacms` that means `npm run dev:tina` and driving the
-   editor in a browser, not reasoning about the diff. A version bump does not land on the
+   entry. Run the real thing — for a Tina package that means `npm run build` and
+   `npm run dev:tina`, driving the editor in a browser, not reasoning about the diff. A version bump does not land on the
    strength of "the patch applied cleanly". If a check cannot be run, say so plainly rather
    than reporting a pass.
 

@@ -7,7 +7,7 @@ import { renderMarkdown } from '../../../lib/markdown'
 import { resolveHref } from '../../../lib/url'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
-// MDX wrapper for the Logo cards block — a row of cards, each topped by a
+// Block adapter for the Logo cards block — a row of cards, each topped by a
 // program/partner logo, with a short Markdown body and an optional link (the
 // "Pine Lake Kids / Youth" card grid). Each logo resolves through imageFromRef.
 type Card = { image?: string; alt: string; body?: string; linkLabel?: string; href?: string }
