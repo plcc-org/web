@@ -40,8 +40,7 @@ type Props = {
   logoAlt?: string
   buttonLabel?: string
   buttonHref?: string
-  flush?: boolean
-  /** Visual-editor marker; see src/lib/tina/block-field.ts. Absent on hand-built pages. */
+  /** Visual-editor marker; see src/lib/tina/block-field.ts. */
   tinaField?: string
 }
 const {
@@ -57,7 +56,6 @@ const {
   logoAlt,
   buttonLabel,
   buttonHref,
-  flush,
   tinaField,
 } = Astro.props
 
@@ -99,15 +97,7 @@ const wordmarkLogo = variant === 'wordmark' ? logoImg : undefined
     )}
   </Hero>
 ) : split ? (
-  <Split
-    class:list={['to-full', flush && 'is-flush']}
-    image={heroImg}
-    alt={heroAlt}
-    reverse
-    tone="sand"
-    eyebrow={eyebrow}
-    tinaField={tinaField}
-  >
+  <Split class="to-full" image={heroImg} alt={heroAlt} reverse tone="sand" eyebrow={eyebrow} tinaField={tinaField}>
     {wordmarkLogo ? (
       <Fragment>
         <Photo

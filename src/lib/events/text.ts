@@ -4,7 +4,7 @@
 import { decodeEntities } from '../markdown'
 
 /** Longest summary we'll show on a card, in characters. */
-export const SUMMARY_MAX = 180
+const SUMMARY_MAX = 180
 
 export function stripHtml(html: string | undefined | null): string {
   if (!html) return ''

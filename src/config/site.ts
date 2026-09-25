@@ -12,7 +12,7 @@
 // The Cloudflare build must set DEPLOY_ENV=staging (build env var) so `site`
 // resolves to https://plcc.dev and the sitemap emits.
 
-export type DeployEnv = 'development' | 'staging' | 'production'
+type DeployEnv = 'development' | 'staging' | 'production'
 
 function isDeployEnv(value: unknown): value is DeployEnv {
   return value === 'production' || value === 'staging' || value === 'development'

@@ -56,8 +56,8 @@ jobs:
       - run: node scripts/prune-sunday-links.mjs
 
       # Build + verify with the fresh capture so a bad one never lands on main.
+      # postbuild runs the site crawl (scripts/check-site.mjs).
       - run: DEPLOY_ENV=staging npm run build
-      - run: npm run test:site
 
       # Two independent commits, so each change reads on its own in the history.
       # Either one still pushes to main, and that push is what redeploys the site.

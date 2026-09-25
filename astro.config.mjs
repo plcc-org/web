@@ -79,7 +79,7 @@ export default defineConfig({
     // noindex — it's for people already in the building, and changes weekly — so a
     // sitemap listing it would contradict the page itself. It isn't disallowed in
     // robots.txt, because a crawler has to be able to fetch it to see the noindex.
-    sitemap({ filter: (page) => !/\/(admin|tina-island|tina-preview|api|links)(\/|$)/.test(new URL(page).pathname) }),
+    sitemap({ filter: (page) => !/\/(admin|tina-island|tina-preview|links)(\/|$)/.test(new URL(page).pathname) }),
   ],
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL

@@ -16,7 +16,7 @@ import { siteConfig } from '../config/site'
 // admin bundle showing up in results for the church's own name. /tina-island is
 // the editing endpoint; it renders page fragments and has no business in search.
 // /tina-preview renders drafts for the editor, and answers nothing else.
-const DISALLOWED = ['/admin', '/tina-island', '/tina-preview', '/api/']
+const DISALLOWED = ['/admin', '/tina-island', '/tina-preview']
 
 export const GET: APIRoute = ({ site }) => {
   const lines = ['User-agent: *']

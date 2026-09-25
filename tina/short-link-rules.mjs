@@ -19,7 +19,7 @@
 export const STATUS = { shortcut: 302, moved: 301 }
 
 /** Reserved because a short link that shadows one of these would hide real content. */
-export const RESERVED = new Set([
+const RESERVED = new Set([
   '_astro',
   '_headers',
   '_redirects',

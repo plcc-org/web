@@ -10,7 +10,7 @@ import { blockComponent } from './registry'
 // Nothing may come *between* `.canvas` and a block. `.canvas` is a full-bleed
 // grid that places its children by column, and layout.css addresses them as
 // direct children — `.canvas > *`, `.canvas > .to-full`,
-// `.canvas:has(> .is-flush)`. A wrapper div around a block silently drops it out
+// `.canvas:has(> .band--flush)`. A wrapper div around a block silently drops it out
 // of every one of those rules, so a full-bleed hero or a flush closing band
 // renders inset instead. It looks like a margin bug and nothing fails. That is
 // why each block is spread into its component rather than wrapped in a marker

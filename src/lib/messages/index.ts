@@ -13,13 +13,13 @@ import { decodeEntities } from '../markdown'
 const CHANNEL_ID = 'UC1eeiv-tSWoCkB33rskGggw'
 const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`
 
-export type SundayServiceSeed = {
+type SundayServiceSeed = {
   title: string
   dateLabel: string
   videoId: string
 }
 
-export type SundayService = SundayServiceSeed & {
+type SundayService = SundayServiceSeed & {
   watchUrl: string
   embedUrl: string
   thumbnailUrl: string

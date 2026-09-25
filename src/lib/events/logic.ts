@@ -94,7 +94,7 @@ const TAG_CATEGORY: ReadonlyArray<readonly [RegExp, EventCategory]> = [
  * Order matches `mapCategory`'s precedence: an event tagged both `Youth` and
  * `Children & Families` is Youth.
  */
-export function categoryFromTags(tagNames: string[]): EventCategory | null {
+function categoryFromTags(tagNames: string[]): EventCategory | null {
   const tags = tagNames.map((t) => t.trim().toLowerCase())
   for (const [pattern, category] of TAG_CATEGORY) {
     if (tags.some((t) => pattern.test(t))) return category
@@ -189,7 +189,7 @@ export function groupIntoSeries(events: CalendarEvent[]): EventSeries[] {
 }
 
 /** The three sections of "What's On", plus everything they actually render. */
-export type BoardSections = {
+type BoardSections = {
   /** Every occurrence in the next week — one-off or recurring, undifferentiated. */
   thisWeek: CalendarEvent[]
   /** Non-recurring events starting after the this-week window. */

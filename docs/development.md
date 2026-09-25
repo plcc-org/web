@@ -351,7 +351,8 @@ hold — they drift back a little at a time, and each step looks harmless.
 
 ### The post-build crawl
 
-`npm run test:site` crawls the built `dist/` and fails on:
+`scripts/check-site.mjs` crawls the built `dist/`. It runs as the last step of every build
+(`postbuild`), and `npm run test:site` runs it on its own. It fails on:
 
 1. Internal `<a href>` links that don't resolve to a generated page.
 2. Content `<img>` with missing or empty `alt`.

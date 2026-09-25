@@ -65,15 +65,15 @@ jobs:
       # Build and crawl both deploy targets. `site`, the sitemap and robots.txt
       # are all environment-dependent, and production is the target nobody
       # exercises locally — an indexability mistake there is invisible until it
-      # costs the site its search presence. scripts/check-site.mjs asserts
-      # robots.txt matches DEPLOY_ENV, but only for the target in front of it,
-      # so both have to be built for the assertion to mean anything.
+      # costs the site its search presence. scripts/check-site.mjs, which
+      # postbuild runs, asserts robots.txt matches DEPLOY_ENV, but only for the
+      # target in front of it, so both have to be built for it to mean anything.
       - name: Verify staging target
-        run: npm run build && npm run test:site
+        run: npm run build
         env:
           DEPLOY_ENV: staging
 
       - name: Verify production target
-        run: npm run build && npm run test:site
+        run: npm run build
         env:
           DEPLOY_ENV: production

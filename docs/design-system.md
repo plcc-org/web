@@ -344,7 +344,7 @@ second layout system, and there shouldn't be.**
   regardless of order, and it's the property to protect when adding one.
 
 **Never wrap a block.** Every rule above is written as a direct child — `.canvas > *`,
-`.canvas > .to-full`, `.canvas:has(> .is-flush)` — so one element between `.canvas` and a
+`.canvas > .to-full`, `.canvas:has(> .band--flush)` — so one element between `.canvas` and a
 block drops it out of all of them: a full-bleed hero renders inset, a flush closing band
 reopens the gap above the footer. Nothing errors, no build fails, and every automated check
 still passes; it just looks wrong. If a block needs an attribute (an editor marker, an
@@ -373,8 +373,7 @@ Tones: `band--forest` (dark gradient, light text — headings forced white), `ba
 
 `band--flush` removes the trailing stone gap with **no per-page CSS**: global `:has()`
 rules in `layout.css` zero the canvas/main/footer margins whenever one is present. Use it
-only on a page's **last** band. The same rules fire on the generic `.is-flush` marker, so
-a page closing on a full-bleed `<Split>` opts in the same way (`class="to-full is-flush"`).
+only on a page's **last** band.
 
 Any page whose final element is a tinted full-bleed band **must** close flush; pages
 ending on a content-width gallery or plain text already meet the page background.
