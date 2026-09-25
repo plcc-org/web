@@ -12,6 +12,7 @@
 
 import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { captureProblem, captureQuery, fetchAllPages } from './pco-capture.mjs'
 
 const BASE = 'https://api.planningcenteronline.com/calendar/v2'
 // Pinned, not defaulted: 2020-06-16 serves Event `details` with no `summary`
@@ -44,60 +45,26 @@ function pacificStartOfToday() {
   return new Date(`${ymd}T00:00:00${offset}`)
 }
 
-const iso = (d) => d.toISOString().replace(/\.\d{3}Z$/, 'Z')
 const windowStart = pacificStartOfToday()
 const windowEnd = new Date(windowStart.getTime() + WINDOW_DAYS * 86_400_000)
 
-// `kind` is opt-in: Planning Center omits it unless fields[EventInstance] names
-// it, and the mapper drops blockout rows on it.
-const QUERY = [
-  `where[starts_at][gte]=${iso(windowStart)}`,
-  `where[starts_at][lte]=${iso(windowEnd)}`,
-  // WARNING: this filter is silently ignored unless `include=event` is also
-  // present — without it the API returns 200 and the ENTIRE internal calendar,
-  // staff meetings and outside-hirer bookings included. Never send one without
-  // the other. src/lib/events/adapters/pco-map.ts re-checks every row.
-  'where[event][visible_in_church_center]=true',
-  'include=event,tags',
-  'fields[EventInstance]=name,starts_at,ends_at,published_starts_at,published_ends_at,all_day_event,location,church_center_url,kind,recurrence,compact_recurrence_description,event,tags',
-  'fields[Event]=name,summary,description,registration_url,visible_in_church_center,image_url,tags',
-  'order=starts_at',
-  'per_page=100',
-].join('&')
-
-const res = await fetch(`${BASE}/event_instances?${QUERY}`, {
-  headers: {
-    authorization: `Basic ${Buffer.from(`${PCO_APP_ID}:${PCO_SECRET}`).toString('base64')}`,
-    accept: 'application/json',
-    'user-agent': USER_AGENT,
-    'x-pco-api-version': API_VERSION,
-  },
-})
-if (!res.ok) throw new Error(`calendar/v2/event_instances ${res.status}: ${(await res.text()).slice(0, 400)}`)
-const body = await res.json()
-
-const count = Array.isArray(body?.data) ? body.data.length : 0
-if (count === 0) {
-  // A transient failure that returns 200 with no data would otherwise silently
-  // empty the calendar on the next deploy.
-  throw new Error('API returned zero events — refusing to overwrite the capture with an empty result')
+const getPage = async (url) => {
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Basic ${Buffer.from(`${PCO_APP_ID}:${PCO_SECRET}`).toString('base64')}`,
+      accept: 'application/json',
+      'user-agent': USER_AGENT,
+      'x-pco-api-version': API_VERSION,
+    },
+  })
+  if (!res.ok) throw new Error(`calendar/v2/event_instances ${res.status}: ${(await res.text()).slice(0, 400)}`)
+  return res.json()
 }
 
-// Belt and braces: prove the visibility filter actually applied before writing.
-// If `include=event` were ever dropped from the query the count would balloon
-// and every row would arrive unverifiable; fail loudly instead of shipping it.
-const parents = new Map((body.included ?? []).filter((r) => r.type === 'Event').map((r) => [r.id, r]))
-const leaked = body.data.filter((inst) => {
-  const parent = parents.get(inst.relationships?.event?.data?.id)
-  return parent?.attributes?.visible_in_church_center !== true
-})
-if (leaked.length) {
-  throw new Error(
-    `${leaked.length}/${count} instances are not public (or have no resolvable parent Event) — ` +
-      'the visibility filter did not apply. Refusing to write.'
-  )
-}
+const body = await fetchAllPages(`${BASE}/event_instances?${captureQuery(windowStart, windowEnd)}`, getPage)
+const problem = captureProblem(body)
+if (problem) throw new Error(problem)
 
 const capture = { capturedAt: new Date().toISOString(), ...body }
 writeFileSync(OUT, JSON.stringify(capture, null, 2) + '\n')
-console.log(`Wrote ${count} public event instances to ${OUT}`)
+console.log(`Wrote ${body.data.length} public event instances to ${OUT}`)

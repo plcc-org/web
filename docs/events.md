@@ -128,14 +128,23 @@ live one, and commits that separately (`chore(links): clear past Sundays`). The 
 build is also what switches `/links/` over on a Sunday morning — see
 [cms.md](./cms.md#sunday-links).
 
-### The three guards worth knowing about
+### The guards worth knowing about
+
+The capture's query, paging and pre-write checks live in `scripts/pco-capture.mjs`, apart
+from the script's side effects, so `test/pco-capture.test.ts` can pin them without
+credentials.
 
 - **The capture refuses to write an empty result.** A zero-event response throws rather
   than overwriting the file, because a transient API failure that returns `200` with no
   data would otherwise silently empty the calendar.
+- **The capture follows every page and refuses a short one.** Planning Center pages at
+  100 rows; the capture follows `links.next` until it runs out, then checks the row count
+  against `meta.total_count`, so a window that outgrows one page can't quietly lose its
+  tail.
 - **The capture re-verifies every row's visibility before writing** and refuses if any
   row can't be proved public. This is what catches the `include=event` trap below if
-  someone edits the query.
+  someone edits the query — and the test fails first if the query ever sends the filter
+  without `include=event`.
 - **The adapter warns when the capture goes stale.** Past three days, `pco.ts` logs
   `capture is N days old — is the capture workflow running?`. Not fatal — past events
   still get dropped correctly — but it's the signal that the workflow has quietly
