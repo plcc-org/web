@@ -48,24 +48,22 @@ const qualifier = (s: EventSeries, day: string) => (s.cadence && s.cadence !== `
 ---
 
 <div class="rhythm">
-  {
-    days.map(({ day, list }) => (
-      <div class="rhythm__day">
-        <h3 class="rhythm__dayname">{day}s</h3>
+  {days.map(({ day, list }) => (
+    <div class="rhythm__day">
+      <h3 class="rhythm__dayname">{day}s</h3>
 
-        <EventDayItems
-          items={list.map((s) => {
-            const venue = venueLabel(s.location)
-            const note = qualifier(s, day)
-            return {
-              time: s.next.allDay ? 'All day' : fmtTime(new Date(s.next.start)),
-              title: s.title,
-              url: s.url,
-              note: note && venue ? `${note} · ${venue}` : note || venue || undefined,
-            }
-          })}
-        />
-      </div>
-    ))
-  }
+      <EventDayItems
+        items={list.map((s) => {
+          const venue = venueLabel(s.location)
+          const note = qualifier(s, day)
+          return {
+            time: s.next.allDay ? 'All day' : fmtTime(new Date(s.next.start)),
+            title: s.title,
+            url: s.url,
+            note: note && venue ? `${note} · ${venue}` : note || venue || undefined,
+          }
+        })}
+      />
+    </div>
+  ))}
 </div>

@@ -21,20 +21,18 @@ const embed = embedFrom(url)
 <section data-reveal data-tina-field={blockField(Astro.props)}>
   <figure class="media media--flush">
     <div class="media__frame media__embed">
-      {
-        embed ? (
-          <iframe
-            src={embed}
-            title={title}
-            loading="lazy"
-            allow="fullscreen; picture-in-picture; encrypted-media; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-          />
-        ) : (
-          <p class="media__caption">Video — paste a YouTube or Vimeo link in this block to show it here.</p>
-        )
-      }
+      {embed ? (
+        <iframe
+          src={embed}
+          title={title}
+          loading="lazy"
+          allow="fullscreen; picture-in-picture; encrypted-media; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      ) : (
+        <p class="media__caption">Video — paste a YouTube or Vimeo link in this block to show it here.</p>
+      )}
     </div>
     {caption && <figcaption class="media__caption">{caption}</figcaption>}
   </figure>

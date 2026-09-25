@@ -122,11 +122,13 @@ const jsonLd = origin
     <meta name="twitter:image:alt" content={SOCIAL_IMAGE_ALT} />
 
     {/* schema.org graph — Church + Place, plus anything the page adds. */}
-    {jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd} />}
+    {jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd}></script>}
   </head>
 
   <body>
-    <a class="skip-link" href="#main-content">Skip to content</a>
+    <a class="skip-link" href="#main-content">
+      Skip to content
+    </a>
 
     {chrome === 'slim' ? <SlimHeader /> : <SiteHeader />}
 

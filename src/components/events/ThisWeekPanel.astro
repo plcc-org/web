@@ -26,29 +26,27 @@ for (const e of events) {
 ---
 
 <div class="week-panel">
-  {
-    [...days.entries()].map(([, list]) => {
-      const first = new Date(list[0].start)
-      return (
-        <div class="week-panel__day">
-          {/* A real heading, matching WeekRhythm's day names — day groups are
+  {[...days.entries()].map(([, list]) => {
+    const first = new Date(list[0].start)
+    return (
+      <div class="week-panel__day">
+        {/* A real heading, matching WeekRhythm's day names — day groups are
               the structure of this panel, not decoration. */}
-          <h3 class="week-panel__when">
-            <span class="week-panel__dow">{fmtDay(first)}</span>
-            <span class="week-panel__date">{fmtDate(first)}</span>
-          </h3>
+        <h3 class="week-panel__when">
+          <span class="week-panel__dow">{fmtDay(first)}</span>
+          <span class="week-panel__date">{fmtDate(first)}</span>
+        </h3>
 
-          <EventDayItems
-            items={list.map((e) => ({
-              time: e.allDay ? 'All day' : fmtTime(new Date(e.start)),
-              title: e.title,
-              url: e.url,
-              // Venue only — an on-campus event renders nothing, which is the point.
-              note: venueLabel(e.location) || undefined,
-            }))}
-          />
-        </div>
-      )
-    })
-  }
+        <EventDayItems
+          items={list.map((e) => ({
+            time: e.allDay ? 'All day' : fmtTime(new Date(e.start)),
+            title: e.title,
+            url: e.url,
+            // Venue only — an on-campus event renders nothing, which is the point.
+            note: venueLabel(e.location) || undefined,
+          }))}
+        />
+      </div>
+    )
+  })}
 </div>

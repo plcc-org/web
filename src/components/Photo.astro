@@ -65,29 +65,27 @@ const unoptimisedPath = unoptimised && assetPath(unoptimised)
 const unoptimisedSrc = unoptimisedPath ? withBase(unoptimisedPath) : unoptimised?.src
 ---
 
-{
-  src &&
-    (unoptimised ? (
-      <img
-        src={unoptimisedSrc}
-        alt={resolvedAlt}
-        class={className}
-        width={unoptimised.width}
-        height={unoptimised.height}
-        loading={loading}
-        decoding="async"
-      />
-    ) : (
-      <Image
-        src={src}
-        alt={resolvedAlt}
-        class={className}
-        widths={widths}
-        sizes={sizes}
-        loading={loading}
-        decoding="async"
-        fetchpriority={fetchpriority}
-        format={format}
-      />
-    ))
-}
+{src &&
+  (unoptimised ? (
+    <img
+      src={unoptimisedSrc}
+      alt={resolvedAlt}
+      class={className}
+      width={unoptimised.width}
+      height={unoptimised.height}
+      loading={loading}
+      decoding="async"
+    />
+  ) : (
+    <Image
+      src={src}
+      alt={resolvedAlt}
+      class={className}
+      widths={widths}
+      sizes={sizes}
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchpriority}
+      format={format}
+    />
+  ))}

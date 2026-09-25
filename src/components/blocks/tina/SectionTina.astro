@@ -9,5 +9,7 @@ const { eyebrow, heading, body } = Astro.props
 
 <section data-reveal data-tina-field={blockField(Astro.props)}>
   <SectionHeader eyebrow={eyebrow} heading={heading} />
-  <div class="measure"><TinaChildren content={body as never} /></div>
+  <div class="measure">
+    <TinaChildren content={body as never} />
+  </div>
 </section>

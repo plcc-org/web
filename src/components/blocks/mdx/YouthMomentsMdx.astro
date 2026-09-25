@@ -13,13 +13,11 @@ const { eyebrow, heading } = Astro.props
 const moments = (await getCollection('youthMoments')).sort((a, b) => a.data.order - b.data.order).map((m) => m.data)
 ---
 
-{
-  moments.length > 0 && (
-    <YouthMoments
-      tinaField={blockField(Astro.props)}
-      moments={moments}
-      eyebrow={eyebrow || undefined}
-      heading={heading || undefined}
-    />
-  )
-}
+{moments.length > 0 && (
+  <YouthMoments
+    tinaField={blockField(Astro.props)}
+    moments={moments}
+    eyebrow={eyebrow || undefined}
+    heading={heading || undefined}
+  />
+)}

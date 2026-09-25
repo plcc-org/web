@@ -11,11 +11,9 @@ const { data } = Astro.props
 const groups = (data?.groups ?? []).filter((group): group is Group => Boolean(group?.heading))
 ---
 
-{
-  groups.map((group) => (
-    <section class="sunday-links__group" data-tina-field={blockField(group)}>
-      <h2 class="sunday-links__heading">{group.heading}</h2>
-      <LinkList links={group.links as never} quiet />
-    </section>
-  ))
-}
+{groups.map((group) => (
+  <section class="sunday-links__group" data-tina-field={blockField(group)}>
+    <h2 class="sunday-links__heading">{group.heading}</h2>
+    <LinkList links={group.links as never} quiet />
+  </section>
+))}

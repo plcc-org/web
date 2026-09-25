@@ -49,5 +49,7 @@ const blocks: Rendered[] = (data.blocks ?? []).filter(Boolean).map((block: Recor
 {cinematic && <PageHero {...hero} variant={variant} title={data.title} tinaField={tinaField(data, 'hero')} />}
 <div class="canvas">
   {!cinematic && <PageHero {...hero} variant={variant} title={data.title} tinaField={tinaField(data, 'hero')} />}
-  {blocks.map(({ Component, block }) => <Component {...block} />)}
+  {blocks.map(({ Component, block }) => (
+    <Component {...block} />
+  ))}
 </div>

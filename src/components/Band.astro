@@ -36,7 +36,7 @@ const {
 
 <section
   data-tina-field={tinaField}
-  {...reveal && { 'data-reveal': true }}
+  {...(reveal && { 'data-reveal': true })}
   class:list={['band', `band--${tone}`, 'to-full', flush && 'band--flush', centered && 'band--centered', className]}
 >
   <div class="band__inner">

@@ -8,4 +8,6 @@ type Props = { url?: unknown }
 const { url } = Astro.props
 ---
 
-<a href={richTextHref(url)}><slot /></a>
+<a href={richTextHref(url)}>
+  <slot />
+</a>

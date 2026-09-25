@@ -14,15 +14,13 @@ const { heading, category = 'all', count = 3 } = Astro.props
 const events = (await getUpcomingEvents()).filter((e) => category === 'all' || e.category === category).slice(0, count)
 ---
 
-{
-  events.length > 0 && (
-    <section data-reveal data-tina-field={blockField(Astro.props)}>
-      {heading && <h2>{heading}</h2>}
-      <div class="event-list">
-        {events.map((e) => (
-          <EventRow event={e} />
-        ))}
-      </div>
-    </section>
-  )
-}
+{events.length > 0 && (
+  <section data-reveal data-tina-field={blockField(Astro.props)}>
+    {heading && <h2>{heading}</h2>}
+    <div class="event-list">
+      {events.map((e) => (
+        <EventRow event={e} />
+      ))}
+    </div>
+  </section>
+)}

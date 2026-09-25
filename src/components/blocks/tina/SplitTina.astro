@@ -33,13 +33,11 @@ const resolved = image ? (await imageFromRef(image)?.())?.default : undefined
   reveal
 >
   <TinaChildren content={body as never} />
-  {
-    buttonHref && (
-      <p>
-        <a class="btn btn--ghost" href={resolveHref(buttonHref)}>
-          {buttonLabel || 'Learn more'}
-        </a>
-      </p>
-    )
-  }
+  {buttonHref && (
+    <p>
+      <a class="btn btn--ghost" href={resolveHref(buttonHref)}>
+        {buttonLabel || 'Learn more'}
+      </a>
+    </p>
+  )}
 </Split>
