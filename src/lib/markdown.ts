@@ -33,10 +33,18 @@ export function renderInline(md: string | null | undefined): string {
  * stripping is deliberate: emphasis, links and entities collapse exactly as
  * they do on the page, rather than being guessed at with a regex over the raw
  * Markdown.
+ *
+ * A `<br>` (every newline, under `breaks: true`) becomes a space before the
+ * other tags are dropped: marked emits `one<br>two` with nothing between them,
+ * so stripping it outright would fuse the words.
  */
 export function renderPlain(md: string | null | undefined): string {
   if (!md) return ''
-  return decodeEntities(renderInline(md).replace(/<[^>]+>/g, ''))
+  return decodeEntities(
+    renderInline(md)
+      .replace(/<br\s*\/?>/gi, ' ')
+      .replace(/<[^>]+>/g, '')
+  )
     .replace(/\s+/g, ' ')
     .trim()
 }
