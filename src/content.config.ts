@@ -3,7 +3,7 @@ import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
 import { checkLinkUrl, checkSunday, toIsoDate } from '../tina/sunday-links.mjs'
-import { templates } from '../tina/templates.mjs'
+import { heroFields, templates } from '../tina/templates.mjs'
 
 // quotes is a single YAML file holding one array. The CMS edits it as a list
 // field, which serializes to `{ <key>: [...] }`. Parse tolerantly so both the
@@ -149,6 +149,26 @@ const heroText = {
  */
 const BLOCK_TEMPLATES = templates.map((template) => template.name) as [string, ...string[]]
 
+/**
+ * The hero union below and the CMS's "Kind of hero" select (heroFields in
+ * templates.mjs) must name the same variants. The union can't be generated from
+ * the options — each variant has its own shape — so it's checked instead: a
+ * variant the CMS offers with no shape here would fail every page that picks it,
+ * and one here the CMS doesn't offer is dead. Runs on every sync, so `astro check`
+ * and the build both catch a mismatch.
+ */
+function matchingCmsVariants<T extends { options: readonly { shape: { variant: { value: unknown } } }[] }>(
+  union: T
+): T {
+  const fields = heroFields as { name: string; options?: { value: string }[] }[]
+  const cms = (fields.find((field) => field.name === 'variant')?.options ?? []).map((option) => option.value).sort()
+  const schema = union.options.map((option) => option.shape.variant.value).sort()
+  if (cms.join() !== schema.join()) {
+    throw new Error(`Hero variants disagree: the CMS offers [${cms}] but the schema knows [${schema}]`)
+  }
+  return union
+}
+
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
   // Hero/block images are stored as path strings and resolved at render time via
@@ -188,23 +208,25 @@ const pages = defineCollection({
     // catalog at render (altFor in src/lib/photos.ts), and check-site.mjs fails
     // the build on any content image that still renders with an empty alt. The
     // wordmark's `logoAlt` stays required — logos aren't catalogued.
-    hero: z.discriminatedUnion('variant', [
-      z.object({ variant: z.literal('photo'), image: z.string().min(1), alt: z.string().optional(), ...heroText }),
-      z.object({ variant: z.literal('plain'), ...heroText }),
-      z.object({
-        variant: z.literal('wordmark'),
-        logo: z.string().min(1),
-        logoAlt: z.string().min(1),
-        image: z.string().optional(),
-        alt: z.string().optional(),
-        ...heroText,
-      }),
-      z.object({
-        variant: z.literal('cinematic'),
-        photos: z.array(z.object({ image: z.string().min(1), alt: z.string().optional() })).min(1),
-        ...heroText,
-      }),
-    ]),
+    hero: matchingCmsVariants(
+      z.discriminatedUnion('variant', [
+        z.object({ variant: z.literal('photo'), image: z.string().min(1), alt: z.string().optional(), ...heroText }),
+        z.object({ variant: z.literal('plain'), ...heroText }),
+        z.object({
+          variant: z.literal('wordmark'),
+          logo: z.string().min(1),
+          logoAlt: z.string().min(1),
+          image: z.string().optional(),
+          alt: z.string().optional(),
+          ...heroText,
+        }),
+        z.object({
+          variant: z.literal('cinematic'),
+          photos: z.array(z.object({ image: z.string().min(1), alt: z.string().optional() })).min(1),
+          ...heroText,
+        }),
+      ])
+    ),
     // The page itself. Only `_template` is checked: it is the one field a block
     // can't render without, and the Tina schema (tina/templates.mjs) is what
     // validates the rest — restating eighteen templates here would be a second

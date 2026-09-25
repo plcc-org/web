@@ -6,7 +6,7 @@
 //   - production:  plcc.org, served from root, indexed (future cutover)
 //
 // `site` and `base` are consumed by astro.config.mjs at build time. `indexable`
-// drives robots.txt and (later) noindex meta. Resolving everything here keeps the
+// drives robots.txt, through isIndexableSite. Resolving everything here keeps the
 // hosting target a one-line change.
 //
 // The Cloudflare build must set DEPLOY_ENV=staging (build env var) so `site`
@@ -18,23 +18,11 @@ function isDeployEnv(value: unknown): value is DeployEnv {
   return value === 'production' || value === 'staging' || value === 'development'
 }
 
+// Only meaningful in Node (astro.config.mjs). Inside the app bundle, which Astro
+// prerenders through a Vite SSR runner targeting workerd, `process.env` is an
+// empty shim and this resolves to 'development' — so nothing in the bundle may
+// branch on it. Routes read the configured `site` instead (isIndexableSite).
 export function resolveDeployEnv(): DeployEnv {
-  // This module is loaded in two different places with two different envs:
-  //
-  //   1. astro.config.mjs, in Node, where process.env.DEPLOY_ENV is set.
-  //   2. Inside the app bundle (robots.txt.ts and anything else that imports
-  //      it), which Astro prerenders through a Vite SSR runner targeting
-  //      workerd. There, `process` exists but `process.env` is an empty shim,
-  //      so DEPLOY_ENV reads as undefined.
-  //
-  // Without the inlined value, (2) resolves to 'development' and robots.txt
-  // emits a blanket `Disallow: /` on every target, production included — a
-  // failure with no symptom short of the site vanishing from search.
-  // astro.config.mjs pins import.meta.env.DEPLOY_ENV to the value resolved in
-  // (1) so both agree; that's the branch the bundle takes. Keep this order.
-  const inlined = import.meta.env?.DEPLOY_ENV
-  if (isDeployEnv(inlined)) return inlined
-
   const explicit = process.env?.DEPLOY_ENV?.toLowerCase()
   if (isDeployEnv(explicit)) return explicit
 
@@ -71,3 +59,12 @@ const CONFIGS: Record<DeployEnv, SiteConfig> = {
 }
 
 export const siteConfig: SiteConfig = CONFIGS[resolveDeployEnv()]
+
+/**
+ * Whether a build for `site` — the `site` Astro hands every route — should be
+ * indexed. This is how the bundle learns the deploy target: Astro bakes the
+ * configured `site` in, where DEPLOY_ENV itself is invisible (see resolveDeployEnv).
+ */
+export function isIndexableSite(site: URL | undefined): boolean {
+  return Object.values(CONFIGS).some((config) => config.indexable && config.site === site?.origin)
+}

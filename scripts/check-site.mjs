@@ -142,9 +142,9 @@ if (existsSync(redirectsFile)) {
   }
 }
 
-// robots.txt must match the target it was built for. Indexability is resolved
-// through a fragile path (see resolveDeployEnv in src/config/site.ts), and
-// getting it wrong has no symptom on the rendered site — production simply
+// robots.txt must match the target it was built for. The bundle can't see
+// DEPLOY_ENV and infers the target from `site` (isIndexableSite in
+// src/config/site.ts), and getting it wrong has no symptom on the rendered site — production simply
 // never gets indexed. Assert the emitted file rather than trusting the
 // resolution.
 const isProduction = (process.env.DEPLOY_ENV || '').toLowerCase() === 'production'

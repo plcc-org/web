@@ -1,13 +1,13 @@
 import type { APIRoute } from 'astro'
-import { siteConfig } from '../config/site'
+import { isIndexableSite } from '../config/site'
 
 // Environment-aware robots.txt. Only production (plcc.org) is indexable;
 // development and the plcc.dev staging site are fully disallowed so the staging
 // URL never competes with production in search results.
 //
-// NB: this route is prerendered, and `siteConfig.indexable` is only correct
-// inside the bundle because astro.config.mjs pins import.meta.env.DEPLOY_ENV —
-// see resolveDeployEnv() in src/config/site.ts. There is a post-build assertion
+// NB: this route is prerendered inside a bundle that can't see DEPLOY_ENV, so it
+// decides from the configured `site` instead — see isIndexableSite() in
+// src/config/site.ts. There is a post-build assertion
 // in scripts/check-site.mjs, because getting this wrong is invisible until the
 // site quietly drops out of search.
 
@@ -21,7 +21,7 @@ const DISALLOWED = ['/admin', '/tina-island', '/tina-preview']
 export const GET: APIRoute = ({ site }) => {
   const lines = ['User-agent: *']
 
-  if (siteConfig.indexable) {
+  if (isIndexableSite(site)) {
     lines.push('Allow: /', ...DISALLOWED.map((path) => `Disallow: ${path}`))
     if (site) lines.push('', `Sitemap: ${new URL('sitemap-index.xml', site).href}`)
   } else {

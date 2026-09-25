@@ -4,12 +4,13 @@
     "types": ["astro/client", "node"]
   },
   "include": [".astro/types.d.ts", "**/*"],
-  "// spike-note": [
-    "tina/config.ts is excluded because type-checking it runs the compiler out of memory:",
-    "defineConfig from `tinacms` pulls in a type graph large enough that `astro check` dies",
-    "with 'Ineffective mark-compacts near heap limit', even at --max-old-space-size=4096.",
-    "config.prebuild.jsx is the generated copy of the same thing. Everything else under",
-    "tina/ is checked. public/admin/ is the built admin SPA \u2014 megabytes of vendor bundles."
+  "// exclude-note": [
+    "tina/config.ts is excluded because the schema helpers it imports (tina/templates.mjs and",
+    "friends) are plain JS typed loosely as Record<string, unknown>, which Tina's field unions",
+    "reject: checking it reports ~9 errors, all at that seam. (It used to run the compiler out",
+    "of memory; with TypeScript 6 and tinacms 3.14 it checks in seconds.) Typing the helpers",
+    "with import('tinacms').TinaField is what would let it back in. config.prebuild.jsx is",
+    "the generated copy. public/admin/ is the built admin SPA \u2014 megabytes of vendor bundles."
   ],
   "exclude": ["dist", "public/admin", "tina/config.ts", "tina/__generated__/config.prebuild.jsx"]
 }

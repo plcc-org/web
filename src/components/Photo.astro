@@ -1,10 +1,10 @@
 ---
-import { Image, getImage } from 'astro:assets'
+import { getImage } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 import { assetPath } from '../lib/images'
 import { withBase } from '../lib/url'
 
-// Thin wrapper around Astro's <Image>: a resolved `image` (from imageFromRef or
+// Thin wrapper around Astro's getImage: a resolved `image` (from imageFromRef or
 // a content-collection field) plus its `alt`. Callers rendering catalogued
 // photos resolve the alt with altFor (src/lib/photos.ts), which falls back to
 // the photo catalog when the page didn't write its own. Emits an optimized,
@@ -42,9 +42,11 @@ const resolvedAlt = alt ?? ''
 //
 // `imageService: 'compile'` gives Astro's build-time sharp service to prerendered
 // routes only. The CMS preview re-renders a region through /tina-island, the
-// site's one on-demand route, where there is no service — so <Image> emits the
-// generic /_image endpoint URL, which a static deploy never generates. It 404s,
-// and the preview shows broken images while the live page is perfect.
+// site's one on-demand route, where there is no service — so getImage returns a
+// generic /_image endpoint URL. The adapter's runtime /_image only passes the
+// original through from the deployed assets, and prune-dist removes those (and a
+// just-uploaded photo was never built at all), so it 404s: the preview shows
+// broken images while the live page is perfect.
 //
 // This tests for that outcome rather than for the context. Detecting the island
 // directly isn't possible: it renders through Astro's Container API without a
@@ -56,13 +58,28 @@ const resolvedAlt = alt ?? ''
 // The original is bigger than the WebP a live page serves, which is the right
 // trade for a preview one editor sees at a time. It is fetched from
 // /assets/images/<file> — the stored-form path, served by tinaAssetsDevPlugin in
-// dev and the generated CDN redirect in production — not from the emitted /_astro
-// original: prune-dist removes those (no public page references them), and a
-// photo an editor just picked may not be referenced by anything at all yet.
-const built = src ? await getImage({ src, widths, sizes, format }) : undefined
+// dev and the generated CDN redirect in production — which covers every photo in
+// the library, including one no page references yet.
+//
+// The one getImage call is also what the normal path renders — the same markup
+// Astro's <Image> emits, which would otherwise run the whole transform again.
+const built = src
+  ? await getImage({
+      src,
+      widths,
+      sizes,
+      format,
+      alt: resolvedAlt,
+      class: className,
+      loading,
+      decoding: 'async',
+      fetchpriority,
+    })
+  : undefined
 const unoptimised = import.meta.env.PROD && built?.src.startsWith('/_image') ? src : undefined
 const unoptimisedPath = unoptimised && assetPath(unoptimised)
 const unoptimisedSrc = unoptimisedPath ? withBase(unoptimisedPath) : unoptimised?.src
+const { class: builtClass, ...builtAttributes } = built?.attributes ?? {}
 ---
 
 {src &&
@@ -77,15 +94,12 @@ const unoptimisedSrc = unoptimisedPath ? withBase(unoptimisedPath) : unoptimised
       decoding="async"
     />
   ) : (
-    <Image
-      src={src}
-      alt={resolvedAlt}
-      class={className}
-      widths={widths}
-      sizes={sizes}
-      loading={loading}
-      decoding="async"
-      fetchpriority={fetchpriority}
-      format={format}
-    />
+    built && (
+      <img
+        src={built.src}
+        srcset={built.srcSet.values.length > 0 ? built.srcSet.attribute : undefined}
+        {...builtAttributes}
+        class={builtClass}
+      />
+    )
   ))}

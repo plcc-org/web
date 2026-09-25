@@ -5,6 +5,7 @@ import mdx from '@astrojs/mdx'
 import cloudflare from '@astrojs/cloudflare'
 import tina from '@tinacms/astro/integration'
 import { siteConfig } from './src/config/site.ts'
+import { EVENT_SOURCES } from './src/lib/events/types.ts'
 import { createReadStream, existsSync, statSync } from 'node:fs'
 import { extname, join, normalize } from 'node:path'
 
@@ -148,8 +149,7 @@ export default defineConfig({
       EVENTS_SOURCE: envField.enum({
         context: 'server',
         access: 'public',
-        // Keep in sync with EventSource in src/lib/events/types.ts.
-        values: ['curated', 'pco'],
+        values: [...EVENT_SOURCES],
         optional: true,
       }),
     },
@@ -162,14 +162,6 @@ export default defineConfig({
     // Astro-plugin compile of the package's source .astro files on first hit.
     // From tinacms/tina-astro-starter.
     ssr: { noExternal: ['@tinacms/astro', '@tinacms/bridge'] },
-    define: {
-      // The prerender bundle runs against an empty `process.env` shim (the
-      // Cloudflare adapter targets workerd), so src/config/site.ts can't read
-      // DEPLOY_ENV there and would re-resolve to 'development' — emitting a
-      // blanket `Disallow: /` robots.txt even on production. Pin the value
-      // resolved here, in Node, so both contexts agree. See resolveDeployEnv().
-      'import.meta.env.DEPLOY_ENV': JSON.stringify(siteConfig.env),
-    },
     server: {
       allowedHosts: ['plcc-dev.internal', 'plcc.internal', 'localhost'],
       watch: process.env.ASTRO_CONTAINER_DEV

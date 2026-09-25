@@ -4,9 +4,14 @@
 // it exists — a declared-but-unimplemented one only ever threw into the
 // fallback.
 
-export type EventCategory = 'Everyone' | 'Families' | 'Youth' | 'Groups' | 'Serve'
+// Runtime lists, so the places that enumerate them — the EVENTS_SOURCE env schema
+// in astro.config.mjs, the Featured events block's category options (pinned by
+// test/enum-parity.test.ts) — take them from here rather than restating them.
+export const EVENT_CATEGORIES = ['Everyone', 'Families', 'Youth', 'Groups', 'Serve'] as const
+export type EventCategory = (typeof EVENT_CATEGORIES)[number]
 
-export type EventSource = 'curated' | 'pco'
+export const EVENT_SOURCES = ['curated', 'pco'] as const
+export type EventSource = (typeof EVENT_SOURCES)[number]
 
 export type CalendarEvent = {
   /** Stable id from the source — used for dedupe and as a render key. */

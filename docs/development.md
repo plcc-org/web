@@ -145,8 +145,10 @@ picks the CMS flags from the environment. Three parts are load-bearing:
   build. That inverts both `PROD` branches in the codebase at once: events fall back to
   the curated list instead of the Planning Center capture, and draft pages get published.
   Nothing fails; you just get a development build under a production name.
-- **`astro.config.mjs` pins `import.meta.env.DEPLOY_ENV`** through `vite.define` — see
-  [infrastructure.md](./infrastructure.md).
+- **Nothing in the bundle reads `DEPLOY_ENV`.** Routes are prerendered through a Vite SSR
+  runner targeting workerd, where `process.env` is an empty shim. `robots.txt` decides
+  indexability from the configured `site` instead (`isIndexableSite` in
+  `src/config/site.ts`), and the post-build crawl asserts the result per target.
 
 ### `postbuild`
 

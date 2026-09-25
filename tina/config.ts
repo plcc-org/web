@@ -1,11 +1,7 @@
 import { defineConfig } from 'tinacms'
-// @ts-expect-error — plain-JS template palette, shared with Node scripts.
 import { templates, heroFields, image, checkSeoDescription } from './templates.mjs'
-// @ts-expect-error — plain-JS, shared with scripts/generate-redirects.mjs.
 import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs'
-// @ts-expect-error — plain-JS, shared with the /links/ page and scripts/prune-sunday-links.mjs.
 import { checkSunday, churchToday, linkListField, nextSunday, toIsoDate } from './sunday-links.mjs'
-// @ts-expect-error — plain-JS, shared with test/date-field.test.ts.
 import { dateOnly } from './date-field.mjs'
 import { church } from '../src/config/church'
 

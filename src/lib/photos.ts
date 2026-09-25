@@ -1,4 +1,4 @@
-import { getCollection } from 'astro:content'
+import { getEntry } from 'astro:content'
 import { imageKey } from './images'
 
 // The photo catalog (src/content/photos/photos.json): every editorial photo in
@@ -7,15 +7,8 @@ import { imageKey } from './images'
 // back to the catalog — so one description serves every page the photo appears
 // on, and an inline alt, where present, is a deliberate per-page override.
 // Logos and adornments aren't catalogued and always pass their own alt.
-let alts: Map<string, string> | null = null
-
-async function catalogAlt(filename: string): Promise<string | undefined> {
-  if (!alts) {
-    const entries = await getCollection('photos')
-    alts = new Map(entries.map((e) => [e.id, e.data.alt]))
-  }
-  return alts.get(filename)
-}
+// Catalog entry ids are bare filenames (see the loader in src/content.config.ts),
+// which is exactly what imageKey returns.
 
 /**
  * The alt text for a stored image reference: the inline override when the
@@ -26,7 +19,7 @@ async function catalogAlt(filename: string): Promise<string | undefined> {
 export async function altFor(inline: string | undefined, ref: string | undefined): Promise<string> {
   if (inline) return inline
   if (!ref) return ''
-  const alt = await catalogAlt(imageKey(ref))
+  const alt = (await getEntry('photos', imageKey(ref)))?.data.alt
   if (alt === undefined) console.warn(`[photos] no inline alt and no catalog entry for "${ref}"`)
   return alt ?? ''
 }
