@@ -9,9 +9,9 @@ version: 2
 # about the advisory, independent of the schedules below, and all of them ride
 # in one PR — see the `security` group.
 #
-# There's no `docker` entry, and that's intentional: the Dockerfile pins nothing
-# to pin — `node:lts` and `nginx:alpine` are floating tags that pick up new
-# digests on every rebuild, so there is no version for Dependabot to bump.
+# There's no `docker` entry, and that's intentional: the Dockerfile's only base
+# is `node:22`, a floating tag that follows .node-version, which is changed by
+# hand (see docs/development.md) rather than by Dependabot.
 
 updates:
   # ── npm ─────────────────────────────────────────────────────────────────────

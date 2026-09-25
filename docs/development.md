@@ -61,7 +61,7 @@ tina/               TinaCMS config: config.ts (collections) + templates.mjs (blo
                     plus rules shared with scripts (short-link-rules.mjs, sunday-links.mjs)
 public/             Static assets served as-is (favicon, manifest, _headers)
 docs/               Project documentation (you are here)
-nginx/, Dockerfile  Container image for serving the built site
+Dockerfile          Container image: builds the site and serves it via astro preview
 ```
 
 ---
@@ -461,8 +461,8 @@ Three things a bump can break that aren't obvious from the diff:
   Dependabot's TS 7 PR is left open as a tracker and stays red until then;
   `npm view @astrojs/check peerDependencies` is the whole test for whether it has lifted.
 
-The Dockerfile has no entry, because `node:lts` and `nginx:alpine` are floating tags with
-no version to bump.
+The Dockerfile has no entry: its `node:22` base follows `.node-version`, and moves when
+that does.
 
 Keep pure logic in dependency-free modules so it stays testable. When you add a guard,
 **break it once** to confirm it fires — a clean run proves nothing on its own.

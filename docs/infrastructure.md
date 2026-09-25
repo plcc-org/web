@@ -129,9 +129,9 @@ immediately. `wrangler` can't do it — its OAuth token is rejected by the build
 
 ## Optional: run with Apple `container` (macOS)
 
-The repo includes a `Dockerfile` that works with Apple's `container` CLI, for serving the
-built site or running dev in isolation. The npm workflow in [development.md](./development.md)
-is the simplest path; these are optional.
+The repo includes a `Dockerfile` that works with Apple's `container` CLI, for building
+and serving the site, or running dev, with no Node on the host. The npm workflow in
+[development.md](./development.md) is the simplest path; these are optional.
 
 ### Prerequisites
 
@@ -154,9 +154,14 @@ container build --tag plcc-web .
 container run --name plcc --detach --rm plcc-web
 ```
 
-NGINX serves the site on port `8080` inside the container. With `dns.domain=internal`,
-open `http://plcc.internal:8080`; otherwise find the IP with `container ls` and open
-`http://<container-ip>:8080`. Stop with `container stop plcc` (auto-removed via `--rm`).
+The image builds the staging target (`--build-arg DEPLOY_ENV=production` for the other)
+and serves it with `astro preview` on port `8080` inside the container. That is the
+Cloudflare adapter's own preview, running the built Worker in workerd, so short links,
+the `_headers` security headers, the 410 routes and the 404 page all behave as deployed.
+With `dns.domain=internal`, open `http://plcc.internal:8080`; otherwise find the IP with
+`container ls` and open `http://<container-ip>:8080`. `--publish` doesn't forward to
+`localhost` on this CLI, so use the container's own address. Stop with
+`container stop plcc` (auto-removed via `--rm`).
 
 ### Develop in a container (no host npm)
 
