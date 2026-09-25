@@ -372,18 +372,60 @@ production build that isn't indexable looks perfect and simply never appears in 
 
 ### Unit tests
 
-`test/*.test.ts`, run by `npm test`:
+`test/*.test.ts`, run by `npm test`. They test code, not content: nothing here fails
+because of something an editor saved in the CMS. The crawl above is where rendered
+output gets checked.
 
-- `url.test.ts` — `withBase()` / `resolveHref()`
+**Site logic**
+
+- `url.test.ts` — `withBase()`, `resolveHref()` (including under a sub-path base),
+  `isWebUrl()`
+- `site.test.ts` — `resolveDeployEnv()` and `isIndexableSite()`, the two halves of
+  "is this build production?"
+- `markdown.test.ts` — `renderMarkdown`, `renderInline`, `renderPlain`, and entity
+  decoding that never double-decodes
+- `page-meta.test.ts` — `pageDescription`, including the `??`-vs-`||` trap that shipped
+  `/families/` with no description
+- `structured-data.test.ts` — the schema.org graph, and a JSON-LD document that can't end
+  its own `<script>`
+- `messages.test.ts` — the YouTube feed parser behind `/messages/`
 - `rich-text-href.test.ts` — the href allowlist for CMS rich text, on both sides: the
   schemes the site uses keep working, and script-bearing ones stay blocked
-- `events.test.ts` — `mapCategory`, `normalizeUpcoming`
+- `hrefs.test.ts` — no root-relative `href`/`src` literals in components
+
+**Events**
+
+- `events.test.ts` — `mapCategory`, `normalizeUpcoming`, `groupIntoSeries`,
+  `buildSections`, and `withinDays` across both DST switches
+- `curated.test.ts` — the fallback calendar's dates and offsets either side of DST
+- `format.test.ts`, `place.test.ts`, `text.test.ts` — church-local times, venues, and
+  summary cleanup
 - `pco-map.test.ts` — the Planning Center mapper: visibility failing closed, published
-  times, HTML stripping and word-boundary truncation, tag-first categories
-- `markdown.test.ts` — `renderPlain`, including entity decoding
+  times, tag-first categories — plus the committed capture's freshness
+- `pco-capture.test.ts` — the capture's query (the `include=event` pairing), paging, and
+  its refusals to write
+
+**CMS schema and short links**
+
+- `blocks-registry.test.ts` — every palette block has a renderer and a thumbnail
+- `enum-parity.test.ts` — the Featured events categories match `EVENT_CATEGORIES`
+- `image-fields.test.ts`, `image-parse.test.ts`, `image-ref.test.ts` — image fields go
+  through `image()`, and every stored reference shape resolves
+- `date-field.test.ts`, `sunday-links.test.ts`, `seo-description.test.ts`,
+  `video-rules.test.ts` — the form-side rules shared with the build
+- `short-link-rules.test.ts`, `generate-redirects.test.ts` — per-entry rules, then the
+  generator itself: 301/302, slash pairs, duplicates, shadowed pages, 410 routes
+- `media-pipeline.test.ts` — upload types agree end to end; the CDN media rule
+
+**Build and design guards**
+
 - `assets.test.ts` — every image referenced in source or the catalog exists on disk
-- `contrast.test.ts` — the accent tokens still clear WCAG AA against the surfaces they're
-  painted on, computed from `tokens.css` rather than restated
+- `contrast.test.ts`, `brand.test.ts` — the accent tokens still clear WCAG AA against the
+  surfaces they're painted on, computed from `tokens.css`; brand colours match the tokens
+- `styles.test.ts` — no component `<style>` blocks, no `:global(` in the stylesheets
+- `headers.test.ts` — the security headers in `public/_headers`
+- `nap.test.ts` — phone numbers and addresses in source match `church.ts`
+- `patched-deps.test.ts` — each patched package is installed once, at its patched version
 
 ### Dependency updates
 

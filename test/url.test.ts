@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { withBase, resolveHref } from '../src/lib/url'
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import { withBase, resolveHref, isWebUrl } from '../src/lib/url'
 
 // withBase prefixes the configured base path. We assert behavior relative to the
 // resolved BASE_URL so the test holds for both root ('/') and sub-path deploys.
@@ -47,7 +47,45 @@ describe('resolveHref', () => {
     expect(resolveHref('#main-content')).toBe('#main-content')
   })
 
-  it('does not mistake a path segment containing a colon for a scheme', () => {
-    expect(resolveHref('events/families/')).toBe(`${BASE}events/families/`)
+  it('does not mistake a colon after the first segment for a scheme', () => {
+    expect(resolveHref('events/10:30/')).toBe(`${BASE}events/10:30/`)
+    expect(resolveHref('/events/10:30/')).toBe(`${BASE}events/10:30/`)
+  })
+})
+
+// Every environment serves from '/', so the sub-path branch never runs in a
+// build. Load the module afresh under a stubbed base to prove it would work.
+describe('under a sub-path base', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.resetModules()
+  })
+
+  it('prefixes internal paths once, and leaves external ones alone', async () => {
+    vi.stubEnv('BASE_URL', '/preview/')
+    vi.resetModules()
+    const url = await import('../src/lib/url')
+    expect(url.withBase('/about/')).toBe('/preview/about/')
+    expect(url.withBase()).toBe('/preview/')
+    expect(url.resolveHref('visit/')).toBe('/preview/visit/')
+    expect(url.resolveHref('https://example.org/')).toBe('https://example.org/')
+    expect(url.resolveHref('#top')).toBe('#top')
+  })
+})
+
+describe('isWebUrl', () => {
+  it('is true only for absolute http(s) URLs', () => {
+    expect(isWebUrl('https://plcc.churchcenter.com/giving')).toBe(true)
+    expect(isWebUrl('HTTP://example.org')).toBe(true)
+    for (const href of [
+      '/visit/',
+      'visit/',
+      'mailto:office@plcc.org',
+      'tel:+14253928636',
+      '#top',
+      '//cdn.example.org',
+    ]) {
+      expect(isWebUrl(href)).toBe(false)
+    }
   })
 })

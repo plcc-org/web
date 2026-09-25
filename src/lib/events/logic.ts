@@ -36,11 +36,15 @@ export function pacificDay(d: Date): string {
  * sidesteps DST for the same reason `normalizeUpcoming` does — and it matters
  * here because CI builds at 12:00 UTC, which is the previous evening in Pacific.
  */
+//
+// The last day is found by calendar arithmetic on the date itself, not by adding
+// 24h × n to the current instant: across a spring-forward that lands an hour
+// later on the wall clock, and a build between 23:00 and midnight would reach
+// into an eighth day.
 export function withinDays(events: CalendarEvent[], days: number): CalendarEvent[] {
-  const today = new Date()
-  const last = new Date(today.getTime() + (days - 1) * 86_400_000)
-  const from = pacificDay(today)
-  const to = pacificDay(last)
+  const from = pacificDay(new Date())
+  const [y, m, d] = from.split('-').map(Number)
+  const to = new Date(Date.UTC(y, m - 1, d + days - 1)).toISOString().slice(0, 10)
   return events.filter((e) => {
     const day = pacificDay(new Date(e.start))
     return day >= from && day <= to

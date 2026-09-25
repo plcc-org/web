@@ -8,6 +8,7 @@
 // endpoint carrying sermon metadata. A YouTube title is all we get — no
 // speaker, series or passage — which is why the page renders dates, not names.
 
+import { church } from '../../config/church'
 import { decodeEntities } from '../markdown'
 
 const CHANNEL_ID = 'UC1eeiv-tSWoCkB33rskGggw'
@@ -56,10 +57,18 @@ const formatPublishedDate = (iso: string) => {
     return ''
   }
 
-  return parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  // Church time, not the build host's: CI runs in UTC, where a Sunday evening
+  // upload is already Monday.
+  return parsed.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: church.timezone,
+  })
 }
 
-const extractSundayServicesFromFeed = (xml: string): SundayService[] => {
+/** The Sunday services in a YouTube channel feed, newest first as the feed lists them. Exported for tests. */
+export const extractSundayServicesFromFeed = (xml: string): SundayService[] => {
   const entryMatches = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)]
 
   return entryMatches

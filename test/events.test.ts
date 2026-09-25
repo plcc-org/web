@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { buildSections, groupIntoSeries, mapCategory, normalizeUpcoming } from '../src/lib/events/logic'
+import { buildSections, groupIntoSeries, mapCategory, normalizeUpcoming, withinDays } from '../src/lib/events/logic'
 import type { CalendarEvent } from '../src/lib/events/types'
 
 describe('mapCategory', () => {
@@ -237,5 +237,65 @@ describe('buildSections', () => {
     // The page shows one dated occurrence plus one series entry plus the one-off;
     // it must not advertise the two occurrences it collapsed away.
     expect(rendered.map((e) => e.id).sort()).toEqual(['o1', 'r1'])
+  })
+})
+
+// "This week" is a window of church-local calendar days. CI builds at 12:00 UTC,
+// which is early morning in Sammamish, and a build can also land late in the
+// Pacific evening, when UTC has already moved on to tomorrow.
+describe('withinDays', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  const ev = (id: string, start: string): CalendarEvent => ({
+    id,
+    seriesId: id,
+    title: id,
+    start,
+    summary: '',
+    url: '/',
+    category: 'Everyone',
+    source: 'pco',
+  })
+  const ids = (events: CalendarEvent[]) => events.map((e) => e.id)
+
+  it('runs from today to six days on, in church time, at the nightly build hour', () => {
+    vi.useFakeTimers({ now: new Date('2026-08-09T12:00:00Z') }) // Sunday 05:00 PDT
+    const events = [
+      ev('last-night', '2026-08-09T03:00:00Z'), // Saturday 20:00 PDT
+      ev('this-morning', '2026-08-09T17:00:00Z'), // Sunday 10:00 PDT
+      ev('saturday-late', '2026-08-16T06:00:00Z'), // next Saturday 23:00 PDT
+      ev('next-sunday', '2026-08-16T17:00:00Z'),
+    ]
+    expect(ids(withinDays(events, 7))).toEqual(['this-morning', 'saturday-late'])
+  })
+
+  it('still counts Saturday as today when UTC has already reached Sunday', () => {
+    vi.useFakeTimers({ now: new Date('2026-08-09T06:30:00Z') }) // Saturday 23:30 PDT
+    const events = [ev('saturday-night', '2026-08-09T05:00:00Z'), ev('friday-after', '2026-08-15T06:30:00Z')]
+    // Friday 23:30 PDT on the 14th is the window's last day; the 15th is not in it.
+    expect(ids(withinDays(events, 7))).toEqual(['saturday-night', 'friday-after'])
+    expect(ids(withinDays([ev('saturday-after', '2026-08-15T17:00:00Z')], 7))).toEqual([])
+  })
+
+  it('is exactly seven days across the spring-forward, even late in the evening', () => {
+    // Saturday 7 March 2026, 23:30 PST. Clocks go forward at 02:00 the next day, so
+    // adding 6 × 24h would land at 00:30 on the 14th and stretch the window to eight.
+    vi.useFakeTimers({ now: new Date('2026-03-08T07:30:00Z') })
+    const events = [
+      ev('fri-13th', '2026-03-13T19:00:00Z'), // Friday 12:00 PDT
+      ev('sat-14th', '2026-03-14T19:00:00Z'), // Saturday 12:00 PDT — day eight
+    ]
+    expect(ids(withinDays(events, 7))).toEqual(['fri-13th'])
+  })
+
+  it('is exactly seven days across the fall-back', () => {
+    vi.useFakeTimers({ now: new Date('2026-10-31T19:00:00Z') }) // Saturday 12:00 PDT
+    const events = [
+      ev('fri-late', '2026-11-07T07:30:00Z'), // Friday 6 Nov 23:30 PST
+      ev('sat-early', '2026-11-07T08:30:00Z'), // Saturday 7 Nov 00:30 PST
+    ]
+    expect(ids(withinDays(events, 7))).toEqual(['fri-late'])
   })
 })

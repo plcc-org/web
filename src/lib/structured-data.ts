@@ -116,7 +116,14 @@ export function eventGraph(origin: string, events: CalendarEvent[]): JsonLdNode[
   })
 }
 
-/** Wrap nodes in the single `@graph` document BaseLayout renders. */
+/**
+ * Wrap nodes in the single `@graph` document BaseLayout renders.
+ *
+ * It lands in a <script> via set:html, where the HTML parser ends the element at
+ * the first `</script` whatever the JSON means — and event text comes from
+ * Planning Center, where an escaped `&lt;/script&gt;` in a description decodes to
+ * exactly that. Escaping every `<` keeps the JSON identical and the element whole.
+ */
 export function jsonLdDocument(nodes: JsonLdNode[]): string {
-  return JSON.stringify({ '@context': 'https://schema.org', '@graph': nodes })
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': nodes }).replace(/</g, '\\u003c')
 }
