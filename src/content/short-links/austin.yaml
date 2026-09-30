@@ -1,0 +1,5 @@
+name: austin
+from: /austin
+destination: 'https://plcc.dev/about/pastors-letter/'
+kind: shortcut
+permanent: true
