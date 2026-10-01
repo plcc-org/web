@@ -1,13 +1,22 @@
 ---
 import { withBase } from '../../lib/url'
 import wordmarkUrl from '../../assets/images/Horizontal-Logo-White-on-Transparent.png?url'
+import SiteBanner from './SiteBanner.astro'
 
 // The site's full header: wordmark, the eight-item primary nav, and the hamburger
 // that folds it on small screens. Its script lives here rather than in BaseLayout so
 // a page rendered with slim chrome (/links/) ships none of it.
+
+type Props = {
+  /** Offer the Sunday livestream banner (the homepage). */
+  livestream?: boolean
+}
+
+const { livestream = false } = Astro.props
 ---
 
 <header class="site-header">
+  <SiteBanner livestream={livestream} />
   <nav class="site-nav" aria-label="Primary">
     <div class="site-nav__bar">
       <a href={withBase()} class="site-nav__home" aria-label="Pine Lake Covenant Church — Home">

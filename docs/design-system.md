@@ -510,6 +510,16 @@ automatically flips to a light fill so it doesn't read green-on-green.
   `body:has(.hero)`), and its links, wordmark and hamburger repaint white until the page
   scrolls — which is what makes the hero read full-bleed to the top of the viewport.
 
+- **Site banner** (`SiteBanner.astro`, styles in `nav.css`) — a full-width strip as the
+  header's first row, so it rides the fixed bar over the hero and is always above the
+  fold. Two variants. The site notice, `clay-ink`, appears on every page while it's
+  switched on in the CMS. "Live now", `moss-ink` with a pulsing dot (still under reduced
+  motion), appears on the homepage during the Sunday livestream. Both are solid ink fills
+  under white type, not the bar's frost, so they stay legible over any frame of the hero.
+  While one shows, it takes the safe-area inset from the header, and the hero grows by
+  `--hero-banner-room` so its bottom-aligned copy keeps clear of the taller bar. See
+  [cms.md](./cms.md#site-notice).
+
 - **Footer** (`footer.css`) — full-bleed forest panel on a faint grid texture: a sitemap
   of four link columns above a hairline, then church info, social links and the copyright
   line. The columns collapse to two ≤ 800px. A closing `band--forest` flows flush into it

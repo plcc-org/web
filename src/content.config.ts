@@ -3,6 +3,7 @@ import { glob, file } from 'astro/loaders'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
 import { checkLinkUrl, checkSunday, toIsoDate } from '../tina/sunday-links.mjs'
+import { checkNoticeLink, checkNoticeMessage } from '../tina/site-notice.mjs'
 import { heroFields, templates } from '../tina/templates.mjs'
 
 // quotes is a single YAML file holding one array. The CMS edits it as a list
@@ -274,4 +275,36 @@ const sundayLinksEveryWeek = defineCollection({
   }),
 })
 
-export const collections = { photos, youthMoments, leadership, quotes, pages, sundayLinks, sundayLinksEveryWeek }
+// The site notice: one switchable message shown atop every page, for the morning the
+// building is closed (SiteBanner.astro). One YAML file holding one object, so the
+// parser wraps it as the collection's single entry. The rules are the CMS form's
+// (tina/site-notice.mjs).
+const siteNotice = defineCollection({
+  loader: file('src/content/site-notice/site-notice.yaml', {
+    parser: (text) => [{ ...parseYaml(text), id: 'site-notice' }],
+  }),
+  schema: z
+    .object({
+      enabled: z.boolean().default(false),
+      message: z.string().default(''),
+      link: z.string().default(''),
+      linkLabel: z.string().default(''),
+    })
+    .superRefine((notice, ctx) => {
+      const message = checkNoticeMessage(notice.message, notice.enabled)
+      if (message) ctx.addIssue({ code: 'custom', path: ['message'], message })
+      const link = checkNoticeLink(notice.link)
+      if (link) ctx.addIssue({ code: 'custom', path: ['link'], message: link })
+    }),
+})
+
+export const collections = {
+  photos,
+  youthMoments,
+  leadership,
+  quotes,
+  pages,
+  sundayLinks,
+  sundayLinksEveryWeek,
+  siteNotice,
+}

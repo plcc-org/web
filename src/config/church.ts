@@ -52,6 +52,8 @@ export const church = {
   social: {
     instagram: 'https://www.instagram.com/pinelakecov/',
     youtube: 'https://www.youtube.com/@PineLkCovChurch',
+    /** YouTube's always-current address for whatever the channel is streaming. */
+    livestream: 'https://www.youtube.com/@PineLkCovChurch/live',
     podcast: 'https://podcasts.apple.com/us/podcast/pine-lake-covenant-church-podcast/id1771382825',
   },
   /**
@@ -64,6 +66,11 @@ export const church = {
     /** 24-hour, church-local time. */
     opens: '10:00',
     durationMinutes: 75,
+    /**
+     * When the homepage's "Live now" banner shows, in minutes either side of
+     * `opens` — the stream starts before the service and runs past it.
+     */
+    stream: { beforeMinutes: 10, afterMinutes: 90 },
   },
 } as const
 

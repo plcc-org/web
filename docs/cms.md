@@ -77,7 +77,8 @@ just a page's content and belongs in that page's editor.
 This table is also the **sidebar order**, top to bottom — `tina/config.ts` lists the
 collections in exactly this sequence, and Tina renders them in schema order. Pages comes
 first because it's what an editor is nearly always here for; Sunday links next, because
-it changes every week; the shared lists that feed page blocks follow; Short links sits
+it changes every week; Site notice after them, so it's quick to find on a snowy morning;
+the shared lists that feed page blocks follow; Short links sits
 last, being routing config rather than content and the least often touched.
 
 | In the CMS                   | What it is                                     | Kind    |
@@ -85,22 +86,23 @@ last, being routing config rather than content and the least often touched.
 | **Pages**                    | CMS-built pages (hero + a body of blocks)      | content |
 | **Sunday links**             | This Sunday's links at `/links/`, one per week | weekly  |
 | **Sunday links: every week** | The groups of links under every week           | content |
+| **Site notice**              | A closure notice across the top of every page  | notice  |
 | **Leadership**               | Pastors & staff — reusable people entities     | shared  |
 | **Youth moments**            | Signature youth trips/retreats (curated)       | shared  |
 | **Homepage quotes**          | Rotating testimonials (reusable social proof)  | shared  |
 | **Photo descriptions**       | One alt-text description per photo, site-wide  | shared  |
 | **Short links**              | Vanity URLs pointing off-site                  | routing |
 
-All eight sit under one **Collections** heading. Three of them — **Sunday links: every
-week**, **Homepage quotes** and **Photo descriptions** — are a single file holding one
-list, so their list view shows a
+All nine sit under one **Collections** heading. Four of them — **Sunday links: every
+week**, **Site notice**, **Homepage quotes** and **Photo descriptions** — are a single
+file, so their list view shows a
 single row to click through. They offer no "add" or "delete" at the file level (`allowedActions` in
 `tina/config.ts`): the one file is the only file. Adding and removing quotes _within_ the
 list is the normal thing to do and works as usual. `src/content/quotes/` holds a second
 file, `quotes-and-placeholders.yaml` — the draft pool the live quotes were chosen from,
 which nothing renders. A `match` on the collection keeps it out of the admin.
 
-None of the three is marked `ui.global`. That flag exists for genuine site configuration
+None of the four is marked `ui.global`. That flag exists for genuine site configuration
 and moves a collection out of the Collections list into the **Site** section next to Media
 Manager — which, copied from Tina's own starter, split the sidebar in two and hid half the
 editable lists from the people who edit them. This is content that happens to live in one
@@ -171,6 +173,33 @@ alone, so `?preview` never reaches the page there. The date field's hooks live i
 `tina/date-field.mjs` — Tina's own date picker shows and saves the wrong day west of UTC.
 The slim chrome is `BaseLayout chrome="slim"`
 ([design-system.md](./design-system.md#8-header--footer)).
+
+### Site notice
+
+For the morning the building is closed. Open **Site notice**, write one short sentence
+("Sunday's service is canceled because of snow."), tick **Show this notice on every
+page**, and save. It shows as a strip across the top of every page, the slim `/links/`
+page included, and stays up until someone unticks the box. While it's on, it replaces the
+homepage's "Live now" banner. A link is optional: an `https://` address, or a page on
+this site like `/events/`. The link text defaults to "Details".
+
+**It takes a few minutes, not seconds.** Saving commits to Git and rebuilds the site, so
+the notice goes live when the deploy finishes — and only one Cloudflare build runs at a
+time, so a build already in the queue goes first. When a closure is decided the night
+before, post it the night before.
+
+Unticking the box is all it takes to take it down; the message can stay in the field,
+ready for next time.
+
+**The "Live now" banner** is the other thing that uses this strip, and it isn't in the
+CMS. On the homepage only, from 9:50 to 11:30 on Sundays (church time, from
+`church.service` in `src/config/church.ts`), it links to the YouTube livestream. The site
+is static, so the browser checks the clock. To see it on any other day, open the
+homepage with `?banner=on` on the end of the address.
+
+For developers: the component is `src/components/chrome/SiteBanner.astro`, the time
+window is `isStreamLive` in `src/lib/livestream.ts`, and the form's rules live in
+`tina/site-notice.mjs`, shared with the zod schema.
 
 ### Short links
 

@@ -34,6 +34,8 @@ type Props = {
    * components carry scripts, so a slim page ships none of them.
    */
   chrome?: 'full' | 'slim'
+  /** Offer the Sunday livestream banner atop the header (the homepage). */
+  livestream?: boolean
 }
 
 const {
@@ -43,6 +45,7 @@ const {
   noindex = false,
   structuredData = [],
   chrome = 'full',
+  livestream = false,
 }: Props = Astro.props
 
 // The suffix lives here, once, so pages pass bare titles.
@@ -148,7 +151,7 @@ const jsonLd = origin
       Skip to content
     </a>
 
-    {chrome === 'slim' ? <SlimHeader /> : <SiteHeader />}
+    {chrome === 'slim' ? <SlimHeader /> : <SiteHeader livestream={livestream} />}
 
     <main class="site-main" id="main-content">
       <slot />

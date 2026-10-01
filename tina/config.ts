@@ -3,6 +3,7 @@ import { templates, heroFields, image, checkSeoDescription } from './templates.m
 import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs'
 import { checkSunday, churchToday, linkListField, nextSunday, toIsoDate } from './sunday-links.mjs'
 import { dateOnly } from './date-field.mjs'
+import { checkNoticeLink, checkNoticeMessage } from './site-notice.mjs'
 import { church } from '../src/config/church'
 
 /**
@@ -312,6 +313,51 @@ export default defineConfig({
               { name: 'heading', label: 'Heading', type: 'string', required: true },
               linkListField('Top to bottom as they appear on the page.'),
             ],
+          },
+        ],
+      },
+      // The site notice: one message across the top of every page, switched on by hand
+      // and left on until someone switches it off — a snow closure, say. Modelled like
+      // Homepage quotes: one file, create and delete removed. Saving rebuilds the site,
+      // so it goes live in a few minutes, not instantly. See docs/cms.md, "Site notice".
+      {
+        name: 'siteNotice',
+        label: 'Site notice',
+        path: 'src/content/site-notice',
+        format: 'yaml',
+        ui: { allowedActions: { create: false, delete: false }, router: () => '/' },
+        fields: [
+          {
+            name: 'enabled',
+            label: 'Show this notice on every page',
+            type: 'boolean',
+            description:
+              'Stays up until you switch it off. While it’s on, it replaces the “Live now” banner on Sunday mornings.',
+          },
+          {
+            name: 'message',
+            label: 'Notice',
+            type: 'string',
+            description: 'One short sentence, like “Sunday’s service is canceled because of snow.”',
+            ui: {
+              validate: (value: unknown, data: { enabled?: boolean } | undefined) =>
+                checkNoticeMessage(value, data?.enabled),
+            },
+          },
+          {
+            name: 'link',
+            label: 'Link (optional)',
+            type: 'string',
+            description:
+              'Somewhere to read more: a website starting https://, or a page on this site starting with a ' +
+              'slash, like /events/.',
+            ui: { validate: (value: unknown) => checkNoticeLink(value) },
+          },
+          {
+            name: 'linkLabel',
+            label: 'Link text (optional)',
+            type: 'string',
+            description: 'What the link says. Leave blank for “Details”.',
           },
         ],
       },

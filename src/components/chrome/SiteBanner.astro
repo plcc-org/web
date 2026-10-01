@@ -1,0 +1,64 @@
+---
+import { getEntry } from 'astro:content'
+import { church } from '../../config/church'
+import { resolveHref } from '../../lib/url'
+
+// The strip across the top of the header. Two things can fill it, and the first wins:
+//
+//   - the site notice (CMS → "Site notice"), on every page while it's switched on —
+//     baked in at build time, so it needs no script and shows without JS;
+//   - on the homepage only, a "Live now" link to the stream during the Sunday service.
+//     The page is static, so the clock is checked in the browser, in church-local time,
+//     and again every minute so a tab left open lights up and clears on its own.
+//     `?banner=on` shows it at any hour, for checking how it looks.
+//
+// Otherwise nothing renders, and the header sits exactly as it does without a banner.
+
+type Props = {
+  /** Offer the Sunday livestream link (the homepage). */
+  livestream?: boolean
+}
+
+const { livestream = false } = Astro.props
+const notice = (await getEntry('siteNotice', 'site-notice'))?.data
+const showNotice = Boolean(notice?.enabled && notice.message.trim())
+const { day, opens, stream } = church.service
+---
+
+{showNotice && notice ? (
+  <p class="site-banner site-banner--notice" role="status">
+    <span>{notice.message}</span>
+    {notice.link && (
+      <a class="site-banner__link" href={resolveHref(notice.link)}>
+        {notice.linkLabel || 'Details'} <span aria-hidden="true">→</span>
+      </a>
+    )}
+  </p>
+) : livestream ? (
+  <a
+    class="site-banner site-banner--live"
+    href={church.social.livestream}
+    data-stream-window={JSON.stringify({ timeZone: church.timezone, day, opens, ...stream })}
+    hidden
+  >
+    <span class="site-banner__dot" aria-hidden="true"></span>
+    <span>
+      Live now: watch Sunday’s service <span aria-hidden="true">→</span>
+    </span>
+  </a>
+) : null}
+
+{!showNotice && livestream && <script>
+  import { isStreamLive } from '../../lib/livestream'
+
+  const banner = document.querySelector<HTMLElement>('.site-banner--live')
+  if (banner?.dataset.streamWindow) {
+    const streamWindow = JSON.parse(banner.dataset.streamWindow)
+    const forced = new URLSearchParams(location.search).get('banner') === 'on'
+    const update = () => {
+      banner.hidden = !(forced || isStreamLive(new Date(), streamWindow))
+    }
+    update()
+    if (!forced) setInterval(update, 60_000)
+  }
+</script>}

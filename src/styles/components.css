@@ -38,7 +38,8 @@
   position: relative;
   width: 100vw;
   margin-inline: calc(50% - 50vw);
-  min-height: clamp(28rem, 72vh, 44rem);
+  /* `--hero-banner-room` is the site banner's allowance (below), 0 without one. */
+  min-height: calc(clamp(28rem, 72vh, 44rem) + var(--hero-banner-room, 0rem));
   display: flex;
   align-items: flex-end;
   overflow: clip;
@@ -255,6 +256,14 @@
   margin-inline: auto;
   padding: var(--gutter);
   padding-block-end: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* A site banner (nav.css) makes the fixed bar taller over the hero, and on a
+   short screen the bottom-aligned copy reaches up to just under the nav. The
+   hero grows by the banner's height so the copy stays the same distance below
+   the bar. One line of banner is about 2rem; the spare covers rounding. */
+body:has(.site-banner:not([hidden])) .hero {
+  --hero-banner-room: 2.25rem;
 }
 
 /* The entrance animation staggers this element's children (animations.css),

@@ -25,6 +25,11 @@ Scripture, this week's sign-ups — so it's a plain list, kept out of search, wi
 and none of the newcomer framing. It's a utility, not a door, and it shouldn't grow into
 a second front page; see [cms.md](./cms.md#sunday-links).
 
+**A smaller one: the homepage's "Live now" banner.** For about 100 minutes on a Sunday it
+links to the livestream, which is mostly for people who already belong here and can't be
+in the room. It earns its place by being invisible the rest of the week. The site
+notice above every page is the same kind of thing: it's there for a closure, then gone.
+
 ---
 
 ## The core idea: help people see themselves
