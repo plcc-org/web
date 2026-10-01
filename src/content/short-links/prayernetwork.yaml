@@ -1,4 +1,3 @@
-name: prayernetwork
 from: /prayernetwork
 destination: /contact/
 kind: shortcut

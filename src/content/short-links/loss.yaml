@@ -1,4 +1,3 @@
-name: loss
 from: /loss
 destination: /events/
 kind: shortcut

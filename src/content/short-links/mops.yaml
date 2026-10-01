@@ -1,4 +1,3 @@
-name: mops
 from: /mops
 destination: /momco/
 kind: shortcut

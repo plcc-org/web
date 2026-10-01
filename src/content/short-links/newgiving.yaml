@@ -1,4 +1,3 @@
-name: newgiving
 from: /newgiving
 destination: https://plcc.churchcenter.com/login?return=https://plcc.churchcenter.com/giving
 kind: shortcut

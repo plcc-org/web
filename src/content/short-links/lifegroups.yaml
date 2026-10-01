@@ -1,4 +1,3 @@
-name: lifegroups
 from: /lifegroups
 destination: /church-life/
 kind: shortcut

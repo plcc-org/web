@@ -1,4 +1,3 @@
-name: campbellfarm
 from: /campbellfarm
 destination: https://plcc.churchcenter.com/registrations/events/2954390
 kind: shortcut

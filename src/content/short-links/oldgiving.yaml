@@ -1,4 +1,3 @@
-name: oldgiving
 from: /oldgiving
 destination: https://plcc.ccbchurch.com/give_detail.php
 kind: shortcut

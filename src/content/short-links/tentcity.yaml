@@ -1,4 +1,3 @@
-name: tentcity
 from: /tentcity
 destination: /neighbors/serve/
 kind: shortcut

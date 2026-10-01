@@ -1,4 +1,3 @@
-name: game
 from: /game
 destination: https://forms.gle/JbURZDrMsaoNVUy26
 kind: shortcut

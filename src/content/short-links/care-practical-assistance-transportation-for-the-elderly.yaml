@@ -1,0 +1,6 @@
+from: /care/practical-assistance/transportation-for-the-elderly/
+destination: /neighbors/care/
+kind: moved
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /care/practical-assistance/transportation-support/ on the old site.

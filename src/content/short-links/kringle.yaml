@@ -1,4 +1,3 @@
-name: kringle
 from: /kringle
 destination: https://buy.stripe.com/7sY3co8BRb7taeS4K4cfK03
 kind: shortcut

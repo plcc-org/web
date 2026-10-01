@@ -1,4 +1,3 @@
-name: griefshare
 from: /griefshare
 destination: /neighbors/care/
 kind: shortcut

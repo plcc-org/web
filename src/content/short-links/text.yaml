@@ -1,4 +1,3 @@
-name: text
 from: /text
 destination: https://plcc.churchcenter.com/me/profile-and-household/edit?section=custom-fields&group=0
 kind: shortcut

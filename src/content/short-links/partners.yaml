@@ -1,4 +1,3 @@
-name: partners
 from: /partners
 destination: /neighbors/serve/
 kind: shortcut

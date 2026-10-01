@@ -1,4 +1,3 @@
-name: adventure
 from: /adventure/
 destination: https://plcc.churchcenter.com/groups/social-group/adventure-group
 kind: shortcut

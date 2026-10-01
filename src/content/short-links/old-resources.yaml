@@ -1,5 +1,0 @@
-name: old-resources
-from: /connect/resources/
-destination: /about/
-kind: moved
-expires: 2027-07-31

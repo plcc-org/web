@@ -1,0 +1,4 @@
+from: /myplcc/
+destination: https://plcc.churchcenter.com/
+kind: moved
+expires: 2027-07-31

@@ -515,80 +515,58 @@ export default defineConfig({
         label: 'Short links',
         path: 'src/content/short-links',
         format: 'yaml',
-        // Tina has no list-view column configuration, so a 55-entry list shows
-        // filenames only. Marking the fields you'd actually search by keeps a
-        // link findable by the address printed on the flyer. See docs/cms.md.
+        // Tina has no list-view column configuration, so the list shows filenames
+        // only. The filename is the short link itself, so the list reads as the
+        // addresses people actually type. See docs/cms.md.
         ui: {
           filename: {
-            description: 'The file this is saved as — set automatically from the name.',
-            slugify: (values) => flatSlug(values?.name ?? ''),
+            description: 'Set automatically from the short link.',
+            slugify: (values) => flatSlug(values?.from ?? ''),
             parse: (value: string) => flatSlug(value),
           },
         },
         defaultItem: () => ({ kind: 'shortcut', permanent: false }),
         fields: [
           {
-            name: 'name',
-            label: 'Name',
+            name: 'from',
+            label: 'Short link',
             type: 'string',
             isTitle: true,
-            required: true,
-            searchable: true,
-            description:
-              'Names this entry in the list (and its file behind the scenes) — it never appears on the public ' +
-              'site. The address people actually visit is "Old address" below.',
-          },
-          {
-            name: 'from',
-            label: 'Old address',
-            type: 'string',
             required: true,
             searchable: true,
             // scripts/generate-redirects.mjs runs the same checks at build time and
             // remains the authority — it alone can see that two entries claim the same
             // address. This is the same rule, moved to where the editor is standing.
             ui: { validate: (value: string) => checkFrom(value) },
-            description:
-              'The address people are typing or following, starting with a slash — "/camp" for plcc.org/camp. ' +
-              'It can have several parts, e.g. "/connect/about/leadership-team/".',
+            description: '"/camp" makes plcc.org/camp.',
           },
           {
             name: 'destination',
-            label: 'Sends people to',
+            label: 'Links to',
             type: 'string',
             searchable: true,
             ui: {
               validate: (value: string, allValues: { kind?: string }) => checkDestination(value, allValues?.kind),
             },
-            description:
-              'Either a full address elsewhere (https://plcc.churchcenter.com/…) or a page on this site, ' +
-              'written with slashes at both ends — "/visit/". Leave empty for a page that is gone for good — ' +
-              'anything typed here is ignored for those.',
+            description: 'A full https:// address, or a page on this site like "/visit/".',
           },
           {
             name: 'kind',
-            label: 'What kind of link is this?',
+            label: 'Type',
             type: 'string',
             required: true,
             options: [
-              { label: 'A shortcut to a sign-up or another site', value: 'shortcut' },
-              { label: 'A page that has permanently moved', value: 'moved' },
-              { label: 'A page that is gone for good', value: 'gone' },
+              { label: 'Shortcut — can be re-pointed later', value: 'shortcut' },
+              { label: 'Old page that has moved for good', value: 'moved' },
+              { label: 'Old page that is gone (leave "Links to" empty)', value: 'gone' },
             ],
-            description:
-              'A shortcut stays ours to re-point later — use it for sign-ups and anything that changes year to year. ' +
-              'Only pick "permanently moved" for a page that has genuinely moved for good: browsers remember those ' +
-              'more or less forever, and it cannot be taken back. "Gone for good" tells search engines to drop the ' +
-              'page rather than keep checking — use it when there is nowhere honest to send people.',
+            description: 'If unsure, choose Shortcut. Browsers remember a moved page for good.',
           },
           {
             name: 'permanent',
-            label: 'This link never needs reviewing',
+            label: 'Never needs reviewing',
             type: 'boolean',
-            description:
-              'Only for a link to something the church simply has — the podcast, the giving page. Leave this ' +
-              'unticked and set a date below for anything that could stop being true. If you tick it, leave the ' +
-              'date empty.',
+            description: 'For things the church will always have, like the podcast.',
           },
           {
             name: 'expires',
@@ -606,19 +584,15 @@ export default defineConfig({
               ...dateOnly,
               validate: (value: string, allValues: { permanent?: boolean }) => checkReview(allValues?.permanent, value),
             },
-            description:
-              'Every short link gets a date so the list stays honest — otherwise nobody dares delete anything ' +
-              'because nobody remembers what it was for. A sign-up shortcut: the date the thing it points at ends. ' +
-              'A moved page: about a year, by which point search engines have caught up. The link keeps working ' +
-              'past this date; the date is a prompt to check, not a switch. Required unless the box above is ticked.',
+            description: 'When to check it’s still right, like when a sign-up closes. The link keeps working after.',
           },
           {
             name: 'note',
-            label: 'What is this for?',
+            label: 'Notes',
             type: 'string',
             searchable: true,
             ui: { component: 'textarea' },
-            description: 'A line for whoever looks at this next — including what would need to change to renew it.',
+            description: 'Anything the next person should know.',
           },
         ],
       },

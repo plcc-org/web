@@ -1,4 +1,3 @@
-name: mealsofcare
 from: /mealsofcare
 destination: /neighbors/meals/
 kind: shortcut

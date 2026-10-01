@@ -1,4 +1,3 @@
-name: easterhop
 from: /easterhop
 destination: /events/
 kind: shortcut

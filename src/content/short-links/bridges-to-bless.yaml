@@ -1,4 +1,3 @@
-name: bridges-to-bless
 from: /bridges-to-bless
 destination: /neighbors/serve/
 kind: shortcut

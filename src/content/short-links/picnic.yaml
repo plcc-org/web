@@ -1,4 +1,3 @@
-name: picnic
 from: /picnic
 destination: /about/
 kind: shortcut

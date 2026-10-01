@@ -1,4 +1,3 @@
-name: question
 from: /question
 destination: https://forms.gle/Xy5jRdCC4zRjE8Tu8
 kind: shortcut

@@ -31,18 +31,18 @@ const RESERVED = new Set([
   'tina-preview',
 ])
 
-/** The comparable form of an old address: lowercased, no leading or trailing slashes. */
+/** The comparable form of a short link: lowercased, no leading or trailing slashes. */
 /** @type {(from: string) => string} */
 export const toPath = (from) => from.toLowerCase().replace(/^\/+/, '').replace(/\/+$/, '')
 
 /**
- * The old address. Explicit rather than taken from the filename because cutover
- * redirects carry several segments ("/connect/about/leadership-team/").
+ * The short link. Stored as written rather than recovered from the filename, which
+ * flattens the slashes of a multi-segment link ("/connect/about/leadership-team/").
  */
 /** @type {(from: unknown) => string | undefined} */
 export function checkFrom(from) {
   if (typeof from !== 'string' || !from.startsWith('/')) {
-    return 'The old address must start with a slash — "/camp", not "camp".'
+    return 'The short link must start with a slash — "/camp", not "camp".'
   }
   const path = toPath(from)
   if (!/^[a-z0-9][a-z0-9\-/]*$/.test(path)) {
@@ -62,10 +62,10 @@ export function checkDestination(destination, kind = 'shortcut') {
   // more than a line in the build log, so the link would silently 404.
   const external = typeof destination === 'string' && /^https:\/\//i.test(destination)
   if (typeof destination !== 'string' || !(external || destination.startsWith('/'))) {
-    return '"Sends people to" needs a full https:// address, or a page on this site written with a leading slash — "/visit/".'
+    return '"Links to" needs a full https:// address, or a page on this site written with a leading slash — "/visit/".'
   }
   if (!(kind in STATUS)) {
-    return `"What kind of link is this?" must be one of ${[...Object.keys(STATUS), 'gone'].join(', ')}.`
+    return `"Type" must be one of ${[...Object.keys(STATUS), 'gone'].join(', ')}.`
   }
   return undefined
 }
@@ -96,7 +96,7 @@ export function checkReview(permanent, expires) {
     return 'This link is marked as never needing review, so it should not also carry a "Review by" date. Clear one or the other.'
   }
   if (!permanent && !parseReviewDate(expires)) {
-    return 'This link needs a "Review by" date, or tick "This link never needs reviewing" if it will never need one.'
+    return 'This link needs a "Review by" date, or tick "Never needs reviewing".'
   }
   return undefined
 }

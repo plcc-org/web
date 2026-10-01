@@ -1,4 +1,3 @@
-name: youtube
 from: /youtube
 destination: https://www.youtube.com/user/PineLkCovChurch
 kind: shortcut

@@ -1,4 +1,3 @@
-name: teamworldvision
 from: /teamworldvision
 destination: /neighbors/serve/
 kind: shortcut

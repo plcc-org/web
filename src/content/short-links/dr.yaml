@@ -1,4 +1,3 @@
-name: dr
 from: /dr
 destination: https://plcc.churchcenter.com/giving/to/mission-trip
 kind: shortcut

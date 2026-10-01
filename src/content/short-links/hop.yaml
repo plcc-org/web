@@ -1,4 +1,3 @@
-name: hop
 from: /hop
 destination: /events/
 kind: shortcut

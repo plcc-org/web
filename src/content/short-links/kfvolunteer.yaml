@@ -1,4 +1,3 @@
-name: kfvolunteer
 from: /kfvolunteer
 destination: /kids/
 kind: shortcut

@@ -1,4 +1,3 @@
-name: jobs
 from: /jobs
 destination: /about/
 kind: shortcut

@@ -1,4 +1,3 @@
-name: upload
 from: /upload
 destination: https://plccorg-my.sharepoint.com/:f:/g/personal/scottj_plcc_org/Eo8sE7NdWadDp0J6gsoU0gcBHKCLJG-orn8KmSdXx-T1vw
 kind: shortcut

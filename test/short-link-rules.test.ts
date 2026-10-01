@@ -55,7 +55,7 @@ describe('checkDestination', () => {
   it.each([undefined, '', 'visit/', 'www.example.org', 'http://example.org', 'mailto:office@example.org'])(
     'rejects %s',
     (destination) => {
-      expect(checkDestination(destination)).toMatch(/Sends people to/)
+      expect(checkDestination(destination)).toMatch(/Links to/)
     }
   )
 

@@ -1,4 +1,3 @@
-name: adult
 from: /adult
 destination: /church-life/
 kind: shortcut

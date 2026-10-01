@@ -1,4 +1,3 @@
-name: fpu
 from: /fpu
 destination: /church-life/
 kind: shortcut

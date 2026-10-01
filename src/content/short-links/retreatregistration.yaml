@@ -1,4 +1,3 @@
-name: retreatregistration
 from: /retreatregistration
 destination: /church-life/
 kind: shortcut

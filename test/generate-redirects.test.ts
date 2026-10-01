@@ -121,7 +121,7 @@ describe('generate-redirects', () => {
   it('reports a per-entry rule with the file it came from', () => {
     const r = run({ [`${SL}/bad.yaml`]: link({ from: 'camp', destination: '/visit/', permanent: true }) })
     expect(r.ok).toBe(false)
-    expect(r.output).toContain(`${SL}/bad.yaml: The old address must start with a slash`)
+    expect(r.output).toContain(`${SL}/bad.yaml: The short link must start with a slash`)
   })
 
   it('turns a gone link into a 410 route, not a redirect rule', () => {

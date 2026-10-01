@@ -1,4 +1,3 @@
-name: blockparty
 from: /blockparty
 destination: /events/
 kind: shortcut

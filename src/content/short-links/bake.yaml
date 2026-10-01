@@ -1,4 +1,3 @@
-name: bake
 from: /bake
 destination: https://plcc.churchcenter.com/giving/to/local-missions-donation
 kind: shortcut

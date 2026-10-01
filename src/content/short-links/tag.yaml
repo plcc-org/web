@@ -1,4 +1,3 @@
-name: tag
 from: /tag
 destination: /kids/
 kind: shortcut

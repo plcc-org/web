@@ -1,4 +1,3 @@
-name: songs
 from: /songs
 destination: https://bible.com/events/49234076
 kind: shortcut

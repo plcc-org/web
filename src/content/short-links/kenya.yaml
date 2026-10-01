@@ -1,4 +1,3 @@
-name: kenya
 from: /kenya
 destination: https://plcc.reachapp.co/donations/new
 kind: shortcut

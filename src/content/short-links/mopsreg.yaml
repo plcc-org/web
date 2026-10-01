@@ -1,4 +1,3 @@
-name: mopsreg
 from: /mopsreg
 destination: /momco/
 kind: shortcut

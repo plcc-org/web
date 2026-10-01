@@ -1,7 +1,0 @@
-name: old-serve-local-team-world-vision
-from: /serve/local/team-world-vision/
-destination: /neighbors/serve/
-kind: moved
-expires: 2027-07-31
-note: Carried over from plcc.org, where it pointed at /serve/global/team-world-vision/
-  on the old site.

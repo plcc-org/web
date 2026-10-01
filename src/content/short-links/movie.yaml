@@ -1,4 +1,3 @@
-name: movie
 from: /movie
 destination: /events/
 kind: shortcut

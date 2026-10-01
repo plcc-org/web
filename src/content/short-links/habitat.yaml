@@ -1,4 +1,3 @@
-name: habitat
 from: /habitat
 destination: /neighbors/serve/
 kind: shortcut

@@ -1,4 +1,3 @@
-name: donate
 from: /donate
 destination: https://plcc.churchcenter.com/giving/to/meal-packaging-cotn
 kind: shortcut

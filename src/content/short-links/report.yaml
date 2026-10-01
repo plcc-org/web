@@ -1,4 +1,3 @@
-name: report
 from: /report
 destination: https://plcc.churchcenter.com/
 kind: shortcut

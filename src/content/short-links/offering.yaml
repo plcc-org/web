@@ -1,4 +1,3 @@
-name: offering
 from: /offering
 destination: https://plcc.churchcenter.com/giving/to/christmas-eve-offering
 kind: shortcut

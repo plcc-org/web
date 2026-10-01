@@ -1,4 +1,3 @@
-name: ladro
 from: /ladro
 destination: /church-life/
 kind: shortcut

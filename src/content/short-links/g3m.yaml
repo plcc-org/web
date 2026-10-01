@@ -1,4 +1,3 @@
-name: g3m
 from: /g3m
 destination: /church-life/
 kind: shortcut

@@ -1,4 +1,3 @@
-name: npcretreat
 from: /npcretreat
 destination: /church-life/
 kind: shortcut

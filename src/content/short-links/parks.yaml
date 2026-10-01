@@ -1,4 +1,3 @@
-name: parks
 from: /parks
 destination: /momco/
 kind: shortcut

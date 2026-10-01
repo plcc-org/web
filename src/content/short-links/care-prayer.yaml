@@ -1,0 +1,5 @@
+from: /care/prayer/
+destination: /contact/
+kind: moved
+expires: 2027-07-31
+note: Contact carries the prayer & care address.

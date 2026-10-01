@@ -1,4 +1,3 @@
-name: wish
 from: /wish
 destination: https://www.amazon.com/hz/wishlist/ls/31LZOWNKLW98I
 kind: shortcut

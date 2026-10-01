@@ -1,0 +1,6 @@
+from: /care/weddings-memorials/
+destination: /neighbors/weddings/
+kind: moved
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /care/practical-assistance/weddings-memorials/ on the old site.

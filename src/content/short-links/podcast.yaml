@@ -1,4 +1,3 @@
-name: podcast
 from: /podcast
 destination: https://podcasts.apple.com/us/podcast/pine-lake-covenant-church-podcast/id1771382825
 kind: shortcut

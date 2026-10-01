@@ -1,4 +1,3 @@
-name: bibleapp
 from: /bibleapp
 destination: https://bible.com/events/49670010
 kind: shortcut

@@ -1,4 +1,3 @@
-name: hiking
 from: /hiking/
 destination: https://plcc.churchcenter.com/groups/social-group/hiking-group
 kind: shortcut

@@ -1,4 +1,3 @@
-name: mud
 from: /mud
 destination: https://pacnwc.org/mud/
 kind: shortcut

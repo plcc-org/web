@@ -1,0 +1,4 @@
+from: /serve/serve-at-plcc/
+destination: /church-life/
+kind: moved
+expires: 2027-07-31

@@ -1,4 +1,3 @@
-name: echoglen
 from: /echoglen
 destination: /neighbors/serve/
 kind: shortcut

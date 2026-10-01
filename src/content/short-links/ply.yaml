@@ -1,4 +1,3 @@
-name: ply
 from: /ply
 destination: https://plcc.churchcenter.com/giving/to/student-scholarships
 kind: shortcut

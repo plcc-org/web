@@ -1,4 +1,3 @@
-name: blooddrive
 from: /blooddrive
 destination: https://www.redcrossblood.org/give.html/drive-results?zipSponsor=pinelake
 kind: shortcut

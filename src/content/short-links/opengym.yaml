@@ -1,4 +1,3 @@
-name: opengym
 from: /opengym
 destination: /church-life/
 kind: shortcut

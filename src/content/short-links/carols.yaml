@@ -1,4 +1,3 @@
-name: carols
 from: /carols
 destination: https://bible.com/events/49360541
 kind: shortcut

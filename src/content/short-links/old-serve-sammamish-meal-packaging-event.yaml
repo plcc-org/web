@@ -1,7 +1,0 @@
-name: old-serve-sammamish-meal-packaging-event
-from: /serve/sammamish-meal-packaging-event/
-destination: /neighbors/serve/
-kind: moved
-expires: 2027-07-31
-note: Carried over from plcc.org, where it pointed at
-  /serve/community-meal-packaging-event/ on the old site.

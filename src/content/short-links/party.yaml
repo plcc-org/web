@@ -1,4 +1,3 @@
-name: party
 from: /party
 destination: /events/
 kind: shortcut

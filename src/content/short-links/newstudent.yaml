@@ -1,4 +1,3 @@
-name: newstudent
 from: /newstudent
 destination: https://plcc.churchcenter.com/people/forms/622424
 kind: shortcut

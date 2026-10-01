@@ -1,4 +1,3 @@
-name: gift
 from: /gift
 destination: https://donate.stripe.com/7sIcQTg0d1cVcOQ9AC
 kind: shortcut

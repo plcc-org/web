@@ -1,5 +1,0 @@
-name: old-calendar
-from: /connect/resources/calendar/
-destination: /events/
-kind: moved
-expires: 2027-07-31

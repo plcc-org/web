@@ -1,7 +1,0 @@
-name: old-resources-sermon-archive
-from: /resources/sermon-archive/
-destination: /messages/
-kind: moved
-expires: 2027-07-31
-note: Carried over from plcc.org, where it pointed at /connect/resources/sermon-library/
-  on the old site.

@@ -1,7 +1,0 @@
-name: old-grow-sports-ministries
-from: /grow/sports-ministries/
-destination: /church-life/
-kind: moved
-expires: 2027-07-31
-note: Carried over from plcc.org, where it pointed at /grow/adults/sports-ministries/ on
-  the old site.

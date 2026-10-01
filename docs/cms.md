@@ -178,12 +178,12 @@ The slim chrome is `BaseLayout chrome="slim"`
 from the platform, so the short link has to outlive whatever it points at — Church Center
 mints a new event ID every year, and the printed URL can't change.
 
-Add one under **Short links**. The **Old address** field is the address itself — `/camp`
-makes `plcc.org/camp` — and **Name** just labels the entry in the list (and names its file
-behind the scenes). Two things worth knowing:
+Add one under **Short links**. **Short link** is the address itself — `/camp` makes
+`plcc.org/camp` — and **Links to** is where it goes. The entry's file is named after the
+short link, so the list reads as the addresses people type. Two things worth knowing:
 
-- **Leave the kind as "a shortcut" unless you're certain.** A shortcut stays yours to
-  re-point next year. "Permanently moved" tells browsers to remember the destination more
+- **Leave the type as "Shortcut" unless you're certain.** A shortcut stays yours to
+  re-point next year. "Moved for good" tells browsers to remember the destination more
   or less forever — they'll stop asking the site at all, so re-pointing it later won't
   reach anyone who has already followed it. Use it only for a page that has genuinely moved
   for good.
@@ -202,14 +202,14 @@ which links are due or overdue.
 
 The exception is a link to something the church simply has — the podcast, for instance.
 There's no date at which that stops being true, and a review that always ends in "yes, still"
-just trains people to ignore the list. Tick **"This link never needs reviewing"** and leave
+just trains people to ignore the list. Tick **"Never needs reviewing"** and leave
 the date empty. Ticking it _and_ setting a date fails the build, because a later reader can't
 tell which one to believe.
 
 Both forms work — `plcc.org/camp` and `plcc.org/camp/` — so it doesn't matter which one
 gets printed. The redirect happens at Cloudflare's edge, so there's no page load in between.
 
-Old-site redirects live here too, as "a page that has permanently moved", with a date about
+Old-site redirects live here too, as "Old page that has moved for good", with a date about
 a year out — one list to review rather than two places to forget about.
 
 ---
@@ -762,8 +762,7 @@ change, or every existing inbound link breaks.
   `tina/templates.mjs`) that asks for one only when the hero has no intro line — which
   includes every cinematic hero, since cinematic never shows its intro line.
 - **The short-links list has no columns.** The CMS has no list-view column configuration, so
-  400-odd entries show as filenames — which is why the filename is derived from the Name field
-  and worth keeping descriptive. (The deployed admin has no search box: Tina's list search
+  400-odd entries show as filenames — which is why the filename is the short link itself. (The deployed admin has no search box: Tina's list search
   needs a TinaCloud search token this site doesn't configure, so `searchable` marks change
   nothing there. Scan by filename.)
 - **Short-link rules run in two places, on purpose.** `tina/short-link-rules.mjs` holds

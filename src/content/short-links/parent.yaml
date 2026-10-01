@@ -1,4 +1,3 @@
-name: parent
 from: /parent
 destination: https://docs.google.com/forms/d/1aFiHEeLCq3HOpo96csYR2kPnpFUOwrWDVKXp6dRl90M/edit
 kind: shortcut

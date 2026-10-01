@@ -1,4 +1,3 @@
-name: the-hub
 from: /the-hub/
 destination: /links/
 kind: shortcut

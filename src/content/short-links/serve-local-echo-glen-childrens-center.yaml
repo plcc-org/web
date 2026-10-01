@@ -1,0 +1,5 @@
+from: /serve/local/echo-glen-childrens-center/
+destination: /neighbors/serve/
+kind: moved
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /echo-glen/ on the old site.

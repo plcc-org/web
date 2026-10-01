@@ -1,0 +1,6 @@
+from: /grow/life-groups/search/
+destination: /church-life/
+kind: moved
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/life-groups/all-life-groups/
+  on the old site.

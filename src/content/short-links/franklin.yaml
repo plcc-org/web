@@ -1,4 +1,3 @@
-name: franklin
 from: /franklin
 destination: https://plcc.churchcenter.com/registrations/events/3618332
 kind: shortcut

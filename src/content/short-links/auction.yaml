@@ -1,4 +1,3 @@
-name: auction
 from: /auction
 destination: https://event.auctria.com/d52d9dca-8ab2-4f6c-963b-cc0364811156/
 kind: shortcut

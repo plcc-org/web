@@ -1,4 +1,3 @@
-name: summerserve
 from: /summerserve
 destination: https://plcc.ccbchurch.com/goto/forms/471/responses/new
 kind: shortcut
