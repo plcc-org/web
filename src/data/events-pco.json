@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-09-30T17:38:33.504Z",
+  "capturedAt": "2026-10-01T18:03:24.073Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-09-30T07%3A00%3A00Z&where[starts_at][lte]=2026-11-25T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-01T07%3A00%3A00Z&where[starts_at][lte]=2026-11-26T07%3A00%3A00Z"
   },
   "data": [
     {
@@ -1422,6 +1422,43 @@
     },
     {
       "type": "EventInstance",
+      "id": "227522749",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227522749",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-11-01T00:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Trunk-or-Treat...Indoor Edition",
+        "published_ends_at": "2026-11-01T00:00:00Z",
+        "published_starts_at": "2026-10-31T22:00:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-10-31T22:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21648258"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21648258"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227522749/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227522749"
+      }
+    },
+    {
+      "type": "EventInstance",
       "id": "171026844",
       "attributes": {
         "all_day_event": false,
@@ -2082,43 +2119,6 @@
     },
     {
       "type": "EventInstance",
-      "id": "233613248",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233613248",
-        "compact_recurrence_description": "Does not repeat",
-        "ends_at": "2026-11-14T21:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Kris Kringle's Workshop: A Christmas Craft Event!",
-        "published_ends_at": "2026-11-14T20:00:00Z",
-        "published_starts_at": "2026-11-14T18:00:00Z",
-        "recurrence": "None",
-        "starts_at": "2026-11-14T17:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22324246"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22324246"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233613248/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233613248"
-      }
-    },
-    {
-      "type": "EventInstance",
       "id": "172172089",
       "attributes": {
         "all_day_event": false,
@@ -2499,6 +2499,43 @@
     },
     {
       "type": "EventInstance",
+      "id": "238607497",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/238607497",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-11-21T21:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Kris Kringle's Workshop: A Christmas Craft Event!",
+        "published_ends_at": "2026-11-21T20:00:00Z",
+        "published_starts_at": "2026-11-21T18:00:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-11-21T17:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22324246"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22324246"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/238607497/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/238607497"
+      }
+    },
+    {
+      "type": "EventInstance",
       "id": "172752095",
       "attributes": {
         "all_day_event": false,
@@ -2845,7 +2882,7 @@
       "id": "6719956",
       "attributes": {
         "description": "<div>\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1790841599&key=uploads%2F65711%2Fi6hbteud83pbhijqhcicfhs522b7&thumb=960x540%23&signature=befead25724c193f30fd5e1fd89073b9e6bece888040a7734ce1ef6b045d7831",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fi6hbteud83pbhijqhcicfhs522b7&thumb=960x540%23&signature=4ef10cd46096350eced34e1f5052d6c2cf0e196552e8fb10a1ac87c67575ba72",
         "name": "Community Playgroup",
         "registration_url": null,
         "summary": "A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup.",
@@ -2953,7 +2990,7 @@
       "id": "22324060",
       "attributes": {
         "description": "<div>\n  <div>Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.&nbsp; At Pine Lake Youth every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.&nbsp; This includes opportunities for gathering on Tuesday nights as a youth group, on Sunday mornings serving and assisting in the service, participating on leadership teams, life groups, events, and other community activities.&nbsp; We seek to welcome well, have fun well, worship well, and care well!&nbsp;</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1790841599&key=uploads%2F65711%2Fnjvvjva9gb6wiighp4dvibbj42d4&thumb=960x540%23&signature=73d8e61d58d8bdf7e5896fd435140769e001907b0af3c9afa140a05859351be1",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fnjvvjva9gb6wiighp4dvibbj42d4&thumb=960x540%23&signature=de2c13d224ef8385be7412a0ace1a0583473f87b91e0a4a47f9bcfbe8e0ec007",
         "name": "Pine Lake Youth  ",
         "registration_url": null,
         "summary": "Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.  Every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.  This includes opportunities for gathering on Tuesday nights, serving on Sunday mornings as well as other community activities. We seek to welcome well, have fun well, worship well, and care well! ",
@@ -2999,7 +3036,7 @@
       "id": "21647793",
       "attributes": {
         "description": "<div>\n  <div>Join us for a meal together every 1st and 3rd Tuesdays of each month!&nbsp;</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1790841599&key=uploads%2F65711%2F5lgi43ia2benrrpbctkyxuigtyae&thumb=960x540%23&signature=a5cc26beeea629cc521f51655c4fbd0c8508dffa08b5cc03e4ca586318d80839",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2F5lgi43ia2benrrpbctkyxuigtyae&thumb=960x540%23&signature=c4c4bc03d8bdf940639b920bba4ff5b42f93f29d3f5a43afb93bfb33369e8c26",
         "name": "Tuesdays Together",
         "registration_url": null,
         "summary": "Join us for a meal together every 1st and 3rd Tuesdays of each month!",
@@ -3030,7 +3067,7 @@
       "id": "21468765",
       "attributes": {
         "description": "<div>\n  <div><strong>TWO WAYS TO PARTICIPATE!</strong></div><ol><li><strong>MomCo Monday Meetups (full membership)</strong></li><li><strong>MomCo Social Meetups only</strong></li></ol><div>Here at MomCo at Pine Lake, we gather and support moms. The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together. We believe in the simple but revolutionary idea that remarkable things happen when moms come together. If you are a mom with a child at home, of any age, we have a place for you!<br><br><a href=\"https://plcc.churchcenter.com/calendar?category=MomCo%2520%28The%2520Mom%2520Community%29&amp;view=list\"><strong>See upcoming dates</strong></a></div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1790841599&key=uploads%2F65711%2Fxlomipoz5lcjqul0tsfvh72nm4rb&thumb=960x540%23&signature=fb9f11bd66c41a0d0d7a197f218229896eae00548f558f5551356e4e13d55bd9",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fxlomipoz5lcjqul0tsfvh72nm4rb&thumb=960x540%23&signature=cf6b86cdb26d1d5f37f4ec070d8021509c657341db1615629dffec6a9fc41990",
         "name": "MomCo Meetup ",
         "registration_url": "https://plcc.churchcenter.com/registrations/events/3743770",
         "summary": "The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together.",
@@ -3121,6 +3158,22 @@
     },
     {
       "type": "Event",
+      "id": "21648258",
+      "attributes": {
+        "description": "<div>\n  <div>Wear your Halloween costume and join us on October 31 for Trunk-or-Treat...Indoor Edition!&nbsp;<br>The gym will be filled with:<br>- Trunk-or-Treat booths<br>- Various games<br>- Bounce houses!&nbsp;</div>\n</div>\n",
+        "image_url": null,
+        "name": "Trunk-or-Treat...Indoor Edition",
+        "registration_url": null,
+        "summary": "Wear your Halloween costume and join us on October 31 for Trunk-or-Treat...Indoor Edition! \nThe gym will be filled with:\n- Trunk-or-Treat booths\n- Various games\n- Bounce houses! ",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21648258",
+        "html": "https://calendar.planningcenteronline.com/events/21648258"
+      }
+    },
+    {
+      "type": "Event",
       "id": "22324246",
       "attributes": {
         "description": "<div>\n  Are your kids looking for gift ideas for Christmas?! Come to our Christmas Craft event on November 21. We will have multiple stations where kids can make Christmas gifts for their loved ones. We will have several gift ideas to choose from and each gift is $5 or less!\n</div>\n",
@@ -3137,8 +3190,8 @@
     }
   ],
   "meta": {
-    "total_count": 58,
-    "count": 58,
+    "total_count": 59,
+    "count": 59,
     "can_order_by": [
       "created_at",
       "updated_at",
