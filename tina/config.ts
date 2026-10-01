@@ -320,12 +320,16 @@ export default defineConfig({
       // and left on until someone switches it off — a snow closure, say. Modelled like
       // Homepage quotes: one file, create and delete removed. Saving rebuilds the site,
       // so it goes live in a few minutes, not instantly. See docs/cms.md, "Site notice".
+      //
+      // No `router`: the banner isn't rendered through a TinaIsland, so a router would
+      // open the visual editor on a page with nothing bound to this form, and the
+      // admin would show that page's own fields instead. Without one it's a plain form.
       {
         name: 'siteNotice',
         label: 'Site notice',
         path: 'src/content/site-notice',
         format: 'yaml',
-        ui: { allowedActions: { create: false, delete: false }, router: () => '/' },
+        ui: { allowedActions: { create: false, delete: false } },
         fields: [
           {
             name: 'enabled',
