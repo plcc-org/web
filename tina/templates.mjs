@@ -16,8 +16,36 @@
 // (the same reason as short-link-rules.mjs and video-rules.mjs).
 
 import { checkVideoUrl } from './video-rules.mjs'
+import { checkLinkUrl, checkOptionalLink } from './link-rules.mjs'
 
 /** @typedef {Record<string, unknown>} FieldOpts */
+
+/*
+ * How the help text is written, so every form reads alike. The audience is a volunteer
+ * who has never seen the schema:
+ *
+ *   - One sentence, task-first: what to put here, not how the site uses it. Anything
+ *     longer belongs in the editor's guide, linked with `guide()`.
+ *   - A field that can be left blank says "(optional)" in its label, and nowhere else.
+ *     Required fields say nothing; their validation speaks when it matters.
+ *   - Say what a blank does only when it does something ("Leave blank for …").
+ *   - Fields run Small label → Heading → Intro → Photo → Text → list → Button → how it
+ *     looks (background, columns, photo side), so a block's form always reads top-down
+ *     the way the block does.
+ *   - The same idea gets the same words in every block: `button()` and `linkFields()`
+ *     below, never a hand-written label for either.
+ */
+
+/**
+ * A link from a field's help text to a page of the editor's guide (docs/manual/, served at
+ * /webmaster/). Tina renders a description as HTML, so the link is live in the form; it is
+ * root-relative because the admin is served from the same site as the guide, and opens in
+ * a new tab so an editor doesn't lose an unsaved form by following it. Tina styles a
+ * description's links exactly like its text, hence the inline underline.
+ * @type {(page: string, text: string) => string}
+ */
+export const guide = (page, text) =>
+  `<a href="/webmaster/${page}/" target="_blank" rel="noopener" style="text-decoration: underline">${text}</a>`
 
 /**
  * A block's thumbnail in the CMS palette, shown above its name when the palette is open
@@ -38,7 +66,7 @@ const preview = (name) => `/block-previews/${name}.webp`
  * template is a real GraphQL type in one union, and two members of that union may not
  * return `String!` and `String` under the same field name — GraphQL's field-merging
  * rules reject the generated query outright, and codegen fails the build. `heading` is
- * optional in a Rich text block by design and `image` is optional in a Letter, so the
+ * optional in a Text block by design and `image` is optional in a Letter, so the
  * whole union has to spell both nullable.
  *
  * No guard is lost: `required` on a template field was always form-side only. This says
@@ -69,7 +97,7 @@ const needed = (message) => ({
 /** @type {(headingLevels?: string[]) => Record<string, unknown>} */
 const prose = (headingLevels = ['h3', 'h4']) => ({
   name: 'body',
-  label: 'Content',
+  label: 'Text',
   type: 'rich-text',
   overrides: {
     toolbar: ['heading', 'link', 'quote', 'ul', 'ol', 'bold', 'italic'],
@@ -151,12 +179,15 @@ const bool = (name, label, opts = {}) => ({
   ...opts,
 })
 
-/** A background-tone select. Labels are what the editor sees; values are the CSS tone. */
+/**
+ * A background-tone select. Labels are what the editor sees — the color, in plain words;
+ * values are the design-system tone names (sand, paper, forest) the CSS uses.
+ */
 const TONE = {
-  sand: { label: 'Sand', value: 'sand' },
-  paper: { label: 'Paper (white)', value: 'paper' },
-  forest: { label: 'Forest (dark)', value: 'forest' },
-  none: { label: 'Plain (no band)', value: 'none' },
+  sand: { label: 'Warm sand', value: 'sand' },
+  paper: { label: 'White', value: 'paper' },
+  forest: { label: 'Dark green', value: 'forest' },
+  none: { label: 'None (no band)', value: 'none' },
 }
 /** @type {(options: (keyof typeof TONE)[], opts?: FieldOpts) => Record<string, unknown>} */
 const tone = (options, opts = {}) => ({
@@ -166,6 +197,35 @@ const tone = (options, opts = {}) => ({
   options: options.map((o) => TONE[o]),
   ...opts,
 })
+
+/**
+ * A button: its words, then where it goes. Every button on the site falls back to
+ * "Learn more" (PageHero, SplitTina, ClosingTina) and shows only when it has a link.
+ * @type {() => Record<string, unknown>[]}
+ */
+const button = () => [
+  text('buttonLabel', 'Button text (optional)', { description: 'Leave blank for “Learn more”.' }),
+  text('buttonHref', 'Button link', {
+    description: 'The button appears once this is filled in: a page here like /visit/, or a full https:// address.',
+    ui: { validate: checkOptionalLink },
+  }),
+]
+
+/**
+ * A link's words and its address, in that order, under the same two labels everywhere.
+ * `required` makes the address required (Link cards, where the card is the link);
+ * otherwise both may be blank. Field names vary by block because they're stored, so
+ * they're passed in rather than renamed.
+ * @type {(o: { textName: string, hrefName: string, textHelp?: string, hrefHelp?: string, required?: boolean }) => Record<string, unknown>[]}
+ */
+const linkFields = ({ textName, hrefName, textHelp, hrefHelp, required = false }) => [
+  text(textName, 'Link text (optional)', textHelp ? { description: textHelp } : {}),
+  text(hrefName, required ? 'Links to' : 'Links to (optional)', {
+    ...(required ? { required: true } : {}),
+    description: hrefHelp ?? 'A page here like /visit/, or a full https:// address.',
+    ui: { validate: required ? checkLinkUrl : checkOptionalLink },
+  }),
+]
 
 /** Label a list's collapsed rows by one of its own fields, so a gallery isn't N identical bars. */
 /** @type {(key: string, fallback: string) => Record<string, unknown>} */
@@ -206,29 +266,37 @@ const itemProps = (key, fallback) => ({
  * These are collection fields: a required one becomes non-null in GraphQL, and
  * the indexer then rejects any already-saved page missing it (see the note in
  * tina/config.ts). Alt fields on photo slots are optional on purpose: blank
- * falls back to the photo catalog (see CATALOG_ALT above), and check-site.mjs
+ * falls back to the photo catalog (see photoAlt above), and check-site.mjs
  * fails the build on an image that renders with no alt from either source.
  * -------------------------------------------------------------------- */
 
-/** Which variants a field applies to, prepended to its description. */
-/** @type {(which: string, rest: string) => string} */
-const forVariants = (which, rest) => `Used by: ${which}. ${rest}`
-
 /**
- * The description for every alt field on a *catalogued-photo* slot. Blank falls
- * back to the photo's entry in "Photo descriptions" (altFor, src/lib/photos.ts),
- * so the description is written once and inherited everywhere the photo appears.
- * Logo alt fields don't get this — logos aren't catalogued — and keep their own
- * required/validate treatment.
+ * Which hero kinds a field applies to, prepended to its description. A field without
+ * one applies to every kind — the variant select's own description says so.
+ * @type {(which: string, rest: string) => string}
  */
+const forVariants = (which, rest) => `For ${which}. ${rest}`
+
+/** The small label above a heading. Stored as `eyebrow`, the design-system name for it. */
 const eyebrow = () =>
-  text('eyebrow', 'Eyebrow', {
-    description: 'A small label shown above the heading — e.g. “In the community”. Optional.',
+  text('eyebrow', 'Small label above the heading (optional)', {
+    description: 'A few words, like “In the community”.',
   })
 
-const CATALOG_ALT =
-  'Usually leave this blank — the photo’s saved description (the “Photo descriptions” list) is used. Write one ' +
-  'here only to say something specific to this page.'
+/**
+ * The alt field on every *catalogued-photo* slot. Blank falls back to the photo's
+ * entry in "Photo descriptions" (altFor, src/lib/photos.ts), so the description is
+ * written once and inherited everywhere the photo appears — hence a label that reads
+ * as an override rather than as a field to fill in. Logo alt fields don't use this:
+ * logos aren't catalogued, so theirs are genuinely required.
+ * @type {(prefix?: (rest: string) => string) => Record<string, unknown>}
+ */
+const photoAlt = (prefix = (rest) => rest) =>
+  text('alt', 'Different description for this page (optional)', {
+    description: prefix(
+      `Leave blank to use the photo’s saved description. ${guide('add-a-photo', 'About photo descriptions')}`
+    ),
+  })
 
 /**
  * The variant the form currently has, wherever the callback finds itself: a field
@@ -244,60 +312,53 @@ const heroVariant = (allValues) => {
 export const heroFields = [
   {
     name: 'variant',
-    label: 'Kind of hero',
+    label: 'Kind',
     type: 'string',
     options: [
-      { label: 'Photo & text — a portrait photo beside the title', value: 'photo' },
-      { label: 'Text only — a calm header, no photo', value: 'plain' },
-      { label: 'Logo & photo — a programme wordmark instead of the title', value: 'wordmark' },
-      { label: 'Cinematic — a full-width photo stack (the home page)', value: 'cinematic' },
+      { label: 'Photo & text: a portrait photo beside the title', value: 'photo' },
+      { label: 'Text only: a calm header, no photo', value: 'plain' },
+      { label: 'Logo & photo: a program’s wordmark instead of the title', value: 'wordmark' },
+      { label: 'Cinematic: a full-width photo stack (home page only)', value: 'cinematic' },
     ],
     // No ui.defaultValue — it's a no-op (see the note above bool()). New pages
     // are seeded 'photo' by the collection's defaultItem in tina/config.ts.
-    description:
-      'Pick this first — it decides which fields below are used. Each field says which kinds it applies to, ' +
-      'and anything a kind doesn’t use is ignored.',
+    description: `Pick this first. Fields marked “For …” apply only to those kinds. ${guide('add-a-page', 'Which kind?')}`,
   },
   // The two validates below mirror what the discriminated union in
   // src/content.config.ts will reject at build time — a "Photo & text" hero
   // saved without its photo used to preview fine and then fail a deploy the
   // editor never sees. Same rule, moved to where the editor is standing.
-  image('image', 'Hero photo', {
-    description: forVariants('Photo & text, Logo & photo', 'The single portrait photo beside the title.'),
+  image('image', 'Photo', {
+    description: forVariants('Photo & text, Logo & photo', 'A portrait-shaped photo.'),
     ui: {
       validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
         heroVariant(allValues) === 'photo' && !value ? 'A “Photo & text” hero needs a photo.' : undefined,
     },
   }),
-  text('alt', 'Photo description (alt text)', {
-    description: forVariants('Photo & text, Logo & photo', CATALOG_ALT),
-  }),
+  photoAlt((rest) => forVariants('Photo & text, Logo & photo', rest)),
   {
     name: 'photos',
     label: 'Photos (cinematic)',
     type: 'object',
     list: true,
     openFormOnCreate: true,
-    description: forVariants('Cinematic', 'Shown in order, each cross-fading into the next. Around five works well.'),
+    description: forVariants('Cinematic', 'They cross-fade in order; about five works well.'),
     // No `ui.min: 1`, even though src/content.config.ts requires at least one photo for
     // a cinematic hero. `min` disables Delete at the floor, and this list is shared by
     // all four variants — a photo added by mistake on a Photo & text page could then
     // never be removed. The zod check is variant-aware; this field can't be.
     ui: itemProps('alt', 'Photo'),
-    fields: [
-      image('image', 'Photo', { required: true }),
-      text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
-    ],
+    fields: [image('image', 'Photo', { required: true }), photoAlt()],
   },
   image('logo', 'Wordmark logo', {
-    description: forVariants('Logo & photo', 'Stands in for the heading, e.g. the Pine Lake Kids wordmark.'),
+    description: forVariants('Logo & photo', 'Replaces the heading, like the Pine Lake Kids wordmark.'),
     ui: {
       validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
         heroVariant(allValues) === 'wordmark' && !value ? 'A “Logo & photo” hero needs its wordmark logo.' : undefined,
     },
   }),
-  text('logoAlt', 'Logo description (alt text)', {
-    description: forVariants('Logo & photo', 'What the wordmark says, e.g. “Pine Lake Kids”.'),
+  text('logoAlt', 'Logo description', {
+    description: forVariants('Logo & photo', 'What the wordmark says, like “Pine Lake Kids”.'),
     ui: {
       validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
         heroVariant(allValues) === 'wordmark' && !value
@@ -305,17 +366,15 @@ export const heroFields = [
           : undefined,
     },
   }),
-  text('eyebrow', 'Eyebrow', { description: 'Used by: all. A small label shown above the heading.' }),
-  text('subhead', 'Subhead', { description: 'Used by: all. A line between the heading and the intro.' }),
+  eyebrow(),
+  text('subhead', 'Subhead (optional)', { description: 'A line between the heading and the intro.' }),
   textarea('lede', 'Intro line', {
     description: forVariants(
       'Photo & text, Text only, Logo & photo',
-      'A one- or two-sentence opening. The heading comes from the page title. If it could describe any church, ' +
-        'rewrite it with something only true of Pine Lake.'
+      'One or two sentences under the title. If it could describe any church, rewrite it.'
     ),
   }),
-  text('buttonLabel', 'Hero button label', { description: 'Used by: all. Optional.' }),
-  text('buttonHref', 'Hero button link', { description: 'Used by: all. Optional.' }),
+  ...button(),
 ]
 
 /**
@@ -334,24 +393,26 @@ export const checkSeoDescription = (value, allValues) => {
     : 'This page has no intro line, so it needs an SEO description — search results and link previews show it.'
 }
 
+// Each block's `description` answers the question an editor actually has — "I have
+// something to say; is this where it goes?" — in the words of the "Which block do I
+// use?" chooser, rather than describing the block's styling.
 export const templates = [
   {
     name: 'Section',
-    label: 'Rich text',
-    description: 'A heading and formatted paragraphs — bold, links, lists. The default for written content.',
-    ui: { ...itemProps('heading', 'Rich text'), previewSrc: preview('Section') },
+    label: 'Text',
+    description: 'A few paragraphs that just need to be read. The default for written content.',
+    ui: { ...itemProps('heading', 'Text'), previewSrc: preview('Section') },
     // The only wrapper whose heading is optional, so its prose may be the first
     // thing under the page's h1 — h2 stays available here alone.
-    fields: [eyebrow(), text('heading', 'Heading'), prose(['h2', 'h3', 'h4'])],
+    fields: [eyebrow(), text('heading', 'Heading (optional)'), prose(['h2', 'h3', 'h4'])],
   },
   {
     name: 'Split',
-    label: 'Photo & text (split)',
-    description:
-      'A photo beside formatted text — left or right, on a tinted background. The main show-and-tell layout.',
+    label: 'Photo beside text',
+    description: 'Something better shown than described: a photo beside a heading and a few paragraphs.',
     ui: {
       defaultItem: { tone: 'sand', reverse: false },
-      ...itemProps('heading', 'Photo & text'),
+      ...itemProps('heading', 'Photo beside text'),
       previewSrc: preview('Split'),
     },
     // `ui.itemProps` puts the heading on the block's collapsed bar in the editor, so
@@ -360,39 +421,40 @@ export const templates = [
     // non-null here — see `needed()`. The same applies to the other blocks that
     // label their bar below.
     fields: [
-      image('image', 'Photo', needed('This block needs a photo.')),
-      text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
-      text('heading', 'Heading', needed('This block needs a heading.')),
       eyebrow(),
-      bool('reverse', 'Photo on the right'),
-      tone(['sand', 'paper', 'forest']),
+      text('heading', 'Heading', needed('This block needs a heading.')),
+      image('image', 'Photo', needed('This block needs a photo.')),
+      photoAlt(),
       prose(),
-      text('buttonLabel', 'Button label', { description: '“Learn more” if left blank.' }),
-      text('buttonHref', 'Button link', { description: 'Needed for the button to show — a label alone does nothing.' }),
+      ...button(),
+      tone(['sand', 'paper', 'forest'], {
+        description: 'Alternate the color when two of these blocks sit next to each other.',
+      }),
+      bool('reverse', 'Photo on the right'),
     ],
   },
   {
     name: 'Callout',
     label: 'Callout',
+    description: 'One point you don’t want people to skim past, boxed with its own heading.',
     ui: { ...itemProps('heading', 'Callout'), previewSrc: preview('Callout') },
-    description: 'A small boxed aside that sets one point apart — a reassurance, a key fact, a heads-up.',
     fields: [text('heading', 'Heading', needed('This block needs a heading.')), prose()],
   },
   {
     name: 'CaptionedPhoto',
     label: 'Photo',
-    description: 'A single framed photo with an optional caption.',
+    description: 'A single photo that needs explaining, with a caption underneath.',
     ui: { ...itemProps('caption', 'Photo'), previewSrc: preview('CaptionedPhoto') },
     fields: [
       image('image', 'Photo', needed('This block needs a photo.')),
-      text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
-      text('caption', 'Caption'),
+      photoAlt(),
+      text('caption', 'Caption (optional)'),
     ],
   },
   {
     name: 'Video',
     label: 'Video',
-    description: 'A YouTube or Vimeo video in a photo-style frame — paste the link from your browser.',
+    description: 'A YouTube or Vimeo video that says it better than a page.',
     ui: { ...itemProps('title', 'Video'), previewSrc: preview('Video') },
     fields: [
       text('url', 'Video link', {
@@ -400,15 +462,14 @@ export const templates = [
         // The same parse the renderer uses, so "will this link work?" is answered
         // in the form rather than by a broken preview.
         ui: { validate: (/** @type {unknown} */ value) => checkVideoUrl(value) },
-        description:
-          'The ordinary page address — https://www.youtube.com/watch?v=… or https://vimeo.com/… — not an embed code.',
+        description: 'Copy it from the browser’s address bar on YouTube or Vimeo, not the embed code.',
       }),
       text('title', 'Video title', {
         isTitle: true,
         required: true,
-        description: 'A few words saying what the video is — screen readers announce it, like a photo description.',
+        description: 'A few words saying what the video is, for people using screen readers.',
       }),
-      text('caption', 'Caption'),
+      text('caption', 'Caption (optional)'),
     ],
   },
   {
@@ -419,25 +480,18 @@ export const templates = [
     // the thing it was actually used for lets the layout be fixed in code.
     name: 'Closing',
     label: 'Closing banner',
+    description: 'The one thing you want the reader to do at the end. A dark band; one per page, and last.',
     ui: { ...itemProps('heading', 'Closing banner'), previewSrc: preview('Closing') },
-    description:
-      'The last block on a page — a dark band that closes it against the footer, with an optional button. A parting invitation.',
-    fields: [
-      eyebrow(),
-      text('heading', 'Heading', needed('This block needs a heading.')),
-      text('buttonLabel', 'Button label', { description: '“Learn more” if left blank.' }),
-      text('buttonHref', 'Button link', { description: 'Needed for the button to show — a label alone does nothing.' }),
-      prose(),
-    ],
+    fields: [eyebrow(), text('heading', 'Heading', needed('This block needs a heading.')), prose(), ...button()],
   },
   {
     name: 'PhotoBand',
     label: 'Photo gallery',
-    description: 'Several photos shown together as a staggered band — a visual break.',
+    description: 'A moment of visual breathing room: several photos together, with few or no words.',
     ui: { ...itemProps('heading', 'Photo gallery'), previewSrc: preview('PhotoBand') },
     fields: [
-      text('heading', 'Heading'),
       eyebrow(),
+      text('heading', 'Heading (optional)'),
       {
         name: 'photos',
         label: 'Photos',
@@ -445,17 +499,14 @@ export const templates = [
         list: true,
         openFormOnCreate: true,
         ui: itemProps('alt', 'Photo'),
-        fields: [
-          image('image', 'Photo', { required: true }),
-          text('alt', 'Photo description (alt text)', { description: CATALOG_ALT }),
-        ],
+        fields: [image('image', 'Photo', { required: true }), photoAlt()],
       },
     ],
   },
   {
     name: 'CardRow',
     label: 'Text cards',
-    description: 'A row of small cards, each a short title and a line or two — for a few parallel points.',
+    description: 'Three or four parallel things, each a short title and a line or two.',
     ui: {
       defaultItem: { columns: 'auto', large: false },
       ...itemProps('heading', 'Text cards'),
@@ -463,23 +514,8 @@ export const templates = [
     },
     fields: [
       eyebrow(),
-      text('heading', 'Heading'),
-      textarea('intro', 'Intro', { description: 'An optional lead line shown above the cards.' }),
-      {
-        name: 'columns',
-        label: 'Cards per row',
-        type: 'string',
-        options: [
-          { label: 'Auto', value: 'auto' },
-          { label: 'Two', value: '2' },
-          { label: 'Three', value: '3' },
-          { label: 'Four', value: '4' },
-        ],
-        description: 'Auto fits as many as will fit; a fixed count wraps the rest (e.g. four cards 2×2).',
-      },
-      bool('large', 'Large cards', {
-        description: 'A roomier, more editorial card with a prominent serif title.',
-      }),
+      text('heading', 'Heading (optional)'),
+      textarea('intro', 'Intro (optional)', { description: 'A line above the cards.' }),
       {
         name: 'cards',
         label: 'Cards',
@@ -490,21 +526,34 @@ export const templates = [
         fields: [
           text('title', 'Title', { required: true }),
           textarea('body', 'Text', { required: true }),
-          text('href', 'Link (optional)', {
-            description: 'Makes the whole card a link. The label below is optional.',
-          }),
-          text('linkLabel', 'Link label (optional)', {
-            description: 'Shows a “label →” call-to-action at the foot of the card. Needs the link above.',
+          ...linkFields({
+            textName: 'linkLabel',
+            hrefName: 'href',
+            textHelp: 'Shown at the foot of the card with an arrow. Needs a link below.',
+            hrefHelp: 'Makes the whole card a link: a page here like /visit/, or a full https:// address.',
           }),
         ],
       },
+      {
+        name: 'columns',
+        label: 'Cards per row',
+        type: 'string',
+        options: [
+          { label: 'Auto', value: 'auto' },
+          { label: 'Two', value: '2' },
+          { label: 'Three', value: '3' },
+          { label: 'Four', value: '4' },
+        ],
+        description: 'Auto fits as many as there’s room for. Two makes four cards a 2×2 grid.',
+      },
+      bool('large', 'Large cards', { description: 'Roomier cards with a bigger title.' }),
     ],
   },
   {
     name: 'LinkCards',
     label: 'Link cards',
+    description: 'Three or four places to go next, each card a link to another page.',
     ui: { ...itemProps('heading', 'Link cards'), previewSrc: preview('LinkCards') },
-    description: 'A grid of cards that each link to another page — for signposting to related content.',
     fields: [
       text('heading', 'Heading', needed('This block needs a heading.')),
       {
@@ -516,8 +565,12 @@ export const templates = [
         ui: itemProps('title', 'Link'),
         fields: [
           text('title', 'Title', { required: true }),
-          text('meta', 'Description', { required: true }),
-          text('href', 'Link', { required: true }),
+          text('meta', 'Text', { required: true, description: 'A line saying what’s there.' }),
+          text('href', 'Links to', {
+            required: true,
+            description: 'A page here like /visit/, or a full https:// address.',
+            ui: { validate: checkLinkUrl },
+          }),
         ],
       },
     ],
@@ -525,31 +578,28 @@ export const templates = [
   {
     name: 'Quote',
     label: 'Quote',
-    description: 'A single featured pull-quote — a testimonial or short quotation set apart from the prose.',
+    description: 'One thing someone said, worth its own space: a testimonial, a quotation, a verse.',
     ui: { defaultItem: { tone: 'none' }, ...itemProps('quote', 'Quote'), previewSrc: preview('Quote') },
     fields: [
       textarea('quote', 'Quote', { isTitle: true, required: true }),
-      text('attribution', 'Attribution', {
-        description: 'Who said it — e.g. "A recent attendee", or a scripture reference. Optional.',
+      text('attribution', 'Who said it (optional)', {
+        description: 'Like “A recent visitor”, or a Bible reference.',
       }),
-      tone(['none', 'forest', 'sand', 'paper'], {
-        description: 'Plain sets the quote in open space; a color renders it inside a band (a "verse band").',
-      }),
+      tone(['none', 'forest', 'sand', 'paper'], { description: 'None sets the quote in open space.' }),
     ],
   },
   {
     name: 'FeaturedEvents',
     label: 'Featured events',
     description:
-      'A short list of upcoming events, pulled live from the events feed. In a stretch with no matching events, ' +
-      'the block shows nothing at all.',
+      '“What’s coming up”, pulled from the calendar so it stays current. Shows nothing when nothing matches.',
     ui: {
       defaultItem: { category: 'all', count: 3 },
       ...itemProps('heading', 'Featured events'),
       previewSrc: preview('FeaturedEvents'),
     },
     fields: [
-      text('heading', 'Heading'),
+      text('heading', 'Heading (optional)'),
       {
         name: 'category',
         label: 'Category',
@@ -568,7 +618,7 @@ export const templates = [
         name: 'count',
         label: 'How many to show',
         type: 'number',
-        description: 'Between 1 and 12; three fits most pages.',
+        description: 'From 1 to 12; three suits most pages.',
         ui: {
           validate: (/** @type {unknown} */ value) =>
             typeof value === 'number' && (value < 1 || value > 12) ? 'Pick a number from 1 to 12.' : undefined,
@@ -579,20 +629,11 @@ export const templates = [
   {
     name: 'KeyPoints',
     label: 'Key points',
-    description: 'A moss-accented grid of titled points — the core-tenets / emphases treatment.',
+    description: 'A set of principles where the order doesn’t matter, each a title and a line or two.',
     ui: { defaultItem: { columns: '2' }, ...itemProps('heading', 'Key points'), previewSrc: preview('KeyPoints') },
     fields: [
       eyebrow(),
-      text('heading', 'Heading'),
-      {
-        name: 'columns',
-        label: 'Columns',
-        type: 'string',
-        options: [
-          { label: 'Two across', value: '2' },
-          { label: 'Three across', value: '3' },
-        ],
-      },
+      text('heading', 'Heading (optional)'),
       {
         name: 'items',
         label: 'Points',
@@ -602,13 +643,22 @@ export const templates = [
         ui: itemProps('title', 'Point'),
         fields: [text('title', 'Title', { required: true }), textarea('body', 'Text', { required: true })],
       },
+      {
+        name: 'columns',
+        label: 'Columns',
+        type: 'string',
+        options: [
+          { label: 'Two across', value: '2' },
+          { label: 'Three across', value: '3' },
+        ],
+      },
     ],
   },
   {
     name: 'LogoCards',
     label: 'Logo cards',
+    description: 'Cards where a logo is the identity: a program or a partner, with a line and a link.',
     ui: { ...itemProps('heading', 'Logo cards'), previewSrc: preview('LogoCards') },
-    description: 'A row of cards, each topped by a program or partner logo, with text and an optional link.',
     fields: [
       eyebrow(),
       text('heading', 'Heading', needed('This block needs a heading.')),
@@ -621,10 +671,9 @@ export const templates = [
         ui: itemProps('alt', 'Card'),
         fields: [
           image('image', 'Logo', { required: true }),
-          text('alt', 'Logo description (alt text)', { required: true }),
+          text('alt', 'Logo description', { required: true, description: 'What the logo says or shows.' }),
           textarea('body', 'Text', { required: true }),
-          text('linkLabel', 'Link label', { description: '“Learn more” if left blank.' }),
-          text('href', 'Link URL', { description: 'Needed for the link to show — a label alone does nothing.' }),
+          ...linkFields({ textName: 'linkLabel', hrefName: 'href', textHelp: 'Leave blank for “Learn more”.' }),
         ],
       },
     ],
@@ -632,13 +681,13 @@ export const templates = [
   {
     name: 'Aside',
     label: 'Aside',
-    description: 'A tinted note set apart from the page — formatted text beside an optional small logo.',
+    description: 'A note that belongs to a partner or program, set beside the page, with an optional logo.',
     ui: { ...itemProps('eyebrow', 'Aside'), previewSrc: preview('Aside') },
     fields: [
       eyebrow(),
       image('logo', 'Logo (optional)'),
-      text('logoAlt', 'Logo description (alt text)', {
-        description: 'What the logo says or shows. Needed whenever a logo is set.',
+      text('logoAlt', 'Logo description', {
+        description: 'What the logo says or shows. Needed whenever there’s a logo.',
         ui: {
           validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
             /** @type {{ logo?: string } | undefined} */ (allValues)?.logo && !value
@@ -652,29 +701,34 @@ export const templates = [
   {
     name: 'YouthMomentsBlock',
     label: 'Youth moments',
-    description: 'The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.',
+    description: 'The youth year’s trips and retreats, from the shared Youth moments list.',
     ui: { ...itemProps('heading', 'Youth moments'), previewSrc: preview('YouthMomentsBlock') },
-    fields: [eyebrow(), text('heading', 'Heading')],
+    fields: [eyebrow(), text('heading', 'Heading (optional)')],
   },
   {
     name: 'QuoteCarousel',
     label: 'Quotes carousel',
-    description: 'A rotating band of testimonials, pulled live from the Homepage quotes list.',
+    description: 'Voices of the church, rotating, from the shared Homepage quotes list.',
     ui: {
       defaultItem: { tone: 'sand' },
       ...itemProps('heading', 'Quotes carousel'),
       previewSrc: preview('QuoteCarousel'),
     },
-    fields: [eyebrow(), text('heading', 'Heading'), textarea('intro', 'Intro line'), tone(['sand', 'paper', 'forest'])],
+    fields: [
+      eyebrow(),
+      text('heading', 'Heading (optional)'),
+      textarea('intro', 'Intro (optional)'),
+      tone(['sand', 'paper', 'forest']),
+    ],
   },
   {
     name: 'Roadmap',
     label: 'Roadmap',
-    description: 'A numbered timeline — steps as nodes on a connecting line, each with a title and a line.',
+    description: 'Steps where the order matters, numbered along a line.',
     ui: { ...itemProps('heading', 'Roadmap'), previewSrc: preview('Roadmap') },
     fields: [
       eyebrow(),
-      text('heading', 'Heading'),
+      text('heading', 'Heading (optional)'),
       {
         name: 'steps',
         label: 'Steps',
@@ -689,14 +743,14 @@ export const templates = [
   {
     name: 'Letter',
     label: 'Letter',
-    description: 'A personal letter — flowing prose beside a portrait, closing with a signature.',
+    description: 'A personal note in someone’s own voice, beside their portrait and closing with a signature.',
     ui: { ...itemProps('signoffName', 'Letter'), previewSrc: preview('Letter') },
     fields: [
       image('image', 'Portrait (optional)'),
-      text('alt', 'Portrait description (alt text)', { description: CATALOG_ALT }),
-      text('signoffName', 'Signature — name'),
-      text('signoffRole', 'Signature — role/title'),
+      photoAlt(),
       prose(),
+      text('signoffName', 'Signed by (optional)', { description: 'The name under the letter.' }),
+      text('signoffRole', 'Their role (optional)', { description: 'Like “Lead Pastor”.' }),
     ],
   },
 ]

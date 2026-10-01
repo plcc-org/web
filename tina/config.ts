@@ -1,9 +1,10 @@
 import { defineConfig } from 'tinacms'
-import { templates, heroFields, image, checkSeoDescription } from './templates.mjs'
+import { templates, heroFields, image, checkSeoDescription, guide } from './templates.mjs'
 import { checkFrom, checkDestination, checkReview } from './short-link-rules.mjs'
 import { checkSunday, churchToday, linkListField, nextSunday, toIsoDate } from './sunday-links.mjs'
 import { dateOnly } from './date-field.mjs'
 import { checkNoticeLink, checkNoticeMessage } from './site-notice.mjs'
+import { checkOptionalLink } from './link-rules.mjs'
 import { church } from '../src/config/church'
 
 /**
@@ -144,9 +145,8 @@ export default defineConfig({
           filename: {
             showFirst: true,
             description:
-              'The page address: "safety" makes plcc.org/safety/. It starts from the title — click it to set your ' +
-              'own, and it stops following. Keep it short: these get read aloud and printed on things. Lowercase ' +
-              'letters, numbers and hyphens. Changing it later breaks every existing link to the page.',
+              '“safety” makes plcc.org/safety/. Click to change it, and keep it short: addresses get read aloud and ' +
+              'printed. Changing it later breaks existing links.',
             slugify: (values) => slug(values?.title ?? ''),
             parse: (value) => slug(value),
           },
@@ -169,41 +169,17 @@ export default defineConfig({
             type: 'string',
             isTitle: true,
             required: true,
-            description:
-              'The page’s heading, and its name in the browser tab. The address is the separate field above — ' +
-              'it starts from this, but the two don’t have to match.',
-          },
-          {
-            name: 'seoTitle',
-            label: 'SEO title',
-            type: 'string',
-            description:
-              'Optional. Overrides the browser-tab title, which is otherwise the page title followed by ' +
-              '“| Pine Lake Covenant Church”. Only the home page needs this.',
-          },
-          {
-            name: 'seoDescription',
-            label: 'SEO description',
-            type: 'string',
-            ui: {
-              component: 'textarea',
-              validate: (value: string, allValues: unknown) => checkSeoDescription(value, allValues),
-            },
-            description:
-              'A one-sentence summary for search results and link previews — aim for under about 155 characters, ' +
-              'or search engines trim it mid-sentence. Optional when the hero has an intro line, which is used ' +
-              'instead.',
+            description: 'The page’s heading, and its name in the browser tab.',
           },
           {
             name: 'draft',
             label: 'Hidden from the public site (draft)',
             type: 'boolean',
-            description:
-              'New pages start hidden — visible in preview, not published. Untick to put the page live on the next save.',
+            description: 'New pages start hidden. Untick to publish the page when you next save.',
           },
           {
             name: 'hero',
-            label: 'Hero',
+            label: 'Top of page',
             type: 'object',
             // A `variant` select decides which of these fields apply. It is not
             // `templates` — that would show only the chosen shape's fields, but
@@ -232,10 +208,27 @@ export default defineConfig({
             // This is the field Tina's own Astro starter uses for a page body, and it
             // carries drag-to-reorder and click-to-edit natively.
             description:
-              'The page itself, built from blocks. Add one with the + above, drag to reorder, click to edit. ' +
-              'Two habits carry most of the voice: start with the reader’s situation rather than our ' +
-              'programme (“When life is overwhelming…”, not “We have a meals ministry”), and keep anything ' +
-              'that changes — dates, times, one-off events — on What’s On rather than here.',
+              'The page, built from blocks: add one with the + button, drag to reorder, click one to edit. ' +
+              `${guide('blocks', 'Which block to use')} · ${guide('voice', 'How we write')}`,
+          },
+          {
+            name: 'seoTitle',
+            label: 'Search title (optional)',
+            type: 'string',
+            description:
+              'Replaces “Title | Pine Lake Covenant Church” in search results and the browser tab. Only the home page needs one.',
+          },
+          {
+            name: 'seoDescription',
+            label: 'Search summary',
+            type: 'string',
+            ui: {
+              component: 'textarea',
+              validate: (value: string, allValues: unknown) => checkSeoDescription(value, allValues),
+            },
+            description:
+              'One sentence, under about 155 characters, for search results and link previews. Can be blank when ' +
+              'the top of the page has an intro line.',
           },
         ],
       },
@@ -282,14 +275,10 @@ export default defineConfig({
             // tina/date-field.mjs for the day-shift it prevents.
             ui: { ...dateOnly, validate: (value: unknown) => checkSunday(value) },
             description:
-              'The Sunday these links are for. They go live early that morning and stay up until the next ' +
-              'Sunday’s list replaces them. To start next week, open this week’s list, choose Duplicate, and ' +
-              'change the date. See it before it goes live at plcc.org/links/?preview.',
+              'They go live early that morning; preview them before then at /links/next/. To start a new week, ' +
+              `Duplicate last week’s list and change this date. ${guide('sunday-links', 'More')}`,
           },
-          linkListField(
-            'This Sunday’s links, top to bottom as they appear on the page. The links that never change live ' +
-              'under “Sunday links: every week”.'
-          ),
+          linkListField('Top to bottom, as on the page. Links that never change are under “Sunday links: every week”.'),
         ],
       },
       // The groups under the weekly list ("Next steps", "Additional resources"). One file
@@ -307,7 +296,7 @@ export default defineConfig({
             type: 'object',
             list: true,
             openFormOnCreate: true,
-            description: 'Shown under the weekly links, in this order — drag to reorder.',
+            description: 'Shown under the weekly links, in this order. Drag to reorder.',
             ui: { itemProps: (item) => ({ label: item?.heading || 'New group' }) },
             fields: [
               { name: 'heading', label: 'Heading', type: 'string', required: true },
@@ -336,7 +325,8 @@ export default defineConfig({
             label: 'Show this notice on every page',
             type: 'boolean',
             description:
-              'Stays up until you switch it off. While it’s on, it replaces the “Live now” banner on Sunday mornings.',
+              'Stays up until you switch it off, and replaces the Sunday-morning “Live now” banner while it’s on. ' +
+              guide('post-a-closure-notice', 'More'),
           },
           {
             name: 'message',
@@ -349,19 +339,17 @@ export default defineConfig({
             },
           },
           {
-            name: 'link',
-            label: 'Link (optional)',
-            type: 'string',
-            description:
-              'Somewhere to read more: a website starting https://, or a page on this site starting with a ' +
-              'slash, like /events/.',
-            ui: { validate: (value: unknown) => checkNoticeLink(value) },
-          },
-          {
             name: 'linkLabel',
             label: 'Link text (optional)',
             type: 'string',
-            description: 'What the link says. Leave blank for “Details”.',
+            description: 'Leave blank for “Details”.',
+          },
+          {
+            name: 'link',
+            label: 'Links to (optional)',
+            type: 'string',
+            description: 'Somewhere to read more: a page here like /events/, or a full https:// address.',
+            ui: { validate: (value: unknown) => checkNoticeLink(value) },
           },
         ],
       },
@@ -388,19 +376,19 @@ export default defineConfig({
             label: 'Role / title',
             type: 'string',
             required: true,
-            description: 'As it should read under the name — "Lead Pastor", "Director, Communications".',
+            description: 'As it reads under the name, like “Lead Pastor”.',
           },
           // image() pins the stored shape to /assets/images/<file> — see the
           // helper in templates.mjs for why no image field is written by hand.
           image('portrait', 'Portrait', {
             required: true,
-            description: 'A portrait-orientation photo — the page crops it 4:5, so landscape shots lose their edges.',
+            description: 'A portrait-shaped photo; a wide one loses its edges.',
           }),
           {
             name: 'portraitAlt',
-            label: 'Portrait description (alt text)',
+            label: 'Portrait description (optional)',
             type: 'string',
-            description: 'Usually leave blank — "Name, Role" is used. Write one only if the photo needs more.',
+            description: 'Leave blank to use their name and role.',
           },
           {
             name: 'bio',
@@ -408,24 +396,28 @@ export default defineConfig({
             type: 'string',
             required: true,
             ui: { component: 'textarea' },
-            description: 'A few short paragraphs. Markdown works here — links, bold, paragraphs.',
+            description: 'A few short paragraphs, with a blank line between them.',
           },
           {
             name: 'order',
             label: 'Order',
             type: 'number',
-            description:
-              'Lower numbers come first on the leadership page. Leave gaps (10, 20, 30 …) so someone new can ' +
-              'slot in without renumbering.',
+            description: 'Lower numbers come first. Count in tens (10, 20, 30) so someone new can slot in between.',
           },
           {
             name: 'link',
-            label: 'Link (optional)',
+            label: 'Read-more link (optional)',
             type: 'object',
-            description: 'An optional "read more" line under the bio. Both parts are needed for it to show.',
+            description: 'A line under the bio. It shows only when both parts are filled in.',
             fields: [
-              { name: 'label', label: 'Link label', type: 'string' },
-              { name: 'href', label: 'Link URL', type: 'string' },
+              { name: 'label', label: 'Link text', type: 'string' },
+              {
+                name: 'href',
+                label: 'Links to',
+                type: 'string',
+                description: 'A page here like /about/, or a full https:// address.',
+                ui: { validate: (value: unknown) => checkOptionalLink(value) },
+              },
             ],
           },
         ],
@@ -447,9 +439,9 @@ export default defineConfig({
           { name: 'title', label: 'Title', type: 'string', isTitle: true, required: true },
           {
             name: 'when',
-            label: 'When',
+            label: 'When (optional)',
             type: 'string',
-            description: 'A human label — a date range ("August 10–17, 2026") or a cadence ("Each spring"). Optional.',
+            description: 'A date range or a season, like “August 10–17, 2026” or “Each spring”.',
           },
           {
             name: 'blurb',
@@ -468,8 +460,7 @@ export default defineConfig({
             name: 'order',
             label: 'Order',
             type: 'number',
-            description:
-              'Lower numbers come first. Leave gaps (10, 20, 30 …) so a new moment can slot in without renumbering.',
+            description: 'Lower numbers come first. Count in tens (10, 20, 30) so a new one can slot in between.',
           },
         ],
       },
@@ -510,7 +501,7 @@ export default defineConfig({
                 required: true,
                 ui: { component: 'textarea' },
               },
-              { name: 'by', label: 'Attribution', type: 'string' },
+              { name: 'by', label: 'Who said it (optional)', type: 'string' },
             ],
           },
         ],
@@ -547,14 +538,13 @@ export default defineConfig({
               image('id', 'Photo file', { required: true }),
               {
                 name: 'alt',
-                label: 'Description (alt text)',
+                label: 'Description',
                 type: 'string',
                 required: true,
                 ui: { component: 'textarea' },
                 description:
-                  'Say what someone who can’t see the photo would need — “A volunteer making coffee before the ' +
-                  'service”, not “coffee”. Every page that shows this photo uses this description unless it sets ' +
-                  'its own.',
+                  'What someone who can’t see it needs: “A volunteer making coffee before the service”, not ' +
+                  `“coffee”. Used wherever the photo appears. ${guide('add-a-photo', 'More')}`,
               },
             ],
           },
@@ -588,7 +578,19 @@ export default defineConfig({
             // remains the authority — it alone can see that two entries claim the same
             // address. This is the same rule, moved to where the editor is standing.
             ui: { validate: (value: string) => checkFrom(value) },
-            description: '"/camp" makes plcc.org/camp.',
+            description: `“/camp” makes plcc.org/camp. ${guide('add-a-short-link', 'More')}`,
+          },
+          {
+            name: 'kind',
+            label: 'What kind of link',
+            type: 'string',
+            required: true,
+            options: [
+              { label: 'Shortcut: can be re-pointed later', value: 'shortcut' },
+              { label: 'Old page that has moved for good', value: 'moved' },
+              { label: 'Old page that is gone (leave “Links to” empty)', value: 'gone' },
+            ],
+            description: 'If unsure, choose Shortcut. Browsers remember a moved page for good.',
           },
           {
             name: 'destination',
@@ -598,19 +600,7 @@ export default defineConfig({
             ui: {
               validate: (value: string, allValues: { kind?: string }) => checkDestination(value, allValues?.kind),
             },
-            description: 'A full https:// address, or a page on this site like "/visit/".',
-          },
-          {
-            name: 'kind',
-            label: 'Type',
-            type: 'string',
-            required: true,
-            options: [
-              { label: 'Shortcut — can be re-pointed later', value: 'shortcut' },
-              { label: 'Old page that has moved for good', value: 'moved' },
-              { label: 'Old page that is gone (leave "Links to" empty)', value: 'gone' },
-            ],
-            description: 'If unsure, choose Shortcut. Browsers remember a moved page for good.',
+            description: 'A page here like /visit/, or a full https:// address.',
           },
           {
             name: 'permanent',

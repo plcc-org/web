@@ -267,7 +267,7 @@ A page has two parts:
    label — and clicking one opens its fields in a panel.
 
    **You never type into the body itself.** There is nowhere to: a page is assembled from
-   blocks, and prose lives inside a block, in that block's own **Content** field. That field
+   blocks, and prose lives inside a block, in that block's own **Text** field. That field
    is a proper rich-text editor with bold, links, lists and headings.
 
 ### Editing blocks
@@ -307,30 +307,30 @@ then for.
 
 ### The block palette
 
-| Block                    | Use it for                                                                                                          |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| **Rich text**            | A heading and formatted paragraphs — the default for written content.                                               |
-| **Photo & text (split)** | A photo beside text (left or right, tinted background) — show-and-tell.                                             |
-| **Photo**                | A single framed photo with an optional caption.                                                                     |
-| **Photo gallery**        | Several photos shown together as a visual break.                                                                    |
-| **Video**                | A YouTube or Vimeo video in a photo-style frame — paste the ordinary link, not an embed code.                       |
-| **Text cards**           | A row of small cards (title + a line) — a few parallel points.                                                      |
-| **Link cards**           | A grid of cards that link elsewhere — signposting to other pages.                                                   |
-| **Callout**              | A boxed aside that sets one point apart — a reassurance, a key fact.                                                |
-| **Closing banner**       | The dark band that ends a page against the footer, with an optional button — a parting invitation.                  |
-| **Quote**                | A single featured pull-quote — a testimonial, quotation, or verse. A background color renders it as a "verse band." |
-| **Featured events**      | A short list of upcoming events, pulled live from the events feed.                                                  |
-| **Key points**           | A moss-accented grid of titled points — core tenets, emphases, principles.                                          |
-| **Logo cards**           | A row of cards each topped by a program or partner logo, with an optional link.                                     |
-| **Aside**                | A tinted note set apart from the page — text beside an optional small logo.                                         |
-| **Youth moments**        | The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.                           |
-| **Quotes carousel**      | A rotating band of testimonials, pulled live from the Homepage quotes list.                                         |
-| **Roadmap**              | A numbered timeline — steps as nodes on a connecting line (e.g. "in three movements").                              |
-| **Letter**               | A personal letter — flowing prose beside a portrait, closing with a signature (a welcome or note).                  |
+| Block                 | Use it for                                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Text**              | A heading and formatted paragraphs — the default for written content.                                               |
+| **Photo beside text** | A photo beside text (left or right, tinted background) — show-and-tell.                                             |
+| **Photo**             | A single framed photo with an optional caption.                                                                     |
+| **Photo gallery**     | Several photos shown together as a visual break.                                                                    |
+| **Video**             | A YouTube or Vimeo video in a photo-style frame — paste the ordinary link, not an embed code.                       |
+| **Text cards**        | A row of small cards (title + a line) — a few parallel points.                                                      |
+| **Link cards**        | A grid of cards that link elsewhere — signposting to other pages.                                                   |
+| **Callout**           | A boxed aside that sets one point apart — a reassurance, a key fact.                                                |
+| **Closing banner**    | The dark band that ends a page against the footer, with an optional button — a parting invitation.                  |
+| **Quote**             | A single featured pull-quote — a testimonial, quotation, or verse. A background color renders it as a "verse band." |
+| **Featured events**   | A short list of upcoming events, pulled live from the events feed.                                                  |
+| **Key points**        | A moss-accented grid of titled points — core tenets, emphases, principles.                                          |
+| **Logo cards**        | A row of cards each topped by a program or partner logo, with an optional link.                                     |
+| **Aside**             | A tinted note set apart from the page — text beside an optional small logo.                                         |
+| **Youth moments**     | The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.                           |
+| **Quotes carousel**   | A rotating band of testimonials, pulled live from the Homepage quotes list.                                         |
+| **Roadmap**           | A numbered timeline — steps as nodes on a connecting line (e.g. "in three movements").                              |
+| **Letter**            | A personal letter — flowing prose beside a portrait, closing with a signature (a welcome or note).                  |
 
 Notes for editors:
 
-- **Photos** are drag-and-drop. Their **description (alt text)** usually comes from the
+- **Photos** are drag-and-drop. Their **description** (alt text) usually comes from the
   photo's entry in **Photo descriptions** — leave the block's own field blank unless this
   page needs different wording. A photo with no description from either source fails the
   build, so it can't ship silently.
@@ -345,26 +345,26 @@ The palette above tells you what each block _is_. This is the question you actua
 
 Start here and take the first match:
 
-| If what you have is…                                 | Reach for           |
-| ---------------------------------------------------- | ------------------- |
-| A few paragraphs that just need to be read           | **Rich text**       |
-| Something better _shown_ than described              | **Photo & text**    |
-| One point you don't want people to skim past         | **Callout**         |
-| One sentence someone said, worth its own space       | **Quote**           |
-| Three or four parallel things, each a line or two    | **Text cards**      |
-| Three or four places to go next                      | **Link cards**      |
-| A sequence where the order matters                   | **Roadmap**         |
-| A set of principles where the order doesn't          | **Key points**      |
-| A single photo that needs explaining                 | **Photo**           |
-| A minute of video that says it better than a page    | **Video**           |
-| A moment of visual breathing room                    | **Photo gallery**   |
-| The one thing you want the reader to do at the end   | **Closing banner**  |
-| A personal note in someone's own voice               | **Letter**          |
-| A note that belongs to a partner or programme        | **Aside**           |
-| Cards where a logo is the identity, not a photo      | **Logo cards**      |
-| "What's coming up" that should stay current itself   | **Featured events** |
-| The youth year's tentpoles, from the shared list     | **Youth moments**   |
-| Voices of the church, rotating, from the shared list | **Quotes carousel** |
+| If what you have is…                                 | Reach for             |
+| ---------------------------------------------------- | --------------------- |
+| A few paragraphs that just need to be read           | **Text**              |
+| Something better _shown_ than described              | **Photo beside text** |
+| One point you don't want people to skim past         | **Callout**           |
+| One sentence someone said, worth its own space       | **Quote**             |
+| Three or four parallel things, each a line or two    | **Text cards**        |
+| Three or four places to go next                      | **Link cards**        |
+| A sequence where the order matters                   | **Roadmap**           |
+| A set of principles where the order doesn't          | **Key points**        |
+| A single photo that needs explaining                 | **Photo**             |
+| A minute of video that says it better than a page    | **Video**             |
+| A moment of visual breathing room                    | **Photo gallery**     |
+| The one thing you want the reader to do at the end   | **Closing banner**    |
+| A personal note in someone's own voice               | **Letter**            |
+| A note that belongs to a partner or programme        | **Aside**             |
+| Cards where a logo is the identity, not a photo      | **Logo cards**        |
+| "What's coming up" that should stay current itself   | **Featured events**   |
+| The youth year's tentpoles, from the shared list     | **Youth moments**     |
+| Voices of the church, rotating, from the shared list | **Quotes carousel**   |
 
 Three rules of thumb behind that table:
 
@@ -383,17 +383,17 @@ Three rules of thumb behind that table:
 
 `/visit/` — the page a first-time guest actually reads. Why each block is what it is:
 
-| Block              | On the page                               | Why this one                                                                                                                                        |
-| ------------------ | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| _(hero)_           | "Plan a Visit" + a reassuring lede        | Every page gets one. The lede does the emotional work before any logistics.                                                                         |
-| **Rich text**      | "Sundays at 10:00am" — when & where       | Facts someone may be scanning for. Prose, not a card — they need to be _read_, and cards invite skimming.                                           |
-| **Photo**          | The building, captioned                   | "What am I looking for when I arrive?" A caption can say the thing a photo can't — where to park.                                                   |
-| **Photo & text**   | "What happens on a Sunday"                | Show-and-tell: the description is more believable next to the photo of it happening.                                                                |
-| **Callout**        | "Will I stand out or be put on the spot?" | The single biggest fear, answered where it can't be skimmed past. This is what a Callout is for — not decoration, but the one point that must land. |
-| **Photo & text**   | "We make Sundays smooth for parents"      | Same pattern, second audience. The alternating tint (`paper` then `sand`) is what keeps two adjacent splits from reading as one long block.         |
-| **Rich text**      | "What should I wear?"                     | A short practical answer. Doesn't need a photo, doesn't need a box.                                                                                 |
-| **Photo gallery**  | Three photos, no words                    | Breathing room before the close, and the last impression is faces rather than logistics.                                                            |
-| **Closing banner** | "A place to belong" + the CTA             | One action, at the end, on a dark band so it reads as the page's conclusion.                                                                        |
+| Block                 | On the page                               | Why this one                                                                                                                                        |
+| --------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| _(hero)_              | "Plan a Visit" + a reassuring lede        | Every page gets one. The lede does the emotional work before any logistics.                                                                         |
+| **Text**              | "Sundays at 10:00am" — when & where       | Facts someone may be scanning for. Prose, not a card — they need to be _read_, and cards invite skimming.                                           |
+| **Photo**             | The building, captioned                   | "What am I looking for when I arrive?" A caption can say the thing a photo can't — where to park.                                                   |
+| **Photo beside text** | "What happens on a Sunday"                | Show-and-tell: the description is more believable next to the photo of it happening.                                                                |
+| **Callout**           | "Will I stand out or be put on the spot?" | The single biggest fear, answered where it can't be skimmed past. This is what a Callout is for — not decoration, but the one point that must land. |
+| **Photo beside text** | "We make Sundays smooth for parents"      | Same pattern, second audience. The alternating tint (`paper` then `sand`) is what keeps two adjacent splits from reading as one long block.         |
+| **Text**              | "What should I wear?"                     | A short practical answer. Doesn't need a photo, doesn't need a box.                                                                                 |
+| **Photo gallery**     | Three photos, no words                    | Breathing room before the close, and the last impression is faces rather than logistics.                                                            |
+| **Closing banner**    | "A place to belong" + the CTA             | One action, at the end, on a dark band so it reads as the page's conclusion.                                                                        |
 
 The shape underneath: **reassure → orient → show → answer the fear → show again → practical
 detail → breathe → invite.** Most guest-facing pages want roughly that arc. You're not
@@ -479,7 +479,7 @@ An unresolvable image doesn't fail the build — it just doesn't appear.
   every layout rule. `_content_source` rides along in the props and the adapter puts
   `data-tina-field` on the block's own root (`src/lib/tina/block-field.ts`).
 - Internal code names differ from editor labels (the label is what editors see): `Section` =
-  "Rich text", `Split` = "Photo & text", `CaptionedPhoto` = "Photo", `Video` = "Video",
+  "Text", `Split` = "Photo beside text", `CaptionedPhoto` = "Photo", `Video` = "Video",
   `PhotoBand` = "Photo gallery", `CardRow` = "Text cards", `Callout` = "Callout",
   `LinkCards` = "Link cards", `Closing` = "Closing banner", `Quote` = "Quote",
   `FeaturedEvents` = "Featured events", `KeyPoints` = "Key points", `LogoCards` =
@@ -570,7 +570,7 @@ and an option that has never been set to anything but its default has earned del
 
 Naming a shape and **showing only that shape's fields** are two different things, and Tina
 gives you the first but not the second. The hero still shows all eleven fields whatever
-variant you pick; the `variant` select and the "Used by:" line on each field's description
+variant you pick; the `variant` select and the "For …" note on each field's description
 are the whole mitigation.
 
 Two mechanisms look like they'd fix that. Neither does:
@@ -598,6 +598,20 @@ The only workaround that preserves the choose-then-see behaviour is a list cappe
 item (`list: true` with `ui.max: 1`), which makes the frontmatter an array and puts the hero
 behind an extra click. Judged not worth it for a field every page has — but it's the option
 if the field count becomes the bigger problem.
+
+### Field labels and help text
+
+Every form should read the same way to a volunteer who has never seen the schema. The
+rules are written out at the top of `tina/templates.mjs`; in short:
+
+- **One sentence of help, task-first.** Anything longer goes in the editor's guide, linked
+  with `guide('<page>', '<text>')`. Tina renders a description as HTML, so the link is live.
+- **"(optional)" in the label** for a field that may be blank, and nowhere else.
+- **Shared helpers for shared ideas**: `eyebrow()`, `photoAlt()`, `button()` and
+  `linkFields()`, so a button or a link has the same labels and the same URL check
+  (`tina/link-rules.mjs`) in every block.
+- **One field order**: small label, heading, intro, photo, text, list, button, then how it
+  looks.
 
 ---
 
@@ -749,7 +763,7 @@ change, or every existing inbound link breaks.
   owns its formatting, and an editor's save must never fail CI — a trailing space Tina left
   in a bio once failed `format:check`, which stops CI before tests and builds. Content is
   validated by zod and the build scripts instead.
-- **The toolbar is deliberately short.** A block's **Content** field is the only place with
+- **The toolbar is deliberately short.** A block's **Text** field is the only place with
   one, and `overrides.toolbar` on it keeps seven controls and drops the rest: raw, table,
   code, code block, mermaid, highlight and strikethrough are all offered by default and
   **none of them are styled anywhere in `src/styles`**, so reaching one produced output
@@ -758,7 +772,7 @@ change, or every existing inbound link breaks.
   `TinaChildren.astro` renders a block's prose with the inline components alone — a block
   nested inside a block would save fine and then render as nothing. Prose starts at **H3**,
   because the block's own heading is the `<h2>` and the hero renders the page's only `<h1>`
-  — except in a Rich text block, whose heading is optional, so H2 stays available there.
+  — except in a Text block, whose heading is optional, so H2 stays available there.
   `base.css` styles nothing below `h4`. Both settings are UI-only: content already saved
   with a disallowed level still renders. Removing `raw` is also what now enforces the old
   "no inline raw HTML" rule below.
@@ -804,7 +818,7 @@ change, or every existing inbound link breaks.
 - **Block descriptions don't show in the insert menu.** They're in the schema and worth
   keeping, but the menu renders labels only — the "which block do I use?" table above is the
   substitute.
-- **Slash (`/`) inserts headings and lists only**, inside a block's Content field. Blocks
+- **Slash (`/`) inserts headings and lists only**, inside a block's Text field. Blocks
   aren't in that menu — they're added with the **+** on the Body field.
 - **The `pages` directory must exist** even when empty — add a `.gitkeep` if it's ever
   emptied.

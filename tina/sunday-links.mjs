@@ -14,6 +14,8 @@
 // Plain .mjs for the same reason short-link-rules.mjs is: importable from a Node script
 // and from the CMS config without a build step.
 
+import { checkLinkUrl } from './link-rules.mjs'
+
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
@@ -86,31 +88,6 @@ export function checkSunday(value) {
 }
 
 /**
- * A link opens a website (https), an email (mailto), or a page on this site (/events/).
- * Each rejection names the fix, because the likeliest mistakes — a pasted bare domain,
- * an email address without "mailto:" — are one edit away from working.
- * @param {unknown} value
- * @returns {string | undefined}
- */
-export function checkLinkUrl(value) {
-  const url = typeof value === 'string' ? value.trim() : ''
-  if (!url) return 'Add the address this link opens.'
-  if (/\s/.test(url)) return 'The address has a space in it. Copy it again from the browser’s address bar.'
-  if (/^mailto:/i.test(url)) {
-    const address = url.slice('mailto:'.length).split('?')[0]
-    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(address)
-      ? undefined
-      : 'An email link needs an address after “mailto:”, like mailto:office@plcc.org.'
-  }
-  if (/^https:\/\/[^/]+\.[^/]+/i.test(url)) return undefined
-  if (/^http:\/\//i.test(url)) return 'Use the https:// version of the address.'
-  if (/^\/(?!\/)/.test(url)) return undefined
-  if (/^[^@\s/:]+@[^@\s]+\.[^@\s]+$/.test(url)) return `For an email link, put “mailto:” in front: mailto:${url}`
-  if (/^[a-z0-9-]+(\.[a-z0-9-]+)+(\/|$)/i.test(url)) return `Start the address with https://, like https://${url}`
-  return 'Start with https:// for a website, mailto: for an email, or / for a page on this site (/events/).'
-}
-
-/**
  * What following a link does, which picks its icon: leave for another site, open an
  * email, or stay on this one.
  * @param {string} url
@@ -180,21 +157,18 @@ export function linkListField(description) {
     fields: [
       {
         name: 'label',
-        label: 'Label',
+        label: 'Link text',
         type: 'string',
         required: true,
-        description:
-          'What people tap — “Today’s Scripture”, “Sign up for Supper Club”. Short enough for one line on a phone.',
+        description: 'What people tap, like “Sign up for Supper Club”. Short enough for one line on a phone.',
       },
       {
         name: 'url',
-        label: 'Opens',
+        label: 'Links to',
         type: 'string',
         required: true,
         ui: { validate: (/** @type {unknown} */ value) => checkLinkUrl(value) },
-        description:
-          'A website starting https:// (paste it from the address bar), an email written mailto:name@plcc.org, ' +
-          'or a page on this site starting with a slash, like /events/.',
+        description: 'A page here like /events/, a full https:// address, or an email as mailto:name@plcc.org.',
       },
     ],
   }
