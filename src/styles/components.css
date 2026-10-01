@@ -261,9 +261,9 @@
 /* A site banner (nav.css) makes the fixed bar taller over the hero, and on a
    short screen the bottom-aligned copy reaches up to just under the nav. The
    hero grows by the banner's height so the copy stays the same distance below
-   the bar. One line of banner is about 2rem; the spare covers rounding. */
+   the bar. One line of banner is about 4rem; the spare covers rounding. */
 body:has(.site-banner:not([hidden])) .hero {
-  --hero-banner-room: 2.25rem;
+  --hero-banner-room: 4.25rem;
 }
 
 /* The entrance animation staggers this element's children (animations.css),

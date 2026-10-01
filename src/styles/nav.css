@@ -161,12 +161,12 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
   margin: 0;
   /* Reaches the physical top edge in the header's place (below), so the status
      bar strip is the banner's colour, not a gap of hero above it. */
-  padding-block: calc(var(--space-xs) + env(safe-area-inset-top, 0px)) var(--space-xs);
+  padding-block: calc(var(--space-md) + env(safe-area-inset-top, 0px)) var(--space-md);
   padding-inline: max(var(--space-lg), env(safe-area-inset-left, 0px))
     max(var(--space-lg), env(safe-area-inset-right, 0px));
   background: var(--color-moss-ink);
   color: var(--color-white);
-  font-size: var(--text-ui);
+  font-size: var(--text-lg);
   font-weight: 600;
   line-height: var(--leading-tight);
   text-align: center;
@@ -179,6 +179,18 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
 
 .site-banner--notice {
   background: var(--color-clay-ink);
+}
+
+/* The dot stays beside the words; if the line must wrap, the words wrap. */
+.site-banner--live {
+  flex-wrap: nowrap;
+}
+
+/* One size down on a phone, so "Live now" fits on one line at 375px. */
+@media (max-width: 480px) {
+  .site-banner {
+    font-size: var(--text-md);
+  }
 }
 
 /* The whole live strip is the link; the underline comes on hover, as nav links do. */
@@ -196,8 +208,8 @@ a.site-banner:hover > span:last-child,
 
 .site-banner__dot {
   flex: none;
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.75rem;
+  height: 0.75rem;
   border-radius: var(--radius-pill);
   background: var(--color-white);
   animation: site-banner-pulse 2s var(--ease-out) infinite;
@@ -210,7 +222,7 @@ a.site-banner:hover > span:last-child,
   }
 
   70% {
-    box-shadow: 0 0 0 0.45rem rgba(var(--color-white-rgb), 0);
+    box-shadow: 0 0 0 0.6rem rgba(var(--color-white-rgb), 0);
   }
 }
 
