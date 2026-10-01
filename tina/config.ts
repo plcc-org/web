@@ -5,6 +5,7 @@ import { checkSunday, churchToday, linkListField, nextSunday, toIsoDate } from '
 import { dateOnly } from './date-field.mjs'
 import { checkNoticeLink, checkNoticeMessage } from './site-notice.mjs'
 import { checkOptionalLink } from './link-rules.mjs'
+import { checkClosingBanner } from './block-rules.mjs'
 import { church } from '../src/config/church'
 
 /**
@@ -197,7 +198,9 @@ export default defineConfig({
             // each template carries a `previewSrc` picture of itself (see `preview()` in
             // templates.mjs). Eighteen labels take reading; eighteen pictures don't, and
             // the labels are still there under them.
-            ui: { visualSelector: true },
+            // The one rule about how blocks sit together that an editor can break by
+            // dragging: see checkClosingBanner.
+            ui: { visualSelector: true, validate: (value: unknown) => checkClosingBanner(value) },
             // A page is assembled, never typed into: every top-level thing on it is one of
             // the blocks in `templates`, and prose lives inside a block's own rich-text
             // field rather than loose on the page. A `rich-text` body would offer a prose

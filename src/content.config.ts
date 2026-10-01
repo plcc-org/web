@@ -6,6 +6,7 @@ import { checkLinkUrl } from '../tina/link-rules.mjs'
 import { checkSunday, toIsoDate } from '../tina/sunday-links.mjs'
 import { checkNoticeLink, checkNoticeMessage } from '../tina/site-notice.mjs'
 import { heroFields, templates } from '../tina/templates.mjs'
+import { checkClosingBanner } from '../tina/block-rules.mjs'
 
 // quotes is a single YAML file holding one array. The CMS edits it as a list
 // field, which serializes to `{ <key>: [...] }`. Parse tolerantly so both the
@@ -234,7 +235,13 @@ const pages = defineCollection({
     // validates the rest — restating eighteen templates here would be a second
     // copy to keep in step, and the two would disagree the first time one moved.
     // A page with no blocks is a legitimate stub, so the list is optional.
-    blocks: z.array(z.object({ _template: z.enum(BLOCK_TEMPLATES) }).passthrough()).optional(),
+    blocks: z
+      .array(z.object({ _template: z.enum(BLOCK_TEMPLATES) }).passthrough())
+      .optional()
+      .superRefine((blocks, ctx) => {
+        const problem = checkClosingBanner(blocks)
+        if (problem) ctx.addIssue({ code: 'custom', message: problem })
+      }),
   }),
 })
 

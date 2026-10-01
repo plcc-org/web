@@ -17,8 +17,19 @@
 
 import { checkVideoUrl } from './video-rules.mjs'
 import { checkLinkUrl, checkOptionalLink } from './link-rules.mjs'
+import { checkPhotoAlt, siblingValue } from './block-rules.mjs'
+import photoCatalog from '../src/content/photos/photos.json' with { type: 'json' }
 
 /** @typedef {Record<string, unknown>} FieldOpts */
+
+/**
+ * A validator's arguments as Tina passes them: the value, the whole document, final-form's
+ * field state, and the field itself, whose `name` is its full path through the form.
+ * @typedef {(value: unknown, allValues: unknown, meta?: unknown, field?: { name?: string }) => string | undefined} Validate
+ */
+
+/** Filenames the photo catalog describes, as of when this config was built. */
+const CATALOGUED = new Set(photoCatalog.photos.map((p) => p.id.split('/').pop() ?? ''))
 
 /*
  * How the help text is written, so every form reads alike. The audience is a volunteer
@@ -287,8 +298,10 @@ const eyebrow = () =>
  * The alt field on every *catalogued-photo* slot. Blank falls back to the photo's
  * entry in "Photo descriptions" (altFor, src/lib/photos.ts), so the description is
  * written once and inherited everywhere the photo appears — hence a label that reads
- * as an override rather than as a field to fill in. Logo alt fields don't use this:
- * logos aren't catalogued, so theirs are genuinely required.
+ * as an override rather than as a field to fill in — until the photo beside it is one
+ * the catalog doesn't know, when it asks (checkPhotoAlt). Every photo slot names its
+ * picture `image`, which is the sibling it reads. Logo alt fields don't use this: logos
+ * aren't catalogued, so theirs are genuinely required.
  * @type {(prefix?: (rest: string) => string) => Record<string, unknown>}
  */
 const photoAlt = (prefix = (rest) => rest) =>
@@ -296,6 +309,11 @@ const photoAlt = (prefix = (rest) => rest) =>
     description: prefix(
       `Leave blank to use the photo’s saved description. ${guide('add-a-photo', 'About photo descriptions')}`
     ),
+    ui: {
+      /** @type {Validate} */
+      validate: (value, allValues, _meta, field) =>
+        checkPhotoAlt(value, siblingValue(allValues, field?.name, 'image'), CATALOGUED),
+    },
   })
 
 /**
@@ -689,8 +707,9 @@ export const templates = [
       text('logoAlt', 'Logo description', {
         description: 'What the logo says or shows. Needed whenever there’s a logo.',
         ui: {
-          validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
-            /** @type {{ logo?: string } | undefined} */ (allValues)?.logo && !value
+          /** @type {Validate} */
+          validate: (value, allValues, _meta, field) =>
+            siblingValue(allValues, field?.name, 'logo') && !value
               ? 'A logo needs a description for people who can’t see it.'
               : undefined,
         },
