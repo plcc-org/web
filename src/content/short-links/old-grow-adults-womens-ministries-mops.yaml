@@ -1,0 +1,6 @@
+name: old-grow-adults-womens-ministries-mops
+from: /grow/adults/womens-ministries/mops/
+destination: /momco/
+kind: moved
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/momco/ on the old site.

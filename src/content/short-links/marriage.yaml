@@ -1,0 +1,6 @@
+name: marriage
+from: /marriage
+destination: /church-life/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/adults/courses/ on the old site.

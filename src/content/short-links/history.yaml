@@ -1,0 +1,7 @@
+name: history
+from: /history
+destination: /about/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /connect/about/history/ on the old
+  site.

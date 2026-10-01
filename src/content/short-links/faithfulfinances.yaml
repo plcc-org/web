@@ -1,0 +1,6 @@
+name: faithfulfinances
+from: /faithfulfinances/
+destination: https://plcc.churchcenter.com/groups/growth-group/faithful-finances
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

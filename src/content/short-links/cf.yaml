@@ -1,0 +1,7 @@
+name: cf
+from: /cf
+destination: /church-life/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /grow/student-ministries/ignite-middle-school-ministry/ on the old site.

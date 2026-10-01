@@ -1,0 +1,7 @@
+name: bridges-to-bless
+from: /bridges-to-bless
+destination: /neighbors/serve/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /serve/local/bridges-to-bless/ on
+  the old site.

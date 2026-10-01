@@ -1,0 +1,6 @@
+name: text
+from: /text
+destination: https://plcc.churchcenter.com/me/profile-and-household/edit?section=custom-fields&group=0
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

@@ -1,0 +1,7 @@
+name: retreatregistration
+from: /retreatregistration
+destination: /church-life/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/adults/womens-ministries/ on
+  the old site.

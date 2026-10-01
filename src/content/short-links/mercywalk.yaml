@@ -1,0 +1,6 @@
+name: mercywalk
+from: /mercywalk
+destination: https://www.mercywalk.org/donate
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

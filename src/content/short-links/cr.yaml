@@ -1,0 +1,7 @@
+name: cr
+from: /cr
+destination: /neighbors/care/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /care/recovery-ministries/ on the
+  old site.

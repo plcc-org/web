@@ -1,0 +1,7 @@
+name: stephmin
+from: /stephmin
+destination: /neighbors/stephen-ministry/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /care/stephen-ministry/ on the old
+  site.

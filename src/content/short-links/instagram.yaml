@@ -1,0 +1,6 @@
+name: instagram
+from: /instagram
+destination: https://www.instagram.com/pinelakecov/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

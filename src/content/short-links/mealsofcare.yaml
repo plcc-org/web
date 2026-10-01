@@ -1,0 +1,7 @@
+name: mealsofcare
+from: /mealsofcare
+destination: /neighbors/meals/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /care/practical-assistance/meals-of-care/ on the old site.

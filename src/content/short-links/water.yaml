@@ -1,0 +1,6 @@
+name: water
+from: /water
+destination: https://global6k.worldvision.org/index.cfm?fuseaction=donordrive.team&teamID=35506
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

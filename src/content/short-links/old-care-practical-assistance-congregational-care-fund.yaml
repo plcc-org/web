@@ -1,0 +1,7 @@
+name: old-care-practical-assistance-congregational-care-fund
+from: /care/practical-assistance/congregational-care-fund/
+destination: /neighbors/care/
+kind: moved
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /care/practical-assistance/congregational-care/ on the old site.

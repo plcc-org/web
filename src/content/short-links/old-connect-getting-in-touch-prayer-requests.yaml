@@ -1,0 +1,6 @@
+name: old-connect-getting-in-touch-prayer-requests
+from: /connect/getting-in-touch/prayer-requests/
+destination: /contact/
+kind: moved
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /care/prayer/ on the old site.

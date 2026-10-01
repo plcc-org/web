@@ -1,0 +1,6 @@
+name: carepackages
+from: /carepackages
+destination: https://plcc.ccbchurch.com/goto/forms/425/responses/new
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

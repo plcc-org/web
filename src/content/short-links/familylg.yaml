@@ -1,0 +1,7 @@
+name: familylg
+from: /familylg
+destination: /church-life/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /grow/life-groups/families-with-children-at-home/ on the old site.

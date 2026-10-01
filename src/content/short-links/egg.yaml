@@ -1,0 +1,6 @@
+name: egg
+from: /egg
+destination: https://www.facebook.com/events/2347197782413831/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

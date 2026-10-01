@@ -1,0 +1,6 @@
+name: mosaic
+from: /mosaic
+destination: https://pacnwc.org/event-calendar/2019-journey-to-mosaic/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

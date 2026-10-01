@@ -1,0 +1,6 @@
+name: meals
+from: /meals
+destination: https://plcc.churchcenter.com/registrations/events/3659589
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

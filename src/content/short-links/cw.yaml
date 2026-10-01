@@ -1,0 +1,7 @@
+name: cw
+from: /cw
+destination: /visit/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /connect/visit-this-sunday/what-to-expect/ on the old site.

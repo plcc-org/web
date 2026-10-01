@@ -1,0 +1,6 @@
+name: ukraine
+from: /ukraine
+destination: https://plcc.churchcenter.com/giving/to/ukraine
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

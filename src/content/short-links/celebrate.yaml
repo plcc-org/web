@@ -1,0 +1,6 @@
+name: celebrate
+from: /celebrate
+destination: https://celebraterecoveryontheplateau.org/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

@@ -1,0 +1,6 @@
+name: scholarship
+from: /scholarship
+destination: https://plcc.churchcenter.com/giving/to/student-scholarships
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

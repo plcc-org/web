@@ -1,0 +1,6 @@
+name: old-care-divorce-care
+from: /care/divorce-care/
+destination: /neighbors/care/
+kind: moved
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /care/divorcecare/ on the old site.

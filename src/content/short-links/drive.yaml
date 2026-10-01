@@ -1,0 +1,6 @@
+name: drive
+from: /drive
+destination: https://www.amazon.com/hz/wishlist/ls/17GK31V70D2JJ
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

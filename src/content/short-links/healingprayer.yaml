@@ -1,0 +1,6 @@
+name: healingprayer
+from: /healingprayer
+destination: /contact/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /care/prayer/ on the old site.

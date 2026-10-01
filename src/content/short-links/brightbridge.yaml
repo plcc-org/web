@@ -1,0 +1,6 @@
+name: brightbridge
+from: /brightbridge
+destination: https://www.amazon.com/hz/wishlist/ls/125AE713UWC1P?ref_=wl_share
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

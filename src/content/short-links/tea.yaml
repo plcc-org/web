@@ -1,0 +1,6 @@
+name: tea
+from: /tea
+destination: https://plcc.churchcenter.com/registrations/events/3534827
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

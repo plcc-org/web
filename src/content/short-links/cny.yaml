@@ -1,0 +1,7 @@
+name: cny
+from: /cny
+destination: /about/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /connect/chinese-new-year-celebration/ on the old site.

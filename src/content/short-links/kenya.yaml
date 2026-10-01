@@ -1,0 +1,6 @@
+name: kenya
+from: /kenya
+destination: https://plcc.reachapp.co/donations/new
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

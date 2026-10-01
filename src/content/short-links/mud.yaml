@@ -1,0 +1,6 @@
+name: mud
+from: /mud
+destination: https://pacnwc.org/mud/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

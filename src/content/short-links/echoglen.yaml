@@ -1,0 +1,6 @@
+name: echoglen
+from: /echoglen
+destination: /neighbors/serve/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /echo-glen/ on the old site.

@@ -1,0 +1,6 @@
+name: app
+from: /app
+destination: https://plcc.churchcenter.com/setup
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

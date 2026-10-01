@@ -1,0 +1,6 @@
+name: gifts
+from: /gifts
+destination: https://spiritualgiftstest.com/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

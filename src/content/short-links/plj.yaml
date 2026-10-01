@@ -1,0 +1,7 @@
+name: plj
+from: /plj
+destination: /neighbors/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/pursuing-love-justice/ on
+  the old site.

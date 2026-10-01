@@ -1,0 +1,6 @@
+name: newsletter
+from: /newsletter
+destination: https://plcc.churchcenter.com/people/forms/530525?open-in-church-center-modal=true
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

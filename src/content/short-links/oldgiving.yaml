@@ -1,0 +1,6 @@
+name: oldgiving
+from: /oldgiving
+destination: https://plcc.ccbchurch.com/give_detail.php
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

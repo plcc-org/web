@@ -1,0 +1,6 @@
+name: giving
+from: /giving
+destination: https://plcc.churchcenter.com/giving
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /give on the old site.

@@ -1,0 +1,7 @@
+name: sunday
+from: /sunday
+destination: /visit/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /connect/visit-this-sunday/ on the
+  old site.

@@ -1,0 +1,7 @@
+name: community-meal-packaging-thank-you
+from: /community-meal-packaging-thank-you/
+destination: /neighbors/serve/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /serve/community-meal-packaging-thank-you/ on the old site.

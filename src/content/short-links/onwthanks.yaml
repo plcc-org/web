@@ -1,0 +1,7 @@
+name: onwthanks
+from: /onwthanks
+destination: /neighbors/serve/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /serve/local/operation-nightwatch/
+  on the old site.

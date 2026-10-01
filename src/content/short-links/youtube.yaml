@@ -1,0 +1,6 @@
+name: youtube
+from: /youtube
+destination: https://www.youtube.com/user/PineLkCovChurch
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

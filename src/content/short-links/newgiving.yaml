@@ -1,0 +1,6 @@
+name: newgiving
+from: /newgiving
+destination: https://plcc.churchcenter.com/login?return=https://plcc.churchcenter.com/giving
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

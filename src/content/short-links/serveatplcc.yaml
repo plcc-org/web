@@ -1,0 +1,6 @@
+name: serveatplcc
+from: /serveatplcc
+destination: /church-life/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /serve/serve-at-plcc/ on the old site.

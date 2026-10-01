@@ -1,0 +1,6 @@
+name: seder
+from: /seder
+destination: https://plcc.ccbchurch.com/goto/forms/388/responses/new
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

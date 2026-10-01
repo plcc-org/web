@@ -1,0 +1,6 @@
+name: wishlist
+from: /wishlist
+destination: https://www.amazon.com/hz/wishlist/ls/31LZOWNKLW98I
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

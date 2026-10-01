@@ -1,0 +1,6 @@
+name: blooddrive
+from: /blooddrive
+destination: https://www.redcrossblood.org/give.html/drive-results?zipSponsor=pinelake
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

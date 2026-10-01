@@ -1,0 +1,6 @@
+name: adventure
+from: /adventure/
+destination: https://plcc.churchcenter.com/groups/social-group/adventure-group
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

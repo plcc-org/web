@@ -1,0 +1,6 @@
+name: annualmeeting
+from: /annualmeeting
+destination: https://mailchi.mp/c0d6d054e0c7/in-the-loop-8341058
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /annual on the old site.

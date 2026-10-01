@@ -762,7 +762,7 @@ change, or every existing inbound link breaks.
   `tina/templates.mjs`) that asks for one only when the hero has no intro line — which
   includes every cinematic hero, since cinematic never shows its intro line.
 - **The short-links list has no columns.** The CMS has no list-view column configuration, so
-  55 entries show as filenames — which is why the filename is derived from the Name field
+  400-odd entries show as filenames — which is why the filename is derived from the Name field
   and worth keeping descriptive. (The deployed admin has no search box: Tina's list search
   needs a TinaCloud search token this site doesn't configure, so `searchable` marks change
   nothing there. Scan by filename.)

@@ -1,0 +1,7 @@
+name: 2024-2025-ministry-budget-report
+from: /2024-2025-ministry-budget-report/
+destination: https://plcc.churchcenter.com/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /annual-meeting-documents/ on the
+  old site.

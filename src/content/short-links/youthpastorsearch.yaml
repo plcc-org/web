@@ -1,0 +1,7 @@
+name: youthpastorsearch
+from: /youthpastorsearch
+destination: /church-life/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /grow/student-ministries/youth-pastor-search/ on the old site.

@@ -1,0 +1,6 @@
+name: carols
+from: /carols
+destination: https://bible.com/events/49360541
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

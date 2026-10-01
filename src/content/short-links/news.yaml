@@ -1,0 +1,6 @@
+name: news
+from: /news
+destination: https://eepurl.com/T2NlQdSj-P
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

@@ -1,0 +1,6 @@
+name: missions
+from: /missions
+destination: /neighbors/serve/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /serve/ on the old site.

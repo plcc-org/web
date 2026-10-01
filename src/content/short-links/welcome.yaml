@@ -1,0 +1,6 @@
+name: welcome
+from: /welcome
+destination: https://app.textinchurch.com/groups/webform/MjE2NjYw
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

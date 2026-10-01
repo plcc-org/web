@@ -1,0 +1,6 @@
+name: students
+from: /students
+destination: /youth/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/youth on the old site.

@@ -1,0 +1,6 @@
+name: g3m
+from: /g3m
+destination: /church-life/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/life-groups/men/ on the old site.

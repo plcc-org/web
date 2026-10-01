@@ -30,7 +30,9 @@ describe('NAP facts match src/config/church.ts', () => {
 
     // Any US-phone-shaped string must be the church's number: the display form,
     // the config's +1- form, or a tel:/compact +1XXXXXXXXXX dialling form.
-    for (const m of text.matchAll(/\+1\d{10}|(?:\+1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]?\d{4}/g)) {
+    // Digit boundaries keep a run of hex inside a URL (a Mailchimp file ID) from
+    // reading as a number.
+    for (const m of text.matchAll(/(?<!\d)(?:\+1\d{10}|(?:\+1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]?\d{4})(?!\d)/g)) {
       const digits = m[0].replace(/\D/g, '')
       if (digits.length < 10) continue
       const normalized = digits.length === 10 ? `1${digits}` : digits

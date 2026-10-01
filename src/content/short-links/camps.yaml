@@ -1,0 +1,6 @@
+name: camps
+from: /camps
+destination: https://plcc.churchcenter.com/registrations/events/3370274
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

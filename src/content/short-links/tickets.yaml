@@ -1,0 +1,6 @@
+name: tickets
+from: /tickets
+destination: https://ply.fundraiser.bid/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

@@ -1,0 +1,7 @@
+name: cotn
+from: /cotn
+destination: /neighbors/serve/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /serve/community-meal-packaging-event/ on the old site.

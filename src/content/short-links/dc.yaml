@@ -1,0 +1,6 @@
+name: dc
+from: /dc
+destination: https://plcc.churchcenter.com/registrations/events/3301090
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

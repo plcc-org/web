@@ -1,0 +1,7 @@
+name: jobs
+from: /jobs
+destination: /about/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /connect/about/job-openings/ on
+  the old site.

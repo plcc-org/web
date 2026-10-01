@@ -1,0 +1,6 @@
+name: mopsreg
+from: /mopsreg
+destination: /momco/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/momco/ on the old site.

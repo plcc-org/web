@@ -1,0 +1,6 @@
+name: vespersworship
+from: /vespersworship
+destination: https://bible.com/events/48695369
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

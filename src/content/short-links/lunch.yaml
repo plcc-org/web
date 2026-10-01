@@ -1,0 +1,6 @@
+name: lunch
+from: /lunch
+destination: https://plcc.churchcenter.com/registrations/signups/3552066
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

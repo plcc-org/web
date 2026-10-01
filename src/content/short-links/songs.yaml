@@ -1,0 +1,6 @@
+name: songs
+from: /songs
+destination: https://bible.com/events/49234076
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

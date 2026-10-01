@@ -1,0 +1,6 @@
+name: outlook2022-2
+from: /outlook2022-2/
+destination: /vision/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

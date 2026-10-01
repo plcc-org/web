@@ -1,0 +1,7 @@
+name: tag
+from: /tag
+destination: /kids/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/children-family-ministries/
+  on the old site.

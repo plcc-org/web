@@ -1,0 +1,6 @@
+name: sunrise
+from: /sunrise
+destination: https://bible.com/events/48672801
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

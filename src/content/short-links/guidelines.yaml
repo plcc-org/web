@@ -1,0 +1,7 @@
+name: guidelines
+from: /guidelines
+destination: /about/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /connect/covid-response#Guidelines
+  on the old site.

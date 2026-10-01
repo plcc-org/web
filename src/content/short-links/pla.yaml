@@ -1,0 +1,7 @@
+name: pla
+from: /pla
+destination: /church-life/pine-lake-academy/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /serve/global/pine-lake-academy/
+  on the old site.

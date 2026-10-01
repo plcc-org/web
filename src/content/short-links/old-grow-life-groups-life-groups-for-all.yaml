@@ -1,0 +1,7 @@
+name: old-grow-life-groups-life-groups-for-all
+from: /grow/life-groups/life-groups-for-all/
+destination: /church-life/
+kind: moved
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/life-groups/empty-nesters/
+  on the old site.

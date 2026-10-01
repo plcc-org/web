@@ -1,0 +1,6 @@
+name: snow
+from: /snow
+destination: https://plcc.churchcenter.com/registrations/events/2165008
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

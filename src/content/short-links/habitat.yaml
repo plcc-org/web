@@ -1,0 +1,7 @@
+name: habitat
+from: /habitat
+destination: /neighbors/serve/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /serve/local/habitat-for-humanity/
+  on the old site.

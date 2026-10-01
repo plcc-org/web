@@ -1,0 +1,6 @@
+name: offering
+from: /offering
+destination: https://plcc.churchcenter.com/giving/to/christmas-eve-offering
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

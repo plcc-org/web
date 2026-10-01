@@ -58,7 +58,9 @@ export function checkFrom(from) {
 /** @type {(destination: unknown, kind?: string) => string | undefined} */
 export function checkDestination(destination, kind = 'shortcut') {
   if (kind === 'gone') return undefined
-  const external = typeof destination === 'string' && /^https?:\/\//i.test(destination)
+  // https only: Cloudflare drops an http:// destination from _redirects with nothing
+  // more than a line in the build log, so the link would silently 404.
+  const external = typeof destination === 'string' && /^https:\/\//i.test(destination)
   if (typeof destination !== 'string' || !(external || destination.startsWith('/'))) {
     return '"Sends people to" needs a full https:// address, or a page on this site written with a leading slash — "/visit/".'
   }

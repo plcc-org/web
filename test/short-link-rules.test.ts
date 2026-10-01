@@ -48,13 +48,16 @@ describe('checkFrom', () => {
 })
 
 describe('checkDestination', () => {
-  it.each(['/visit/', 'https://example.org/x', 'HTTP://example.org'])('accepts %s', (destination) => {
+  it.each(['/visit/', 'https://example.org/x', 'HTTPS://example.org'])('accepts %s', (destination) => {
     expect(checkDestination(destination)).toBeUndefined()
   })
 
-  it.each([undefined, '', 'visit/', 'www.example.org', 'mailto:office@example.org'])('rejects %s', (destination) => {
-    expect(checkDestination(destination)).toMatch(/Sends people to/)
-  })
+  it.each([undefined, '', 'visit/', 'www.example.org', 'http://example.org', 'mailto:office@example.org'])(
+    'rejects %s',
+    (destination) => {
+      expect(checkDestination(destination)).toMatch(/Sends people to/)
+    }
+  )
 
   it('skips the destination for a link that is gone', () => {
     expect(checkDestination(undefined, 'gone')).toBeUndefined()

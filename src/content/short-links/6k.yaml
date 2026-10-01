@@ -1,0 +1,6 @@
+name: 6k
+from: /6k
+destination: https://global6k.worldvision.org/teams/40036
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

@@ -1,0 +1,7 @@
+name: summer2020
+from: /summer2020
+destination: /neighbors/serve/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /serve/summer-2020-mission-experiences/ on the old site.

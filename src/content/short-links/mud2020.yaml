@@ -1,0 +1,7 @@
+name: mud2020
+from: /mud2020
+destination: /events/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at
+  /connect/resources/calendar/event-detail/?ccbpress_event_id=5502 on the old site.

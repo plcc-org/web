@@ -1,0 +1,6 @@
+name: thunder
+from: /thunder
+destination: https://pacnwc.org/thunder
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

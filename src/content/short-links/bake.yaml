@@ -1,0 +1,6 @@
+name: bake
+from: /bake
+destination: https://plcc.churchcenter.com/giving/to/local-missions-donation
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org.

@@ -1,0 +1,7 @@
+name: growingfaith
+from: /growingfaith
+destination: /church-life/
+kind: shortcut
+expires: 2027-07-31
+note: Carried over from plcc.org, where it pointed at /grow/life-groups/women/ on the
+  old site.
