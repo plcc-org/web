@@ -19,19 +19,36 @@ import { readFileSync } from 'node:fs'
 const AA_NORMAL_TEXT = 4.5
 
 const tokens = readFileSync(new URL('../src/styles/tokens.css', import.meta.url), 'utf-8')
+const themes = readFileSync(new URL('../src/styles/themes.css', import.meta.url), 'utf-8')
 
-function token(name: string): [number, number, number] {
-  const m = tokens.match(new RegExp(`--${name}:\\s*rgb\\((\\d+),\\s*(\\d+),\\s*(\\d+)\\)`))
+type RGB = [number, number, number]
+
+function find(css: string, name: string): RGB | undefined {
+  const m = css.match(new RegExp(`--${name}:\\s*rgb\\((\\d+),\\s*(\\d+),\\s*(\\d+)\\)`))
   if (m) return [Number(m[1]), Number(m[2]), Number(m[3])]
-  const hex = tokens.match(new RegExp(`--${name}:\\s*#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})\\b`, 'i'))
+  const hex = css.match(new RegExp(`--${name}:\\s*#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})\\b`, 'i'))
   if (hex) return [parseInt(hex[1], 16), parseInt(hex[2], 16), parseInt(hex[3], 16)]
+}
+
+function token(name: string): RGB {
+  const value = find(tokens, name)
+  if (value) return value
   throw new Error(`--${name} is not defined in tokens.css as an rgb() triple or #rrggbb`)
 }
 
-const WHITE: [number, number, number] = [255, 255, 255]
+// A hidden theme experiment (themes.css) is shown to real people on the live
+// site, so it's held to the same floor. Its block only restates what it changes;
+// anything it leaves alone resolves from tokens.css, as it does in the browser.
+function themed(theme: string): (name: string) => RGB {
+  const block = themes.match(new RegExp(`:root\\[data-theme~='${theme}'\\]\\s*\\{([^}]*)\\}`))
+  if (!block) throw new Error(`themes.css has no :root[data-theme~='${theme}'] block`)
+  return (name) => find(block[1], name) ?? token(name)
+}
+
+const WHITE: RGB = [255, 255, 255]
 
 /** Relative luminance, per WCAG 2.x. */
-function luminance([r, g, b]: [number, number, number]): number {
+function luminance([r, g, b]: RGB): number {
   const channel = (v: number) => {
     const c = v / 255
     return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
@@ -39,7 +56,7 @@ function luminance([r, g, b]: [number, number, number]): number {
   return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
 }
 
-function contrast(a: [number, number, number], b: [number, number, number]): number {
+function contrast(a: RGB, b: RGB): number {
   const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x)
   return (hi + 0.05) / (lo + 0.05)
 }
@@ -49,7 +66,7 @@ function contrast(a: [number, number, number], b: [number, number, number]): num
 // QuoteCarousel and PageHero, so it's where most eyebrows and subheads land.
 const LIGHT_SURFACES = ['color-sand', 'color-stone', 'color-paper'] as const
 
-describe('accent text meets WCAG AA', () => {
+function accentTextMeetsAA(token: (name: string) => RGB) {
   for (const ink of ['color-moss-ink', 'color-clay-ink'] as const) {
     for (const surface of LIGHT_SURFACES) {
       it(`--${ink} on --${surface}`, () => {
@@ -73,12 +90,17 @@ describe('accent text meets WCAG AA', () => {
   // the stop is the floor. (The far 100% corner fails for every ink, white
   // headings included — nothing is laid out there.)
   it('--color-moss-light on the forest gradient', () => {
-    const over = (fg: number[], alpha: number, bg: number[]) =>
-      fg.map((v, i) => v * alpha + bg[i] * (1 - alpha)) as [number, number, number]
+    const over = (fg: number[], alpha: number, bg: number[]) => fg.map((v, i) => v * alpha + bg[i] * (1 - alpha)) as RGB
     const surface = over(token('color-forest-2'), 0.92, token('color-stone'))
     expect(contrast(token('color-moss-light'), surface)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT)
   })
-})
+}
+
+describe('accent text meets WCAG AA', () => accentTextMeetsAA(token))
+
+for (const theme of ['slate']) {
+  describe(`accent text meets WCAG AA under the hidden ${theme} theme`, () => accentTextMeetsAA(themed(theme)))
+}
 
 describe('the full-strength accents are documented as unusable for text', () => {
   // Not a lament — this is the fact the two-strength split exists for, and if it

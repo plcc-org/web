@@ -129,6 +129,28 @@ export default defineConfig({
         ],
       },
     },
+    // Only for the hidden `?theme=montserrat` heading experiment (src/styles/themes.css).
+    // Its <Font> isn't preloaded, so a visitor outside the experiment never fetches it.
+    {
+      provider: fontProviders.local(),
+      name: 'Montserrat',
+      cssVariable: '--font-montserrat',
+      fallbacks: ['system-ui', 'sans-serif'],
+      options: {
+        variants: [
+          {
+            weight: '100 900',
+            style: 'normal',
+            src: ['@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2'],
+          },
+          {
+            weight: '100 900',
+            style: 'italic',
+            src: ['@fontsource-variable/montserrat/files/montserrat-latin-wght-italic.woff2'],
+          },
+        ],
+      },
+    },
   ],
   // Astro's default ('auto') inlines any CSS chunk under 4kB into every page that
   // imports it. Our component CSS sits just under that line, and the block

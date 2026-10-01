@@ -642,3 +642,37 @@ A photo-led section page:
 
 Most pages shouldn't be hand-written at all — they belong in the CMS as MDX. See
 [cms.md](./cms.md) for the block palette and which block to reach for.
+
+---
+
+## 13. Theme experiments (hidden)
+
+Alternative looks can be shown on the live site without building another one. A
+visitor who arrives with `?theme=…` gets the experiment; nobody else sees a trace of
+it. There's no badge or toggle, and the page markup doesn't change.
+
+| URL                        | What it shows                                                      |
+| -------------------------- | ------------------------------------------------------------------ |
+| `/?theme=slate`            | `#48536A` as the brand colour, with a slate-navy and brass palette |
+| `/?theme=montserrat`       | Montserrat for headings in place of Fraunces                       |
+| `/?theme=slate+montserrat` | Both                                                               |
+| `/?theme=off`              | Back to the default                                                |
+
+The choice lasts for the browser tab (`sessionStorage`), so it survives clicking
+around the site and ends when the tab closes.
+
+How it works:
+
+- An inline script at the top of `<head>` in `BaseLayout.astro` reads the parameter
+  and sets `<html data-theme="…">` before first paint.
+- `src/styles/themes.css` holds one `:root[data-theme~='…']` block per experiment.
+  Each block only redefines tokens, so no component knows the experiment exists.
+- Montserrat comes from the Astro Fonts API like the other faces, but it isn't
+  preloaded. The browser only fetches it when a heading actually uses it.
+- `test/contrast.test.ts` runs the AA checks against the Slate block as well.
+
+**Removing it:** delete `themes.css` and its `@import` in `global.css`, the script in
+`BaseLayout.astro`, the Montserrat entry in `astro.config.mjs` along with its `<Font>`
+tag and npm package, the themed loop in `contrast.test.ts`, and this section.
+**Adopting an experiment** means moving its values into `tokens.css`, then removing
+the rest the same way.

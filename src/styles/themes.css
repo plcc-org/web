@@ -1,0 +1,71 @@
+/*
+ * themes.css — hidden visual experiments, for showing people alternatives on the
+ * live site without building a second one.
+ *
+ * Nothing here applies unless <html> carries a matching data-theme, which only
+ * the inline script in BaseLayout.astro sets, and only when someone arrives with
+ * `?theme=…`. A visitor who doesn't know the URL sees the site exactly as it is.
+ * Each experiment is a token override and nothing else, so the components never
+ * learn the experiment exists. The `~=` match lets two experiments combine.
+ *
+ * It sits in the tokens layer; `:root[data-theme]` outranks the bare `:root` in
+ * tokens.css on specificity.
+ *
+ * Removing an experiment: delete its block. Removing all of them: delete this
+ * file and its @import, the script in BaseLayout.astro, and the Montserrat font
+ * (astro.config.mjs, its <Font> tag, the npm package). Adopting one: move its
+ * values into tokens.css. test/contrast.test.ts runs the AA checks on these
+ * blocks too.
+ */
+
+/* Slate — #48536A as the brand colour in place of moss. Forest's job (ink and
+   dark panels) goes to a deep slate-navy of the same hue, and clay moves to a
+   brass that sits opposite the blue the way clay sits beside the green. The
+   surfaces lose a little of their yellow so the cream doesn't fight the blue,
+   keeping the stone → sand spacing tokens.css asks for. */
+:root[data-theme~='slate'] {
+  --color-forest: rgb(30, 37, 51);
+  --color-forest-2: rgb(51, 60, 79);
+  --color-forest-deep: #12161f;
+  --color-forest-deep-2: #181d29;
+  --color-moss: rgb(72, 83, 106);
+  --color-moss-2: rgb(95, 109, 138);
+  --color-moss-light: #c9d3e6;
+  --color-clay: rgb(181, 137, 90);
+  --color-ember: rgb(184, 95, 69);
+
+  /* #48536A already clears AA on sand, so the brand colour is its own ink. */
+  --color-moss-ink: rgb(72, 83, 106);
+  --color-clay-ink: rgb(122, 90, 52);
+
+  --color-stone: rgb(241, 239, 234);
+  --color-sand: rgb(226, 222, 213);
+  --color-paper: rgb(250, 249, 246);
+
+  --color-stone-rgb: 241, 239, 234;
+  --color-forest-rgb: 30, 37, 51;
+  --color-forest-2-rgb: 51, 60, 79;
+  --color-moss-rgb: 72, 83, 106;
+  --color-moss-2-rgb: 95, 109, 138;
+  --color-ember-rgb: 184, 95, 69;
+
+  --color-ink-soft: rgba(30, 37, 51, 0.72);
+  --color-mist: rgba(30, 37, 51, 0.08);
+  --color-line: rgba(30, 37, 51, 0.14);
+  --color-moss-line: rgba(72, 83, 106, 0.4);
+
+  --shadow-sm: 0 1px 2px rgba(30, 37, 51, 0.06), 0 2px 6px -2px rgba(30, 37, 51, 0.08);
+  --shadow-md: 0 4px 10px -4px rgba(30, 37, 51, 0.12), 0 12px 28px -16px rgba(30, 37, 51, 0.2);
+  --shadow-lg: 0 8px 20px -8px rgba(30, 37, 51, 0.16), 0 28px 60px -28px rgba(30, 37, 51, 0.32);
+  --surface-gradient-soft: linear-gradient(170deg, rgba(255, 255, 255, 0.94) 0%, rgba(241, 239, 234, 0.72) 100%);
+  --gradient-forest:
+    radial-gradient(circle at 92% 8%, rgba(95, 109, 138, 0.28) 0%, rgba(95, 109, 138, 0) 42%),
+    linear-gradient(155deg, rgba(30, 37, 51, 0.97) 0%, rgba(51, 60, 79, 0.92) 60%, rgba(72, 83, 106, 0.82) 100%);
+}
+
+/* Montserrat — a geometric sans for headings in place of Fraunces. The serif
+   token is the heading face wherever it's used, so the swap happens there; the
+   Fraunces axes in --serif-* are simply ignored by a font that lacks them. */
+:root[data-theme~='montserrat'] {
+  --font-serif: var(--font-montserrat, 'Montserrat', system-ui, sans-serif);
+}

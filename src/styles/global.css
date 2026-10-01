@@ -17,7 +17,8 @@
  * never what's wanted, so give any new partial a layer of its own.
  *
  * Why this sequence:
- *   tokens      custom properties only; nothing overrides them
+ *   tokens      custom properties only; nothing overrides them (themes.css
+ *               shares the layer, and wins only under a hidden data-theme)
  *   base        element defaults, so everything named can override them
  *   prose       defaults for author-written Markdown — deliberately the
  *               weakest rules here, so any named thing beats them
@@ -33,6 +34,7 @@
 @layer tokens, base, prose, nav, layout, components, blocks, footer, utilities, animations, pages;
 
 @import './tokens.css' layer(tokens);
+@import './themes.css' layer(tokens);
 @import './base.css' layer(base);
 @import './prose.css' layer(prose);
 @import './nav.css' layer(nav);

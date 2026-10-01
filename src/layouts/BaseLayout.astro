@@ -82,10 +82,28 @@ const jsonLd = origin
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
+    {/* Hidden theme experiments (src/styles/themes.css). `?theme=slate`, `?theme=montserrat`,
+        or both (`?theme=slate+montserrat`) sets <html data-theme>; `?theme=off` clears it.
+        The choice rides in sessionStorage because internal links drop the query string,
+        and ends with the tab. Runs before first paint so the default theme never flashes. */}
+    <script is:inline>
+      try {
+        const known = ['slate', 'montserrat']
+        const asked = new URLSearchParams(location.search).get('theme')
+        if (asked !== null) {
+          const chosen = asked.split(/[\s,]+/).filter((t) => known.includes(t))
+          if (chosen.length) sessionStorage.setItem('plcc-theme', chosen.join(' '))
+          else sessionStorage.removeItem('plcc-theme')
+        }
+        const theme = sessionStorage.getItem('plcc-theme')
+        if (theme) document.documentElement.dataset.theme = theme
+      } catch {}
+    </script>
     <!-- Self-hosted fonts (Astro Fonts API). Preload only the upright styles used
          above the fold; italics load on demand. -->
     <Font cssVariable="--font-fraunces" preload={[{ style: 'normal' }]} />
     <Font cssVariable="--font-instrument-sans" preload={[{ style: 'normal' }]} />
+    <Font cssVariable="--font-montserrat" />
 
     <title>{tabTitle}</title>
     <meta name="description" content={description} />
