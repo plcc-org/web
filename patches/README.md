@@ -41,7 +41,7 @@ behaviour being demonstrated, not assumed.
 
 ## `@tinacms/cli` — don't compile the admin SPA on every build
 
-**File:** `@tinacms+cli+3.0.0.patch`
+**File:** `@tinacms+cli+3.1.0.patch`
 
 **Upstream behaviour.** `tinacms build` compiles the 11 MB admin single-page app
 unconditionally.
@@ -61,4 +61,4 @@ editing is unaffected.
 **Delete it when.** The CLI grows a flag of its own for this, or the compile stops being
 worth skipping. Upstream is moving to a prebuilt admin shell that would cut the per-project
 step to milliseconds: <https://github.com/tinacms/tinacms/issues/7237>. There was no flag as
-of 3.0.0.
+of 3.1.0.

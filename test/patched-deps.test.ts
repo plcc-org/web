@@ -15,7 +15,7 @@ type Lock = { packages: Record<string, { version?: string }> }
 const lock = JSON.parse(readFileSync(new URL('../package-lock.json', import.meta.url), 'utf-8')) as Lock
 
 // patch-package names files `<name>+<version>.patch`, with a scope's slash written as
-// `+` too: `@tinacms+cli+3.0.0.patch`.
+// `+` too: `@tinacms+cli+3.1.0.patch`.
 const patches = readdirSync(new URL('../patches/', import.meta.url))
   .filter((file) => file.endsWith('.patch'))
   .map((file) => {

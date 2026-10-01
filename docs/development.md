@@ -182,7 +182,7 @@ blames neither. `npm run tina:lock` regenerates it. See
 
 ### The admin SPA is not built unless it ships
 
-`patches/@tinacms+cli+3.0.0.patch` (applied by `postinstall`, via `patch-package`) makes
+`patches/@tinacms+cli+3.1.0.patch` (applied by `postinstall`, via `patch-package`) makes
 `tinacms build` compile the admin bundle only when `TINA_PUBLISH_ADMIN=true`. Stock, it
 compiles unconditionally.
 
@@ -215,7 +215,7 @@ Two things this is **not**, both checked before landing:
   [cms.md](./cms.md) still stands.
 
 Re-generate the patch with `npx patch-package @tinacms/cli` if you bump the CLI, and drop
-it entirely if Tina ever grows a flag for this — there is none as of 3.0.0. It is the only
+it entirely if Tina ever grows a flag for this — there is none as of 3.1.0. It is the only
 patched dependency, recorded in [`patches/README.md`](../patches/README.md), which is also
 where the upgrade procedure lives.
 
