@@ -18,12 +18,7 @@ thinking.
    addresses get read aloud and printed. Choosing well now matters, since changing it
    later breaks every link to the page.
 3. Fill in the **Title**. It’s the page’s heading and its name in the browser tab.
-4. **Write the Search summary next**, before opening anything else: one sentence, under
-   about 155 characters, for search results and link previews. Until the page has either a
-   Search summary or an intro line, the editor won’t open **Top of page** or any block (it
-   says “Cannot navigate away from an invalid form”), and the intro line is inside Top of
-   page. You can change the summary later.
-5. Open **Top of page** and pick its **Kind** first. The fields below say which kinds they
+4. Open **Top of page** and pick its **Kind** first. The fields below say which kinds they
    apply to (“For Photo & text…”).
 
    | Kind             | What it looks like                                               |
@@ -37,11 +32,18 @@ thinking.
    ([Add a photo](./add-a-photo.md)). Give it an **Intro line** too: one or two sentences
    under the title. If it could describe any church, rewrite it.
 
+5. **Save once now, before adding any blocks.** The page is still hidden, so nothing goes
+   public. On a page that has never been saved, opening a Photo beside text, Text cards,
+   Quote, Featured events, Key points or Quotes carousel block crashes the editor (“TinaCMS
+   Render Error”), and reloading loses what you’d done. Once the page has been saved, they
+   open normally.
 6. Build the page in **Body**: the **+** button adds a block, which lands at the bottom, so
    drag it up into place. [Which block do I use?](./blocks.md) helps you choose, and has a
    worked example of a whole page.
-7. Untick **Hidden from the public site (draft)** when the page is ready, and **Save**. You
-   can save along the way too; the page stays hidden until you untick it.
+7. Write a **Search summary**: one sentence, under about 155 characters, for search results
+   and link previews. It can stay blank when the top of the page has an intro line.
+8. Untick **Hidden from the public site (draft)** when the page is ready, and **Save**. If
+   the page has neither a Search summary nor an intro line, the form asks for one now.
 
 **Live in:** a few minutes after the save that unticks Draft. Until then the page is visible
 only in the editor, even if you’ve saved it many times.

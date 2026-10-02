@@ -400,15 +400,23 @@ export const heroFields = [
  * for it — the rule src/pages/[...slug].astro renders by, and the one
  * scripts/check-site.mjs fails the build on. A cinematic hero never shows its intro line,
  * so it can't stand in there even if one was left behind by a variant switch.
+ *
+ * Only a page about to be published is held to it. Tina refuses to open any nested form
+ * (the hero, a block) while the page form is invalid, and the intro line that would
+ * satisfy this lives inside the hero — so on a new page, which starts with neither, the
+ * rule locked the editor out of the very field that fixes it. Drafts never reach a build
+ * ([...slug].astro filters them in production), so nothing is lost by waiting: the rule
+ * speaks when "draft" is unticked, which is the moment it starts to matter.
  * @type {(value: unknown, allValues: unknown) => string | undefined}
  */
 export const checkSeoDescription = (value, allValues) => {
   if (typeof value === 'string' && value.trim()) return undefined
+  if (/** @type {{ draft?: unknown } | undefined} */ (allValues)?.draft === true) return undefined
   const lede = /** @type {{ hero?: { lede?: unknown } } | undefined} */ (allValues)?.hero?.lede
   const hasLede = heroVariant(allValues) !== 'cinematic' && typeof lede === 'string' && lede.trim() !== ''
   return hasLede
     ? undefined
-    : 'This page has no intro line, so it needs a Search summary — search results and link previews show it.'
+    : 'To publish, this page needs a Search summary or an intro line at the top of the page — search results and link previews show it.'
 }
 
 // A block's `label` names how it looks ("Photo beside text", "Note with logo"), which is

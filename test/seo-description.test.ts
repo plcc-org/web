@@ -6,7 +6,7 @@ import { checkSeoDescription } from '../tina/templates.mjs'
 // for the same thing, or an editor saves a page that looks finished and breaks a deploy
 // they never see.
 
-const page = (hero: Record<string, unknown>) => ({ title: 'A page', hero })
+const page = (hero: Record<string, unknown>, draft = false) => ({ title: 'A page', draft, hero })
 
 describe('checkSeoDescription', () => {
   it('accepts a page with its own description', () => {
@@ -25,6 +25,13 @@ describe('checkSeoDescription', () => {
 
   it('treats whitespace as blank', () => {
     expect(checkSeoDescription('  ', page({ variant: 'plain', lede: ' \n' }))).toBeTypeOf('string')
+  })
+
+  // Tina won't open the hero while the form is invalid, and the intro line lives in the
+  // hero, so a new page (a draft, with neither) would be locked out of its own fix.
+  it("doesn't hold a draft to it, since drafts never build", () => {
+    expect(checkSeoDescription('', page({ variant: 'photo' }, true))).toBeUndefined()
+    expect(checkSeoDescription('', page({ variant: 'photo' }, false))).toBeTypeOf('string')
   })
 
   it("doesn't let a cinematic hero's leftover intro line stand in", () => {

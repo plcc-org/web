@@ -27,8 +27,13 @@ The form marks the field it’s unhappy with and says why. The usual reasons:
 ## “Cannot navigate away from an invalid form”
 
 The editor won’t open **Top of page** or a block while something on the page’s main form
-needs fixing. On a new page it’s almost always the **Search summary**: write one sentence
-there, and everything opens. Otherwise, look for the field marked in red.
+needs fixing. Look for the field marked in red and fix it first.
+
+## “TinaCMS Render Error”
+
+The editor crashed. On a new page this happens when you open a block before the page has
+been saved once; save first, then add blocks ([Add a page](./add-a-page.md)). Reloading
+recovers the editor, but anything unsaved is lost.
 
 ## My change isn’t showing
 
