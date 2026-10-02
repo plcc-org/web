@@ -466,7 +466,8 @@ of these checks, so CI is the whole gate. Green, then merge.
 Three things a bump can break that aren't obvious from the diff:
 
 - **`@tinacms/cli` and `tinacms`** carry patches, applied on every install and documented —
-  motivation, hunk by hunk — in **[`patches/README.md`](../patches/README.md)**. A bump
+  motivation, hunk by hunk — in **[`patches/README.md`](../patches/README.md)**. They are
+  the only exact versions in `package.json`; everything else takes a caret range. A bump
   invalidates them, and `patch-package` then warns rather than fails, so the fix quietly
   reverts. The procedure is written down as the `/upgrade-patched-dep` command — fetch
   upstream, rebase our changes onto it, verify each patch's "How to check it", then replace

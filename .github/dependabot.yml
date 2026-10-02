@@ -36,12 +36,12 @@ updates:
           - astro
           - '@astrojs/*'
 
-      # Same reasoning for Tina, plus one extra hazard: `patches/@tinacms+cli+2.5.6.patch`
-      # is written against a specific CLI version, and postinstall applies it on
-      # every `npm ci`. A CLI bump that invalidates the patch fails CI at install
-      # — the fix is to re-run `npx patch-package @tinacms/cli` and commit the new
-      # patch file, or drop the patch if the CLI has grown a flag for it. See the
-      # `_comment_postinstall` note in package.json.
+      # Same reasoning for Tina, plus one extra hazard: both `tinacms` and
+      # `@tinacms/cli` carry patches written against an exact version, which is
+      # why package.json pins those two and nothing else. postinstall applies them
+      # on every `npm ci`, so a bump here needs its patches re-derived, not just a
+      # green CI run — follow patches/README.md (the `/upgrade-patched-dep`
+      # command).
       tina:
         patterns:
           - tinacms
