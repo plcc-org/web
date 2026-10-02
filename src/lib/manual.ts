@@ -9,7 +9,7 @@
 /** Where the manual is served, relative to the site's base. */
 export const MANUAL_ROUTE = 'webmaster/'
 
-/** The nav's groups, in order. `start` holds only the front page, which titles the nav. */
+/** The nav's groups, in order. `start` holds the front page, which titles the nav, and the orientation pages. */
 export const MANUAL_SECTIONS = [
   { id: 'start', label: 'Start here' },
   { id: 'words', label: 'Words and pages' },
