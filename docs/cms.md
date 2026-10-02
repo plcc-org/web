@@ -1,11 +1,12 @@
-# Editing the site (TinaCMS)
+# CMS internals (TinaCMS)
 
-The site has a built-in content editor so non-technical people can change copy, swap photos,
-and build new pages without touching code. It's [TinaCMS](https://tina.io) — a Git-based CMS:
-every change an editor makes becomes a commit, and the site rebuilds and deploys
-automatically.
+How the site's editor is put together. **Using** the editor (pages, blocks, photos, the
+weekly routines) is covered by the webmaster's manual, served on the site at `/webmaster/`
+from [`manual/`](./manual/index.md). This doc is for whoever changes the editor itself.
 
-For the stack and conventions, see [development.md](./development.md); for hosting, see
+The editor is [TinaCMS](https://tina.io), a Git-based CMS: every change an editor makes
+becomes a commit, and the site rebuilds and deploys automatically. For the stack and
+conventions, see [development.md](./development.md); for hosting, see
 [infrastructure.md](./infrastructure.md).
 
 ---
@@ -26,9 +27,10 @@ For the stack and conventions, see [development.md](./development.md); for hosti
   (the block palette), with **`tina/short-link-rules.mjs`** holding the per-entry short-link
   rules it shares with the build script. Its schemas must stay aligned with the Astro content
   schemas in `src/content.config.ts` — Astro validates the same files at build time, and the
-  two catch different mistakes. **Change one, change the other.** (One deliberate exception:
+  two catch different mistakes. **Change one, change the other.** (Two deliberate exceptions:
   `shortLinks` has no zod schema — nothing renders those files, and
-  `scripts/generate-redirects.mjs` is their validator.)
+  `scripts/generate-redirects.mjs` is their validator — and the `manual` collection has no
+  Tina collection, because the guide is maintained with the code, in `docs/manual/`.)
 - **`tina/tina-lock.json` is the third thing to change**, and the one nothing reminds you
   about. See below.
 
@@ -120,339 +122,62 @@ file, so it belongs in the list with everything else.
 **Photo descriptions live in one place.** The catalog
 (`src/content/photos/photos.json`, the **Photo descriptions** collection in the sidebar)
 holds one alt-text description per photo, written once and inherited by every page that
-shows the photo. A block's own "Photo description" field is a per-page override — usually
-left blank. Editors add photos by **uploading them into a page block**, then either write
-the description there or add an entry under Photo descriptions so every future use gets it
-for free. The build's crawl fails on any content image that ends up with no description
-from either source, so a miss can't ship silently.
+shows the photo. A block's own "Different description for this page" field is a per-page
+override, usually left blank; the form insists on it only when the photo isn't catalogued
+(see [Gotchas](#gotchas)). The build's crawl fails on any content image that ends up with no
+description from either source, so a miss can't ship silently.
 
 ### Sunday links
 
-`plcc.org/links` is what the NFC tags and QR codes in the building open — the same
-address the old site used. It's the one page for people who are already here: this
-Sunday's links at the top, and the links that never change in groups beneath. It opens
-on a phone, so it's a plain list with no nav, and it's kept out of search.
+The editor-facing routine is [the manual's Sunday links page](./manual/sunday-links.md).
 
-**Each Sunday is its own entry** under **Sunday links**, named for its date. The page
-shows the most recent Sunday on or before today, which is what makes the weekly routine
-short:
-
-- **To prepare next Sunday**, open this week's entry, choose **Duplicate**, and change the
-  date — the file name follows it. Then add, remove, or drag links into order, and save.
-- **It goes live by itself** early that Sunday, with the nightly build at about 5am (or
-  straight away if someone saves on the Sunday). If the nightly build ever fails, the
-  page still switches on the day: next week's links ship with the page, and a few lines
-  of script show them once the date arrives.
-- **To see it before then**, open `plcc.org/links/?preview` (`plcc.dev/links/?preview` on
-  staging). A banner says it's a preview and when it goes live. Saving publishes to the
-  preview within a few minutes, the time a site build takes. Inside the CMS, visual
-  editing opens a week that isn't live yet at `/links/next/`, which shows next Sunday's
-  links the same way.
-- **Old weeks delete themselves.** The nightly job removes every week before the live
-  one, so the list only ever holds this week and the ones being prepared. Nothing is
-  archived, so there's nothing to tidy.
-- **The list shows dates, not "live" and "next".** Tina's list view can't show a computed
-  label without custom UI. With old weeks cleared, the earliest date is the live one.
-
-The groups beneath — "Next steps", "Additional resources" — are under **Sunday links:
-every week**, a single document like Homepage quotes: groups in order, each with its
-links in order.
-
-A link opens one of three things, and the form checks which as you type: a website
-(`https://…`, pasted from the address bar), an email (`mailto:name@plcc.org`), or a page
-on this site (`/events/`). The icon on the page follows from that. Links open in the same
-tab, unlike the rest of the site — someone working down the list on a phone should be
-able to tap Back and land on it again.
-
-Two entries with the same date fail the build, because nothing can tell which one was
-meant.
-
-For developers: the rules and date logic live in `tina/sunday-links.mjs`, shared by the
+The rules and date logic live in `tina/sunday-links.mjs`, shared by the
 form, the zod schema, the page and the prune script. `/links/` renders next week too,
 inside a `<template>` the inline script swaps in on the day or under `?preview`.
 `/links/next/` renders next week on its own, because it's what the collection's `router`
 points a future week at: the admin builds its preview address from the route's path
 alone, so `?preview` never reaches the page there. The date field's hooks live in
 `tina/date-field.mjs` — Tina's own date picker shows and saves the wrong day west of UTC.
-The slim chrome is `BaseLayout chrome="slim"`
+Two entries with the same date fail the build, because nothing can tell which one was
+meant. The slim chrome is `BaseLayout chrome="slim"`
 ([design-system.md](./design-system.md#8-header--footer)).
 
 ### Site notice
 
-For the morning the building is closed. Open **Site notice**, write one short sentence
-("Sunday's service is canceled because of snow."), tick **Show this notice on every
-page**, and save. It shows as a strip across the top of every page, the slim `/links/`
-page included, and stays up until someone unticks the box. While it's on, it replaces the
-homepage's "Live now" banner. A link is optional: an `https://` address, or a page on
-this site like `/events/`. The link text defaults to "Details".
+The routine, and the "Live now" banner that shares the strip, are in
+[the manual](./manual/post-a-closure-notice.md). The banner's window comes from
+`church.service` in `src/config/church.ts`; the site is static, so the browser checks the clock.
 
-**It takes a few minutes, not seconds.** Saving commits to Git and rebuilds the site, so
-the notice goes live when the deploy finishes — and only one Cloudflare build runs at a
-time, so a build already in the queue goes first. When a closure is decided the night
-before, post it the night before.
-
-Unticking the box is all it takes to take it down; the message can stay in the field,
-ready for next time.
-
-**The "Live now" banner** is the other thing that uses this strip, and it isn't in the
-CMS. On the homepage only, from 9:50 to 11:30 on Sundays (church time, from
-`church.service` in `src/config/church.ts`), it links to the YouTube livestream. The site
-is static, so the browser checks the clock. To see it on any other day, open the
-homepage with `?banner=on` on the end of the address.
-
-For developers: the component is `src/components/chrome/SiteBanner.astro`, the time
+The component is `src/components/chrome/SiteBanner.astro`, the time
 window is `isStreamLive` in `src/lib/livestream.ts`, and the form's rules live in
 `tina/site-notice.mjs`, shared with the zod schema.
 
 ### Short links
 
-`plcc.org/camp` → a Church Center registration page. These go on flyers and get read out
-from the platform, so the short link has to outlive whatever it points at — Church Center
-mints a new event ID every year, and the printed URL can't change.
-
-Add one under **Short links**. **Short link** is the address itself — `/camp` makes
-`plcc.org/camp` — and **Links to** is where it goes. The entry's file is named after the
-short link, so the list reads as the addresses people type. Two things worth knowing:
-
-- **Leave the type as "Shortcut" unless you're certain.** A shortcut stays yours to
-  re-point next year. "Moved for good" tells browsers to remember the destination more
-  or less forever — they'll stop asking the site at all, so re-pointing it later won't
-  reach anyone who has already followed it. Use it only for a page that has genuinely moved
-  for good.
-- **A short link can't be named after an existing page.** `camp` is fine; `visit` would hide
-  `/visit/`. The build fails if you try, rather than quietly taking a page off the site.
-
-**Every short link needs a "Review by" date.** A sign-up shortcut: when the thing it points
-at ends. A moved page: about a year, by which point search engines have caught up. Every
-build prints the links due (or overdue) for review, so they surface without anyone asking.
-
-The date is a prompt, not a switch — **the link keeps working past it.** A URL printed on a
-flyer doesn't stop existing because a date passed, and quietly 404ing it would be a worse
-failure than letting it run on. What the date buys you is a list you can actually review:
-without one, nobody deletes anything, because nobody remembers what it was for. Builds print
-which links are due or overdue.
-
-The exception is a link to something the church simply has — the podcast, for instance.
-There's no date at which that stops being true, and a review that always ends in "yes, still"
-just trains people to ignore the list. Tick **"Never needs reviewing"** and leave
-the date empty. Ticking it _and_ setting a date fails the build, because a later reader can't
-tell which one to believe.
-
-Both forms work — `plcc.org/camp` and `plcc.org/camp/` — so it doesn't matter which one
-gets printed. The redirect happens at Cloudflare's edge, so there's no page load in between.
-
-Old-site redirects live here too, as "Old page that has moved for good", with a date about
-a year out — one list to review rather than two places to forget about.
+The routine, and why "Shortcut" is the default, are in [the manual](./manual/add-a-short-link.md).
+`scripts/generate-redirects.mjs` turns each entry into a line of `public/_redirects` (302 for a
+shortcut, 301 for a moved page, both with and without the trailing slash) or, for a "gone" entry,
+a generated route returning 410, since `_redirects` can't. Redirects happen at Cloudflare's edge.
+Old-site redirects live here too, as moved pages with a review date about a year out — one list
+to review rather than two places to forget about. Every build prints the links due or overdue
+for review. The per-entry rules are shared with the form; see [Gotchas](#gotchas).
 
 ---
 
-## Pages: hero + a body of blocks
-
-A page has two parts:
-
-1. **A hero** (in the page's form). Every page gets one, and it always carries the page
-   title as the page's single `<h1>`. Pick the **kind** of hero first — it decides which of
-   the fields below it apply, and each field says which kinds use it:
-
-   | Hero             | What it is                                                            |
-   | ---------------- | --------------------------------------------------------------------- |
-   | **Photo & text** | A portrait photo beside the title and intro. The default.             |
-   | **Text only**    | A calm header with no photo — for reading pages like Contact.         |
-   | **Logo & photo** | A programme wordmark in place of the heading — Pine Lake Kids, Youth. |
-   | **Cinematic**    | A full-width stack of photos drifting behind the headline. Home only. |
-
-   All four share an eyebrow, a subhead, and an optional button; the first three also take
-   an intro line. Cinematic doesn't — its photos need the space more than another sentence
-   does.
-
-2. **A body** — a **list of blocks**. Each block is a pre-styled section, so anything you
-   build stays on-brand. Blocks show as labelled bars — most carry their own heading as the
-   label — and clicking one opens its fields in a panel.
-
-   **You never type into the body itself.** There is nowhere to: a page is assembled from
-   blocks, and prose lives inside a block, in that block's own **Text** field. That field
-   is a proper rich-text editor with bold, links, lists and headings.
-
-### Editing blocks
-
-| To…              | Do this                                                                   |
-| ---------------- | ------------------------------------------------------------------------- |
-| **Add a block**  | The **+** at the top right of the Body field, then pick from the palette. |
-| **Edit a block** | Click its bar. In visual editing, click the section on the page instead.  |
-| **Reorder**      | Drag it by the handle on the left of its bar.                             |
-| **Delete**       | The bin icon on the right of its bar.                                     |
-
-The palette shows each block as a **picture of itself** — a crop of that block as it
-actually renders on the site — with its name underneath. A new block lands at the **end**
-of the list, so drag it up to where it belongs.
-
-Each bar is labelled with the block's own heading where it has one, falling back to the kind
-of block (`ui.itemProps` in `tina/templates.mjs`), so a page doesn't read as a stack of
-identical grey bars.
-
-There is no Duplicate: to repeat a block, add a fresh one and fill it in.
-
-To make a new page: add a **Pages** entry, fill the hero, and stack blocks. New pages start
-as **drafts** — visible in preview but not on the published site — so uncheck **Draft** to
-publish when it's ready.
-
-**A new page opens in visual editing straight away** — before the site has rebuilt, and
-while it's still a draft. Text and blocks update as you type. The one thing that waits for
-the rebuild (a few minutes) is a photo you've **uploaded** since the last one: it shows up
-blank in the preview until then, though it's saved and will appear on the page.
-
-**The address is the first field on the form, and it's worth a moment.** It starts from the
-title, but the two don't have to match: it renders locked, and **clicking it unlocks it** —
-after which it stops following the title. So a page titled "Church Safety Policy" can live
-at `/safety/`. Short is better; these get said aloud and printed on things. Changing the
-address later breaks every existing link to the page, which is what the Short links list is
-then for.
-
-### The block palette
-
-| Block                 | Use it for                                                                                                          |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| **Text**              | A heading and formatted paragraphs — the default for written content.                                               |
-| **Photo beside text** | A photo beside text (left or right, tinted background) — show-and-tell.                                             |
-| **Photo**             | A single framed photo with an optional caption.                                                                     |
-| **Photo gallery**     | Several photos shown together as a visual break.                                                                    |
-| **Video**             | A YouTube or Vimeo video in a photo-style frame — paste the ordinary link, not an embed code.                       |
-| **Text cards**        | A row of small cards (title + a line) — a few parallel points.                                                      |
-| **Link cards**        | A grid of cards that link elsewhere — signposting to other pages.                                                   |
-| **Callout**           | A boxed aside that sets one point apart — a reassurance, a key fact.                                                |
-| **Closing banner**    | The dark band that ends a page against the footer, with an optional button — a parting invitation.                  |
-| **Quote**             | A single featured pull-quote — a testimonial, quotation, or verse. A background color renders it as a "verse band." |
-| **Featured events**   | A short list of upcoming events, pulled live from the events feed.                                                  |
-| **Key points**        | A moss-accented grid of titled points — core tenets, emphases, principles.                                          |
-| **Logo cards**        | A row of cards each topped by a program or partner logo, with an optional link.                                     |
-| **Note with logo**    | A tinted note set apart from the page — text beside an optional small logo.                                         |
-| **Youth moments**     | The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.                           |
-| **Quotes carousel**   | A rotating band of testimonials, pulled live from the Homepage quotes list.                                         |
-| **Roadmap**           | A numbered timeline — steps as nodes on a connecting line (e.g. "in three movements").                              |
-| **Letter**            | A personal letter — flowing prose beside a portrait, closing with a signature (a welcome or note).                  |
-
-Notes for editors:
-
-- **Photos** are drag-and-drop. Their **description** (alt text) usually comes from the
-  photo's entry in **Photo descriptions** — leave the block's own field blank unless this
-  page needs different wording. A photo with no description from either source fails the
-  build, so it can't ship silently.
-- A block's **Text** field has a toolbar for bold, italic, links, lists and headings. Type
-  real curly quotes and dashes there (`’`, `“ ”`, `—`): a straight `'` renders straight.
-  The plain one-line and paragraph fields (an intro line, a card's text) are different:
-  they take Markdown (`**bold**`, `_italic_`, `[links](…)`) and curl quotes automatically.
-- Internal links should be root-relative: `/visit/`, `/kids/`.
-
-### Which block do I use?
-
-The palette above tells you what each block _is_. This is the question you actually have:
-**I have something to say — where does it go?**
-
-Start here and take the first match:
-
-| If what you have is…                                 | Reach for             |
-| ---------------------------------------------------- | --------------------- |
-| A few paragraphs that just need to be read           | **Text**              |
-| Something better _shown_ than described              | **Photo beside text** |
-| One point you don't want people to skim past         | **Callout**           |
-| One sentence someone said, worth its own space       | **Quote**             |
-| Three or four parallel things, each a line or two    | **Text cards**        |
-| Three or four places to go next                      | **Link cards**        |
-| A sequence where the order matters                   | **Roadmap**           |
-| A set of principles where the order doesn't          | **Key points**        |
-| A single photo that needs explaining                 | **Photo**             |
-| A minute of video that says it better than a page    | **Video**             |
-| A moment of visual breathing room                    | **Photo gallery**     |
-| The one thing you want the reader to do at the end   | **Closing banner**    |
-| A personal note in someone's own voice               | **Letter**            |
-| A short note that needs a logo beside it             | **Note with logo**    |
-| Cards where a logo is the identity, not a photo      | **Logo cards**        |
-| "What's coming up" that should stay current itself   | **Featured events**   |
-| The youth year's tentpoles, from the shared list     | **Youth moments**     |
-| Voices of the church, rotating, from the shared list | **Quotes carousel**   |
-
-Four rules of thumb behind that table:
-
-- **Order matters → Roadmap. Order doesn't → Key points.** They look similar in the palette
-  and they're not interchangeable: numbering things that aren't sequential tells the reader
-  a lie about how to read them.
-- **Cards are for parallel things.** If your three cards aren't the same _kind_ of thing,
-  they should be prose.
-- **Callout or Note with logo?** Callout is a heading over text with a green accent rule,
-  for one point that must land. Note with logo is a compact tinted panel with room for a
-  logo beside the text, and no heading.
-- **One Closing banner per page, and it goes last.** It's the loudest block, and it closes
-  flush against the footer — put a second one mid-page and both go quiet.
-
-### A page, block by block
-
-`/visit/` — the page a first-time guest actually reads. Why each block is what it is:
-
-| Block                 | On the page                               | Why this one                                                                                                                                        |
-| --------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| _(hero)_              | "Plan a Visit" + a reassuring lede        | Every page gets one. The lede does the emotional work before any logistics.                                                                         |
-| **Text**              | "Sundays at 10:00am" — when & where       | Facts someone may be scanning for. Prose, not a card — they need to be _read_, and cards invite skimming.                                           |
-| **Photo**             | The building, captioned                   | "What am I looking for when I arrive?" A caption can say the thing a photo can't — where to park.                                                   |
-| **Photo beside text** | "What happens on a Sunday"                | Show-and-tell: the description is more believable next to the photo of it happening.                                                                |
-| **Callout**           | "Will I stand out or be put on the spot?" | The single biggest fear, answered where it can't be skimmed past. This is what a Callout is for — not decoration, but the one point that must land. |
-| **Photo beside text** | "We make Sundays smooth for parents"      | Same pattern, second audience. The alternating tint (`paper` then `sand`) is what keeps two adjacent splits from reading as one long block.         |
-| **Text**              | "What should I wear?"                     | A short practical answer. Doesn't need a photo, doesn't need a box.                                                                                 |
-| **Photo gallery**     | Three photos, no words                    | Breathing room before the close, and the last impression is faces rather than logistics.                                                            |
-| **Closing banner**    | "A place to belong" + the CTA             | One action, at the end, on a dark band so it reads as the page's conclusion.                                                                        |
-
-The shape underneath: **reassure → orient → show → answer the fear → show again → practical
-detail → breathe → invite.** Most guest-facing pages want roughly that arc. You're not
-obliged to follow it, but if a page feels flat, compare it against this one.
-
-### Choosing photos
-
-- **Portrait, not landscape.** The whole layout is built around vertical images; a wide crop
-  will be cut off or letterboxed.
-- **People over places.** A room with nobody in it says nothing. A photo with faces in it
-  answers "would I be out of place here?" — which is the question the whole site exists for.
-- **Candid over posed.** Nobody lined up looking at the camera.
-- **Real, not stock.** Ever.
-- **Look at the whole frame before you choose it.** Check the background and the edges — a
-  crop lands where you don't expect, and the thing you didn't notice is the thing everyone
-  sees.
-- **Don't use the same photo twice on one page.** Across pages is fine.
-
-**Alt text** is required and the build fails without it. Write what a person who can't see
-the photo would need in order to follow the page — _"A volunteer making coffee at the
-welcome café before the service"_, not _"coffee"_ and not _"photo of church"_. If the photo
-shows people doing something, say what they're doing.
-
-### Before you publish: the voice check
-
-The full reference is [voice.md](./voice.md). At the moment of writing, five questions:
-
-1. **Could this sentence describe any church?** If yes, rewrite it with something only true
-   of Pine Lake. This is the test everything else follows from.
-2. **Would a person with no church background understand every word?** Cut "fellowship",
-   "discipleship", "ministry", "outreach", "plug in".
-3. **Am I describing a program, or a person's situation?** Start with the situation. Not
-   _"We have a meals ministry"_ but _"When life is overwhelming, even simple tasks can feel
-   heavy."_
-4. **Will this still be true in a year?** Dates, times and specific events belong in What's
-   On, not in narrative copy.
-5. **Am I saying "no pressure" more than once?** Say it once, then show it through structure.
-
-### Where uploaded photos go
+## Uploaded photos
 
 Photos live in `src/assets/images/`, and the media library reads that folder directly, so
 the build optimizes everything an editor picks (responsive WebP) like every other image —
-there's nothing to manage. Existing curated photos elsewhere on the site still come from the
-catalog via `<Photo filename>`.
+there's nothing to manage.
 
-**JPEG, PNG, WebP and AVIF only.** The picker refuses anything else, which mostly means one
-thing in practice: a photo straight off an iPhone is usually **HEIC**, and needs exporting
-as JPEG first. The restriction is `media.accept` in `tina/config.ts` and it exists because
+**JPEG, PNG, WebP and AVIF only.** The picker refuses anything else — in practice, an
+iPhone's HEIC, which the manual tells editors to export as JPEG. The restriction is `media.accept` in `tina/config.ts` and it exists because
 those four are exactly what the image pipeline resolves (the globs in `src/lib/images.ts`).
 An unresolvable image doesn't fail the build — it just doesn't appear.
 
 ---
 
-## For developers: how a page renders
+## How a page renders
 
 - `src/pages/[...slug].astro` fetches each page through Tina's GraphQL client
   (`src/lib/tina/data.ts`), then renders it with `PageBody`, wrapped in `<TinaIsland>`.
@@ -710,49 +435,17 @@ and its presence on every image field — so a Tina upgrade that changes shape t
 instead of silently rotting content. `check-tina-lock.mjs` catches the schema side of the
 same bumps.
 
-### Cloudflare (staging → `plcc.dev`)
-
-1. Cloudflare dashboard → **Workers & Pages → Create** → **Import a repository** (Workers
-   Builds), pick `plcc-org/web` and the deploy branch.
-2. Build settings: **build command** `npm run build`, **deploy command**
-   `npx wrangler deploy`. The adapter emits the Worker config (`main`, `assets` from
-   `dist/client`, the `SESSION` KV binding); `wrangler deploy` picks it up automatically.
-3. **`wrangler.jsonc` at the repo root** sets `nodejs_compat`. This is required, not
-   optional: Tina keeps its per-request store in an `AsyncLocalStorage`, so the Worker bundle
-   imports `node:async_hooks`. Without the flag the build prerenders every page to a 0-byte
-   file _and_ the deployed `/tina-island` route 500s — both silently, with the build exiting 0. (A root config used to break `virtual:keystatic-config`; that constraint left with
-   Keystatic.)
-4. **KV namespace (`SESSION`)**: wrangler auto-provisions it on first deploy; if CI can't do
-   interactive provisioning, create a KV namespace named `SESSION` in the dashboard first.
-5. **Environment variables**: `DEPLOY_ENV=staging` (targets `plcc.dev`, `noindex`). Leave
-   `NODE_VERSION` unset — `.node-version` decides (see
-   [infrastructure.md](./infrastructure.md#settings-that-live-in-the-cloudflare-dashboard)).
-6. **Custom domain**: add `plcc.dev` to the Worker.
-
-A push to the connected branch builds and deploys; other branches get preview URLs. To deploy
-by hand: `npm run build && npx wrangler deploy`.
-
-### Cutover and production
-
-Cloudflare is the only host; `plcc.dev` serves staging. The `plcc.org` production cutover is
-future work: add a Worker environment with `DEPLOY_ENV=production`, bind `plcc.org`, and
-point its DNS at Cloudflare. Redirects from the old site's URLs need to land in the same
-change, or every existing inbound link breaks.
+Setting up the Cloudflare Worker, and the production cutover, are in
+[infrastructure.md](./infrastructure.md#setting-up-the-worker).
 
 ---
 
 ## Gotchas
 
-- **The build needs a 4 GB heap, and Node 22.** Both are pinned in the repo (`build` in
-  `package.json`, `.node-version`) rather than left to a host's defaults, because both
-  failures land in the same place — the CMS's `Indexing local files` step — and neither
-  looks like a CMS problem. The heap: the indexer needs more than the 2 GB Node defaults
-  to in a build container, and dies with _"Ineffective mark-compacts near heap limit"_.
-  The Node version: on 25, a race in the CMS's datalayer client makes it connect before
-  its own server is listening, and every query then queues forever
-  ([tinacms/tinacms#7295](https://github.com/tinacms/tinacms/pull/7295), unfixed as of
-  `@tinacms/graphql@2.4.9`). **Don't "modernise" either one** without reading that PR.
-- **`nodejs_compat` is load-bearing.** See the deploy section — without it the build writes
+- **The build needs a 4 GB heap, and Node 22.** Both fail in the CMS's `Indexing local
+files` step; see [infrastructure.md](./infrastructure.md#a-build-stuck-at-indexing-local-files).
+- **`nodejs_compat` is load-bearing.** See
+  [infrastructure.md](./infrastructure.md#setting-up-the-worker) — without it the build writes
   every page out empty and the island route 500s, both while exiting 0.
 - **Keep the two schemas in sync** — a field in `tina/config.ts` with no counterpart in
   `src/content.config.ts` (or vice versa) will be invisible to the build or fail validation.
@@ -820,7 +513,7 @@ change, or every existing inbound link breaks.
   the authority: it alone reads every entry, so duplicate addresses and the review-date
   warnings can only happen there. Add a per-entry rule to the shared module, not to one side.
 - **Block descriptions don't show in the insert menu.** They're in the schema and worth
-  keeping, but the menu renders labels only — the "which block do I use?" table above is the
+  keeping, but the menu renders labels only — the manual's [block chooser](./manual/blocks.md) is the
   substitute.
 - **Slash (`/`) inserts headings and lists only**, inside a block's Text field. Blocks
   aren't in that menu — they're added with the **+** on the Body field.

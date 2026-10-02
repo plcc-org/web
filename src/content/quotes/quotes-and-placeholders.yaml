@@ -11,7 +11,7 @@
 # voices existed. None of them came from a person. They stay out of quotes.yaml
 # until a real quote replaces them, and any that survives should arrive with a
 # first name attached: see the "Real testimonials" item in PLAN.md and the
-# filter test in docs/voice.md.
+# filter test in docs/manual/voice.md.
 
 real:
   - text: Pine Lake Covenant Church truly feels like family. From the moment you

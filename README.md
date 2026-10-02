@@ -36,9 +36,11 @@ npm run format:check  # Prettier — verify only
 The thinking, voice, design, and engineering behind the site live in **[`docs/`](./docs/)**.
 Start with the [docs index](./docs/README.md), or jump straight in:
 
-- **[Philosophy & guardrails](./docs/philosophy.md)** — why the site exists and what belongs on it.
-- **[Editorial voice](./docs/voice.md)** — tone and word choices.
-- **[Editing the site](./docs/cms.md)** — the TinaCMS editor: pages, blocks, photos, short links.
+- **[Webmaster's manual](./docs/manual/index.md)** — for editors, published on the site at
+  `/webmaster/`: recipes for pages, blocks, photos, Sunday links, closure notices and short links.
+- **[Why the site is the way it is](./docs/manual/why.md)** — what the site is for and what belongs on it.
+- **[How we write](./docs/manual/voice.md)** — tone and word choices.
+- **[CMS internals](./docs/cms.md)** — how the TinaCMS editor is put together.
 - **[Design system](./docs/design-system.md)** — visual language, tokens, layout, components.
 - **[Development & architecture](./docs/development.md)** — stack, structure, conventions, the image system.
 - **[The events subsystem](./docs/events.md)** — how "What's On" gets its data.

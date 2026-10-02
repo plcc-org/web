@@ -372,7 +372,7 @@ Recorded here so it isn't mistaken for an oversight:
 
 - **Imported descriptions are Church Center's marketing voice**, not the site's — they
   arrive with exclamation marks and URLs in body copy, both of which
-  [voice.md](./voice.md) bans. Planning Center's `summary` is shorter and better written
+  [the voice guide](./manual/voice.md) bans. Planning Center's `summary` is shorter and better written
   than the `description` the old path truncated, which narrows the problem without
   solving it. The options remain: stop rendering imported copy entirely, or add a small
   overrides map for the handful of recurring events.

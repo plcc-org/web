@@ -11,7 +11,7 @@ cutover itself.
 - [ ] **Real testimonials.** `src/content/quotes/quotes.yaml` holds three real quotes,
       still attributed to anonymous personas ("A recent attendee", "A middle-aged family").
       Anonymous voices read as invented, which is exactly what the filter test in
-      [voice.md](./docs/voice.md) exists to catch — and they sit under a heading that says
+      [voice.md](./docs/manual/voice.md) exists to catch — and they sit under a heading that says
       "In their words." Attach real first names, and faces if consent allows; a named voice
       beats several anonymous ones. The six invented drafts that used to pad the list out to
       eight now sit in `quotes-and-placeholders.yaml` next to it, reference only. (The

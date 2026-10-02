@@ -543,33 +543,24 @@ automatically flips to a light fill so it doesn't read green-on-green.
   link to the full site), both on the page's own ground and in the content's narrow
   column. No nav and no script. The full header, footer and scroll-reveal each carry
   their own script inside their component (`src/components/chrome/`), so a slim page
-  ships none of them. Only `/links/` uses it; it isn't a way to make any page look
-  cleaner — a page without the nav is a page a newcomer can't navigate away from.
+  ships none of them. Two places use it: `/links/`, and the webmaster's manual at
+  `/webmaster/`, which is for editors rather than newcomers and carries its own contents
+  list. It isn't a way to make any page look cleaner — a page without the nav is a page a
+  newcomer can't navigate away from.
 
 ---
 
 ## 9. Photography & the image system
 
-**Favour portrait (4:5 or taller); avoid landscape crops.**
+**Favour portrait (4:5 or taller); avoid landscape crops.** Render every photo through
+**`<Photo>`** (`image`, `alt?`, `class?`, `widths?`, `sizes?`, `loading?`,
+`fetchpriority?`), which emits responsive WebP with intrinsic dimensions and renders
+nothing without an image. A decorative image needs **both** `alt=""` and
+`aria-hidden="true"`.
 
-- Photo **bytes** live in `src/assets/images/`. Photo **descriptions** live once in
-  `src/content/photos/photos.json` — `{ id, alt }` where `id` is the stored
-  `/assets/images/<file>` reference, keyed by filename at load. The
-  catalog is the single source of truth for `alt` and stays agnostic of where a photo is
-  used; a block's inline alt is a per-page override (`altFor()`, `src/lib/photos.ts`).
-- Render through **`<Photo>`**, a wrapper over Astro's `<Image>` emitting responsive WebP
-  with intrinsic dimensions (no layout shift). Props: `image` (resolved
-  `ImageMetadata`), `alt?`, `class?`, `widths?`, `sizes?`, `loading?`, `fetchpriority?`,
-  `format?`. Renders nothing without an image.
-- **Alt text:** for catalogued photos, blocks may **leave alt blank** — the catalog
-  entry is used. Pass it explicitly for logos and adornments (never catalogued). A
-  decorative image needs **both** `alt=""` and `aria-hidden="true"`.
-- Pages **select photos by filename and own the ordering**; the catalog never encodes
-  usage.
-- The library is deliberately larger than what the site renders, so there's a real pool
-  to choose from. Don't prune the source — `prune-dist` keeps the surplus out of the deploy.
-
-See [development.md](./development.md#the-image-system) for the pipeline.
+Where photos live, the photo catalog and how `alt` is resolved are in
+[development.md](./development.md#the-image-system); how editors choose and describe
+photos is in [the manual](./manual/add-a-photo.md).
 
 ---
 

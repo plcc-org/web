@@ -1,27 +1,37 @@
 # Pine Lake Covenant Church — Documentation
 
-The reference behind the PLCC website: why it exists, how we write for it, how it looks,
-and how it's built. These docs are the **canonical source** for contributors — both
-humans and AI agents. Keep them current; when a doc and the code disagree, fix whichever
-is wrong.
+The reference behind the PLCC website, in two parts for two readers. Keep both current;
+when a doc and the code disagree, fix whichever is wrong.
 
-If you're about to change something, start with the doc that matches the change:
+## For editors: the webmaster's manual
 
-| Doc                                                | Open it when you're…                                             | Audience               |
-| -------------------------------------------------- | ---------------------------------------------------------------- | ---------------------- |
-| **[philosophy.md](./philosophy.md)**               | adding or restructuring pages, deciding what belongs on the site | everyone               |
-| **[voice.md](./voice.md)**                         | writing or editing any copy                                      | everyone               |
-| **[cms.md](./cms.md)**                             | editing the site — pages, blocks, photos, short links            | editors / developers   |
-| **[design-system.md](./design-system.md)**         | making visual changes — tokens, layout, components               | designers / developers |
-| **[development.md](./development.md)**             | working in the codebase — build, conventions, components, images | developers             |
-| **[events.md](./events.md)**                       | touching "What's On" — the Planning Center calendar pipeline     | developers             |
-| **[infrastructure.md](./infrastructure.md)**       | deploying, configuring environments, or running in a container   | developers / ops       |
-| **[website-one-pager.md](./website-one-pager.md)** | sharing a 5-minute "what changed and why" brief with the team    | stakeholders           |
+**[`manual/`](./manual/index.md)**, published on the site at **`/webmaster/`** (noindex, not
+in the nav). Short recipes for the jobs editors do in the CMS (change some words, add a
+page, prepare Sunday’s links, post a closure notice), plus the thinking every contributor
+needs:
 
-The two ideas that govern everything: the site is a **filter, not a persuasion site**
-(if a sentence could describe any church, rewrite it), and it's built on **belonging,
-not broadcast**. Both are unpacked in [philosophy.md](./philosophy.md).
+- **[Why the site is the way it is](./manual/why.md)**: the purpose, the audience, the
+  information architecture, and what belongs on the site. Read before adding or
+  restructuring pages.
+- **[How we write](./manual/voice.md)**: tone and word choices. Read before writing copy.
+- **[Which block do I use?](./manual/blocks.md)**: the CMS block palette, and how to choose.
 
-For the project's human front page and quick start, see the repo
-[README.md](../README.md). The thin agent-facing rule sheet is [CLAUDE.md](../CLAUDE.md),
-which points back here.
+The CMS's field help links into these pages by address (`guide()` in `tina/templates.mjs`),
+so a manual file's name is its URL. Don't rename one without updating those links.
+
+## For developers
+
+| Doc                                          | Open it when you're…                                           |
+| -------------------------------------------- | -------------------------------------------------------------- |
+| **[development.md](./development.md)**       | working in the codebase — build, conventions, images, tests    |
+| **[design-system.md](./design-system.md)**   | making visual changes — tokens, layout, components             |
+| **[cms.md](./cms.md)**                       | changing the editor — collections, blocks, `tina/config.ts`    |
+| **[events.md](./events.md)**                 | touching "What's On" — the Planning Center calendar pipeline   |
+| **[infrastructure.md](./infrastructure.md)** | deploying, configuring environments, or running in a container |
+
+The two ideas that govern everything: the site is a **filter, not a persuasion site** (if a
+sentence could describe any church, rewrite it), and it's built on **belonging, not
+broadcast**. Both are unpacked in [Why the site is the way it is](./manual/why.md).
+
+For the project's front page and quick start, see the repo [README.md](../README.md). The
+thin agent-facing rule sheet is [CLAUDE.md](../CLAUDE.md), which points back here.

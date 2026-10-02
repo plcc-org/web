@@ -62,6 +62,7 @@ tina/               TinaCMS config: config.ts (collections) + templates.mjs (blo
                     plus rules shared with scripts (short-link-rules.mjs, sunday-links.mjs)
 public/             Static assets served as-is (favicon, manifest, _headers)
 docs/               Project documentation (you are here)
+  manual/           The webmaster's manual: Markdown rendered at /webmaster/
 Dockerfile          Container image: builds the site and serves it via astro preview
 ```
 
@@ -70,9 +71,8 @@ Dockerfile          Container image: builds the site and serves it via astro pre
 ## Building and running
 
 Requires Node.js and npm. The version is pinned in `.node-version` (22 LTS), which CI and
-Cloudflare both read — deliberately not the newest release: on Node 25 an unfixed race in
-the CMS's datalayer client hangs builds at "Indexing local files"
-([tinacms/tinacms#7295](https://github.com/tinacms/tinacms/pull/7295)).
+Cloudflare both read — deliberately not the newest release
+([why](./infrastructure.md#a-build-stuck-at-indexing-local-files)).
 
 ```bash
 npm install
@@ -175,11 +175,8 @@ roughly 15 MB of images no page can reach. It refuses to run if it finds no HTML
 the prune only ever removed unreachable files.
 
 `scripts/check-tina-lock.mjs` fails the build when `tina/tina-lock.json` no longer matches
-`tina/config.ts`. That file is the compiled schema TinaCloud indexes, and only `tinacms dev`
-regenerates it — so a config change made without running `npm run dev:tina` leaves it stale,
-and the consequence surfaces as a failed deploy or a broken editor with a message that
-blames neither. `npm run tina:lock` regenerates it. See
-[cms.md](./cms.md#the-lock-file-is-the-schema-tinacloud-sees).
+`tina/config.ts`; `npm run tina:lock` regenerates it. Why that file matters, and why nothing
+else catches it, is in [cms.md](./cms.md#the-lock-file-is-the-schema-tinacloud-sees).
 
 ### The admin SPA is not built unless it ships
 
@@ -242,7 +239,8 @@ point of having a CMS. This is Tina's dependency graph to fix, not ours.
   field — use `resolveHref()`, which passes those through untouched.
 - **Content collections.** Editable content lives under `src/content/`, defined and
   validated in `src/content.config.ts`: `photos`, `youthMoments`, `leadership`, `quotes`,
-  `pages`, `sundayLinks`, `sundayLinksEveryWeek`, `siteNotice`. Query with `getCollection(...)` — don't hand-author lists in markup or add new
+  `pages`, `sundayLinks`, `sundayLinksEveryWeek`, `siteNotice`, and `manual` (loaded from
+  `docs/manual/`, see below). Query with `getCollection(...)` — don't hand-author lists in markup or add new
   `src/data/*.ts` arrays. Editing copy shouldn't mean touching layout. Keep
   `tina/config.ts` in step (see [cms.md](./cms.md)).
   - **What earns a collection**: data reused across the site, or referenced from inside
@@ -295,6 +293,25 @@ Adding a block type means touching **two** places, and they have to agree — se
 
 If a name isn't in the registry, `PageBody` throws at build time, so a mismatch between (1)
 and (2) fails CI rather than dropping the block silently off the page.
+
+### The webmaster's manual
+
+`docs/manual/*.md` is the editor's guide, rendered by `src/pages/webmaster/[...slug].astro`
+with the slim chrome, `noindex`, and out of the sitemap. Each file's frontmatter holds its
+`title`, a unique `description` (the meta description), its nav `section` and `order`.
+
+- **Links are written for GitHub and rewritten for the site.** A page links to another as
+  `./page.md` and to the site as `/visit/`; `manualLinksPlugin` (`src/lib/manual.ts`), a
+  Sätteri mdast plugin registered in `astro.config.mjs`, rewrites both to base-prefixed
+  paths so the crawl can check them. A link into the developer docs fails the build: they
+  aren't published. `test/manual.test.ts` checks every link and `#anchor` from the source.
+- **The file name is the address, and the CMS depends on it.** Field help in
+  `tina/templates.mjs` links to pages with `guide('<file>', …)`. Rename a file and those
+  links 404.
+- **Markdown runs through Astro 7's Sätteri processor**, which takes plugins only through
+  `@astrojs/markdown-satteri`'s `satteri()`, hence the direct dependency. Syntax
+  highlighting is off: Shiki's literal colours wouldn't pass the token rules, and the
+  manual's code is styled from tokens in `pages.css`.
 
 ---
 
@@ -418,6 +435,8 @@ output gets checked.
 - `short-link-rules.test.ts`, `generate-redirects.test.ts` — per-entry rules, then the
   generator itself: 301/302, slash pairs, duplicates, shadowed pages, 410 routes
 - `media-pipeline.test.ts` — upload types agree end to end; the CDN media rule
+- `manual.test.ts` — the manual's link rewriting, and every link and anchor in
+  `docs/manual/` resolving to a real page and heading
 
 **Build and design guards**
 

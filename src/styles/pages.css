@@ -573,11 +573,11 @@ body:has(.manual) .slim-footer {
     grid-template-columns: 14rem minmax(0, 1fr);
   }
 
+  /* Not sticky: the contents are taller than a laptop screen, and a sticky
+     column that tall hides its own last links. */
   .manual-nav {
     grid-column: 1;
     grid-row: 1;
-    position: sticky;
-    top: var(--space-lg);
     align-self: start;
   }
 
@@ -703,10 +703,6 @@ body:has(.manual) .slim-footer {
 .manual__body th {
   color: var(--color-clay-ink);
   font-weight: 600;
-}
-
-.manual__body td img {
-  width: 10rem;
 }
 
 .manual__body code {

@@ -8,23 +8,26 @@ read the doc that matches your change before editing.
 
 ## Documentation map
 
-- **[docs/philosophy.md](./docs/philosophy.md)** — why the site exists and the guardrails
-  for what belongs on it. Read before adding or restructuring pages.
-- **[docs/voice.md](./docs/voice.md)** — tone and word choices. Read before writing copy.
+- **[docs/manual/](./docs/manual/index.md)** — the webmaster's manual, published at
+  `/webmaster/`: task recipes for CMS editors. Two of its pages bind every contributor:
+  - **[why.md](./docs/manual/why.md)** — why the site exists and the guardrails for what
+    belongs on it. Read before adding or restructuring pages.
+  - **[voice.md](./docs/manual/voice.md)** — tone and word choices. Read before writing copy.
+
+  The CMS's field help links to manual pages by address, so don't rename a manual file.
+
 - **[docs/design-system.md](./docs/design-system.md)** — visual language, design tokens,
   layout, components. Read before any visual change.
 - **[docs/development.md](./docs/development.md)** — stack, project structure, build/run,
   conventions, the image system, CI.
-- **[docs/cms.md](./docs/cms.md)** — the TinaCMS editor: what's editable, the block palette,
-  which block to use, the photo model, visual editing, and the Cloudflare setup. Read before
-  changing content collections, blocks, or `tina/config.ts`.
+- **[docs/cms.md](./docs/cms.md)** — CMS internals: what's editable and why, how a page
+  renders, the photo model, visual editing, and the deployed setup. Read before changing
+  content collections, blocks, or `tina/config.ts`. (Using the editor is in the manual.)
 - **[docs/events.md](./docs/events.md)** — how "What's On" gets its data: the provider
   seam and the nightly Planning Center capture. Read before touching anything under
   `src/lib/events/`.
 - **[docs/infrastructure.md](./docs/infrastructure.md)** — environments, deployment,
   container workflows.
-- **[docs/website-one-pager.md](./docs/website-one-pager.md)** — a shareable stakeholder
-  brief.
 
 ## Non-negotiables
 
@@ -32,10 +35,10 @@ Even if you don't open the docs, never violate these:
 
 - **The filter test.** If a sentence could describe any church, rewrite it with a
   specific, human signal. The site is a filter, not a persuasion site.
-  → [philosophy.md](./docs/philosophy.md), [voice.md](./docs/voice.md)
+  → [why.md](./docs/manual/why.md), [voice.md](./docs/manual/voice.md)
 - **No churchy jargon.** Avoid "fellowship," "discipleship," "ministry," "outreach,"
   "plug in." Belief-neutral but not diluted. Proper nouns are exempt — "Stephen Ministry"
-  is a name, not a category. → [voice.md](./docs/voice.md)
+  is a name, not a category. → [voice.md](./docs/manual/voice.md)
 - **Tokens first.** Reference `var(--color-…)`, `var(--text-…)`, `var(--space-…)`. Never
   hard-code colors, sizes, radii, or shadows. → [design-system.md](./docs/design-system.md)
 - **Portrait-first photos**, rendered through `<Photo>`. Photo bytes live in
@@ -54,7 +57,8 @@ Even if you don't open the docs, never violate these:
   arrays. A collection is earned by data that's reused across the site or referenced from
   inside content; a single hand-built page's own one-off list stays in that page.
   `short-links` is the other exception: it's build-time routing config, not renderable
-  content. → [development.md](./docs/development.md)
+  content. The `manual` collection loads from `docs/manual/` rather than `src/content/`.
+  → [development.md](./docs/development.md)
 - **Tokens are enforced, not requested.** `npm run lint:css` rejects non-token colours,
   type sizes and radii. The full-strength accents (`--color-moss`, `--color-clay`) are
   rejected as text colours — use `--color-moss-ink` / `--color-clay-ink` for anything

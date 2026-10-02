@@ -27,8 +27,8 @@ Everything is served from the root, so `base` is `/`. Internal links still go th
 
 The site is **static** except for two CMS routes — the visual-editing endpoint
 (`/tina-island/*`) and the editor's preview of pages not yet deployed (`/tina-preview/*`) —
-which run as a Cloudflare function. See [cms.md](./cms.md) for the CMS and its one-time
-Cloudflare setup.
+which run as a Cloudflare function. See [cms.md](./cms.md) for the CMS, and
+[Setting up the Worker](#setting-up-the-worker) below for the one-time Cloudflare setup.
 
 ---
 
@@ -46,7 +46,7 @@ Cloudflare setup.
 **Cloudflare** builds and deploys on every push (via Cloudflare's Git integration / Workers
 Builds): the connected branch publishes to `plcc.dev`, other branches get preview URLs. The
 build command is `npm run build`; the adapter needs the `nodejs_compat` compatibility flag
-(see [cms.md](./cms.md)).
+(see [Setting up the Worker](#setting-up-the-worker)).
 
 `.github/workflows/ci.yml` runs the checks on every pull request and every push to `main`
 — `format:check`, `lint:css`, `check`, `test`, then a build and crawl of _both_ deploy
@@ -63,20 +63,20 @@ before anything else. See [events.md](./events.md).
 Cloudflare is the only host, and the site needs it to stay that way: visual editing depends
 on its function routes (`/tina-island/*`, `/tina-preview/*`), so a static-only host
 can't serve the CMS. The production cutover (point `plcc.org` DNS at Cloudflare) is covered
-in [cms.md](./cms.md#cutover-and-production).
+in [Cutover and production](#cutover-and-production).
 
 ### Settings that live in the Cloudflare dashboard
 
 These can't be committed. `@astrojs/cloudflare` generates `dist/server/wrangler.json`
 itself; the repo's root `wrangler.jsonc` only adds `nodejs_compat` on top of it (required —
-see [cms.md](./cms.md)). Everything else has to be set in the dashboard, so the settings
+see [Setting up the Worker](#setting-up-the-worker)). Everything else has to be set in the dashboard, so the settings
 below are recorded here because nothing in the repo can assert them:
 
 | Setting                 | Value                                  | If it's wrong                                                                                                 |
 | ----------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | Build command           | `npm run build`                        | Without the CMS wrapper the build fails at prerendering with `fetch failed`                                   |
 | `DEPLOY_ENV`            | `staging` (production: `production`)   | Falls back to staging with a build-log warning; on the production Worker that means the site is never indexed |
-| Node version            | _not set_ — comes from `.node-version` | Cloudflare's default (22.16.0) trips an `EBADENGINE` warning; Node 25 risks a datalayer hang (see cms.md)     |
+| Node version            | _not set_ — comes from `.node-version` | Cloudflare's default (22.16.0) trips an `EBADENGINE` warning; Node 25 risks a datalayer hang (see below)      |
 | CMS auth credentials    | per the CMS backend (see cms.md)       | Editors can't sign in to /admin                                                                               |
 | `TINA_PUBLISH_ADMIN`    | `true` on deploys that ship the editor | `/admin` 404s — the SPA is neither compiled nor deployed (see development.md)                                 |
 | `PUBLIC_TINA_CLIENT_ID` | the TinaCloud project's client ID      | Beyond auth, it feeds the `/assets/images/*` → CDN redirect; unset, admin thumbnails and previews 404         |
@@ -84,6 +84,35 @@ below are recorded here because nothing in the repo can assert them:
 `DEPLOY_ENV` is the one with no safety net in the repo: it's read at build time by
 `astro.config.mjs`, and Workers Builds only takes build variables from the dashboard.
 `resolveDeployEnv()` warns when it has to guess — see `src/config/site.ts`.
+
+### Setting up the Worker
+
+1. Cloudflare dashboard → **Workers & Pages → Create** → **Import a repository** (Workers
+   Builds), pick `plcc-org/web` and the deploy branch.
+2. Build settings: **build command** `npm run build`, **deploy command**
+   `npx wrangler deploy`. The adapter emits the Worker config (`main`, `assets` from
+   `dist/client`, the `SESSION` KV binding); `wrangler deploy` picks it up automatically.
+3. **`wrangler.jsonc` at the repo root** sets `nodejs_compat`. This is required, not
+   optional: Tina keeps its per-request store in an `AsyncLocalStorage`, so the Worker bundle
+   imports `node:async_hooks`. Without the flag the build prerenders every page to a 0-byte
+   file _and_ the deployed `/tina-island` route 500s — both silently, with the build
+   exiting 0.
+4. **KV namespace (`SESSION`)**: wrangler auto-provisions it on first deploy; if CI can't do
+   interactive provisioning, create a KV namespace named `SESSION` in the dashboard first.
+5. **Environment variables**: `DEPLOY_ENV=staging` (targets `plcc.dev`, `noindex`). Leave
+   `NODE_VERSION` unset — `.node-version` decides (see the table above). Add the CMS
+   variables too ([cms.md](./cms.md#deployed-setup)).
+6. **Custom domain**: add `plcc.dev` to the Worker.
+
+A push to the connected branch builds and deploys; other branches get preview URLs. To deploy
+by hand: `npm run build && npx wrangler deploy`.
+
+### Cutover and production
+
+Cloudflare is the only host; `plcc.dev` serves staging. The `plcc.org` production cutover is
+future work: add a Worker environment with `DEPLOY_ENV=production`, bind `plcc.org`, and
+point its DNS at Cloudflare. Redirects from the old site's URLs need to land in the same
+change, or every existing inbound link breaks.
 
 ### A branch build is not a main build
 
@@ -111,9 +140,18 @@ path; `main` doesn't.
 
 ### A build stuck at "Indexing local files"
 
-Two documented causes land there, and both are pinned in the repo: a heap under 4 GB
-(`scripts/build.mjs` forces 4096 MB) and Node 25 (`.node-version` pins 22). If a build
-hangs there with **both already correct**, it is a Cloudflare-side stall, not this repo —
+Two documented causes land there, and both are pinned in the repo rather than left to a
+host's defaults, because neither looks like a CMS problem:
+
+- **The heap.** The CMS indexer needs more than the 2 GB Node defaults to in a build
+  container, and dies with _"Ineffective mark-compacts near heap limit"_.
+  `scripts/build.mjs` forces 4096 MB.
+- **Node 25.** A race in the CMS's datalayer client makes it connect before its own server
+  is listening, and every query then queues forever
+  ([tinacms/tinacms#7295](https://github.com/tinacms/tinacms/pull/7295)). `.node-version`
+  pins 22. **Don't "modernise" it** without reading that PR.
+
+If a build hangs there with **both already correct**, it is a Cloudflare-side stall, not this repo —
 one sat for 24 minutes and then failed on its own.
 
 The tell is in the _other_ commits: Workers Builds runs one build at a time per Worker, so
