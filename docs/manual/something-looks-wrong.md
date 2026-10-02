@@ -14,15 +14,20 @@ The form marks the field it’s unhappy with and says why. The usual reasons:
 
 - **A Closing banner isn’t last, or there are two.** A page gets one, at the bottom. Drag it
   down, or delete the extra one.
-- **A photo has no description.** It isn’t in **Photo descriptions** yet, so describe it in
-  the field beside it. See [Add a photo](./add-a-photo.md).
-- **A link isn’t one the site can open.** A link is a page here starting with `/` (like
-  `/events/`), a full `https://` address, or `mailto:` and an email address. The message
-  says which one it looks closest to. Most often it’s a missing `https://`.
-- **A “Photo & text” top of page has no photo.** Add one, or choose another **Kind**.
-- **No search summary and no intro line.** Every page needs one or the other; see
-  [Add a page](./add-a-page.md).
+- **No search summary and no intro line,** on a page you’re publishing. Every published
+  page needs one or the other; see [Add a page](./add-a-page.md).
 - **A short link has a review date and “Never needs reviewing”.** Choose one.
+
+## A block shows a red message
+
+Inside a block or **Top of page**, a field can be marked with a message: a photo with no
+description, a link that isn’t one the site can open, a Photo & text top with no photo.
+**Fix it before you go back to the page.** The editor only checks these while the block is
+open, so the page will still save, and the next site update then fails.
+
+A link is a page here starting with `/` (like `/events/`), a full `https://` address, or
+`mailto:` and an email address. The message says which one it looks closest to. Most often
+it’s a missing `https://`.
 
 ## “Cannot navigate away from an invalid form”
 

@@ -14,9 +14,10 @@ most recent Sunday on or before today, so you can get next week ready any time.
 
 ## Steps
 
-1. In the editor (/admin), open **Sunday links**, then this week’s entry.
-2. Choose **Duplicate**, and change the **Sunday** date to next Sunday. The entry’s name
-   follows the date.
+1. In the editor (/admin), open **Sunday links**. Each week is listed by its date.
+2. Open the **…** menu at the end of this week’s row and choose **Duplicate**. Click the
+   **Sunday** date to open the calendar and pick next Sunday. The entry’s name follows the
+   date.
 3. Add, remove or drag links into order, top to bottom as they’ll appear. Each one has
    **Link text** and **Links to**:
    - a website, as the full `https://` address, copied from the browser’s address bar
@@ -52,8 +53,7 @@ there, and they change for every week.
 
 ## If something goes wrong
 
-- **Two entries have the same date.** They can’t: nothing could tell which one was meant,
-  and the site stops updating until it’s fixed. If you’re told a date is taken, or changes
-  stop appearing after you’ve added a week, check that your copy has its new date.
+- **“The filename … is already used for another document”.** Your copy still has last
+  week’s date. Pick the new Sunday and save again.
 - **A link won’t save.** The form says what it expects; usually it’s a missing `https://`
   or `mailto:`.

@@ -20,7 +20,8 @@ the first three, the order of the list is the order on the page.
 
 ## Steps
 
-1. In the editor (/admin), open the list (say **Leadership**), then its one entry.
+1. In the editor (/admin), open the list (say **Leadership**). Its one entry opens
+   straight away, with everything in the list below.
 2. To **add** someone or something, use the **+** on the list. To **change** one, click it.
    To **reorder**, drag it by its handle. To **remove** one, use its bin icon.
 3. **Save.**

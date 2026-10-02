@@ -21,15 +21,17 @@ out of place here?”, faster than any sentence can. So choosing one is worth a 
 
 ## Steps
 
-1. Open the block’s **Photo** field and choose a photo from the library, or upload a new
-   one. Uploads must be **JPEG, PNG, WebP or AVIF**. A photo straight off an iPhone is
+1. Open the block’s **Photo** field and choose a photo from the library (it shows the
+   first few dozen; scroll down for more), or upload a new one. Uploads must be **JPEG, PNG, WebP or AVIF**. A photo straight off an iPhone is
    usually **HEIC**: export it as JPEG first (in Photos, File → Export).
 2. **Describe it, once.** Every photo needs a description for people who can’t see it.
    - If the photo is already in **Photo descriptions**, leave
      **Different description for this page** blank. The saved one is used.
-   - If it’s new, the form asks you to describe it before it will save. Either write the
-     description right there, or, better if the photo will be used again, add it under
-     **Photo descriptions** in the sidebar, so every page that uses it gets the same one.
+   - If it’s new, the block shows “This photo has no saved description yet”. Write the
+     description right there, **before you leave the block**: the editor only checks while
+     the block is open, and a page saved with an undescribed photo stops the site updating.
+     If the photo will be used again, also add it under **Photo descriptions** in the
+     sidebar, so every page that uses it gets the same one.
 3. **Save.**
 
 **Live in:** a few minutes. A photo you’ve just uploaded shows blank in the editor’s preview
