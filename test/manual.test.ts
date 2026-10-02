@@ -122,4 +122,15 @@ describe('docs/manual', () => {
     )
     expect(broken).toEqual([])
   })
+
+  // The CMS's field help links here by file name (guide() in tina/templates.mjs), and a
+  // missing page would only show up as a 404 inside the admin.
+  it('has a page for every guide() link in the CMS', () => {
+    const sources = readdirSync('tina').filter((f) => /\.(ts|mjs)$/.test(f))
+    const slugs = sources.flatMap((f) =>
+      [...readFileSync(join('tina', f), 'utf-8').matchAll(/guide\('([^']+)'/g)].map((m) => `${f}: ${m[1]}`)
+    )
+    expect(slugs.length, 'expected the CMS to link to the guide').toBeGreaterThan(0)
+    expect(slugs.filter((s) => !ids.has(s.split(': ')[1]))).toEqual([])
+  })
 })
