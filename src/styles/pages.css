@@ -2,11 +2,12 @@
  * pages.css — styling for one page's markup, where the page is a one-off and
  * the classes would never be reused.
  *
- * Three pages qualify, each in its own section below:
+ * Four pages qualify, each in its own section below:
  *
  *   Leadership     src/pages/about/leadership.astro   portrait grid + profiles
  *   Messages       src/pages/messages.astro           service archive
  *   Sunday links   src/pages/links/index.astro        a phone-first list of links
+ *   Webmaster      src/pages/webmaster/[...slug].astro  the editor's guide
  *
  * Another page arriving here is worth a pause: it usually means the shape is
  * more general than it looked, and belongs in components.css as a named
@@ -537,4 +538,194 @@
     background-color: transparent;
     color: var(--color-moss-ink);
   }
+}
+
+/* ======================================================================
+ * Webmaster's manual (src/pages/webmaster/[...slug].astro)
+ *
+ * The editor's guide, rendered from Markdown in docs/manual/. A reading column
+ * with the contents beside it on a wide screen and beneath it on a phone, where
+ * the page someone came for should come first. It's the only place on the site
+ * that renders plain Markdown, so its tables and code are styled here too.
+ *
+ * The slim header and footer are held to the same width as the manual, so the
+ * wordmark lines up with the column it sits above.
+ * ==================================================================== */
+
+.manual {
+  max-width: calc(14rem + var(--space-xl) + var(--measure));
+  margin-inline: auto;
+  padding-block: var(--space-md) var(--space-xl);
+  display: grid;
+  gap: var(--space-xl);
+}
+
+body:has(.manual) .slim-header__home {
+  max-width: calc(14rem + var(--space-xl) + var(--measure));
+}
+
+body:has(.manual) .slim-footer {
+  max-width: calc(14rem + var(--space-xl) + var(--measure) + 2 * var(--space-lg));
+}
+
+@media (min-width: 860px) {
+  .manual {
+    grid-template-columns: 14rem minmax(0, 1fr);
+  }
+
+  .manual-nav {
+    grid-column: 1;
+    grid-row: 1;
+    position: sticky;
+    top: var(--space-lg);
+    align-self: start;
+  }
+
+  .manual__skip {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Contents
+ * ------------------------------------------------------------------ */
+
+.manual-nav {
+  display: grid;
+  gap: var(--space-md);
+  font-size: var(--text-ui);
+}
+
+.manual-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.manual-nav a {
+  text-decoration: none;
+}
+
+.manual-nav a[aria-current='page'] {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.manual-nav__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  font-variation-settings: var(--serif-h4);
+}
+
+.manual-nav__heading {
+  margin: 0 0 var(--space-xs);
+  color: var(--color-clay-ink);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------ *
+ * The page
+ * ------------------------------------------------------------------ */
+
+.manual__body {
+  min-width: 0;
+  max-width: var(--measure);
+}
+
+.manual__skip {
+  font-size: var(--text-ui);
+}
+
+.manual__title {
+  margin: var(--space-xs) 0 var(--space-md);
+}
+
+.manual__body h2 {
+  margin: var(--space-xl) 0 var(--space-sm);
+  font-size: var(--text-xl);
+  font-variation-settings: var(--serif-h3);
+}
+
+.manual__body h3 {
+  margin: var(--space-lg) 0 var(--space-xs);
+  font-size: var(--text-md);
+  font-variation-settings: var(--serif-h4);
+}
+
+.manual__body ul,
+.manual__body ol {
+  padding-left: var(--space-lg);
+}
+
+.manual__body li + li {
+  margin-top: var(--space-xs);
+}
+
+.manual__body blockquote {
+  margin: var(--space-md) 0;
+  padding-left: var(--space-md);
+  border-left: 3px solid var(--color-moss);
+  color: var(--color-ink-soft);
+}
+
+.manual__body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+}
+
+/* Wide tables scroll inside themselves rather than the page. */
+.manual__body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: var(--space-md) 0;
+  border-collapse: collapse;
+  font-size: var(--text-ui);
+}
+
+.manual__body th,
+.manual__body td {
+  padding: var(--space-xs) var(--space-sm) var(--space-xs) 0;
+  border-bottom: 1px solid var(--color-line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.manual__body th {
+  color: var(--color-clay-ink);
+  font-weight: 600;
+}
+
+.manual__body td img {
+  width: 10rem;
+}
+
+.manual__body code {
+  padding: 0.1em 0.3em;
+  border-radius: var(--radius-sm);
+  background: var(--color-paper);
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: var(--text-sm);
+}
+
+.manual__body pre {
+  overflow-x: auto;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-paper);
+}
+
+.manual__body pre code {
+  padding: 0;
+  background: none;
 }

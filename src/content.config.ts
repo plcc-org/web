@@ -7,6 +7,7 @@ import { checkSunday, toIsoDate } from '../tina/sunday-links.mjs'
 import { checkNoticeLink, checkNoticeMessage } from '../tina/site-notice.mjs'
 import { heroFields, templates } from '../tina/templates.mjs'
 import { checkClosingBanner } from '../tina/block-rules.mjs'
+import { MANUAL_SECTION_IDS } from './lib/manual'
 
 // A list kept in one YAML file. The CMS edits it as a list field, which
 // serializes to `{ <key>: [...] }`; parse tolerantly so a hand-authored bare
@@ -318,6 +319,21 @@ const siteNotice = defineCollection({
     }),
 })
 
+// The webmaster's manual, served at /webmaster/ (src/lib/manual.ts). It lives in
+// docs/manual/ rather than src/content/ because it's maintained with the code, not in
+// the CMS — so, like short links, it has no Tina collection — and because docs/ is
+// formatted by Prettier, where src/content/ isn't. `description` becomes the page's meta
+// description, which the post-build crawl requires to be unique.
+const manual = defineCollection({
+  loader: glob({ pattern: '*.md', base: './docs/manual' }),
+  schema: z.object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+    section: z.enum(MANUAL_SECTION_IDS),
+    order: z.number(),
+  }),
+})
+
 export const collections = {
   photos,
   youthMoments,
@@ -327,4 +343,5 @@ export const collections = {
   sundayLinks,
   sundayLinksEveryWeek,
   siteNotice,
+  manual,
 }

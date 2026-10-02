@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content'
+import { withBase } from '../../lib/url'
+import { MANUAL_SECTIONS, manualPath } from '../../lib/manual'
+
+// The manual's contents: the front page as its title, then each section's pages in
+// `order`. Plain links, no script, like the rest of the slim chrome.
+type Props = { current: string }
+const { current } = Astro.props
+
+const pages = (await getCollection('manual')).sort((a, b) => a.data.order - b.data.order)
+const groups = MANUAL_SECTIONS.filter((s) => s.id !== 'start')
+  .map((section) => ({ ...section, pages: pages.filter((p) => p.data.section === section.id) }))
+  .filter((group) => group.pages.length > 0)
+---
+
+<nav class="manual-nav" id="manual-nav" aria-label="Webmaster’s manual">
+  <a
+    class="manual-nav__title"
+    href={withBase(manualPath('index'))}
+    aria-current={current === 'index' ? 'page' : undefined}
+  >
+    Webmaster’s manual
+  </a>
+  {groups.map((group) => (
+    <div class="manual-nav__group">
+      <p class="manual-nav__heading">{group.label}</p>
+      <ul>
+        {group.pages.map((p) => (
+          <li>
+            <a href={withBase(manualPath(p.id))} aria-current={p.id === current ? 'page' : undefined}>
+              {p.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</nav>

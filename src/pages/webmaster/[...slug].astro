@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ManualNav from '../../components/manual/ManualNav.astro'
+
+// The webmaster's manual: the editor's guide, one page per file in docs/manual/. Written
+// for the people who run the site, not for newcomers — so it's noindex, out of the
+// sitemap and the nav, and wears the slim chrome with its own contents list instead.
+// The CMS's field help links straight to these pages (`guide()` in tina/templates.mjs),
+// so a page's file name is its address and shouldn't change.
+export async function getStaticPaths() {
+  const pages = await getCollection('manual')
+  return pages.map((page) => ({ params: { slug: page.id === 'index' ? undefined : page.id }, props: { page } }))
+}
+
+const { page } = Astro.props
+const { Content } = await render(page)
+const isFront = page.id === 'index'
+---
+
+<BaseLayout
+  title={isFront ? page.data.title : `${page.data.title} · Webmaster’s manual`}
+  description={page.data.description}
+  noindex
+  chrome="slim"
+>
+  <div class="manual">
+    <article class="manual__body">
+      {!isFront && (
+        <a class="manual__skip" href="#manual-nav">
+          All topics ↓
+        </a>
+      )}
+      <h1 class="manual__title">{page.data.title}</h1>
+      <Content />
+    </article>
+    <ManualNav current={page.id} />
+  </div>
+</BaseLayout>

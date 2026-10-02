@@ -6,6 +6,8 @@ import cloudflare from '@astrojs/cloudflare'
 import tina from '@tinacms/astro/integration'
 import { siteConfig } from './src/config/site.ts'
 import { EVENT_SOURCES } from './src/lib/events/types.ts'
+import { satteri } from '@astrojs/markdown-satteri'
+import { manualLinksPlugin } from './src/lib/manual.ts'
 import { createReadStream, existsSync, statSync } from 'node:fs'
 import { extname, join, normalize } from 'node:path'
 
@@ -80,8 +82,20 @@ export default defineConfig({
     // noindex — it's for people already in the building, and changes weekly — so a
     // sitemap listing it would contradict the page itself. It isn't disallowed in
     // robots.txt, because a crawler has to be able to fetch it to see the noindex.
-    sitemap({ filter: (page) => !/\/(admin|tina-island|tina-preview|links)(\/|$)/.test(new URL(page).pathname) }),
+    // /webmaster/ is the editor's guide, noindex for the same reason: it's for the
+    // people who run the site, not for anyone searching for a church.
+    sitemap({
+      filter: (page) => !/\/(admin|tina-island|tina-preview|links|webmaster)(\/|$)/.test(new URL(page).pathname),
+    }),
   ],
+  // Markdown is rendered only for the webmaster's manual (docs/manual/); CMS pages are
+  // all frontmatter. Its links are written as ./page.md and rewritten to site paths here.
+  // No syntax highlighting: Shiki paints with literal colours, and the manual's few code
+  // samples are styled from tokens instead (pages.css).
+  markdown: {
+    syntaxHighlight: false,
+    processor: satteri({ mdastPlugins: [manualLinksPlugin({ base: siteConfig.base ?? '/' })] }),
+  },
   // Self-hosted fonts via the Astro Fonts API. Sourced from version-pinned
   // @fontsource-variable npm packages (durable — no build-time fetch from a URL
   // that can rot) and emitted as content-hashed, CDN-cacheable static assets.
