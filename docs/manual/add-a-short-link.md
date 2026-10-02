@@ -11,7 +11,7 @@ registration page for camp every year, and the short link moves with it.
 
 ## Steps
 
-1. In the editor (/admin), open **Short links** and choose **Create New**.
+1. In the editor (/admin), open **Short links** and choose **Add File**.
 2. **Short link** is the address itself: `/camp` makes `plcc.org/camp`. The entry is named
    after it, so the list reads as the addresses people type.
 3. **What kind of link:** leave it as **Shortcut** unless you’re sure (see below).

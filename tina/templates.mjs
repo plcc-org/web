@@ -408,7 +408,7 @@ export const checkSeoDescription = (value, allValues) => {
   const hasLede = heroVariant(allValues) !== 'cinematic' && typeof lede === 'string' && lede.trim() !== ''
   return hasLede
     ? undefined
-    : 'This page has no intro line, so it needs an SEO description — search results and link previews show it.'
+    : 'This page has no intro line, so it needs a Search summary — search results and link previews show it.'
 }
 
 // A block's `label` names how it looks ("Photo beside text", "Note with logo"), which is

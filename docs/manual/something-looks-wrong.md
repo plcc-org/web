@@ -24,6 +24,12 @@ The form marks the field it’s unhappy with and says why. The usual reasons:
   [Add a page](./add-a-page.md).
 - **A short link has a review date and “Never needs reviewing”.** Choose one.
 
+## “Cannot navigate away from an invalid form”
+
+The editor won’t open **Top of page** or a block while something on the page’s main form
+needs fixing. On a new page it’s almost always the **Search summary**: write one sentence
+there, and everything opens. Otherwise, look for the field marked in red.
+
 ## My change isn’t showing
 
 - **Give it a few minutes.** Every save rebuilds the site, and the change goes live when

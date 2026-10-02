@@ -12,13 +12,18 @@ thinking.
 
 ## Steps
 
-1. In the editor (/admin), choose **Pages**, then **Create New**.
+1. In the editor (/admin), choose **Pages**, then **Add File**.
 2. **Choose the address.** It’s the first field, and it starts as a copy of the title.
    Click it to change it: “safety” makes the page `/safety/`. Keep it short, because
    addresses get read aloud and printed. Choosing well now matters, since changing it
    later breaks every link to the page.
 3. Fill in the **Title**. It’s the page’s heading and its name in the browser tab.
-4. Open **Top of page** and pick its **Kind** first. The fields below say which kinds they
+4. **Write the Search summary next**, before opening anything else: one sentence, under
+   about 155 characters, for search results and link previews. Until the page has either a
+   Search summary or an intro line, the editor won’t open **Top of page** or any block (it
+   says “Cannot navigate away from an invalid form”), and the intro line is inside Top of
+   page. You can change the summary later.
+5. Open **Top of page** and pick its **Kind** first. The fields below say which kinds they
    apply to (“For Photo & text…”).
 
    | Kind             | What it looks like                                               |
@@ -28,19 +33,15 @@ thinking.
    | **Logo & photo** | A program’s wordmark in place of the title, like Pine Lake Kids. |
    | **Cinematic**    | Full-width photos drifting behind the title. Home page only.     |
 
-   A Photo & text top needs its **Photo** before the form will save
+   A Photo & text top needs its **Photo** before the page will save
    ([Add a photo](./add-a-photo.md)). Give it an **Intro line** too: one or two sentences
    under the title. If it could describe any church, rewrite it.
 
-5. **Save once now**, before adding any blocks. The page is still hidden, so nothing goes
-   public, and a saved page keeps its blocks safely while you open and close them. On a
-   page that has never been saved, blocks have been known to vanish.
 6. Build the page in **Body**: the **+** button adds a block, which lands at the bottom, so
    drag it up into place. [Which block do I use?](./blocks.md) helps you choose, and has a
    worked example of a whole page.
-7. Write a **Search summary**: one sentence, under about 155 characters, for search results
-   and link previews. You can leave it blank if the top of the page has an intro line.
-8. Untick **Hidden from the public site (draft)** when the page is ready, and **Save**.
+7. Untick **Hidden from the public site (draft)** when the page is ready, and **Save**. You
+   can save along the way too; the page stays hidden until you untick it.
 
 **Live in:** a few minutes after the save that unticks Draft. Until then the page is visible
 only in the editor, even if you’ve saved it many times.

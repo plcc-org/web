@@ -42,5 +42,5 @@ the first three, the order of the list is the order on the page.
 
 ## If something goes wrong
 
-- **There’s no Create New button.** That’s expected: there’s only ever one entry. Open it
+- **There’s no Add File button.** That’s expected: there’s only ever one entry. Open it
   and add to the list inside.
