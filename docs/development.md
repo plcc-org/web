@@ -427,6 +427,8 @@ output gets checked.
 **CMS schema and short links**
 
 - `blocks-registry.test.ts` — every palette block has a renderer and a thumbnail
+- `save-check.test.ts` — the Save-time page check catches what an open block would, and
+  passes every page on disk
 - `enum-parity.test.ts` — the Featured events categories match `EVENT_CATEGORIES`
 - `image-fields.test.ts`, `image-parse.test.ts`, `image-ref.test.ts` — image fields go
   through `image()`, and every stored reference shape resolves

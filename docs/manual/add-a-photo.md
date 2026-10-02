@@ -28,10 +28,9 @@ out of place here?”, faster than any sentence can. So choosing one is worth a 
    - If the photo is already in **Photo descriptions**, leave
      **Different description for this page** blank. The saved one is used.
    - If it’s new, the block shows “This photo has no saved description yet”. Write the
-     description right there, **before you leave the block**: the editor only checks while
-     the block is open, and a page saved with an undescribed photo stops the site updating.
-     If the photo will be used again, also add it under **Photo descriptions** in the
-     sidebar, so every page that uses it gets the same one.
+     description right there, or, if the photo will be used again, add it under **Photo
+     descriptions** in the sidebar, so every page that uses it gets the same one. The page
+     won’t save until the photo has one or the other.
 3. **Save.**
 
 **Live in:** a few minutes. A photo you’ve just uploaded shows blank in the editor’s preview

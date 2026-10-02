@@ -65,14 +65,16 @@ of 3.1.0.
 
 ---
 
-## `tinacms` — don't mutate a block template's `defaultItem` when adding a block
+## `tinacms` — three fixes to the editor's forms
 
-**File:** `tinacms+3.14.1.patch`
+**File:** `tinacms+3.14.1.patch`. Three independent hunks, all in `dist/index.js`. Re-apply
+each by intent; delete any whose upstream behaviour is fixed.
 
-**Upstream behaviour.** Adding a block to a `blocks` list (`Blocks`'s `addItem` in
-`dist/index.js`) takes the template's `defaultItem` object itself, writes `_template` onto
-it, and pushes that same object into the form:
-`obj = template.defaultItem || {}; obj._template = name;`.
+### 1. Copy a block template's `defaultItem` instead of mutating it
+
+**Upstream behaviour.** Adding a block (`Blocks`'s `addItem`) takes the template's
+`defaultItem` object itself, writes `_template` onto it, and pushes that same object into
+the form: `obj = template.defaultItem || {}; obj._template = name;`.
 
 **Why that's wrong here.** Writing to `defaultItem` changes the schema. On a page that has
 never been saved, Tina's "Create New" screen re-registers its form whenever
@@ -81,18 +83,60 @@ collection's initial values, with no blocks. The blocks still show in the list, 
 form behind them has none, so opening one does nothing on the first click and crashes the
 editor on the second ("TinaCMS Render Error: undefined is not an object (evaluating
 'value[index2]')", in `getFieldGroup`). Every template with a `ui.defaultItem` was affected
-on a new page: Split, CardRow, Quote, FeaturedEvents, KeyPoints, QuoteCarousel. Saved pages
-were fine, since their form isn't re-registered. Two blocks of the same kind also shared
-one object.
+on a new page: Split, CardRow, Quote, FeaturedEvents, KeyPoints, QuoteCarousel. Two blocks
+of the same kind also shared one object.
 
-**What the patch does.** Copies the object instead: `obj = { ...template.defaultItem || {} }`.
-The function form of `defaultItem` already returned a fresh object and is untouched.
+**What the patch does.** `obj = { ...template.defaultItem || {} }`. The function form of
+`defaultItem` already returned a fresh object and is untouched.
 
 **How to check it.** In `npm run dev:tina`, open Pages → Add File, give it a title, add a
 Quote (or two Photo beside text blocks) without saving, and open each block: it opens on
 the first click, and each keeps its own heading after you go back. Unpatched, the second
-click crashes. After a build with `TINA_PUBLISH_ADMIN=true`, the admin bundle in
-`dist/client/admin/assets/` contains `{...<x>.defaultItem||{}}`.
+click crashes.
 
-**Delete it when.** Upstream copies the default item in `Blocks`'s `addItem` (or the Create
-New form stops re-registering on a schema change). Still present in 3.14.1.
+**Delete it when.** Upstream copies the default item in `addItem`. Still present in 3.14.1.
+
+### 2. Keep a hand-typed address on a new page
+
+**Upstream behaviour.** On "Create New", the form's `onChange` re-derives the filename from
+the title (the collection's `ui.filename.slugify`) until final-form reports the filename
+field as `touched`.
+
+**Why that's wrong here.** `touched` lives on the field registration, and the page form's
+fields are unregistered whenever the editor opens Top of page or a block. On the way back
+`touched` is false again, so the next change overwrites the address the editor typed with
+the title's slug, and the page is saved under that. "Church Safety Policy" at `/safety/`,
+the case `ui.filename` exists for (`tina/config.ts`), silently became
+`/church-safety-policy/`.
+
+**What the patch does.** Remembers the last filename the form derived itself
+(`lastSluggedFilename`, in the form's own closure, which survives the remount). Once the
+filename differs from that, someone typed it, and it's left alone.
+
+**How to check it.** Add File, type a title, click the address and type `safety`, open
+Top of page, change the intro line, come back: the address is still `safety`. A new page
+whose address you don't touch still follows its title.
+
+**Delete it when.** Upstream keeps the filename's edited state across a nested-form trip.
+Still present in 3.14.1.
+
+### 3. Only field errors block opening Top of page or a block
+
+**Upstream behaviour.** Four click handlers refuse to open a nested form (Top of page, a
+block, a list item) when `finalForm.getState().invalid` is true, with "Cannot navigate
+away from an invalid form."
+
+**Why that's wrong here.** `invalid` is also true after any failed save, and stays true
+until the next save. Our save-time check (`tina/save-check.mjs`, run from the Pages
+collection's `ui.beforeSubmit`) refuses a save by throwing, which leaves a submit error,
+so the editor was locked out of the very block it had just been told to fix. A network
+failure on save did the same.
+
+**What the patch does.** The four guards test `hasValidationErrors` instead: a field that
+is actually wrong still blocks navigation, a failed save doesn't.
+
+**How to check it.** Add File, type a title, leave Top of page as Photo & text with no
+photo, press Save: it's refused with "Not saved yet. Top of page: …". Then open Top of page:
+it opens.
+
+**Delete it when.** Upstream's guard ignores submit errors. Still present in 3.14.1.

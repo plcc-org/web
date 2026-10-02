@@ -1,7 +1,34 @@
 diff --git a/node_modules/tinacms/dist/index.js b/node_modules/tinacms/dist/index.js
-index a2fc024..834e581 100644
+index a2fc024..e566c61 100644
 --- a/node_modules/tinacms/dist/index.js
 +++ b/node_modules/tinacms/dist/index.js
+@@ -6339,7 +6339,7 @@ const Group$1 = ({ tinaForm, form, field, input, meta, index }) => {
+     if (field.openFormOnCreate) {
+       const state = tinaForm.finalForm.getState();
+       const newIndex = field.addItemBehavior === "prepend" ? 0 : items.length;
+-      if (state.invalid === true) {
++      if (state.hasValidationErrors === true) {
+         cms.alerts.error("Cannot navigate away from an invalid form.");
+         return;
+       }
+@@ -6452,7 +6452,7 @@ const Item$1 = ({
+         onMouseOut: () => setHoveredField({ id: null, fieldName: null }),
+         onClick: () => {
+           const state = tinaForm.finalForm.getState();
+-          if (state.invalid === true) {
++          if (state.hasValidationErrors === true) {
+             cms.alerts.error(
+               "Cannot navigate away from an invalid form."
+             );
+@@ -6802,7 +6802,7 @@ const Group = wrapFieldWithNoHeader(
+       {
+         onClick: () => {
+           const state = tinaForm.finalForm.getState();
+-          if (state.invalid === true) {
++          if (state.hasValidationErrors === true) {
+             cms.alerts.error("Cannot navigate away from an invalid form.");
+             return;
+           }
 @@ -7142,7 +7142,7 @@ const Blocks = ({
        if (typeof template.defaultItem === "function") {
          obj = template.defaultItem();
@@ -11,3 +38,36 @@ index a2fc024..834e581 100644
        }
        obj._template = name2;
        setNewObjects((prev) => new Set(prev).add(obj));
+@@ -7251,7 +7251,7 @@ const BlockListItem = ({
+     {
+       onClick: () => {
+         const state = tinaForm.finalForm.getState();
+-        if (state.invalid === true) {
++        if (state.hasValidationErrors === true) {
+           cms.alerts.error(
+             "Cannot navigate away from an invalid form."
+           );
+@@ -75931,6 +75931,7 @@ const RenderForm$1 = ({
+   const form = useMemo(() => {
+     var _a2, _b2, _c2, _d2;
+     const folderName = folder.fullyQualifiedName ? folder.name : "";
++    let lastSluggedFilename;
+     return new Form({
+       crudType: "create",
+       initialValues: typeof defaultItem === "function" ? { ...defaultItem(), _template: templateName } : { ...defaultItem, _template: templateName },
+@@ -75942,11 +75943,14 @@ const RenderForm$1 = ({
+           const appendFolder = folderName && !(filename == null ? void 0 : filename.startsWith("/")) ? `/${folderName}/` : "/";
+           form.path = schemaCollection.path + appendFolder + `${filename}.${schemaCollection.format || "md"}`;
+         }
+-        if (slugFunction && (values == null ? void 0 : values.active) !== "filename" && !(values == null ? void 0 : values.submitting) && !((_b3 = values.touched) == null ? void 0 : _b3.filename)) {
++        const currentFilename = (_a3 = values == null ? void 0 : values.values) == null ? void 0 : _a3.filename;
++        const filenameEditedByHand = lastSluggedFilename !== void 0 && currentFilename !== lastSluggedFilename;
++        if (slugFunction && (values == null ? void 0 : values.active) !== "filename" && !(values == null ? void 0 : values.submitting) && !((_b3 = values.touched) == null ? void 0 : _b3.filename) && !filenameEditedByHand) {
+           const value = slugFunction(values.values, {
+             template,
+             collection: schemaCollection
+           });
++          lastSluggedFilename = value;
+           form.finalForm.change("filename", value);
+         }
+       },

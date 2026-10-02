@@ -486,6 +486,15 @@ files` step; see [infrastructure.md](./infrastructure.md#a-build-stuck-at-indexi
   `src/lib/tina/rich-text-href.ts`, and it's an allowlist on purpose, because a
   `javascript:` href typed into a page body would be stored XSS. `scripts/check-site.mjs`
   is no help here — it skips these schemes, having no way to resolve them against `dist`.
+- **A block's checks run again at Save.** Tina validates a field only while it's on screen,
+  so a block's or the hero's validators stop applying once the editor goes back to the
+  page, and a save would go through to a build that rejects it. The Pages collection's
+  `ui.beforeSubmit` runs `pageProblems` (`tina/save-check.mjs`), which walks the hero and
+  every block and calls each field's own validator, then refuses the save with the block
+  named. A new rule therefore needs only its field's `ui.validate`; the save check picks it
+  up. `test/save-check.test.ts` runs it over every page on disk, so a rule that would lock
+  an existing page fails CI. The refusal leaves a submit error, which upstream Tina treats
+  as an invalid form and uses to block opening blocks; `patches/README.md` covers the fix.
 - **A photo's own description is optional; a description isn't.** The per-photo field
   falls back to the Photo descriptions catalog, so it's never `required`. Instead
   `checkPhotoAlt` (`tina/block-rules.mjs`) refuses a save when the photo has no catalog

@@ -6,6 +6,7 @@ import { dateOnly } from './date-field.mjs'
 import { checkNoticeLink, checkNoticeMessage } from './site-notice.mjs'
 import { checkOptionalLink } from './link-rules.mjs'
 import { checkClosingBanner } from './block-rules.mjs'
+import { pageProblems } from './save-check.mjs'
 import { church } from '../src/config/church'
 
 /**
@@ -124,6 +125,17 @@ export default defineConfig({
           router: ({ document }) => {
             const crumbs = document._sys.breadcrumbs
             return crumbs.length === 1 && crumbs[0] === 'index' ? '/' : `/${crumbs.join('/')}/`
+          },
+          // Tina checks a block's fields only while the block is open, so a problem it
+          // pointed out is forgotten once the editor goes back to the page, and the save
+          // goes through to a build that rejects it. This runs every one of those checks
+          // over the whole page at Save, and refuses the save with the block named.
+          // Throwing is how a save is refused; the alert is what the editor sees.
+          beforeSubmit: async ({ cms, values }) => {
+            const problems = pageProblems(values, { heroFields, templates })
+            if (problems.length === 0) return values
+            cms.alerts.error(`Not saved yet. ${problems.slice(0, 3).join(' ')}`, 15000)
+            throw new Error(problems.join(' '))
           },
           // The filename is the URL, so it's the first thing an editor sees rather than
           // the last. Tina seeds it from the title and stops the moment the field is

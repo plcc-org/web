@@ -13,8 +13,10 @@ thinking.
 ## Steps
 
 1. In the editor (/admin), choose **Pages**, then **Add File**.
-2. **The address** is the first field, and it follows the title as you type: “safety” makes
-   the page `/safety/`. Leave it for now; you’ll set it just before the first save (step 7).
+2. **Choose the address.** It’s the first field, and it follows the title as you type.
+   Click it to change it: “safety” makes the page `/safety/`, whatever the title says. Keep
+   it short, because addresses get read aloud and printed. Choosing well now matters, since
+   changing it later breaks every link to the page.
 3. Fill in the **Title**. It’s the page’s heading and its name in the browser tab.
 4. Open **Top of page** and pick its **Kind** first. The fields below say which kinds they
    apply to (“For Photo & text…”).
@@ -26,22 +28,18 @@ thinking.
    | **Logo & photo** | A program’s wordmark in place of the title, like Pine Lake Kids. |
    | **Cinematic**    | Full-width photos drifting behind the title. Home page only.     |
 
-   A Photo & text top needs its **Photo** ([Add a photo](./add-a-photo.md)). Add it before
-   you leave Top of page: the editor only checks for it while Top of page is open, and a
-   page saved without it stops the site updating. Give it an **Intro line** too: one or two sentences
-   under the title. If it could describe any church, rewrite it.
+   A Photo & text top needs its **Photo** ([Add a photo](./add-a-photo.md)); the page won’t
+   save without it. Give it an **Intro line** too: one or two sentences under the title. If
+   it could describe any church, rewrite it.
 
 5. Build the page in **Body**: the **+** button adds a block, which lands at the bottom, so
    drag it up into place. [Which block do I use?](./blocks.md) helps you choose, and has a
    worked example of a whole page.
 6. Write a **Search summary**: one sentence, under about 155 characters, for search results
    and link previews. It can stay blank when the top of the page has an intro line.
-7. **Set the address, then save.** Click the address to unlock it and change it if the title
-   makes a long one. Keep it short, because addresses get read aloud and printed. Do this
-   last before the first save: the editor forgets a hand-typed address if you open Top of
-   page or a block afterwards, and puts the title’s back. Check it, then **Save**. The page
-   is saved as hidden, and from now on its address stays put. Changing it later breaks
-   every link to the page.
+7. **Save** whenever you like: the page stays hidden. If anything on it needs fixing, the
+   save is refused with a message naming the block ([Something looks
+   wrong](./something-looks-wrong.md#not-saved-yet)).
 8. When the page is ready, untick **Hidden from the public site (draft)** and **Save**. If
    the page has neither a Search summary nor an intro line, the form asks for one now.
 
@@ -61,6 +59,6 @@ only in the editor, even if you’ve saved it many times.
 
 ## If something goes wrong
 
-- **It won’t save.** The form marks the field it’s unhappy with; see
-  [The form won’t save](./something-looks-wrong.md#the-form-wont-save).
+- **It won’t save.** The message says what’s wrong and where; see
+  [Not saved yet](./something-looks-wrong.md#not-saved-yet).
 - **The page isn’t on the site.** Check that Draft is unticked, then give it a few minutes.
