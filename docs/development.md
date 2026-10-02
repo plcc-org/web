@@ -41,14 +41,15 @@ src/
     church.ts       Name, address, service time — the facts that must not drift
   content/          Editable content collections
     pages/          CMS-built MDX pages (rendered by pages/[...slug].astro)
-    leadership/     One file per leader
-    youth-moments/  Youth photo captions
+    leadership/     leadership.yaml, the people in page order
+    youth-moments/  youth-moments.yaml, the youth photo captions in page order
     short-links/    Redirects + 410s (NOT an Astro collection — see below)
     photos/         The photo catalog (photos.json): filename → alt, written once
     quotes/         quotes.yaml, the homepage carousel list; beside it
                     quotes-and-placeholders.yaml, reference only (nothing loads it)
     sunday-links/   One file per Sunday for /links/ (past weeks pruned nightly)
     sunday-links-every-week/  The groups of links under every week
+    site-notice/    The closure notice across the top of every page
   data/             Machine-written data (events-pco.json, the nightly PCO capture)
   content.config.ts Collection definitions + Zod schemas
   layouts/          BaseLayout.astro (head, chrome, skip link, JSON-LD)
@@ -241,7 +242,7 @@ point of having a CMS. This is Tina's dependency graph to fix, not ours.
   field — use `resolveHref()`, which passes those through untouched.
 - **Content collections.** Editable content lives under `src/content/`, defined and
   validated in `src/content.config.ts`: `photos`, `youthMoments`, `leadership`, `quotes`,
-  `pages`. Query with `getCollection(...)` — don't hand-author lists in markup or add new
+  `pages`, `sundayLinks`, `sundayLinksEveryWeek`, `siteNotice`. Query with `getCollection(...)` — don't hand-author lists in markup or add new
   `src/data/*.ts` arrays. Editing copy shouldn't mean touching layout. Keep
   `tina/config.ts` in step (see [cms.md](./cms.md)).
   - **What earns a collection**: data reused across the site, or referenced from inside
@@ -389,6 +390,7 @@ output gets checked.
 - `structured-data.test.ts` — the schema.org graph, and a JSON-LD document that can't end
   its own `<script>`
 - `messages.test.ts` — the YouTube feed parser behind `/messages/`
+- `livestream.test.ts` — `isStreamLive()`, the Sunday window for the "Live now" banner
 - `rich-text-href.test.ts` — the href allowlist for CMS rich text, on both sides: the
   schemes the site uses keep working, and script-bearing ones stay blocked
 - `hrefs.test.ts` — no root-relative `href`/`src` literals in components

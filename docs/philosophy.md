@@ -34,7 +34,7 @@ notice above every page is the same kind of thing: it's there for a closure, the
 
 ## The core idea: help people see themselves
 
-We're helping **people recognize themselves** at Pine Lake specifically. That includes families, teens, older couples, single moms, people of a variety of background, ethnicity, or dress. Rather than "will you fit with us", we want a newcomer to see "you're not going to be the odd-one out here".
+We're helping **people recognize themselves** at Pine Lake specifically. That includes families, teens, older couples, single moms, people from a variety of backgrounds, ethnicities, or styles of dress. Rather than "will you fit with us", we want a newcomer to see "you're not going to be the odd one out here".
 
 In addition, this gives us one ruthless test for any sentence:
 

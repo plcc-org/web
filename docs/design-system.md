@@ -39,6 +39,7 @@ tokens → base → prose → nav → layout → components → blocks → foote
 | File             | Layer        | Responsibility                                                                              |
 | ---------------- | ------------ | ------------------------------------------------------------------------------------------- |
 | `tokens.css`     | `tokens`     | All custom properties (`:root`). No selectors but `:root`.                                  |
+| `themes.css`     | `tokens`     | The hidden `?theme=` experiments (§13) — token overrides only.                              |
 | `base.css`       | `base`       | Resets, document defaults, heading scale, grain overlay, skip link.                         |
 | `prose.css`      | `prose`      | Defaults for author-written Markdown in `.site-main` — the weakest rules on the site.       |
 | `nav.css`        | `nav`        | Header / primary navigation (incl. mobile hamburger and the hero overlay state).            |
@@ -244,10 +245,12 @@ Font stacks come from the Astro Fonts API (with metric-matched fallbacks) as
 `--space-section` (`clamp(3.25rem, 6vw, 6rem)`) is the rhythm between major page
 sections; `--gutter` (`clamp(1.25rem, 4vw, 2.5rem)`) is the page edge inset.
 
-Ramp: `--space-sm .75` · `--space-md 1.25` · `--space-xl 3` · `--space-3xl 6` (rem).
+Ramp: `--space-xs .5` · `--space-sm .75` · `--space-md 1.25` · `--space-lg 1.5` ·
+`--space-xl 3` · `--space-2xl 4.5` · `--space-3xl 6` (rem). Gaps of 0.5rem and up take a
+token; optical nudges below that stay literal.
 
-> `--space-s` (1.5rem) and `--space-m` (3rem) are legacy aliases, misnamed for their
-> values and used widely enough that renaming them is its own change. Don't add new uses.
+Card insets come in two densities, `--pad-card` and `--pad-card-roomy`; a component says
+which it is rather than writing its own `clamp()`.
 
 ### Reading measures and layout widths
 
@@ -272,6 +275,8 @@ them and no two columns aligned.
   `--shadow-lg` (heroes / lifts). All are layered and low-contrast.
 - Surfaces: `--surface-gradient-soft` (warm-white → stone), `--gradient-forest`
   (shared dark-panel gradient for hero / `band--forest` / `split--forest`, so they match).
+- Text shadows over photos: `--shadow-text`, `--shadow-text-sm`.
+- Stacking: `--z-header`, `--z-grain`, `--z-skip-link` — the skip link has to beat the grain.
 - `--grain` — SVG fractal noise applied via `body::before`, fixed, multiply-blended,
   pointer-events none.
 - Easing: `--ease-out` (most transitions), `--ease-spring` (playful lifts).
@@ -331,7 +336,7 @@ second layout system, and there shouldn't be.**
   <!-- bleeds edge to edge -->
   <section class="section">…</section>
   <!-- sits in the content column -->
-  <MomentsSection sectionClass="to-wide" … />
+  <MomentsSection class="to-wide" … />
   <!-- wider gallery track -->
 </div>
 ```
@@ -448,10 +453,10 @@ flat props to each component's real shape. They are **not** a second component s
 each one delegates.
 
 `src/components/blocks/tina/` holds the six blocks with prose inside them (`Section`,
-`Split`, `Callout`, `Cta`, `Aside`, `Letter`), whose prose arrives as a `body` rich-text
-tree and is rendered by `TinaChildren`. `src/components/blocks/mdx/` holds the twelve
-self-closing ones, which take plain props. Where no adaptation is needed at all the CMS key
-maps straight to the component (`Callout`, `Roadmap` do this). `registry.ts` is the map.
+`Split`, `Callout`, `Closing`, `Aside`, `Letter`), whose prose arrives as a `body` rich-text
+tree and is rendered by `TinaChildren`. `src/components/blocks/mdx/` holds eleven of the
+twelve self-closing ones, which take plain props. Where no adaptation is needed at all the
+CMS key maps straight to the component — only `Roadmap` does. `registry.ts` is the map.
 
 `PageHero` is the one that isn't a pass-through: it renders every CMS page's `hero`
 frontmatter as a reversed sand `Split`, guaranteeing a consistent page opener. See
@@ -522,8 +527,8 @@ automatically flips to a light fill so it doesn't read green-on-green.
 
 - **Footer** (`footer.css`) — full-bleed forest panel on a faint grid texture: a sitemap
   of four link columns above a hairline, then church info, social links and the copyright
-  line. The columns collapse to two ≤ 800px. A closing `band--forest` flows flush into it
-  (see `band--flush`, §5).
+  line. At ≤ 860px the panel stacks and the sitemap drops to two columns. A closing
+  `band--forest` flows flush into it (see `band--flush`, §5).
 
   Each column heading is itself the link to that hub, so the hub isn't listed twice. The
   sitemap is the persistent path to every page below a hub. The primary nav is capped
@@ -572,11 +577,9 @@ See [development.md](./development.md#the-image-system) for the pipeline.
 
 - **Internal links** use `withBase()`; links an editor might make external use
   `resolveHref()` (`src/lib/url.ts`).
-- **Scoped styles don't reach child components.** A scoped rule in a parent `.astro`
-  won't style markup rendered by a child (e.g. the `<img>` inside `<Photo>`). Use
-  `:global(.class)` — **but only inside an `.astro` `<style>` block.** `:global()` is
-  Astro syntax, not CSS: in a plain `.css` file the browser drops the entire rule and the
-  styling silently vanishes. Stylelint catches this now.
+- **No `:global()`.** It's Astro syntax, and every rule lives in a plain `.css` file, where
+  the browser drops the whole rule silently. A rule that needs to reach the `<img>` inside
+  `<Photo>` is just a normal selector. Stylelint and `test/styles.test.ts` both catch it.
 - **Prose-link `:where()` rule.** In-content links default to moss-ink via
   `:where(.site-main a:not(.link-card):not(.card))`. The `:visited` and `:hover` variants
   are written **inside** the `:where()` so they stay at zero specificity — otherwise
@@ -599,7 +602,6 @@ Recorded so they read as decisions rather than gaps.
   than as a surface variable — so dark mode would mean rewriting the colour layer, and
   the result would fight the design. The audience benefit is near zero. Don't add it
   without revisiting the whole colour architecture.
-- **No `@layer`.** Cascade order is `@import` sequence (§2). Worth adopting; hasn't been.
 - **No container queries.** Component breakpoints are ad-hoc viewport media queries, and
   there are more distinct values than there should be.
 - **No `oklch` / `color-mix`.** All colour is `rgb()`, which is why tints are written as
@@ -614,10 +616,18 @@ Recorded so they read as decisions rather than gaps.
 A photo-led section page:
 
 ```astro
+---
+// Components take a resolved image, not a filename.
+const photo = async (file: string) => (await imageFromRef(`/assets/images/${file}`)?.())?.default
+const opener = await photo('…')
+const second = await photo('…')
+const moments = [{ image: await photo('…'), alt: '…' }]
+---
+
 <BaseLayout title="…" description="…">
   <div class="canvas">
     <!-- Opener: portrait photo + title -->
-    <Split class="to-full" filename="…" tone="sand" reverse eyebrow="…">
+    <Split class="to-full" image={opener} alt="…" tone="sand" reverse eyebrow="…">
       <h1 class="display">Page Title</h1>
       <p class="lede">…</p>
     </Split>
@@ -633,12 +643,12 @@ A photo-led section page:
     <Callout>…</Callout>
 
     <!-- A second photo beat -->
-    <Split class="to-full" filename="…" tone="paper" heading="…">
+    <Split class="to-full" image={second} alt="…" tone="paper" heading="…">
       …
     </Split>
 
     <!-- A gallery -->
-    <MomentsSection eyebrow="Life together" photos={moments} sectionClass="to-wide" />
+    <MomentsSection eyebrow="Life together" images={moments} class="to-wide" />
 
     <!-- Closing CTA, flush into the footer -->
     <Band tone="forest" flush centered heading="Come this Sunday">

@@ -74,7 +74,7 @@ Center migration a change to one adapter rather than a change to the pages.
 typo fails the build rather than silently falling back. Its values must stay in step
 with `EventSource` in `src/lib/events/types.ts` — there's a comment on both sides.
 
-### The three sources
+### The sources
 
 | Source    | Status         | What it is                                                                                                |
 | --------- | -------------- | --------------------------------------------------------------------------------------------------------- |
@@ -328,23 +328,21 @@ nowhere on the page — structured data for content the reader can't see.
 
 ## Categories, tags first
 
-`resolveCategory()` in `logic.ts` tries real Planning Center tags before falling back to
-the title regex ladder.
+Every event lands in one of five coarse categories: `Youth`, `Groups`, `Serve`,
+`Families`, or `Everyone`. `resolveCategory()` in `logic.ts` decides in two steps.
 
-Tags are authoritative **only when they name one of the four specific categories**
-(`Youth`, `Children & Families`, `Congregational Care`, `Missions / Service`, the group
-tags). Tags that would mean `Everyone` — `Worship`, `Community Event`, `Meeting`,
-`Adults` — are deliberately **not** in the map: they are the absence of a signal, and
-treating them as one would shadow the ladder. `Blood Drive` carries only
-`Community Event` but belongs in Serve, and the ladder is what finds it.
+1. **Tags, when they're specific.** `TAG_CATEGORY` maps Planning Center tags from the
+   Ministry, Ministry Area and Organization groups (`Youth`, `Congregational Care`,
+   `Life Group`, `Missions / Service`, `Children & Families`, …) onto the four specific
+   categories. Tags that would mean `Everyone` — `Worship`, `Community Event`, `Meeting`,
+   `Adults` — are deliberately **not** in the map: they are the absence of a signal, and
+   treating them as one would shadow the ladder. `Blood Drive` carries only
+   `Community Event` but belongs in Serve, and the ladder is what finds it.
+2. **Otherwise, the title ladder.** `mapCategory()` tests a regex ladder against
+   `tags + title` lowercased. It stays because Planning Center tagging is inconsistent —
+   `Newcomers Brunch` carries no tags at all.
 
-The ladder stays because Planning Center tagging is inconsistent — `Newcomers Brunch`
-carries no tags at all. **Its order is still load-bearing**; see below.
-
-`mapCategory()` maps Church Center's category tags plus the title onto our five coarse
-categories, by testing a regex ladder against `tags + title` lowercased.
-
-**The order is load-bearing**, because events match more than one pattern. `Youth` is
+**The ladder's order is load-bearing**, because events match more than one pattern. `Youth` is
 tested first, then `Groups`, `Serve`, `Families`, and anything unmatched falls to
 `Everyone`. A confirmation class for middle-schoolers should be Youth even though it
 would also match `Families`; moving a rule up or down silently re-files events. If you
@@ -378,5 +376,3 @@ Recorded here so it isn't mistaken for an oversight:
   than the `description` the old path truncated, which narrows the problem without
   solving it. The options remain: stop rendering imported copy entirely, or add a small
   overrides map for the handful of recurring events.
-
-Worth building against `pco`, not against the stopgap.

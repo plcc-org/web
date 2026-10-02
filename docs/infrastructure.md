@@ -8,7 +8,7 @@ How the site is hosted and shipped. For the codebase and build scripts, see
 ## Environments
 
 Hosting is on **Cloudflare**, which builds from the GitHub repo on every push. The adapter
-(`@astrojs/cloudflare`) targets the **Workers** platform (static assets + the one CMS
+(`@astrojs/cloudflare`) targets the **Workers** platform (static assets + the two CMS
 function routes); it emits a `wrangler.json` under `dist/server/` at build time. The target
 is selected by the `DEPLOY_ENV` variable, resolved in `src/config/site.ts` (consumed by
 `astro.config.mjs`):
@@ -63,7 +63,7 @@ before anything else. See [events.md](./events.md).
 Cloudflare is the only host, and the site needs it to stay that way: visual editing depends
 on its function routes (`/tina-island/*`, `/tina-preview/*`), so a static-only host
 can't serve the CMS. The production cutover (point `plcc.org` DNS at Cloudflare) is covered
-in [cms.md](./cms.md#3-cutover-and-production).
+in [cms.md](./cms.md#cutover-and-production).
 
 ### Settings that live in the Cloudflare dashboard
 
