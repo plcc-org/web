@@ -306,8 +306,8 @@ with the slim chrome, `noindex`, and out of the sitemap. Each file's frontmatter
   paths so the crawl can check them. A link into the developer docs fails the build: they
   aren't published. `test/manual.test.ts` checks every link and `#anchor` from the source.
 - **The file name is the address, and the CMS depends on it.** Field help in
-  `tina/templates.mjs` links to pages with `guide('<file>', …)`. Rename a file and those
-  links 404.
+  `tina/templates.mjs` links to pages with `guide('<file>', …)`; `test/manual.test.ts`
+  fails if one has no page.
 - **Markdown runs through Astro 7's Sätteri processor**, which takes plugins only through
   `@astrojs/markdown-satteri`'s `satteri()`, hence the direct dependency. Syntax
   highlighting is off: Shiki's literal colours wouldn't pass the token rules, and the
@@ -435,8 +435,9 @@ output gets checked.
 - `short-link-rules.test.ts`, `generate-redirects.test.ts` — per-entry rules, then the
   generator itself: 301/302, slash pairs, duplicates, shadowed pages, 410 routes
 - `media-pipeline.test.ts` — upload types agree end to end; the CDN media rule
-- `manual.test.ts` — the manual's link rewriting, and every link and anchor in
-  `docs/manual/` resolving to a real page and heading
+- `manual.test.ts` — the manual's link rewriting, every link and anchor in
+  `docs/manual/` resolving to a real page and heading, and every `guide()` link in the
+  CMS having a page
 
 **Build and design guards**
 
