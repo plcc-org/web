@@ -11,7 +11,9 @@ import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 type Props = { eyebrow?: string; heading?: string; intro?: string; tone?: 'forest' | 'sand' | 'paper' } & BlockProps
 const { eyebrow, heading, intro, tone = 'sand' } = Astro.props
 
-const quotes = (await getCollection('quotes')).map((q) => ({ text: q.data.text, by: q.data.by }))
+const quotes = (await getCollection('quotes'))
+  .sort((a, b) => a.data.position - b.data.position)
+  .map((q) => ({ text: q.data.text, by: q.data.by }))
 ---
 
 {quotes.length > 0 && (

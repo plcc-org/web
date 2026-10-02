@@ -4,13 +4,15 @@ import { getCollection } from 'astro:content'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // Block adapter for the Youth moments block — the signature youth tentpoles,
-// pulled from the shared `youthMoments` collection (sorted by order). Optional
+// pulled from the shared `youthMoments` collection, in list order. Optional
 // eyebrow/heading fall back to the component's defaults. Renders nothing if the
 // collection is empty.
 type Props = { eyebrow?: string; heading?: string } & BlockProps
 const { eyebrow, heading } = Astro.props
 
-const moments = (await getCollection('youthMoments')).sort((a, b) => a.data.order - b.data.order).map((m) => m.data)
+const moments = (await getCollection('youthMoments'))
+  .sort((a, b) => a.data.position - b.data.position)
+  .map((m) => m.data)
 ---
 
 {moments.length > 0 && (

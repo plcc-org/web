@@ -8,29 +8,41 @@ import { checkNoticeLink, checkNoticeMessage } from '../tina/site-notice.mjs'
 import { heroFields, templates } from '../tina/templates.mjs'
 import { checkClosingBanner } from '../tina/block-rules.mjs'
 
-// quotes is a single YAML file holding one array. The CMS edits it as a list
-// field, which serializes to `{ <key>: [...] }`. Parse tolerantly so both the
-// hand-authored bare-array form and the CMS-wrapped form load, and give every
-// item a stable `id` for the store.
+// A list kept in one YAML file. The CMS edits it as a list field, which
+// serializes to `{ <key>: [...] }`; parse tolerantly so a hand-authored bare
+// array loads too. The position in the list is the display order, so an editor
+// reorders by dragging, not by numbering — but getCollection() returns entries
+// in id order, not file order ("kim-witherbee" before "kyle-harmon", and
+// "quotes-10" before "quotes-2"), so each item carries its `position` and
+// readers sort by it. `idOf` gives each item its store id; the default numbers
+// them, which is fine for anything nothing links to.
 //
-// It lives in its own directory so the CMS can model it as a one-document
+// Each lives in its own directory so the CMS can model it as a one-document
 // collection — Tina has no singleton type, and pointing a collection at a
 // directory containing exactly one file is how its own starter does this.
-// (The helper is generic because start-here-links used it too, until those
-// links moved inline into the homepage that was their only reader.)
 const yamlList =
-  (key: string) =>
+  (key: string, idOf: (item: Record<string, unknown>, i: number) => string = (_, i) => `${key}-${i + 1}`) =>
   (text: string): Array<Record<string, unknown>> => {
     const data = parseYaml(text)
     const items: Array<Record<string, unknown>> = Array.isArray(data) ? data : (data?.[key] ?? [])
-    return items.map((item, i) => ({ id: item.id ?? `${key}-${i + 1}`, ...item }))
+    return items.map((item, i) => ({ id: idOf(item, i), ...item, position: i }))
   }
 
+/** "Kim Witherbee" → "kim-witherbee": the id a leader's deep link (#kim-witherbee) uses. */
+const slugOf = (value: unknown) =>
+  String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
 // Content lives under src/content/. Two shapes, by a simple rule:
-//   • Things you add / remove / reorder, or that own an image → a folder of
-//     entries (glob), one YAML file each, so the Git CMS manages
-//     them as a "folder collection" with a media library.
-//   • Short flat lists → a single YAML file (file), edited as a list.
+//   • Things with an order an editor sets — people, youth moments, quotes —
+//     and short flat lists → a single YAML file (file), edited as one list
+//     the editor reorders by dragging.
+//   • Things added independently, with no order between them — pages, short
+//     links, a week of Sunday links → a folder of entries (glob), one file each.
 // Schemas (Zod) make alt text required and give editor + build-time validation.
 
 // The photo catalog: one JSON file listing every editorial photo in
@@ -71,19 +83,20 @@ const photos = defineCollection({
 // "October 9–11, 2026" or a cadence like "Each spring". `featured` gives the
 // biggest moments large cards; the rest fall into a compact list.
 const youthMoments = defineCollection({
-  loader: glob({ pattern: '**/*.yaml', base: './src/content/youth-moments' }),
+  loader: file('src/content/youth-moments/youth-moments.yaml', { parser: yamlList('moments') }),
   schema: z.object({
     title: z.string().min(1),
     when: z.string().optional(),
     blurb: z.string().min(1),
     featured: z.boolean().default(false),
-    order: z.number().default(0),
+    position: z.number(),
   }),
 })
 
-// Pastors and staff. One YAML data file per person (the CMS stores data-only
-// collections as flat `<slug>.yaml`). The `bio` is a Markdown string field
-// rendered to HTML at build time; the portrait is co-located in src/assets/images.
+// Pastors and staff, in page order, in one YAML list. Each person's id is their
+// name as a slug, which the leadership page uses for deep links (#becca-worl).
+// The `bio` is a rich-text field in the CMS, which stores it as a Markdown
+// string, rendered to HTML at build time; the portrait lives in src/assets/images.
 // `portrait` is a path string resolved through imageFromRef, not Astro's image()
 // helper, for the same reason the pages collection is: the CMS rewrites media
 // paths, and only "/assets/images/…" survives a round-trip unchanged. image()
@@ -93,7 +106,7 @@ const youthMoments = defineCollection({
 // mangling one and building. Keeping both collections on one form also means one
 // rule to remember rather than an exception.
 const leadership = defineCollection({
-  loader: glob({ pattern: '**/*.yaml', base: './src/content/leadership' }),
+  loader: file('src/content/leadership/leadership.yaml', { parser: yamlList('people', (p) => slugOf(p.name)) }),
   schema: () =>
     z.object({
       name: z.string().min(1),
@@ -103,7 +116,7 @@ const leadership = defineCollection({
       // five hand-written values were exactly that, one with a typo.
       portraitAlt: z.string().optional(),
       bio: z.string().min(1),
-      order: z.number().default(0),
+      position: z.number(),
       // Half a link renders as "undefined →", so an incomplete pair collapses
       // to no link rather than failing a CMS save or rendering garbage.
       link: z
@@ -113,14 +126,13 @@ const leadership = defineCollection({
     }),
 })
 
-// Quotes render in file order — the position in the YAML list is the ordering,
-// and the loader synthesizes each entry's store id from it.
 const quotes = defineCollection({
   loader: file('src/content/quotes/quotes.yaml', { parser: yamlList('quotes') }),
   schema: z.object({
     id: z.string(),
     text: z.string().min(1),
     by: z.string().optional(),
+    position: z.number(),
   }),
 })
 

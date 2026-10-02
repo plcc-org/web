@@ -12,7 +12,7 @@ import { resolveHref } from '../../lib/url'
 // src/content.config.ts for why they aren't Astro's image() helper.
 const leaders = await Promise.all(
   (await getCollection('leadership'))
-    .sort((a, b) => a.data.order - b.data.order)
+    .sort((a, b) => a.data.position - b.data.position)
     .map(async (leader) => ({
       ...leader,
       portrait: (await imageFromRef(leader.data.portrait)?.())?.default,

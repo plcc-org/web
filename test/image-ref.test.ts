@@ -184,16 +184,13 @@ describe('CMS pages store images in the form the CMS round-trips', () => {
 // edit to a leader would block every deploy until someone hand-fixed the YAML.
 // Verified by mangling one and building before changing it.
 describe('leadership portraits use the same form', () => {
-  const DIR = 'src/content/leadership'
-  const files = readdirSync(DIR).filter((f) => f.endsWith('.yaml'))
+  const FILE = 'src/content/leadership/leadership.yaml'
+  const refs = [...readFileSync(FILE, 'utf-8').matchAll(/portrait:\s*(\S+)/g)].map((m) => m[1].trim())
 
   const wrong: Record<string, string> = {}
-  for (const file of files) {
-    const m = readFileSync(`${DIR}/${file}`, 'utf-8').match(/portrait:\s*(\S+)/)
-    if (!m) continue
-    const ref = m[1].trim()
-    if (!ref.startsWith('/assets/images/')) wrong[ref] = file
-    else if (!existsSync(`src/assets/images/${imageKey(ref)}`)) wrong[ref] = `${file} (no such file)`
+  for (const ref of refs) {
+    if (!ref.startsWith('/assets/images/')) wrong[ref] = 'not /assets/images/…'
+    else if (!existsSync(`src/assets/images/${imageKey(ref)}`)) wrong[ref] = 'no such file'
   }
 
   it('are /assets/images/… and resolve to a real file', () => {
@@ -201,6 +198,6 @@ describe('leadership portraits use the same form', () => {
   })
 
   it('scans the leaders at all', () => {
-    expect(files.length).toBeGreaterThan(2)
+    expect(refs.length).toBeGreaterThan(2)
   })
 })

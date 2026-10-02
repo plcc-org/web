@@ -411,9 +411,10 @@ export const checkSeoDescription = (value, allValues) => {
     : 'This page has no intro line, so it needs an SEO description — search results and link previews show it.'
 }
 
-// Each block's `description` answers the question an editor actually has — "I have
-// something to say; is this where it goes?" — in the words of the "Which block do I
-// use?" chooser, rather than describing the block's styling.
+// A block's `label` names how it looks ("Photo beside text", "Note with logo"), which is
+// what an editor matches against the palette thumbnail and the page in front of them.
+// Its `description` answers the other question — "I have something to say; is this
+// where it goes?" — in the words of the "Which block do I use?" chooser.
 export const templates = [
   {
     name: 'Section',
@@ -675,7 +676,7 @@ export const templates = [
   {
     name: 'LogoCards',
     label: 'Logo cards',
-    description: 'Cards where a logo is the identity: a program or a partner, with a line and a link.',
+    description: 'Cards each topped by a logo, with a line of text and an optional link.',
     ui: { ...itemProps('heading', 'Logo cards'), previewSrc: preview('LogoCards') },
     fields: [
       eyebrow(),
@@ -697,10 +698,14 @@ export const templates = [
     ],
   },
   {
+    // Merging this into Callout was considered and rejected: they share no layout
+    // (Callout is a heading over text with an accent rule; this is a compact panel
+    // beside a logo), so one block would need a switch that changes its whole shape,
+    // and three extra fields on every Callout.
     name: 'Aside',
-    label: 'Aside',
-    description: 'A note that belongs to a partner or program, set beside the page, with an optional logo.',
-    ui: { ...itemProps('eyebrow', 'Aside'), previewSrc: preview('Aside') },
+    label: 'Note with logo',
+    description: 'A short note in a tinted panel, with room for a logo beside it.',
+    ui: { ...itemProps('eyebrow', 'Note with logo'), previewSrc: preview('Aside') },
     fields: [
       eyebrow(),
       image('logo', 'Logo (optional)'),

@@ -28,12 +28,12 @@ const slug = (value: string) =>
     .replace(/-+/g, '-')
     .replace(/^[-/]+|[-/]+$/g, '')
 
-/** The flat form for data files (leadership, youth moments, short links): no folders. */
+/** The flat form for data files (short links): no folders. */
 const flatSlug = (value: string) => slug(value).replace(/\//g, '-')
 
 // CMS configuration. The `pages` collection carries the page frontmatter (including the
-// nested `hero` object) and an 18-component body palette; the other three are YAML data
-// files with no body. Must stay aligned with src/content.config.ts, which Astro validates
+// nested `hero` object) and an 18-component body palette; the rest are YAML or JSON
+// data files with no body. Must stay aligned with src/content.config.ts, which Astro validates
 // the same files against at build time — see docs/cms.md.
 //
 // Collection order is the sidebar order, and it is the running order in docs/cms.md's
@@ -356,70 +356,78 @@ export default defineConfig({
           },
         ],
       },
+      // Pastors and staff, and the youth year's big moments: each one ordered list in one
+      // YAML file, modelled like Homepage quotes (one document, create and delete
+      // removed). The position in the list is the order on the page, so an editor drags
+      // someone into place instead of renumbering everyone below them — which is what
+      // per-file `order` numbers came to in practice.
       {
         name: 'leadership',
         label: 'Leadership',
         path: 'src/content/leadership',
         format: 'yaml',
-        // Without `slugify`, Tina's default keeps capitals — "Becca Worl" seeds
-        // `Becca-Worl.yaml` next to the existing `becca-worl.yaml`. Same trap the
-        // pages collection documents; same fix, minus the folders pages allow.
-        ui: {
-          filename: {
-            description: 'The file this is saved as — set automatically from the name.',
-            slugify: (values) => flatSlug(values?.name ?? ''),
-            parse: (value: string) => flatSlug(value),
-          },
-        },
-        defaultItem: () => ({ order: 0 }),
+        match: { include: 'leadership' },
+        // No `router`, for the reason given on the site notice: the leadership page isn't
+        // rendered through a TinaIsland, so there's nothing for visual editing to bind.
+        ui: { allowedActions: { create: false, delete: false } },
         fields: [
-          { name: 'name', label: 'Name', type: 'string', isTitle: true, required: true },
           {
-            name: 'title',
-            label: 'Role / title',
-            type: 'string',
-            required: true,
-            description: 'As it reads under the name, like “Lead Pastor”.',
-          },
-          // image() pins the stored shape to /assets/images/<file> — see the
-          // helper in templates.mjs for why no image field is written by hand.
-          image('portrait', 'Portrait', {
-            required: true,
-            description: 'A portrait-shaped photo; a wide one loses its edges.',
-          }),
-          {
-            name: 'portraitAlt',
-            label: 'Portrait description (optional)',
-            type: 'string',
-            description: 'Leave blank to use their name and role.',
-          },
-          {
-            name: 'bio',
-            label: 'Bio',
-            type: 'string',
-            required: true,
-            ui: { component: 'textarea' },
-            description: 'A few short paragraphs, with a blank line between them.',
-          },
-          {
-            name: 'order',
-            label: 'Order',
-            type: 'number',
-            description: 'Lower numbers come first. Count in tens (10, 20, 30) so someone new can slot in between.',
-          },
-          {
-            name: 'link',
-            label: 'Read-more link (optional)',
+            name: 'people',
+            label: 'People',
             type: 'object',
-            description: 'A line under the bio. It shows only when both parts are filled in.',
+            list: true,
+            openFormOnCreate: true,
+            description: 'In the order they appear on the leadership page. Drag to reorder.',
+            ui: { itemProps: (item) => ({ label: item?.name || 'New person' }) },
             fields: [
-              { name: 'label', label: 'Link text', type: 'string' },
+              // The page's deep links (#becca-worl) are made from the name, so
+              // renaming someone changes theirs — see slugOf in src/content.config.ts.
+              { name: 'name', label: 'Name', type: 'string', required: true },
               {
-                name: 'href',
-                label: 'Links to',
+                name: 'title',
+                label: 'Role / title',
                 type: 'string',
-                description: 'A page here like /about/, or a full https:// address.',
-                ui: { validate: (value: unknown) => checkOptionalLink(value) },
+                required: true,
+                description: 'As it reads under the name, like “Lead Pastor”.',
+              },
+              // image() pins the stored shape to /assets/images/<file> — see the
+              // helper in templates.mjs for why no image field is written by hand.
+              image('portrait', 'Portrait', {
+                required: true,
+                description: 'A portrait-shaped photo; a wide one loses its edges.',
+              }),
+              {
+                name: 'portraitAlt',
+                label: 'Portrait description (optional)',
+                type: 'string',
+                description: 'Leave blank to use their name and role.',
+              },
+              // Rich text rather than a Markdown textarea, so bold and links come from a
+              // toolbar instead of syntax. Tina stores rich text as a Markdown string in
+              // YAML too, so the page renders it exactly as before (renderMarkdown).
+              {
+                name: 'bio',
+                label: 'Bio',
+                type: 'rich-text',
+                required: true,
+                overrides: { toolbar: ['link', 'bold', 'italic'] },
+                description: 'A few short paragraphs.',
+              },
+              {
+                name: 'link',
+                label: 'Read-more link (optional)',
+                type: 'object',
+                description: 'A line under the bio. It shows only when both parts are filled in.',
+                fields: [
+                  { name: 'label', label: 'Link text', type: 'string' },
+                  {
+                    name: 'href',
+                    label: 'Links to',
+                    type: 'string',
+                    description: 'A page here like /about/, or a full https:// address.',
+                    ui: { validate: (value: unknown) => checkOptionalLink(value) },
+                  },
+                ],
               },
             ],
           },
@@ -430,40 +438,39 @@ export default defineConfig({
         label: 'Youth moments',
         path: 'src/content/youth-moments',
         format: 'yaml',
-        ui: {
-          filename: {
-            description: 'The file this is saved as — set automatically from the title.',
-            slugify: (values) => flatSlug(values?.title ?? ''),
-            parse: (value: string) => flatSlug(value),
-          },
-        },
-        defaultItem: () => ({ featured: false, order: 0 }),
+        match: { include: 'youth-moments' },
+        ui: { allowedActions: { create: false, delete: false } },
         fields: [
-          { name: 'title', label: 'Title', type: 'string', isTitle: true, required: true },
           {
-            name: 'when',
-            label: 'When (optional)',
-            type: 'string',
-            description: 'A date range or a season, like “August 10–17, 2026” or “Each spring”.',
-          },
-          {
-            name: 'blurb',
-            label: 'Blurb',
-            type: 'string',
-            required: true,
-            ui: { component: 'textarea' },
-          },
-          {
-            name: 'featured',
-            label: 'Featured',
-            type: 'boolean',
-            description: 'Featured moments get a large card; the rest fall into a compact list.',
-          },
-          {
-            name: 'order',
-            label: 'Order',
-            type: 'number',
-            description: 'Lower numbers come first. Count in tens (10, 20, 30) so a new one can slot in between.',
+            name: 'moments',
+            label: 'Moments',
+            type: 'object',
+            list: true,
+            openFormOnCreate: true,
+            description: 'In the order they appear on the youth page. Drag to reorder.',
+            ui: { itemProps: (item) => ({ label: item?.title || 'New moment' }) },
+            fields: [
+              { name: 'title', label: 'Title', type: 'string', required: true },
+              {
+                name: 'when',
+                label: 'When (optional)',
+                type: 'string',
+                description: 'A date range or a season, like “August 10–17, 2026” or “Each spring”.',
+              },
+              {
+                name: 'blurb',
+                label: 'Blurb',
+                type: 'string',
+                required: true,
+                ui: { component: 'textarea' },
+              },
+              {
+                name: 'featured',
+                label: 'Featured',
+                type: 'boolean',
+                description: 'Featured moments get a large card; the rest fall into a compact list.',
+              },
+            ],
           },
         ],
       },

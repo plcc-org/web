@@ -87,16 +87,19 @@ last, being routing config rather than content and the least often touched.
 | **Sunday links**             | This Sunday's links at `/links/`, one per week | weekly  |
 | **Sunday links: every week** | The groups of links under every week           | content |
 | **Site notice**              | A closure notice across the top of every page  | notice  |
-| **Leadership**               | Pastors & staff — reusable people entities     | shared  |
-| **Youth moments**            | Signature youth trips/retreats (curated)       | shared  |
+| **Leadership**               | Pastors & staff, in page order                 | shared  |
+| **Youth moments**            | Signature youth trips/retreats, in page order  | shared  |
 | **Homepage quotes**          | Rotating testimonials (reusable social proof)  | shared  |
 | **Photo descriptions**       | One alt-text description per photo, site-wide  | shared  |
 | **Short links**              | Vanity URLs pointing off-site                  | routing |
 
-All nine sit under one **Collections** heading. Four of them — **Sunday links: every
-week**, **Site notice**, **Homepage quotes** and **Photo descriptions** — are a single
-file, so their list view shows a
-single row to click through. They offer no "add" or "delete" at the file level (`allowedActions` in
+All nine sit under one **Collections** heading. Six of them — **Sunday links: every
+week**, **Site notice**, **Leadership**, **Youth moments**, **Homepage quotes** and
+**Photo descriptions** — are a single file, so their list view shows a single row to
+click through. Where the file is a list, its order is the order on the page: an editor
+drags an item into place rather than numbering it. (Leadership and Youth moments were a
+file per entry with an `order` number until editors, rather than counting in tens,
+numbered them 1, 2, 3 — so slotting anyone in meant re-saving everyone below.) They offer no "add" or "delete" at the file level (`allowedActions` in
 `tina/config.ts`): the one file is the only file. Adding and removing quotes _within_ the
 list is the normal thing to do and works as usual. `src/content/quotes/` holds a second
 file, `quotes-and-placeholders.yaml` — the draft pool the live quotes were chosen from,
@@ -322,7 +325,7 @@ then for.
 | **Featured events**   | A short list of upcoming events, pulled live from the events feed.                                                  |
 | **Key points**        | A moss-accented grid of titled points — core tenets, emphases, principles.                                          |
 | **Logo cards**        | A row of cards each topped by a program or partner logo, with an optional link.                                     |
-| **Aside**             | A tinted note set apart from the page — text beside an optional small logo.                                         |
+| **Note with logo**    | A tinted note set apart from the page — text beside an optional small logo.                                         |
 | **Youth moments**     | The signature youth tentpoles (trips, retreats), pulled live from the Youth moments list.                           |
 | **Quotes carousel**   | A rotating band of testimonials, pulled live from the Homepage quotes list.                                         |
 | **Roadmap**           | A numbered timeline — steps as nodes on a connecting line (e.g. "in three movements").                              |
@@ -360,7 +363,7 @@ Start here and take the first match:
 | A moment of visual breathing room                    | **Photo gallery**     |
 | The one thing you want the reader to do at the end   | **Closing banner**    |
 | A personal note in someone's own voice               | **Letter**            |
-| A note that belongs to a partner or programme        | **Aside**             |
+| A short note that needs a logo beside it             | **Note with logo**    |
 | Cards where a logo is the identity, not a photo      | **Logo cards**        |
 | "What's coming up" that should stay current itself   | **Featured events**   |
 | The youth year's tentpoles, from the shared list     | **Youth moments**     |
@@ -373,9 +376,9 @@ Three rules of thumb behind that table:
   a lie about how to read them.
 - **Cards are for parallel things.** If your three cards aren't the same _kind_ of thing,
   they should be prose.
-- **Callout speaks in the site's voice; Aside speaks beside it.** A Callout is our own
-  emphasized point, with a heading. An Aside sets a note apart — often with a partner or
-  programme logo — as something adjacent to the page rather than of it.
+- **Callout or Note with logo?** Callout is a heading over text with a green accent rule,
+  for one point that must land. Note with logo is a compact tinted panel with room for a
+  logo beside the text, and no heading.
 - **One Closing banner per page, and it goes last.** It's the loudest block, and it closes
   flush against the footer — put a second one mid-page and both go quiet.
 
@@ -483,7 +486,7 @@ An unresolvable image doesn't fail the build — it just doesn't appear.
   `PhotoBand` = "Photo gallery", `CardRow` = "Text cards", `Callout` = "Callout",
   `LinkCards` = "Link cards", `Closing` = "Closing banner", `Quote` = "Quote",
   `FeaturedEvents` = "Featured events", `KeyPoints` = "Key points", `LogoCards` =
-  "Logo cards", `Aside` = "Aside", `YouthMomentsBlock` = "Youth moments", `QuoteCarousel` =
+  "Logo cards", `Aside` = "Note with logo", `YouthMomentsBlock` = "Youth moments", `QuoteCarousel` =
   "Quotes carousel", `Roadmap` = "Roadmap", `Letter` = "Letter".
 - Data blocks (Youth moments, Quotes carousel, Featured events) pull from a shared
   collection/singleton rather than inline content — they take only display options.
