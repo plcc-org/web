@@ -5,7 +5,8 @@ section: start
 order: 0
 ---
 
-This is the companion to the website’s editor, which lives at /admin on the site. Each page here is
+This is the companion to the website’s editor, which lives at /admin on the site; if you’re
+new to it, start with [Getting into the editor](./the-editor.md). Each page here is
 a recipe for one job, short enough to follow with the editor open beside it. The site
 publishes on its own after you save, but not instantly, so the timing is spelled out each time.
 
