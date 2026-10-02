@@ -7,7 +7,7 @@ order: 2
 
 For something that needs a page of its own. Before you start, ask whether it does: the site
 is deliberately not a list of everything the church does, and a new page is something a
-newcomer has to find their way past. [Why the site is the way it is](./why.md) has the
+newcomer has to find their way past. [Site philosophy](./why.md) has the
 thinking.
 
 ## Steps

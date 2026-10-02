@@ -38,8 +38,8 @@ Start with the [docs index](./docs/README.md), or jump straight in:
 
 - **[Webmaster's manual](./docs/manual/index.md)** — for editors, published on the site at
   `/webmaster/`: recipes for pages, blocks, photos, Sunday links, closure notices and short links.
-- **[Why the site is the way it is](./docs/manual/why.md)** — what the site is for and what belongs on it.
-- **[How we write](./docs/manual/voice.md)** — tone and word choices.
+- **[Site philosophy](./docs/manual/why.md)** — what the site is for and what belongs on it.
+- **[Editorial voice](./docs/manual/voice.md)** — tone and word choices.
 - **[CMS internals](./docs/cms.md)** — how the TinaCMS editor is put together.
 - **[Design system](./docs/design-system.md)** — visual language, tokens, layout, components.
 - **[Development & architecture](./docs/development.md)** — stack, structure, conventions, the image system.

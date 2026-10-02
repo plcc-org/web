@@ -16,7 +16,7 @@ publishes on its own after you save, but not instantly, so the timing is spelled
    first-time visitor is actually asking: “Could this be a place for me and my family?” If a
    sentence could describe any church, it isn’t helping them answer it. Say something that’s
    only true of Pine Lake.
-   [How we write](./voice.md)
+   [Editorial voice](./voice.md)
 2. **Pages are built from blocks.** A block is a template for one part of a page: a photo
    beside some text, a row of cards, a closing banner. You don’t type onto a page directly;
    you add blocks and write inside each one.
@@ -29,7 +29,7 @@ publishes on its own after you save, but not instantly, so the timing is spelled
 
 | I want to…                                  | Recipe                                                             |
 | ------------------------------------------- | ------------------------------------------------------------------ |
-| Fix a typo or rewrite a paragraph           | [Change some words](./change-some-words.md)                        |
+| Fix a typo or rewrite a paragraph           | [Change some content](./change-some-words.md)                      |
 | Make a new page                             | [Add a page](./add-a-page.md)                                      |
 | Put a photo on a page                       | [Add a photo](./add-a-photo.md)                                    |
 | Get next Sunday’s links ready               | [Prepare Sunday’s links](./sunday-links.md)                        |

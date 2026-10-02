@@ -224,7 +224,7 @@ export default defineConfig({
             // carries drag-to-reorder and click-to-edit natively.
             description:
               'The page, built from blocks: add one with the + button, drag to reorder, click one to edit. ' +
-              `${guide('blocks', 'Which block to use')} · ${guide('voice', 'How we write')}`,
+              `${guide('blocks', 'Which block to use')} · ${guide('voice', 'Editorial voice')}`,
           },
           {
             name: 'seoTitle',

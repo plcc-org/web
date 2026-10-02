@@ -39,7 +39,7 @@ the first three, the order of the list is the order on the page.
   spring”), and a **Blurb**. **Featured** moments get a large card; the rest fall into a
   compact list.
 - **Homepage quotes:** the **Quote**, and **Who said it (optional)**. A quote earns its
-  place by saying something specific about Pine Lake; see [How we write](./voice.md).
+  place by saying something specific about Pine Lake; see [Editorial voice](./voice.md).
 
 ## If something goes wrong
 

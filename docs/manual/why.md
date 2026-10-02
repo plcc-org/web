@@ -1,12 +1,12 @@
 ---
-title: 'Why the site is the way it is'
+title: 'Site philosophy'
 description: 'What the Pine Lake website is for, who it’s written for, and how its pages fit together.'
-section: reference
-order: 4
+section: start
+order: 2
 ---
 
 Why this site exists and the principles that keep it coherent. Read this before
-adding or restructuring pages. For how we _write_, see [How we write](./voice.md).
+adding or restructuring pages. For how we _write_, see [Editorial voice](./voice.md).
 
 ---
 
@@ -51,7 +51,7 @@ Concrete beats warm-and-vague every time.
 ## Site principles
 
 These are the tenets that guide the content we add to the site. (Word-choice rules that
-flow from them live in [How we write](./voice.md).)
+flow from them live in [Editorial voice](./voice.md).)
 
 ### 1. A welcoming site, not a persuasion site
 
@@ -64,7 +64,7 @@ doesn't search for "the Care Ministry" — they're having a hard week and wonder
 anyone would help.
 **Pattern:** group content around **life sections and needs**, not programs or departments.
 
-This is what we mean by the **Doors model**, the term [How we write](./voice.md) uses for the
+This is what we mean by the **Doors model**, the term [Editorial voice](./voice.md) uses for the
 language side of the same idea. A door is an entry point named for **the situation a
 person is in**, not for the department that runs it. "Need support right now?" is a door;
 "Care Ministry" is a department. Every top-level section of the site should be openable

@@ -1,12 +1,12 @@
 ---
-title: 'How we write'
+title: 'Editorial voice'
 description: 'The voice of the Pine Lake website, and four questions to ask before you publish.'
 section: reference
 order: 3
 ---
 
 How we write, for anyone putting words on the site. The _why_ behind it is in
-[Why the site is the way it is](./why.md).
+[Site philosophy](./why.md).
 
 ## Before you publish
 
@@ -56,7 +56,7 @@ church background.
 | In/out or "us vs. them" language in nav                         | Sorts people before they've arrived   | Needs-based, situation-first labels                                               |
 
 The terminology rule is the language side of the **Doors model** (see
-[Why the site is the way it is](./why.md)): organize around _how the church shows up in people's
+[Site philosophy](./why.md)): organize around _how the church shows up in people's
 lives_, not internal departments. Avoid churchy jargon and in/out language; don't assume
 the reader's theology — but equally, don't shy from being distinctive and naming unique
 values.

@@ -1,5 +1,5 @@
 ---
-title: 'Change some words'
+title: 'Change some content'
 description: 'How to edit the words on a page of the Pine Lake website.'
 section: words
 order: 1
@@ -46,7 +46,7 @@ quotes and headings.
 
 ## Before you save
 
-Read it through against the [four questions in How we write](./voice.md#before-you-publish).
+Read it through against the [four questions in Editorial voice](./voice.md#before-you-publish).
 The first one matters most: could this sentence describe any church?
 
 ## If something goes wrong

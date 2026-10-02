@@ -36,7 +36,7 @@ under **Pages**; the rest hold the smaller things the site shows.
 
 | In the menu                                            | What it holds                                                                                                                     |
 | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Pages**                                              | The site’s pages ([Change some words](./change-some-words.md), [Add a page](./add-a-page.md))                                     |
+| **Pages**                                              | The site’s pages ([Change some content](./change-some-words.md), [Add a page](./add-a-page.md))                                   |
 | **Sunday links**, **Sunday links: every week**         | The links people open in the room on a Sunday ([Prepare Sunday’s links](./sunday-links.md))                                       |
 | **Site notice**                                        | The banner for a closure ([Post a closure notice](./post-a-closure-notice.md))                                                    |
 | **Leadership**, **Youth moments**, **Homepage quotes** | The staff, the youth year’s trips, and the homepage’s quotes ([Update staff, quotes and youth moments](./update-shared-lists.md)) |
@@ -65,4 +65,4 @@ Saving publishes. The change is live a few minutes later, once the site has rebu
 
 Most visits to the editor are for one job, and each has its own recipe on the
 [front page of this manual](./index.md#i-want-to). The first is usually
-[Change some words](./change-some-words.md).
+[Change some content](./change-some-words.md).

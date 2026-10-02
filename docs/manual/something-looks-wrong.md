@@ -70,7 +70,7 @@ allows. Open the text, select the link, and give it a page here starting with `/
 ## Quotes look straight
 
 In a **Text** field, a straight `'` stays straight on the page. Type the curly one instead;
-see [Change some words](./change-some-words.md#inside-a-text-field).
+see [Change some content](./change-some-words.md#inside-a-text-field).
 
 ## The editor says “GraphQL Schema Mismatch”
 
