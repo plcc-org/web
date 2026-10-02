@@ -213,9 +213,9 @@ Two things this is **not**, both checked before landing:
   [cms.md](./cms.md) still stands.
 
 Re-generate the patch with `npx patch-package @tinacms/cli` if you bump the CLI, and drop
-it entirely if Tina ever grows a flag for this — there is none as of 3.1.0. It is the only
-patched dependency, recorded in [`patches/README.md`](../patches/README.md), which is also
-where the upgrade procedure lives.
+it entirely if Tina ever grows a flag for this — there is none as of 3.1.0. Every patched
+dependency is recorded in [`patches/README.md`](../patches/README.md), which is also where
+the upgrade procedure lives.
 
 ### What is still slow
 
@@ -463,12 +463,12 @@ of these checks, so CI is the whole gate. Green, then merge.
 
 Three things a bump can break that aren't obvious from the diff:
 
-- **`@tinacms/cli`** carries a patch, applied on every install and documented — motivation,
-  hunk by hunk — in **[`patches/README.md`](../patches/README.md)**. A bump invalidates it,
-  and `patch-package` then warns rather than fails, so the fix quietly reverts. The
-  procedure is written down as the `/upgrade-patched-dep` command — fetch upstream, rebase
-  our changes onto it, verify the build still skips the admin compile, then replace the
-  version.
+- **`@tinacms/cli` and `tinacms`** carry patches, applied on every install and documented —
+  motivation, hunk by hunk — in **[`patches/README.md`](../patches/README.md)**. A bump
+  invalidates them, and `patch-package` then warns rather than fails, so the fix quietly
+  reverts. The procedure is written down as the `/upgrade-patched-dep` command — fetch
+  upstream, rebase our changes onto it, verify each patch's "How to check it", then replace
+  the version.
 - **Node** is pinned in `.node-version`, not by Dependabot. It stays on 22 until Tina's
   datalayer race on 25 is fixed — see the note in `ci.yml`.
 - **TypeScript** stays on 6. TypeScript 7 is the native Go compiler, and its npm package

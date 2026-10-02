@@ -1,7 +1,7 @@
 # Patched dependencies
 
-One dependency is patched in place. `patch-package` re-applies it on `postinstall`, so a
-fresh clone and CI get it without anyone remembering to.
+Two dependencies are patched in place. `patch-package` re-applies them on `postinstall`, so
+a fresh clone and CI get them without anyone remembering to.
 
 **A patch is a fork you have to carry.** Each one below records what upstream does, why
 that is wrong here, what the patch changes, how to check it still works, and the condition
@@ -62,3 +62,37 @@ editing is unaffected.
 worth skipping. Upstream is moving to a prebuilt admin shell that would cut the per-project
 step to milliseconds: <https://github.com/tinacms/tinacms/issues/7237>. There was no flag as
 of 3.1.0.
+
+---
+
+## `tinacms` — don't mutate a block template's `defaultItem` when adding a block
+
+**File:** `tinacms+3.14.1.patch`
+
+**Upstream behaviour.** Adding a block to a `blocks` list (`Blocks`'s `addItem` in
+`dist/index.js`) takes the template's `defaultItem` object itself, writes `_template` onto
+it, and pushes that same object into the form:
+`obj = template.defaultItem || {}; obj._template = name;`.
+
+**Why that's wrong here.** Writing to `defaultItem` changes the schema. On a page that has
+never been saved, Tina's "Create New" screen re-registers its form whenever
+`JSON.stringify(formInfo.fields)` changes, and the re-registered form starts from the
+collection's initial values, with no blocks. The blocks still show in the list, but the
+form behind them has none, so opening one does nothing on the first click and crashes the
+editor on the second ("TinaCMS Render Error: undefined is not an object (evaluating
+'value[index2]')", in `getFieldGroup`). Every template with a `ui.defaultItem` was affected
+on a new page: Split, CardRow, Quote, FeaturedEvents, KeyPoints, QuoteCarousel. Saved pages
+were fine, since their form isn't re-registered. Two blocks of the same kind also shared
+one object.
+
+**What the patch does.** Copies the object instead: `obj = { ...template.defaultItem || {} }`.
+The function form of `defaultItem` already returned a fresh object and is untouched.
+
+**How to check it.** In `npm run dev:tina`, open Pages → Add File, give it a title, add a
+Quote (or two Photo beside text blocks) without saving, and open each block: it opens on
+the first click, and each keeps its own heading after you go back. Unpatched, the second
+click crashes. After a build with `TINA_PUBLISH_ADMIN=true`, the admin bundle in
+`dist/client/admin/assets/` contains `{...<x>.defaultItem||{}}`.
+
+**Delete it when.** Upstream copies the default item in `Blocks`'s `addItem` (or the Create
+New form stops re-registering on a schema change). Still present in 3.14.1.

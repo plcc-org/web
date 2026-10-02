@@ -31,9 +31,8 @@ needs fixing. Look for the field marked in red and fix it first.
 
 ## “TinaCMS Render Error”
 
-The editor crashed. On a new page this happens when you open a block before the page has
-been saved once; save first, then add blocks ([Add a page](./add-a-page.md)). Reloading
-recovers the editor, but anything unsaved is lost.
+The editor crashed. Reload the page to recover it; anything you hadn’t saved is lost. Tell
+whoever looks after the site’s code what you were doing when it happened.
 
 ## My change isn’t showing
 

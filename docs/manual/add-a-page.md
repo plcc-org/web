@@ -32,18 +32,14 @@ thinking.
    ([Add a photo](./add-a-photo.md)). Give it an **Intro line** too: one or two sentences
    under the title. If it could describe any church, rewrite it.
 
-5. **Save once now, before adding any blocks.** The page is still hidden, so nothing goes
-   public. On a page that has never been saved, opening a Photo beside text, Text cards,
-   Quote, Featured events, Key points or Quotes carousel block crashes the editor (“TinaCMS
-   Render Error”), and reloading loses what you’d done. Once the page has been saved, they
-   open normally.
-6. Build the page in **Body**: the **+** button adds a block, which lands at the bottom, so
+5. Build the page in **Body**: the **+** button adds a block, which lands at the bottom, so
    drag it up into place. [Which block do I use?](./blocks.md) helps you choose, and has a
    worked example of a whole page.
-7. Write a **Search summary**: one sentence, under about 155 characters, for search results
+6. Write a **Search summary**: one sentence, under about 155 characters, for search results
    and link previews. It can stay blank when the top of the page has an intro line.
-8. Untick **Hidden from the public site (draft)** when the page is ready, and **Save**. If
-   the page has neither a Search summary nor an intro line, the form asks for one now.
+7. Untick **Hidden from the public site (draft)** when the page is ready, and **Save**. If
+   the page has neither a Search summary nor an intro line, the form asks for one now. You
+   can save along the way too; the page stays hidden until you untick it.
 
 **Live in:** a few minutes after the save that unticks Draft. Until then the page is visible
 only in the editor, even if you’ve saved it many times.
