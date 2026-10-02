@@ -11,11 +11,14 @@ publishes on its own after you save, but not instantly, so the timing is spelled
 
 ## Three things to know first
 
-1. **The site is a filter, not a sales pitch.** If a sentence could describe any church,
-   it isn’t doing its job yet. Say something that’s only true of Pine Lake.
+1. **Every page answers one question.** Pages are in service of a single question a
+   first-time visitor is actually asking: “Could this be a place for me and my family?” If a
+   sentence could describe any church, it isn’t helping them answer it. Say something that’s
+   only true of Pine Lake.
    [How we write](./voice.md)
-2. **Pages are built from blocks.** You don’t type onto a page directly. You add blocks
-   (a photo beside some text, a row of cards, a closing banner) and write inside each one.
+2. **Pages are built from blocks.** A block is a template for one part of a page: a photo
+   beside some text, a row of cards, a closing banner. You don’t type onto a page directly;
+   you add blocks and write inside each one.
    [Which block do I use?](./blocks.md)
 3. **Saving publishes, in a few minutes.** Every save rebuilds the site. Your change goes
    live when the rebuild finishes, usually a few minutes later, or longer if another rebuild

@@ -1,8 +1,8 @@
 ---
 title: 'How we write'
-description: 'The voice of the Pine Lake website, and five questions to ask before you publish.'
+description: 'The voice of the Pine Lake website, and four questions to ask before you publish.'
 section: reference
-order: 2
+order: 3
 ---
 
 How we write, for anyone putting words on the site. The _why_ behind it is in
@@ -10,10 +10,10 @@ How we write, for anyone putting words on the site. The _why_ behind it is in
 
 ## Before you publish
 
-Five questions, at the moment of writing:
+Four questions, at the moment of writing:
 
 1. **Could this sentence describe any church?** If yes, rewrite it with something only true
-   of Pine Lake. This is the test everything else follows from.
+   of Pine Lake.
 2. **Would a person with no church background understand every word?** Cut “fellowship”,
    “discipleship”, “ministry”, “outreach”, “plug in”.
 3. **Am I describing a program, or a person’s situation?** Start with the situation. Not
@@ -101,7 +101,7 @@ up.
 
 ## A worked example
 
-The test for every sentence is the filter test. Watch it in action:
+The filter test in action:
 
 - ❌ "We're a welcoming community on a journey of faith together." → could be any church.
 - ✅ "Sundays at 10am. Kids stay in the service one Sunday a month, and there's coffee

@@ -46,7 +46,7 @@ quotes and headings.
 
 ## Before you save
 
-Read it through against the [five questions in How we write](./voice.md#before-you-publish).
+Read it through against the [four questions in How we write](./voice.md#before-you-publish).
 The first one matters most: could this sentence describe any church?
 
 ## If something goes wrong
