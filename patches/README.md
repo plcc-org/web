@@ -41,7 +41,7 @@ behaviour being demonstrated, not assumed.
 
 ## `@tinacms/cli` — don't compile the admin SPA on every build
 
-**File:** `@tinacms+cli+3.1.0.patch`
+**File:** `@tinacms+cli+4.0.0.patch`
 
 **Upstream behaviour.** `tinacms build` compiles the 11 MB admin single-page app
 unconditionally.
@@ -61,13 +61,13 @@ editing is unaffected.
 **Delete it when.** The CLI grows a flag of its own for this, or the compile stops being
 worth skipping. Upstream is moving to a prebuilt admin shell that would cut the per-project
 step to milliseconds: <https://github.com/tinacms/tinacms/issues/7237>. There was no flag as
-of 3.1.0.
+of 4.0.0.
 
 ---
 
 ## `tinacms` — three fixes to the editor's forms
 
-**File:** `tinacms+3.14.1.patch`. Three independent hunks, all in `dist/index.js`. Re-apply
+**File:** `tinacms+3.14.2.patch`. Three independent hunks, all in `dist/index.js`. Re-apply
 each by intent; delete any whose upstream behaviour is fixed.
 
 ### 1. Copy a block template's `defaultItem` instead of mutating it
@@ -94,7 +94,7 @@ Quote (or two Photo beside text blocks) without saving, and open each block: it 
 the first click, and each keeps its own heading after you go back. Unpatched, the second
 click crashes.
 
-**Delete it when.** Upstream copies the default item in `addItem`. Still present in 3.14.1.
+**Delete it when.** Upstream copies the default item in `addItem`. Still present in 3.14.2.
 
 ### 2. Keep a hand-typed address on a new page
 
@@ -118,7 +118,7 @@ Top of page, change the intro line, come back: the address is still `safety`. A 
 whose address you don't touch still follows its title.
 
 **Delete it when.** Upstream keeps the filename's edited state across a nested-form trip.
-Still present in 3.14.1.
+Still present in 3.14.2.
 
 ### 3. Only field errors block opening Top of page or a block
 
@@ -139,4 +139,4 @@ is actually wrong still blocks navigation, a failed save doesn't.
 photo, press Save: it's refused with "Not saved yet. Top of page: …". Then open Top of page:
 it opens.
 
-**Delete it when.** Upstream's guard ignores submit errors. Still present in 3.14.1.
+**Delete it when.** Upstream's guard ignores submit errors. Still present in 3.14.2.
