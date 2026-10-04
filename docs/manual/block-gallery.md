@@ -15,6 +15,12 @@ template for one part of a page; to choose between them, start with
 
 A few paragraphs that just need to be read. The default for written content.
 
+Several short questions and answers in a row? Put them all in **one** Text block: leave
+its **Heading** empty and make each question a heading inside the text. Every new block
+starts a new part of the page with a wide gap above it, which is too much space between
+one short answer and the next question. [Stephen Ministry](/neighbors/stephen-ministry/)
+is built this way.
+
 ## Photo beside text
 
 ![A preview of the Photo beside text block](/block-previews/Split.webp)

@@ -46,3 +46,14 @@
   color: var(--color-forest);
   text-decoration-color: var(--color-ember);
 }
+
+/* A heading inside a written body — a Text block holding several short parts
+   under its own subheadings — needs room above it to close off the part before.
+   Headings carry no top margin anywhere else (base.css), because a block's own
+   heading opens the block and the canvas row gap already sits above it. This
+   only applies where a heading follows body copy, so a body that opens with a
+   heading still starts flush. Scoped to the Text block's body (SectionTina):
+   site-wide, it would also catch every eyebrow <p> above its heading. */
+:where(.section-body :is(p, ul, ol, blockquote) + :is(h2, h3, h4)) {
+  margin-top: var(--space-xl);
+}
