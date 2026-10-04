@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-03T15:44:27.367Z",
+  "capturedAt": "2026-10-04T16:27:25.192Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-03T07%3A00%3A00Z&where[starts_at][lte]=2026-11-28T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-04T07%3A00%3A00Z&where[starts_at][lte]=2026-11-29T07%3A00%3A00Z"
   },
   "data": [
     {
@@ -3161,7 +3161,7 @@
       "id": "21648258",
       "attributes": {
         "description": "<div>\n  <div>Wear your Halloween costume and join us on October 31 for Trunk-or-Treat...Indoor Edition!&nbsp;<br>The gym will be filled with:<br>- Trunk-or-Treat booths<br>- Various games<br>- Bounce houses!&nbsp;</div>\n</div>\n",
-        "image_url": null,
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fr7gax8v9vpiy6h0k7il04y1a0e34&thumb=960x540%23&signature=d9ed0d55db0585382860536b7941c6791ab6e70dac870b063d8929897bd00101",
         "name": "Trunk-or-Treat...Indoor Edition",
         "registration_url": null,
         "summary": "Wear your Halloween costume and join us on October 31 for Trunk-or-Treat...Indoor Edition! \nThe gym will be filled with:\n- Trunk-or-Treat booths\n- Various games\n- Bounce houses! ",
