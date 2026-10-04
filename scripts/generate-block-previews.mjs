@@ -10,11 +10,11 @@
 //   2. For every page named in `pages` in the rects file, in a browser at a 1280px-wide
 //      viewport, load the page and run:
 //
-//        document.documentElement.classList.remove('reveal-ready')
+//        document.documentElement.classList.add('reveal-off')
 //
-//      Reveals are armed only by that class (src/styles/animations.css), so removing it
-//      makes every section fully visible with no transition to wait on — which is what a
-//      screenshot driver with a frozen animation clock needs, or the page captures blank.
+//      Reveals are driven by scroll position (src/styles/animations.css), and a full-page
+//      capture doesn't scroll, so every section below the fold would still be waiting to
+//      enter and capture blank. That class switches them off.
 //   3. Measure each block: for every `[data-tina-field*="blocks."]`, record
 //      `getBoundingClientRect()` plus scroll offset as `[x, y, w, h]` in CSS pixels.
 //   4. Save a full-page PNG per page as <shots>/<slug with / replaced by ->.png, and the

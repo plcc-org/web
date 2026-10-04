@@ -392,13 +392,17 @@ Motion is deliberately sparse and always optional. Three systems, all in
 
 ### Scroll reveals
 
-Reveals are **armed only when JS adds `reveal-ready` to `<html>`**. Without JS — or if
-the script fails — nothing is hidden and content renders normally. That ordering is the
-whole design: an element is never hidden by CSS that JS then has to un-hide.
+Reveals are **scroll-driven CSS animations** (`animation-timeline: view()`): a section
+rises in as it enters the viewport, and reverses if you scroll back up past it. There's
+no script. Where scroll timelines aren't supported, or under reduced motion, the rules
+don't apply and content renders normally, so nothing is ever hidden waiting on JS. The
+animation fills `backwards` only, so once a section has entered nothing from it persists.
 
 - A section opts in with `data-reveal`.
-- A grid or list opts into the staggered variant with `reveal-staggered` (100 ms per
-  child, up to 8).
+- A grid or list opts into the staggered variant with `reveal-staggered`: each child
+  starts a little later in the entry than the one before, up to the eighth (where
+  `sibling-index()` is supported; elsewhere they rise together).
+- `reveal-off` on `<html>` switches every reveal off, for full-page screenshots.
 
 ### The hero entrance
 

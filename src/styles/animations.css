@@ -1,20 +1,25 @@
 /*
  * animations.css — Opt-in scroll-reveal micro-interactions.
  *
- * Reveals are *armed* only when JS adds `reveal-ready` to <html>. Without JS
- * (or on script failure) nothing is hidden, so content renders normally —
- * mirroring the `@media (scripting: none)` fallback used for the hero video.
+ * Reveals are scroll-driven CSS animations: each section's progress through the
+ * viewport is the animation's timeline, so there is no script to arm them and
+ * no observer to miss an element the CMS swaps in. Where scroll timelines
+ * aren't supported, or motion isn't welcome, the rules below don't apply and
+ * content simply renders. Nothing is ever hidden waiting on script.
  * A section opts in with `data-reveal`; a grid/list of children opts into the
  * staggered variant with `reveal-staggered`.
+ *
+ * `:root.reveal-off` switches them all off, for a screenshot of the whole page
+ * (scripts/generate-block-previews.mjs): a full-page capture doesn't scroll, so
+ * everything below the fold would otherwise still be waiting to enter.
  */
 
-/* The rise is a one-shot animation, not a transition, and it moves `translate`,
-   not `transform`. Both choices exist so the reveal leaves no residue: a
-   transition would permanently occupy the `transition` property (clobbering a
-   card's own hover transition), and a settled `transform: none` would sit in
-   this layer overriding every component transform below it — the moments
-   grid's offset tiles and each card's hover lift. Once the animation ends,
-   nothing here is applied at all. */
+/* The rise moves `translate`, not `transform`, and fills `backwards` only, so
+   the reveal leaves no residue. Before a section enters it holds the from-state;
+   once it has entered, the animation is past its range and applies nothing, so
+   a settled `transform: none` or `opacity: 1` never sits in this layer
+   overriding the components below it — the moments grid's offset tiles and
+   each card's hover lift. Scrolling back up plays it in reverse. */
 @keyframes reveal-rise {
   from {
     opacity: 0;
@@ -37,56 +42,32 @@
   }
 }
 
-/* Hidden only until the observer marks the section visible; the keyframes take
-   over from there. `backwards` holds each child at the from-state through its
-   stagger delay. */
-/* `:where()` keeps these at the same specificity as the reduced-motion
-   override at the foot of the section, which must win the tie. */
-:root.reveal-ready [data-reveal]:where(:not(.is-visible)),
-:root.reveal-ready [data-reveal]:where(:not(.is-visible)) .reveal-staggered > * {
-  opacity: 0;
-}
+/* Screen only: a printed page has no scroll position to be revealed by. */
+@supports (animation-timeline: view()) {
+  @media screen and (prefers-reduced-motion: no-preference) {
+    :root:not(.reveal-off) [data-reveal],
+    :root:not(.reveal-off) [data-reveal] .reveal-staggered > * {
+      animation: reveal-rise var(--ease-out) backwards;
+      animation-timeline: view();
+      /* Done after 60% of the element has entered, or 15rem of it, whichever is
+         less: a percentage alone would leave a tall section half-faded with most
+         of it already on screen. */
+      --reveal-span: min(60%, 15rem);
+      animation-range: entry 0% entry var(--reveal-span);
+    }
 
-:root.reveal-ready [data-reveal].is-visible {
-  animation: reveal-rise 0.8s var(--ease-out) backwards;
-}
+    :root:not(.reveal-off) [data-reveal] .reveal-staggered > * {
+      animation-name: reveal-rise-sm;
+    }
 
-:root.reveal-ready [data-reveal].is-visible .reveal-staggered > * {
-  animation: reveal-rise-sm 0.6s var(--ease-out) backwards;
-}
-
-/* Stagger delays — 100ms per child, up to 8 */
-:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(1) {
-  animation-delay: 0ms;
-}
-:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(2) {
-  animation-delay: 100ms;
-}
-:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(3) {
-  animation-delay: 200ms;
-}
-:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(4) {
-  animation-delay: 300ms;
-}
-:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(5) {
-  animation-delay: 400ms;
-}
-:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(6) {
-  animation-delay: 500ms;
-}
-:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(7) {
-  animation-delay: 600ms;
-}
-:root.reveal-ready [data-reveal].is-visible .reveal-staggered > *:nth-child(8) {
-  animation-delay: 700ms;
-}
-
-/* Belt-and-suspenders: never hide content under reduced motion, even if armed */
-@media (prefers-reduced-motion: reduce) {
-  :root.reveal-ready [data-reveal],
-  :root.reveal-ready [data-reveal] .reveal-staggered > * {
-    opacity: 1;
-    animation: none;
+    /* Children of a staggered grid enter together, so each starts a little
+       later in the entry than the one before, up to the eighth. */
+    @supports (width: calc(sibling-index() * 1px)) {
+      :root:not(.reveal-off) [data-reveal] .reveal-staggered > * {
+        --reveal-step: calc(min(sibling-index() - 1, 7) * 5%);
+        animation-range: entry var(--reveal-step) entry calc(var(--reveal-span) + var(--reveal-step));
+      }
+    }
   }
 }
 

@@ -6,7 +6,6 @@ import { brand, church } from '../config/church'
 import { squareIcon } from '../lib/icons'
 import SiteHeader from '../components/chrome/SiteHeader.astro'
 import SiteFooter from '../components/chrome/SiteFooter.astro'
-import ScrollReveal from '../components/chrome/ScrollReveal.astro'
 import SlimHeader from '../components/chrome/SlimHeader.astro'
 import SlimFooter from '../components/chrome/SlimFooter.astro'
 import '../styles/global.css'
@@ -158,6 +157,5 @@ const jsonLd = origin
     </main>
 
     {chrome === 'slim' ? <SlimFooter /> : <SiteFooter />}
-    {chrome === 'full' && <ScrollReveal />}
   </body>
 </html>

@@ -225,8 +225,8 @@ An unresolvable image doesn't fail the build — it just doesn't appear.
   `scripts/generate-block-previews.mjs`. Each is a crop of the block as it renders on the
   first page that uses it — which the script derives, so there is no list to maintain. The
   capture half needs a browser and is a documented manual recipe in the script's header;
-  the one trick worth knowing is that removing `reveal-ready` from `<html>` is what stops a
-  screenshot driver capturing a blank page, since every reveal is gated on that class.
+  the one trick worth knowing is that adding `reveal-off` to `<html>` is what stops a
+  full-page capture coming out blank below the fold, since reveals are driven by scroll.
   `ui.visualSelector` on the body field turns the palette into the grid that shows them.
 - Adding a block = a template in `tina/templates.mjs` **and** a matching component
   registered in `src/components/blocks/tina/registry.ts`. If the block has prose inside, give
