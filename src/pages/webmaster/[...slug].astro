@@ -28,7 +28,7 @@ const isFront = page.id === 'index'
     <article class="manual__body">
       {!isFront && (
         <a class="manual__skip" href="#manual-nav">
-          All topics ↓
+          All topics <span aria-hidden="true">↓</span>
         </a>
       )}
       <h1 class="manual__title">{page.data.title}</h1>

@@ -65,11 +65,13 @@ const empty = events.length === 0
   {oneOffs.length > 0 && (
     <section>
       <h2>Coming up</h2>
-      <div class="event-grid">
+      <ul class="event-grid" role="list">
         {oneOffs.map((s) => (
-          <EventCard series={s} />
+          <li>
+            <EventCard series={s} />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   )}
 

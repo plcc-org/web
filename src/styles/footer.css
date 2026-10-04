@@ -122,6 +122,8 @@
 
 .site-footer__info {
   grid-area: info;
+  /* An <address>, which browsers italicise by default. */
+  font-style: normal;
   font-size: var(--text-ui);
   color: var(--color-on-dark);
 }

@@ -26,20 +26,23 @@ for (const e of events) {
 ---
 
 <div class="week-panel">
-  {[...days.entries()].map(([, list]) => {
+  {[...days.entries()].map(([day, list]) => {
     const first = new Date(list[0].start)
     return (
       <div class="week-panel__day">
         {/* A real heading, matching WeekRhythm's day names — day groups are
               the structure of this panel, not decoration. */}
         <h3 class="week-panel__when">
-          <span class="week-panel__dow">{fmtDay(first)}</span>
-          <span class="week-panel__date">{fmtDate(first)}</span>
+          <time datetime={day}>
+            <span class="week-panel__dow">{fmtDay(first)}</span>
+            <span class="week-panel__date">{fmtDate(first)}</span>
+          </time>
         </h3>
 
         <EventDayItems
           items={list.map((e) => ({
             time: e.allDay ? 'All day' : fmtTime(new Date(e.start)),
+            datetime: e.allDay ? undefined : e.start,
             title: e.title,
             url: e.url,
             // Venue only — an on-campus event renders nothing, which is the point.

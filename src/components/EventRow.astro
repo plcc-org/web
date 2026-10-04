@@ -18,10 +18,10 @@ const venue = venueLabel(event.location)
 ---
 
 <article class="event-row">
-  <div class="event-row__date-chip">
+  <time class="event-row__date-chip" datetime={event.start}>
     <span class="event-row__dow">{fmtDay(start)}</span>
     <span class="event-row__dnum">{fmtDate(start)}</span>
-  </div>
+  </time>
 
   <div class="event-row__main">
     <div class="event-row__title">{event.title}</div>
@@ -41,7 +41,7 @@ const venue = venueLabel(event.location)
       rel={external ? 'noopener' : undefined}
       target={external ? '_blank' : undefined}
     >
-      Details <span aria-hidden="true">→</span>
+      Details<span class="visually-hidden">: {event.title}</span> <span aria-hidden="true">→</span>
     </a>
   </div>
 </article>

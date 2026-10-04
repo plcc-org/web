@@ -23,9 +23,9 @@ for (const c of cards) {
 
 <section data-reveal data-tina-field={blockField(Astro.props)}>
   <SectionHeader eyebrow={eyebrow} heading={heading} />
-  <div class="card-grid">
+  <ul class="card-grid" role="list">
     {items.map((c) => (
-      <div class="card">
+      <li class="card">
         {c.image && (
           <Photo
             image={c.image}
@@ -40,10 +40,12 @@ for (const c of cards) {
               rule so the two card blocks behave alike. */}
         {c.href && (
           <p>
-            <a href={resolveHref(c.href)}>{c.linkLabel || 'Learn more'} →</a>
+            <a href={resolveHref(c.href)}>
+              {c.linkLabel || 'Learn more'} <span aria-hidden="true">→</span>
+            </a>
           </p>
         )}
-      </div>
+      </li>
     ))}
-  </div>
+  </ul>
 </section>

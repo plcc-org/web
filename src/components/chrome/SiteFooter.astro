@@ -117,19 +117,25 @@ import podcastIconUrl from '../../assets/icons/podcast_icon_white.svg?url'
       </div>
     </nav>
 
-    <div class="site-footer__info">
+    <address class="site-footer__info">
       <strong>{church.name}</strong>
-      <span class="site-footer__divider">|</span>
+      <span class="site-footer__divider" aria-hidden="true">
+        |
+      </span>
       <span>
         {church.service.day}s at {serviceTimeDisplay()}
       </span>
-      <span class="site-footer__divider">|</span>
+      <span class="site-footer__divider" aria-hidden="true">
+        |
+      </span>
       <a href={church.mapUrl} target="_blank" rel="noopener">
         {church.addressLine}
       </a>
-      <span class="site-footer__divider">|</span>
+      <span class="site-footer__divider" aria-hidden="true">
+        |
+      </span>
       <a href={`mailto:${church.email}`}>{church.email}</a>
-    </div>
+    </address>
 
     <div class="site-footer__links">
       <a href={church.social.instagram} target="_blank" rel="noopener" class="site-footer__social-link">
@@ -141,7 +147,9 @@ import podcastIconUrl from '../../assets/icons/podcast_icon_white.svg?url'
         />
         <span>Instagram</span>
       </a>
-      <span class="site-footer__divider">|</span>
+      <span class="site-footer__divider" aria-hidden="true">
+        |
+      </span>
       <a href={church.social.youtube} target="_blank" rel="noopener" class="site-footer__social-link">
         <img
           src={youtubeIconUrl}
@@ -151,7 +159,9 @@ import podcastIconUrl from '../../assets/icons/podcast_icon_white.svg?url'
         />
         <span>YouTube</span>
       </a>
-      <span class="site-footer__divider">|</span>
+      <span class="site-footer__divider" aria-hidden="true">
+        |
+      </span>
       <a href={church.social.podcast} target="_blank" rel="noopener" class="site-footer__social-link">
         <img
           src={podcastIconUrl}

@@ -438,8 +438,11 @@ body:has(.site-banner:not([hidden])) .hero {
  * ==================================================================== */
 
 /* An even grid of equal cards that reflows by available width rather than by
-   breakpoint. Used by CardRow and the MDX logo-cards block. */
+   breakpoint. Used by CardRow and the MDX logo-cards block, as a list. */
 .card-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
   gap: var(--space-lg);
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -477,8 +480,9 @@ body:has(.site-banner:not([hidden])) .hero {
 }
 
 /* The lift is the affordance: cards that do something on click get it, cards
-   that are just containers don't. That's why this is `a.card`, not `.card`. */
-a.card,
+   that are just containers don't. That's why this is a card holding a
+   `.card__link`, not every `.card`. */
+.card:has(.card__link),
 .link-card,
 .event-card,
 .event-row,
@@ -489,7 +493,7 @@ a.card,
     border-color var(--duration-fast) var(--ease-out);
 }
 
-a.card:hover,
+.card:has(.card__link):hover,
 .link-card:hover,
 .event-card:hover,
 .event-row:hover,
@@ -499,12 +503,45 @@ a.card:hover,
   border-color: var(--color-moss-line);
 }
 
-/* The plain card: the surface above plus padding. `display: block` and the
-   text-decoration reset are for when it's an <a>. */
+/* The plain card: the surface above plus padding. */
 .card {
   display: block;
   padding: var(--pad-card);
+}
+
+/* A linked card's title link, stretched over the whole card by its ::after, so
+   the card is one target without the card itself being an <a>. Links in the
+   body sit above the stretch and stay clickable. The focus ring moves to the
+   card, since the link's own outline would hug only the title. */
+.card:has(.card__link) {
+  position: relative;
+}
+
+/* Two classes, to outrank `.card a` below. */
+.card .card__link {
+  color: inherit;
   text-decoration: none;
+}
+
+.card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+}
+
+.card__link:focus-visible {
+  outline: none;
+}
+
+.card:has(.card__link:focus-visible) {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 3px;
+}
+
+.card:has(.card__link) :is(p, li) a {
+  position: relative;
+  z-index: 1;
 }
 
 .card h2,
@@ -810,13 +847,15 @@ a.card:hover,
  * -------------------------------------------------------------------- */
 .link-grid {
   --gap: var(--space-lg);
-  /* Column count comes from LinkCardSection (set by item count); the fallback
-     covers the hand-authored grid in kids.astro. */
+  /* Column count comes from LinkCardSection (set by item count). */
   --cols: var(--link-cols, 2);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* Column count is capped by width, not by the item count, once the row is too
@@ -833,13 +872,19 @@ a.card:hover,
   }
 }
 
-.link-card {
-  display: block;
+.link-grid > li {
+  display: flex;
   /* Width for exactly --cols per row; max-width = basis so cards don't grow to
      fill, keeping any orphan card-sized and centered by justify-content. */
   flex: 1 1 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
   max-width: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
   min-width: 0;
+}
+
+/* Fills its list item, so a row of cards shares one height. */
+.link-card {
+  display: block;
+  flex: 1;
   padding: var(--pad-card);
   text-decoration: none;
 }
@@ -855,6 +900,7 @@ a.card:hover,
 
 /* The supporting line under the title (time, place, one-line description). */
 .link-card__meta {
+  display: block;
   font-size: var(--text-ui);
   color: var(--color-clay-ink);
 }
@@ -1174,6 +1220,11 @@ a.card:hover,
   margin: 0;
 }
 
+/* The <time> only labels the date for machines; the spans stay the grid items. */
+.week-panel__when > time {
+  display: contents;
+}
+
 .week-panel__dow {
   font-size: var(--text-2xs);
   font-weight: 700;
@@ -1269,6 +1320,9 @@ a.card:hover,
    instead of stretching across the row. Real relevance here — "Coming up" holds
    only one-offs, so counts of 1, 3 and 4 are the normal case, not the edge. */
 .event-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
   gap: var(--space-lg);
   grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
@@ -1391,11 +1445,14 @@ a.card:hover,
  * The row form — the dense list, kept for the featured-events block
  * (FeaturedEventsMdx.astro, used on /youth/).
  *
- * Structure: `.event-list` > `.event-row`, each row being a
+ * Structure: `.event-list` > `li` > `.event-row`, each row being a
  * `.event-row__date-chip`, a `.event-row__main`, and a `.event-row__cta`.
  * -------------------------------------------------------------------- */
 
 .event-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
   gap: 0.85rem;
 }

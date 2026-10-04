@@ -27,7 +27,7 @@
  * (almost) no specificity — any link that's also a button/pill/chip (which sets
  * its own color) overrides this instead of inheriting moss-on-moss text.
  */
-:where(.site-main a:not(.link-card):not(.card)) {
+:where(.site-main a:not(.link-card):not(.card__link)) {
   color: var(--color-moss-ink);
   text-decoration-color: var(--color-mist);
   text-underline-offset: 0.12em;
@@ -36,13 +36,13 @@
 /* Keep :visited and :hover INSIDE :where() so the pseudo-class doesn't raise
    specificity to (0,1,0) — otherwise it ties with (and, being later, beats)
    button classes like .btn, repainting visited buttons moss-on-moss. */
-:where(.site-main a:not(.link-card):not(.card):visited) {
+:where(.site-main a:not(.link-card):not(.card__link):visited) {
   color: var(--color-moss-ink);
 }
 
 /* Hover darkens to forest and warms the underline — the one place ember is
    used as a line rather than a wash. */
-:where(.site-main a:not(.link-card):not(.card):hover) {
+:where(.site-main a:not(.link-card):not(.card__link):hover) {
   color: var(--color-forest);
   text-decoration-color: var(--color-ember);
 }

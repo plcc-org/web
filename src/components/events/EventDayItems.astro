@@ -4,7 +4,9 @@
 // the caller decided says something the heading and time don't already).
 import { isWebUrl, resolveHref } from '../../lib/url'
 
-type Item = { time: string; title: string; url: string; note?: string }
+// `datetime`, when given, is the machine-readable form of `time`; a rhythm's
+// "Every Sunday · 10am" has no single instant, so it goes without.
+type Item = { time: string; datetime?: string; title: string; url: string; note?: string }
 type Props = { items: Item[] }
 const { items } = Astro.props
 ---
@@ -14,7 +16,13 @@ const { items } = Astro.props
     const external = isWebUrl(e.url)
     return (
       <li class="day-events__item">
-        <span class="day-events__time">{e.time}</span>
+        {e.datetime ? (
+          <time class="day-events__time" datetime={e.datetime}>
+            {e.time}
+          </time>
+        ) : (
+          <span class="day-events__time">{e.time}</span>
+        )}
         <span>
           <a
             class="day-events__title"

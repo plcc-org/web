@@ -3,8 +3,10 @@ import { renderMarkdown } from '../lib/markdown'
 import { resolveHref } from '../lib/url'
 
 // A responsive row of content cards (the global `.card-grid` / `.card`
-// treatment). Each card is a title plus a short Markdown body; an optional
-// `href` turns the whole card into a link that lifts on hover. Rendered as the
+// treatment). Each card is a title plus a short Markdown body. An optional
+// `href` makes the title a link whose hit area covers the whole card, which
+// lifts on hover. The card itself is never an <a>: the body is Markdown and may
+// carry links of its own, and a link can't nest inside another. Rendered as the
 // CMS "Text cards" block via CardRowMdx.
 
 export type CardItem = {
@@ -36,22 +38,28 @@ const cols = columns && Number(columns) >= 2 ? Number(columns) : undefined
 // paths get the deploy base prefix, matching the rest of the site.
 ---
 
-<div class:list={['card-grid', cols && 'card-grid--cols', className]} style={cols ? `--card-cols:${cols}` : undefined}>
-  {items.map((item) => {
-    const Tag = item.href ? 'a' : 'div'
-    return (
-      <Tag
-        class:list={['card', large && 'card--large', item.linkLabel && 'card--cta']}
-        {...(item.href ? { href: resolveHref(item.href) } : {})}
-      >
-        <Heading>{item.title}</Heading>
-        <div set:html={renderMarkdown(item.body)} />
-        {item.linkLabel && (
-          <span class="card__cta">
-            {item.linkLabel} <span aria-hidden="true">→</span>
-          </span>
+<ul
+  class:list={['card-grid', cols && 'card-grid--cols', className]}
+  role="list"
+  style={cols ? `--card-cols:${cols}` : undefined}
+>
+  {items.map((item) => (
+    <li class:list={['card', large && 'card--large', item.linkLabel && 'card--cta']}>
+      <Heading>
+        {item.href ? (
+          <a class="card__link" href={resolveHref(item.href)}>
+            {item.title}
+          </a>
+        ) : (
+          item.title
         )}
-      </Tag>
-    )
-  })}
-</div>
+      </Heading>
+      <div set:html={renderMarkdown(item.body)} />
+      {item.linkLabel && (
+        <span class="card__cta" aria-hidden="true">
+          {item.linkLabel} →
+        </span>
+      )}
+    </li>
+  ))}
+</ul>

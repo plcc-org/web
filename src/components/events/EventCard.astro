@@ -29,11 +29,11 @@ const external = isWebUrl(e.url)
   rel={external ? 'noopener' : undefined}
   target={external ? '_blank' : undefined}
 >
-  <span class="event-card__when">
+  <time class="event-card__when" datetime={e.start}>
     <span>{fmtDay(start)}</span>
     <span class="event-card__date">{fmtDate(start)}</span>
     {!e.allDay && <span>{fmtTime(start)}</span>}
-  </span>
+  </time>
 
   <span class="event-card__title">{e.title}</span>
 

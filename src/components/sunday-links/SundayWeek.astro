@@ -16,7 +16,7 @@ const sunday = toIsoDate(data?.sunday)
 <header class="sunday-links__intro">
   {sunday && (
     <p class="eyebrow" data-tina-field={data && tinaField(data, 'sunday')}>
-      {formatSunday(sunday)}
+      <time datetime={sunday}>{formatSunday(sunday)}</time>
     </p>
   )}
   <h1 class="sunday-links__title">Sunday links</h1>
