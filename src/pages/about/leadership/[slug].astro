@@ -2,7 +2,6 @@
 import type { GetStaticPaths } from 'astro'
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import Photo from '../../../components/Photo.astro'
-import LeaderTransition from '../../../components/LeaderTransition.astro'
 import { renderMarkdown, renderPlain } from '../../../lib/markdown'
 import { resolveHref, withBase } from '../../../lib/url'
 import { getLeaders, portraitTransition, type Leader } from '../../../lib/leadership'
@@ -17,7 +16,6 @@ const { name, title, bio, link } = leader.data
 ---
 
 <BaseLayout title={`${name}, ${title}`} description={renderPlain(bio.split(/\n\s*\n/)[0])}>
-  <LeaderTransition />
   <div class="canvas">
     <article class="leader-detail" aria-labelledby="leader-name">
       <div class="leader-detail__photo" style={portraitTransition(leader.id)}>

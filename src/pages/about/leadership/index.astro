@@ -2,12 +2,11 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import PageIntro from '../../../components/PageIntro.astro'
 import Photo from '../../../components/Photo.astro'
-import LeaderTransition from '../../../components/LeaderTransition.astro'
 import { withBase } from '../../../lib/url'
 import { getLeaders, portraitTransition } from '../../../lib/leadership'
 
 // The roster. Each card links to that person's profile page, and the portrait
-// morphs into the profile's across the navigation (LeaderTransition). Each card
+// morphs into the profile's across the navigation (see pages.css). Each card
 // heading has an id the profile's way back links to, so returning lands the
 // reader on the card they opened rather than the top of the page.
 const leaders = await getLeaders()
@@ -23,7 +22,6 @@ const profiles = Object.fromEntries(leaders.map((leader) => [leader.id, withBase
     const profile = profiles[location.hash.slice(1)]
     if (profile) location.replace(profile)
   </script>
-  <LeaderTransition />
   <div class="canvas">
     <PageIntro eyebrow="About" title="Leadership" subhead="Our pastors and staff" />
     <section class="leader-section">

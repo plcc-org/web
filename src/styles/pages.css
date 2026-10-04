@@ -184,6 +184,23 @@
   border-color: var(--color-moss);
 }
 
+/* Cross-document view transitions, so a portrait morphs between the roster and
+   a profile as the browser navigates. The opt-in can't be scoped to a page, so
+   it's on for the whole site and every other navigation is made instant below:
+   the transition pseudo-elements hang off the incoming page's root, and only a
+   leadership page lets them animate. Browsers without support just navigate. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+:root:not(:has(.leader-grid, .leader-detail))::view-transition-group(*),
+:root:not(:has(.leader-grid, .leader-detail))::view-transition-old(*),
+:root:not(:has(.leader-grid, .leader-detail))::view-transition-new(*) {
+  animation: none;
+}
+
 /* Each portrait carries a per-person view-transition name on both pages (set
    inline from lib/leadership.ts), so the one chosen morphs between grid and
    profile; the class lets one rule size them all. */
