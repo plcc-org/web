@@ -1,0 +1,15 @@
+---
+// Opts the roster and the profile pages into cross-document view transitions,
+// so a portrait morphs between the two as the browser navigates. Both pages of
+// a navigation must opt in, which is what keeps this to leadership: a link out
+// to anywhere else lands without a transition. Browsers without support just
+// navigate, and reduced motion leaves it off.
+---
+
+<style is:global>
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+    }
+  }
+</style>

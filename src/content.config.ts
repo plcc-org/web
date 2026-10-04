@@ -95,7 +95,8 @@ const youthMoments = defineCollection({
 })
 
 // Pastors and staff, in page order, in one YAML list. Each person's id is their
-// name as a slug, which the leadership page uses for deep links (#becca-worl).
+// name as a slug, which is also their profile's address (/about/leadership/becca-worl/),
+// so renaming someone moves their page.
 // The `bio` is a rich-text field in the CMS, which stores it as a Markdown
 // string, rendered to HTML at build time; the portrait lives in src/assets/images.
 // `portrait` is a path string resolved through imageFromRef, not Astro's image()

@@ -22,10 +22,10 @@
  * ==================================================================== */
 
 /* ======================================================================
- * Leadership (src/pages/about/leadership.astro)
+ * Leadership (src/pages/about/leadership/)
  *
- * A grid of staff portraits that swaps in place for a single profile when one
- * is chosen.
+ * A grid of staff portraits, each linking to that person's profile page; the
+ * portrait morphs between the two across the navigation.
  * ==================================================================== */
 
 /* ------------------------------------------------------------------ *
@@ -38,31 +38,17 @@
   display: grid;
   gap: var(--space-2xl) 2.5rem;
   grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
-}
-
-/* The heading is the grid item. It exists for the outline, not for looks, so
-   it carries no type of its own — .leader-card__name inside sets that. */
-.leader-card-heading {
+  list-style: none;
   margin: 0;
-  font: inherit;
-  color: inherit;
+  padding: 0;
 }
 
-/* Cards are buttons that open an in-place profile — strip the native chrome. */
+/* The whole card is the link to the profile. */
 .leader-card {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background: none;
-  border: 0;
-  font: inherit;
-  text-align: left;
   color: inherit;
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
+  text-decoration: none;
 }
 
 /* Hovering lifts and tilts the portrait a degree, like a photo nudged on a
@@ -90,9 +76,8 @@
   border: 1px solid var(--color-mist);
 }
 
-/* Name and role. Both are spans inside the card button, styled to look like a
-   heading pair; the actual heading is .leader-card-heading above. Shared with
-   the open profile, which adds .leader-detail__name / __title on top. */
+/* Name and role, as a heading and a line beneath it. Shared with the profile,
+   which adds .leader-detail__name / __title on top. */
 .leader-card__name {
   display: block;
   font-family: var(--font-serif);
@@ -115,30 +100,8 @@
 }
 
 /* ------------------------------------------------------------------ *
- * In-place profile ("focus") view
- *
- * Every profile is rendered up front and hidden; choosing a card adds
- * `is-focused` to the section and unhides one panel. No navigation, so the
- * shared portrait can morph across the swap via a view transition.
+ * The profile page
  * ------------------------------------------------------------------ */
-
-/* The focus stack and grid trade places; only one is visible at a time. */
-.leader-focus {
-  display: none;
-}
-
-.leader-section.is-focused .leader-grid {
-  display: none;
-}
-
-.leader-section.is-focused .leader-focus {
-  display: block;
-}
-
-/* `hidden` must win over the panel's own `display`. */
-.leader-detail[hidden] {
-  display: none;
-}
 
 /* Portrait beside prose. The photo column is bounded at both ends so a wide
    screen doesn't hand it half the page. */
@@ -198,7 +161,8 @@
    weight for a return link on a quiet, photo-led page. Moss text on an
    unfilled ground, staying light throughout, is the page's own register.
    Leave it out of any future button consolidation. */
-.leader-detail__close {
+.leader-detail__back {
+  display: inline-block;
   margin-top: 2rem;
   padding: 0.5rem 1.25rem;
   font-family: var(--font-sans);
@@ -208,24 +172,28 @@
   background: none;
   border: 2px solid var(--color-mist);
   border-radius: var(--radius-pill);
-  cursor: pointer;
+  text-decoration: none;
   transition:
     color var(--duration-fast) var(--ease-out),
     border-color var(--duration-fast) var(--ease-out),
     background var(--duration-fast) var(--ease-out);
 }
 
-.leader-detail__close:hover {
+.leader-detail__back:hover {
   color: var(--color-forest);
   border-color: var(--color-moss);
 }
 
-/* Let the shared portrait morph between grid and detail without a cross-fade
-   over the move; unchanged cards still cross-fade via the default root.
-   The `leader-portrait` name is assigned to the two portraits involved by the
-   page's script, just before it takes the snapshot. */
-::view-transition-old(leader-portrait),
-::view-transition-new(leader-portrait) {
+/* Each portrait carries a per-person view-transition name on both pages (set
+   inline from lib/leadership.ts), so the one chosen morphs between grid and
+   profile; the class lets one rule size them all. */
+.leader-card__photo,
+.leader-detail__photo {
+  view-transition-class: leader-portrait;
+}
+
+::view-transition-old(*.leader-portrait),
+::view-transition-new(*.leader-portrait) {
   height: 100%;
   object-fit: cover;
 }

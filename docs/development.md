@@ -246,7 +246,7 @@ point of having a CMS. This is Tina's dependency graph to fix, not ours.
   - **What earns a collection**: data reused across the site, or referenced from inside
     content. A single hand-built page's own one-off list is that page's content, and
     belongs in the page — a collection of one, read by one file, buys nothing and costs a
-    sidebar entry. `about/leadership.astro`'s modal ordering is its own, for that reason.
+    sidebar entry. `about/leadership/`'s page ordering is its own, for that reason.
     This is not licence to inline anything an editor should be able to change: if the page
     is a CMS page, the list goes in a block; if the data has a second reader, it goes in a
     collection. The homepage's four "Start here" cards used to be the example here, as an

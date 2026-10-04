@@ -1,0 +1,52 @@
+---
+import type { GetStaticPaths } from 'astro'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import Photo from '../../../components/Photo.astro'
+import LeaderTransition from '../../../components/LeaderTransition.astro'
+import { renderMarkdown, renderPlain } from '../../../lib/markdown'
+import { resolveHref, withBase } from '../../../lib/url'
+import { getLeaders, portraitTransition, type Leader } from '../../../lib/leadership'
+
+// One person's profile, which opens on the portrait and name rather than the
+// roster's page header, so on a phone the person is on the first screen.
+export const getStaticPaths = (async () =>
+  (await getLeaders()).map((leader) => ({ params: { slug: leader.id }, props: { leader } }))) satisfies GetStaticPaths
+
+const { leader } = Astro.props as { leader: Leader }
+const { name, title, bio, link } = leader.data
+---
+
+<BaseLayout title={`${name}, ${title}`} description={renderPlain(bio.split(/\n\s*\n/)[0])}>
+  <LeaderTransition />
+  <div class="canvas">
+    <article class="leader-detail" aria-labelledby="leader-name">
+      <div class="leader-detail__photo" style={portraitTransition(leader.id)}>
+        <div class="media__frame ratio-4x5">
+          <Photo
+            image={leader.portrait}
+            alt={leader.portraitAlt}
+            class="media__img media__img--cover"
+            widths={[480, 960]}
+            sizes="(max-width: 600px) 100vw, 420px"
+            loading="eager"
+          />
+        </div>
+      </div>
+      <div class="leader-detail__body">
+        <h1 id="leader-name" class="leader-card__name leader-detail__name">
+          {name}
+        </h1>
+        <p class="leader-card__title leader-detail__title">{title}</p>
+        <div class="leader-detail__prose measure" set:html={renderMarkdown(bio)} />
+        {link?.href && (
+          <p class="leader-detail__meta">
+            <a href={resolveHref(link.href)}>{link.label}</a>
+          </p>
+        )}
+        <a class="leader-detail__back" href={withBase(`about/leadership/#staff-${leader.id}`)}>
+          <span aria-hidden="true">←</span> All staff
+        </a>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

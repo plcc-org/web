@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import PageIntro from '../../../components/PageIntro.astro'
+import Photo from '../../../components/Photo.astro'
+import LeaderTransition from '../../../components/LeaderTransition.astro'
+import { withBase } from '../../../lib/url'
+import { getLeaders, portraitTransition } from '../../../lib/leadership'
+
+// The roster. Each card links to that person's profile page, and the portrait
+// morphs into the profile's across the navigation (LeaderTransition). Each card
+// heading has an id the profile's way back links to, so returning lands the
+// reader on the card they opened rather than the top of the page.
+const leaders = await getLeaders()
+const profiles = Object.fromEntries(leaders.map((leader) => [leader.id, withBase(`about/leadership/${leader.id}/`)]))
+---
+
+<BaseLayout
+  title="Leadership"
+  description="The pastors and staff at Pine Lake Covenant Church in Sammamish — who they are and how they got here."
+>
+  {/* Profiles used to open in place at #slug. Send those links to the profile's own page. */}
+  <script is:inline define:vars={{ profiles }}>
+    const profile = profiles[location.hash.slice(1)]
+    if (profile) location.replace(profile)
+  </script>
+  <LeaderTransition />
+  <div class="canvas">
+    <PageIntro eyebrow="About" title="Leadership" subhead="Our pastors and staff" />
+    <section class="leader-section">
+      <ul class="leader-grid" role="list">
+        {leaders.map((leader) => (
+          <li>
+            <a class="leader-card" href={profiles[leader.id]}>
+              {/* Hidden: the name is the link's text, and the portrait's alt would read it twice. */}
+              <span class="leader-card__photo" style={portraitTransition(leader.id)} aria-hidden="true">
+                <span class="media__frame ratio-4x5">
+                  <Photo
+                    image={leader.portrait}
+                    alt={leader.portraitAlt}
+                    class="media__img media__img--cover"
+                    widths={[280, 560]}
+                    sizes="(max-width: 600px) 100vw, 360px"
+                  />
+                </span>
+              </span>
+              <h2 class="leader-card__name" id={`staff-${leader.id}`}>
+                {leader.data.name}
+              </h2>
+              <p class="leader-card__title">{leader.data.title}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

@@ -259,8 +259,8 @@ different decisions:
    page, so a one-off block makes the editor worse for the pages that aren't it.
 
 By this rule, these stay **hand-built `.astro`**, not CMS pages: `events/*` (the
-`EventsBoard` _is_ the page), `messages` (live video archive), and `about/leadership`
-(modal and view-transition morph). They're already components; they just aren't editor
+`EventsBoard` _is_ the page), `messages` (live video archive), and `about/leadership/`
+(a roster and a page per person, with a view-transition morph between them). They're already components; they just aren't editor
 surface. A page leaves this list when its layout becomes reusable — that's how the
 **Letter** block and the **Cinematic** hero came about.
 
