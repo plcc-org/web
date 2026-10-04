@@ -111,7 +111,7 @@ not the block: [Update staff, quotes and youth moments](./update-shared-lists.md
 
 ![A preview of the Quotes carousel block](/block-previews/QuoteCarousel.webp)
 
-Voices of the church, side by side, from the shared Homepage quotes list.
+Voices of the church, rotating, from the shared Homepage quotes list.
 
 ## Roadmap
 

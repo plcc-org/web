@@ -36,7 +36,7 @@ Start at the top and take the first match.
 | Cards where a logo is the identity, not a photo    | [Logo cards](./block-gallery.md#logo-cards)               |
 | “What’s coming up” that should stay current itself | [Featured events](./block-gallery.md#featured-events)     |
 | The youth year’s trips and retreats                | [Youth moments](./block-gallery.md#youth-moments)         |
-| Voices of the church, side by side                 | [Quotes carousel](./block-gallery.md#quotes-carousel)     |
+| Voices of the church, rotating                     | [Quotes carousel](./block-gallery.md#quotes-carousel)     |
 
 ## Rules of thumb
 

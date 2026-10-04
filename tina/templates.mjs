@@ -731,7 +731,7 @@ export const templates = [
   {
     name: 'QuoteCarousel',
     label: 'Quotes carousel',
-    description: 'Voices of the church, side by side, from the shared Homepage quotes list.',
+    description: 'Voices of the church, rotating, from the shared Homepage quotes list.',
     ui: {
       defaultItem: { tone: 'sand' },
       ...itemProps('heading', 'Quotes carousel'),

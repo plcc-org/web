@@ -8,7 +8,8 @@
  * Loaded after components.css, which matters: a block often sits on top of a
  * component's class and needs to win the tie. `.pull-quote` below is the clear
  * case — rendered on `.story-quote`, it strips the card surface that class
- * supplies.
+ * supplies. The carousel's slides wear it too, so the un-carding is written
+ * once; `.quote-slide` (components.css) adds only the carousel mechanics.
  *
  * Sections, in file order:
  *

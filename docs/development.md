@@ -45,7 +45,7 @@ src/
     youth-moments/  youth-moments.yaml, the youth photo captions in page order
     short-links/    Redirects + 410s (NOT an Astro collection — see below)
     photos/         The photo catalog (photos.json): filename → alt, written once
-    quotes/         quotes.yaml, the homepage quotes list; beside it
+    quotes/         quotes.yaml, the homepage carousel list; beside it
                     quotes-and-placeholders.yaml, reference only (nothing loads it)
     sunday-links/   One file per Sunday for /links/ (past weeks pruned nightly)
     sunday-links-every-week/  The groups of links under every week

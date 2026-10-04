@@ -1,12 +1,22 @@
 ---
-// The home "voices" band: a row of testimonials. Where there's room they sit
-// side by side; on a narrow screen the row scrolls sideways, snapping one quote
-// to the centre with the next peeking in at the edge to say there's more. The
-// browser does all of it, with swipe, trackpad and arrow keys, so there's no
-// script, nothing moves on its own, and every quote is reachable without JS.
+// A single-quote carousel for the home "voices" band. One testimonial is
+// visible at a time; the rest crossfade in on a timer or when the visitor
+// uses the dots / arrows. All quotes are rendered server-side (good for SEO)
+// and stacked in one grid cell, so the viewport sizes itself to the tallest
+// quote and nothing jumps as they rotate.
 //
-// The row is focusable so a keyboard can scroll it, and labelled so that stop
-// announces something.
+// Accessibility:
+//   - A visible pause/play button stops the rotation for good (WCAG 2.2.2 —
+//     pausing on hover or focus alone doesn't count). It comes first among the
+//     controls, as the ARIA Authoring Practices carousel pattern asks.
+//   - The slides are deliberately NOT a live region. Marking them aria-live
+//     would read a testimonial to a screen-reader user every 7 seconds,
+//     unprompted, for as long as they stayed on the page. Instead a
+//     visually-hidden status line announces only when the visitor works the
+//     controls themselves. Timer-driven changes stay silent; inactive slides
+//     are visibility:hidden, so they're out of the accessibility tree either way.
+//   - The controls ship `hidden` and the script reveals them, so without JS the
+//     first quote shows with no dead buttons beneath it.
 
 type Quote = { text: string; by?: string }
 
@@ -17,10 +27,13 @@ type Props = {
 const { quotes } = Astro.props
 ---
 
-<ul class="quote-row" role="list" tabindex="0" aria-label="Quotes">
-  {quotes.map((quote) => (
-    <li class="quote-row__item">
-      <figure class="story-quote">
+<div class="quote-carousel" data-quote-carousel>
+  <div class="quote-carousel__viewport">
+    {quotes.map((quote, i) => (
+      <figure
+        class:list={['story-quote', 'pull-quote', 'quote-slide', i === 0 && 'is-active']}
+        aria-hidden={i !== 0 ? 'true' : undefined}
+      >
         <blockquote>
           <p>{quote.text}</p>
         </blockquote>
@@ -31,6 +44,155 @@ const { quotes } = Astro.props
           </figcaption>
         )}
       </figure>
-    </li>
-  ))}
-</ul>
+    ))}
+  </div>
+
+  {quotes.length > 1 && (
+    <div class="quote-carousel__controls" hidden>
+      <button type="button" class="quote-nav quote-nav--pause" data-pause aria-label="Pause quotes">
+        <svg class="quote-nav__icon quote-nav__icon--pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <rect x="3.5" y="2.5" width="3" height="11" rx="1" />
+          <rect x="9.5" y="2.5" width="3" height="11" rx="1" />
+        </svg>
+        <svg class="quote-nav__icon quote-nav__icon--play" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M4.5 2.8v10.4a.8.8 0 0 0 1.2.7l8.3-5.2a.8.8 0 0 0 0-1.4L5.7 2.1a.8.8 0 0 0-1.2.7Z" />
+        </svg>
+      </button>
+      <button type="button" class="quote-nav" data-dir="prev" aria-label="Previous quote">
+        <span aria-hidden="true">←</span>
+      </button>
+      <div class="quote-dots" role="group" aria-label="Choose a quote">
+        {quotes.map((_, i) => (
+          <button
+            type="button"
+            class:list={['quote-dot', i === 0 && 'is-active']}
+            data-index={i}
+            aria-label={`Quote ${i + 1} of ${quotes.length}`}
+            aria-current={i === 0 ? 'true' : 'false'}
+          />
+        ))}
+      </div>
+      <button type="button" class="quote-nav" data-dir="next" aria-label="Next quote">
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  )}
+
+  {/* Announces the new position, but only when the visitor moved it themselves. */}
+  <p class="visually-hidden" role="status" data-quote-status></p>
+</div>
+<script>
+  function initQuoteCarousel(root: HTMLElement) {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('.quote-slide'))
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('.quote-dot'))
+    const status = root.querySelector<HTMLElement>('[data-quote-status]')
+    const controls = root.querySelector<HTMLElement>('.quote-carousel__controls')
+    const pause = root.querySelector<HTMLButtonElement>('[data-pause]')
+    if (slides.length <= 1) return
+    if (controls) controls.hidden = false
+
+    let current = 0
+    let timer: ReturnType<typeof setInterval> | undefined
+    const ROTATE_MS = 7000
+
+    // `announce` is true only for visitor-driven changes — see the note at the
+    // top of this file on why the timer must stay silent.
+    const show = (next: number, announce = false) => {
+      const index = (next + slides.length) % slides.length
+      if (index === current) return
+
+      slides[current].classList.remove('is-active')
+      slides[current].setAttribute('aria-hidden', 'true')
+      dots[current]?.classList.remove('is-active')
+      dots[current]?.setAttribute('aria-current', 'false')
+
+      current = index
+
+      slides[current].classList.add('is-active')
+      slides[current].removeAttribute('aria-hidden')
+      dots[current]?.classList.add('is-active')
+      dots[current]?.setAttribute('aria-current', 'true')
+
+      if (announce && status) status.textContent = `Quote ${current + 1} of ${slides.length}`
+    }
+
+    // Under reduced motion nothing rotates, so there's nothing to pause either.
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let paused = prefersReducedMotion
+    if (prefersReducedMotion) pause?.remove()
+
+    // Everything bound below this point is torn down together if the root goes away.
+    const controller = new AbortController()
+
+    const start = () => {
+      if (paused || timer) return
+      timer = setInterval(() => show(current + 1), ROTATE_MS)
+    }
+
+    const stop = () => {
+      if (!timer) return
+      clearInterval(timer)
+      timer = undefined
+    }
+
+    // The visitor's pause holds until they press play; hover, focus and a
+    // background tab only ever pause it for as long as they last.
+    pause?.addEventListener('click', () => {
+      paused = !paused
+      root.classList.toggle('is-paused', paused)
+      pause.setAttribute('aria-label', paused ? 'Play quotes' : 'Pause quotes')
+      if (paused) stop()
+    })
+
+    // Manual controls restart the timer so the visitor's last action sets the pace.
+    root.querySelectorAll<HTMLButtonElement>('.quote-nav[data-dir]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        stop()
+        show(current + (btn.dataset.dir === 'prev' ? -1 : 1), true)
+        start()
+      })
+    })
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        stop()
+        show(i, true)
+        start()
+      })
+    })
+
+    // Pause while the visitor is reading (hover) or interacting (focus).
+    root.addEventListener('mouseenter', stop)
+    root.addEventListener('mouseleave', start)
+    root.addEventListener('focusin', stop)
+    root.addEventListener('focusout', start)
+
+    // ...and while the tab is in the background, where rotating burns a timer
+    // wake-up every 7s to animate something nobody is looking at. Dropped when
+    // the root leaves the document: the CMS replaces a block's DOM on every
+    // keystroke, and a document-level listener per init would otherwise
+    // accumulate, each holding a closure over detached nodes and a live interval.
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()), {
+      signal: controller.signal,
+    })
+    new MutationObserver(() => {
+      if (root.isConnected) return
+      stop()
+      controller.abort()
+    }).observe(document.body, { childList: true, subtree: true })
+
+    start()
+  }
+
+  // Init is idempotent: the CMS re-renders a block in place, so this runs again
+  // against DOM that may already be wired. Without the guard each pass would add
+  // another interval and another set of listeners.
+  const initAll = () =>
+    document.querySelectorAll<HTMLElement>('[data-quote-carousel]').forEach((el) => {
+      if (el.dataset.quoteCarouselReady) return
+      el.dataset.quoteCarouselReady = 'true'
+      initQuoteCarousel(el)
+    })
+
+  initAll()
+</script>

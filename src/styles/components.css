@@ -20,7 +20,7 @@
  *   Letter        Letter.astro          prose column + sticky portrait
  *   Roadmap       Roadmap.astro         the numbered step timeline
  *   Events        EventsBoard/EventRow  What's On listings
- *   Quotes        QuoteCarousel         the story-quote card and the quote row
+ *   Quotes        QuoteCarousel         the story-quote card and its carousel
  *
  * No component carries its own <style> block; all component CSS lives here, in
  * blocks.css (the CMS block palette) or in pages.css (one-page styling). See
@@ -1604,42 +1604,136 @@ body:has(.site-banner:not([hidden])) .hero {
 }
 
 /* ----------------------------------------------------------------------
- * The quote row (QuoteCarousel.astro)
+ * The carousel (QuoteCarousel.astro) — one .story-quote at a time, rotating.
  *
- * Quote cards side by side, each at least 20rem wide. When the row can't hold
- * them all it scrolls sideways instead of wrapping, snapping a card to the
- * centre; at 85% wide on a phone, the next card shows at the edge. The cards
- * stretch to one height, and the column flex above keeps captions aligned.
+ * Every slide occupies the same grid cell, so the viewport is as tall as the
+ * longest quote and the page never reflows as quotes rotate. Slides are hidden
+ * with opacity + visibility rather than `display`, so the height still counts
+ * and the fade has something to animate.
  * -------------------------------------------------------------------- */
-.quote-row {
-  display: flex;
-  gap: var(--space-lg);
-  margin: var(--space-md) 0 0;
-  /* A scroller clips on both axes, so leave the cards' shadows room. */
-  padding: 0.25rem 0 0.75rem;
-  list-style: none;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+.quote-carousel {
+  margin-top: var(--space-md);
 }
 
-.quote-row::-webkit-scrollbar {
+.quote-carousel__viewport {
+  display: grid;
+}
+
+/* Carousel mechanics only. The un-carding — dropping the paper panel and
+   centring the quote in open space — comes from `.pull-quote` (blocks.css),
+   which the slide markup shares with the standalone quote block. */
+.quote-slide {
+  grid-area: 1 / 1;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out),
+    visibility 0s linear var(--duration-slow);
+}
+
+/* The visibility delay is dropped on the way in so the active slide is
+   focusable immediately, and applied on the way out so it stays hit-testable
+   until the fade finishes. */
+.quote-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+.quote-carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+/* The controls ship hidden until the script wires them, and the rule above
+   would otherwise outrank the `hidden` attribute. */
+.quote-carousel__controls[hidden] {
   display: none;
 }
 
-.quote-row__item {
+.quote-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-forest);
+  font-size: var(--text-md);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.quote-nav:hover {
+  background: var(--color-white);
+  border-color: var(--color-moss);
+  transform: translateY(-1px);
+}
+
+/* Pause/play: one button, showing whichever icon is the action it'll take. */
+.quote-nav__icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: currentColor;
+}
+
+.quote-nav__icon--play,
+.quote-carousel.is-paused .quote-nav__icon--pause {
+  display: none;
+}
+
+.quote-carousel.is-paused .quote-nav__icon--play {
+  display: block;
+}
+
+/* Each dot is a 24px target (WCAG 2.5.8) with the visible dot drawn inside it,
+   so the dots look as they always have while being easy to hit. */
+.quote-dots {
   display: flex;
-  flex: 1 0 min(85%, 20rem);
-  scroll-snap-align: center;
+  align-items: center;
 }
 
-.quote-row__item > .story-quote {
-  flex: 1;
-  margin: 0;
+.quote-dot {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
 }
 
-/* Focusable so a keyboard can scroll it; the ring sits just outside. */
-.quote-row:focus-visible {
-  outline-offset: 0.5rem;
+.quote-dot::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-line);
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.quote-dot:hover::before {
+  background: var(--color-clay);
+}
+
+.quote-dot.is-active::before {
+  background: var(--color-ember);
+  transform: scale(1.3);
 }
