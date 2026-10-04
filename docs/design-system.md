@@ -506,7 +506,10 @@ automatically flips to a light fill so it doesn't read green-on-green.
 ## 8. Header & footer
 
 - **Header** (`nav.css`) — wordmark (a green image mask) + nav links + a "Plan a Visit"
-  CTA. Collapses to a hamburger ≤ 1119px. The bar is transparent at the top; a scroll
+  CTA. Collapses to a hamburger ≤ 1119px. The drawer is the link list as a native
+  `popover` opened by `popovertarget`, so it works without script and the browser
+  supplies Escape, tap-outside dismissal and `aria-expanded`; it hangs off the header's
+  bottom edge by anchor positioning. The bar is transparent at the top; a scroll
   listener adds `.is-scrolled` to frost it (translucent stone + `backdrop-filter`),
   tighten its padding, and add a hairline. A masked, blurred `::after` skirt lets content
   dissolve under it rather than meeting a hard edge.

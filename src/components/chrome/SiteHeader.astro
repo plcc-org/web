@@ -4,8 +4,10 @@ import wordmarkUrl from '../../assets/images/Horizontal-Logo-White-on-Transparen
 import SiteBanner from './SiteBanner.astro'
 
 // The site's full header: wordmark, the eight-item primary nav, and the hamburger
-// that folds it on small screens. Its script lives here rather than in BaseLayout so
-// a page rendered with slim chrome (/links/) ships none of it.
+// that folds it on small screens. The fold is a native popover, so the menu opens,
+// closes on Escape or an outside tap, and reports its state to assistive tech with
+// no script at all. The one script here only frosts the bar on scroll; it lives
+// here rather than in BaseLayout so a page with slim chrome (/links/) ships none of it.
 
 type Props = {
   /** Offer the Sunday livestream banner (the homepage). */
@@ -13,6 +15,17 @@ type Props = {
 }
 
 const { livestream = false } = Astro.props
+
+const links = [
+  { path: 'new/', label: 'I’m New' },
+  { path: 'about/', label: 'About' },
+  { path: 'families/', label: 'Families' },
+  { path: 'neighbors/', label: 'For Our Neighbors' },
+  { path: 'church-life/', label: 'Church Life' },
+  { path: 'events/', label: 'What’s On' },
+  { path: 'messages/', label: 'Messages' },
+]
+const current = (path: string) => (Astro.url.pathname === withBase(path) ? 'page' : undefined)
 ---
 
 <header class="site-header">
@@ -26,41 +39,22 @@ const { livestream = false } = Astro.props
           aria-hidden="true"
         ></span>
       </a>
-      <button
-        class="site-nav__toggle"
-        aria-expanded="false"
-        aria-controls="primary-nav-menu"
-        aria-label="Open navigation menu"
-      >
+      <button type="button" class="site-nav__toggle" popovertarget="primary-nav-menu" aria-label="Menu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </button>
     </div>
-    <ul class="site-nav__list" id="primary-nav-menu">
+    <ul class="site-nav__list" id="primary-nav-menu" popover>
+      {links.map(({ path, label }) => (
+        <li>
+          <a href={withBase(path)} aria-current={current(path)}>
+            {label}
+          </a>
+        </li>
+      ))}
       <li>
-        <a href={withBase('new/')}>I’m New</a>
-      </li>
-      <li>
-        <a href={withBase('about/')}>About</a>
-      </li>
-      <li>
-        <a href={withBase('families/')}>Families</a>
-      </li>
-      <li>
-        <a href={withBase('neighbors/')}>For Our Neighbors</a>
-      </li>
-      <li>
-        <a href={withBase('church-life/')}>Church Life</a>
-      </li>
-      <li>
-        <a href={withBase('events/')}>What’s On</a>
-      </li>
-      <li>
-        <a href={withBase('messages/')}>Messages</a>
-      </li>
-      <li>
-        <a href={withBase('visit/')} class="btn btn--sm site-nav__cta">
+        <a href={withBase('visit/')} class="btn btn--sm site-nav__cta" aria-current={current('visit/')}>
           Plan a Visit
         </a>
       </li>
@@ -74,31 +68,4 @@ const { livestream = false } = Astro.props
   const setScrolled = () => header?.classList.toggle('is-scrolled', window.scrollY > 8)
   setScrolled()
   window.addEventListener('scroll', setScrolled, { passive: true })
-
-  const toggle = document.querySelector<HTMLButtonElement>('.site-nav__toggle')
-  const nav = toggle?.closest('.site-nav')
-
-  toggle?.addEventListener('click', () => {
-    const isOpen = nav?.classList.toggle('is-open') ?? false
-    toggle.setAttribute('aria-expanded', String(isOpen))
-    toggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu')
-  })
-
-  // Close when clicking outside the nav
-  document.addEventListener('click', (e) => {
-    if (nav?.classList.contains('is-open') && !nav.contains(e.target as Node)) {
-      nav.classList.remove('is-open')
-      toggle?.setAttribute('aria-expanded', 'false')
-      toggle?.setAttribute('aria-label', 'Open navigation menu')
-    }
-  })
-
-  // Close when a nav link is followed
-  nav?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('is-open')
-      toggle?.setAttribute('aria-expanded', 'false')
-      toggle?.setAttribute('aria-label', 'Open navigation menu')
-    })
-  })
 </script>

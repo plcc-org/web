@@ -9,16 +9,17 @@
  *   Frosting   transparent at rest, frosted stone once scrolled. Toggled by
  *              `.is-scrolled` on `.site-header`, which a scroll listener adds.
  *   Layout     a single row up to 1119px wide, a hamburger and a drawer below
- *              that. Open state is `.is-open` on `.site-nav`.
+ *              that. The drawer is the list itself as a native popover, so
+ *              its open state is `:popover-open`, set by the browser.
  *
- * Two state classes, then, and both come from script — `.is-scrolled` on the
- * header and `.is-open` on the nav. Everything else is derived from those, the
+ * Two states, then: `.is-scrolled` on the header, which script adds, and the
+ * open popover, which needs none. Everything else is derived from those, the
  * `body:has(.hero)` check, and the one width breakpoint.
  *
  * The tricky combination is a transparent bar over a hero: the links have to
  * invert to white, and then invert back the moment anything puts a surface
  * behind them (scrolling, or opening the menu). That's what the long
- * `body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open)`
+ * `body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(:has(:popover-open))`
  * selectors below are for.
  * ==================================================================== */
 
@@ -62,20 +63,20 @@ body:has(.hero) .site-main {
    backdrop to be *lighter*, which is the opposite of what the hero wants.
    The inversion must lift while the mobile menu is open: the open menu frosts
    the header to near-opaque stone, so white links there would vanish. */
-body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) a:not(.btn) {
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(:has(:popover-open)) a:not(.btn) {
   color: var(--color-white);
 }
 
-body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) a:not(.btn):hover {
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(:has(:popover-open)) a:not(.btn):hover {
   color: var(--color-white);
   border-bottom-color: var(--color-on-dark-line);
 }
 
-body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav__home-logo {
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(:has(:popover-open)) .site-nav__home-logo {
   background-color: var(--color-white);
 }
 
-body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav__toggle span {
+body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(:has(:popover-open)) .site-nav__toggle span {
   background: var(--color-white);
 }
 
@@ -131,7 +132,7 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(.is-open) .site-nav
 }
 
 /* Keep the bar fully legible while the mobile menu is open */
-.site-header:has(.site-nav.is-open) {
+.site-header:has(:popover-open) {
   background: rgba(var(--color-stone-rgb), 0.95);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
@@ -280,6 +281,17 @@ a.site-banner:hover > span:last-child,
   list-style: none;
   padding: 0;
   margin: 0;
+  /* The list carries `popover` for the mobile drawer. Author styles beat the
+     browser's popover defaults, so at full width it stays an ordinary row in the
+     bar; these undo the defaults that would otherwise box and float it. */
+  position: static;
+  inset: auto;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  border: 0;
+  background: none;
+  color: inherit;
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--text-ui);
@@ -395,30 +407,54 @@ a.site-banner:hover > span:last-child,
   }
 
   /* Animate to × when open */
-  .site-nav.is-open .site-nav__toggle span:nth-child(1) {
+  .site-nav:has(:popover-open) .site-nav__toggle span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
-  .site-nav.is-open .site-nav__toggle span:nth-child(2) {
+  .site-nav:has(:popover-open) .site-nav__toggle span:nth-child(2) {
     opacity: 0;
     transform: scaleX(0);
   }
-  .site-nav.is-open .site-nav__toggle span:nth-child(3) {
+  .site-nav:has(:popover-open) .site-nav__toggle span:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  /* Nav list: hidden until toggled open */
+  /* The drawer: the list as an open popover, in the top layer just below the
+     bar, frosted to match the header behind the open menu. */
   .site-nav__list {
-    display: none;
     flex-direction: column;
     align-items: stretch;
+    flex-wrap: nowrap;
     gap: 0;
-    margin-top: 0.75rem;
-    padding: 0.5rem 0 1rem;
+    position: fixed;
+    inset: 4.5rem 0 auto;
+    max-height: calc(100dvh - 4.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.5rem max(var(--space-lg), env(safe-area-inset-right, 0px)) 1rem
+      max(var(--space-lg), env(safe-area-inset-left, 0px));
     border-top: 1px solid var(--color-mist);
+    background: rgba(var(--color-stone-rgb), 0.95);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
   }
 
-  .site-nav.is-open .site-nav__list {
-    display: flex;
+  .site-nav__list:not(:popover-open) {
+    display: none;
+  }
+
+  /* Hang it off the header's real bottom edge, which moves when the banner shows.
+     The fixed offset above is the fallback where anchoring isn't supported. */
+  @supports (anchor-name: --a) {
+    .site-header {
+      anchor-name: --site-header;
+    }
+
+    .site-nav__list {
+      top: anchor(--site-header bottom);
+      bottom: 0;
+      align-self: start;
+      max-height: none;
+    }
   }
 
   /* Each link is a full-width tap target */
