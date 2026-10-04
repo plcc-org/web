@@ -7,8 +7,8 @@ import { getLeaders, portraitTransition } from '../../../lib/leadership'
 
 // The roster. Each card links to that person's profile page, and the portrait
 // morphs into the profile's across the navigation (see pages.css). Each card
-// heading has an id the profile's way back links to, so returning lands the
-// reader on the card they opened rather than the top of the page.
+// has an id the profile's way back links to, so a reader who arrived at a
+// profile from elsewhere lands on that person's card rather than the top.
 const leaders = await getLeaders()
 const profiles = Object.fromEntries(leaders.map((leader) => [leader.id, withBase(`about/leadership/${leader.id}/`)]))
 ---
@@ -27,7 +27,7 @@ const profiles = Object.fromEntries(leaders.map((leader) => [leader.id, withBase
     <section class="leader-section">
       <ul class="leader-grid" role="list">
         {leaders.map((leader) => (
-          <li>
+          <li id={`staff-${leader.id}`}>
             <a class="leader-card" href={profiles[leader.id]}>
               {/* Hidden: the name is the link's text, and the portrait's alt would read it twice. */}
               <span class="leader-card__photo" style={portraitTransition(leader.id)} aria-hidden="true">
@@ -41,9 +41,7 @@ const profiles = Object.fromEntries(leaders.map((leader) => [leader.id, withBase
                   />
                 </span>
               </span>
-              <h2 class="leader-card__name" id={`staff-${leader.id}`}>
-                {leader.data.name}
-              </h2>
+              <h2 class="leader-card__name">{leader.data.name}</h2>
               <p class="leader-card__title">{leader.data.title}</p>
             </a>
           </li>

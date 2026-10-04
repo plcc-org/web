@@ -41,10 +41,25 @@ const { name, title, bio, link } = leader.data
             <a href={resolveHref(link.href)}>{link.label}</a>
           </p>
         )}
-        <a class="leader-detail__back" href={withBase(`about/leadership/#staff-${leader.id}`)}>
+        <a class="leader-detail__back" href={withBase(`about/leadership/#staff-${leader.id}`)} data-leader-back>
           <span aria-hidden="true">←</span> All staff
         </a>
       </div>
     </article>
   </div>
 </BaseLayout>
+
+<script>
+  // Arrived from the roster? Then the way back is the browser's Back, which
+  // returns the reader to exactly where they were in the grid. The link's own
+  // href is for everyone else (a shared link, a search result, no script): it
+  // lands on this person's card.
+  const back = document.querySelector<HTMLAnchorElement>('[data-leader-back]')
+  back?.addEventListener('click', (event) => {
+    const from = document.referrer && new URL(document.referrer)
+    if (from && from.origin === location.origin && from.pathname === back.pathname) {
+      event.preventDefault()
+      history.back()
+    }
+  })
+</script>
