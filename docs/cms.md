@@ -91,7 +91,7 @@ last, being routing config rather than content and the least often touched.
 | **Site notice**              | A closure notice across the top of every page  | notice  |
 | **Leadership**               | Pastors & staff, in page order                 | shared  |
 | **Youth moments**            | Signature youth trips/retreats, in page order  | shared  |
-| **Homepage quotes**          | Rotating testimonials (reusable social proof)  | shared  |
+| **Homepage quotes**          | Testimonials (reusable social proof)           | shared  |
 | **Photo descriptions**       | One alt-text description per photo, site-wide  | shared  |
 | **Short links**              | Vanity URLs pointing off-site                  | routing |
 

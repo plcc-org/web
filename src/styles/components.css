@@ -20,7 +20,7 @@
  *   Letter        Letter.astro          prose column + sticky portrait
  *   Roadmap       Roadmap.astro         the numbered step timeline
  *   Events        EventsBoard/EventRow  What's On listings
- *   Quotes        QuoteCarousel         the story-quote card and its carousel
+ *   Quotes        QuoteCarousel         the story-quote card and the quote row
  *
  * No component carries its own <style> block; all component CSS lives here, in
  * blocks.css (the CMS block palette) or in pages.css (one-page styling). See
@@ -1493,9 +1493,10 @@ a.card:hover,
 /* ======================================================================
  * Story quotes (QuoteCarousel.astro, QuoteMdx.astro)
  *
- * A card holding one person's words plus an attribution. Column flex so the
- * footer sits on the card's bottom edge however long the quote runs, which
- * keeps a row of quotes aligned.
+ * A card holding one person's words plus an attribution: a <figure> with the
+ * <blockquote> and a <figcaption>, so the attribution isn't part of the quotation.
+ * Column flex so the caption sits on the card's bottom edge however long the
+ * quote runs, which keeps a row of quotes aligned.
  * ==================================================================== */
 .story-quote {
   padding: var(--pad-card-roomy);
@@ -1515,11 +1516,16 @@ a.card:hover,
   margin-bottom: 1.15rem;
 }
 
-/* `flex-grow` pushes the attribution down; `max-width: none` opts out of the
-   reading measure below, since the card is already narrow. */
-.story-quote p {
+/* `flex-grow` pushes the attribution down. */
+.story-quote blockquote {
   margin: 0;
   flex-grow: 1;
+}
+
+/* `max-width: none` opts out of the reading measure, since the card is
+   already narrow. */
+.story-quote p {
+  margin: 0;
   font-family: var(--font-serif);
   font-style: italic;
   font-size: var(--text-md);
@@ -1530,7 +1536,7 @@ a.card:hover,
 }
 
 /* The attribution — small caps-ish sans, deliberately unlike the quote. */
-.story-quote footer {
+.story-quote figcaption {
   margin-top: 1.25rem;
   font-family: var(--font-sans);
   font-weight: 600;
@@ -1541,103 +1547,42 @@ a.card:hover,
 }
 
 /* ----------------------------------------------------------------------
- * The carousel (QuoteCarousel.astro) — one .story-quote at a time, rotating.
+ * The quote row (QuoteCarousel.astro)
  *
- * Every slide occupies the same grid cell, so the viewport is as tall as the
- * longest quote and the page never reflows as quotes rotate. Slides are hidden
- * with opacity + visibility rather than `display`, so the height still counts
- * and the fade has something to animate.
+ * Quote cards side by side, each at least 20rem wide. When the row can't hold
+ * them all it scrolls sideways instead of wrapping, snapping a card to the
+ * centre; at 85% wide on a phone, the next card shows at the edge. The cards
+ * stretch to one height, and the column flex above keeps captions aligned.
  * -------------------------------------------------------------------- */
-.quote-carousel {
-  margin-top: var(--space-md);
-}
-
-.quote-carousel__viewport {
-  display: grid;
-}
-
-/* Carousel mechanics only. The un-carding — dropping the paper panel and
-   centring the quote in open space — comes from `.pull-quote` (blocks.css),
-   which the slide markup shares with the standalone quote block. */
-.quote-slide {
-  grid-area: 1 / 1;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(8px);
-  transition:
-    opacity var(--duration-slow) var(--ease-out),
-    transform var(--duration-slow) var(--ease-out),
-    visibility 0s linear var(--duration-slow);
-}
-
-/* The visibility delay is dropped on the way in so the active slide is
-   focusable immediately, and applied on the way out so it stays hit-testable
-   until the fade finishes. */
-.quote-slide.is-active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  transition:
-    opacity var(--duration-slow) var(--ease-out),
-    transform var(--duration-slow) var(--ease-out);
-}
-
-.quote-carousel__controls {
+.quote-row {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-md);
-  margin-top: var(--space-md);
+  gap: var(--space-lg);
+  margin: var(--space-md) 0 0;
+  /* A scroller clips on both axes, so leave the cards' shadows room. */
+  padding: 0.25rem 0 0.75rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
 
-.quote-nav {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--color-line);
-  background: var(--color-paper);
-  color: var(--color-forest);
-  font-size: var(--text-md);
-  cursor: pointer;
-  transition:
-    background var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
+.quote-row::-webkit-scrollbar {
+  display: none;
 }
 
-.quote-nav:hover {
-  background: var(--color-white);
-  border-color: var(--color-moss);
-  transform: translateY(-1px);
-}
-
-.quote-dots {
+.quote-row__item {
   display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+  flex: 1 0 min(85%, 20rem);
+  scroll-snap-align: center;
 }
 
-.quote-dot {
-  width: 0.55rem;
-  height: 0.55rem;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: var(--color-line);
-  cursor: pointer;
-  transition:
-    background var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
+.quote-row__item > .story-quote {
+  flex: 1;
+  margin: 0;
 }
 
-.quote-dot:hover {
-  background: var(--color-clay);
-}
-
-.quote-dot.is-active {
-  background: var(--color-ember);
-  transform: scale(1.3);
+/* Focusable so a keyboard can scroll it; the ring sits just outside. */
+.quote-row:focus-visible {
+  outline-offset: 0.5rem;
 }

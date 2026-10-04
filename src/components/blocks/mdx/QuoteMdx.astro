@@ -3,8 +3,8 @@ import Band from '../../Band.astro'
 import { blockField, type BlockProps } from '../../../lib/tina/block-field'
 
 // Block adapter for a single featured pull-quote — a testimonial or short
-// quotation set apart from the prose. (For the rotating home band, see
-// QuoteCarousel.) With no tone it sits in open space with a moss accent and
+// quotation set apart from the prose. (For the home band's row of
+// quotes, see QuoteCarousel.) With no tone it sits in open space with a moss accent and
 // centered serif type; with a tone it renders inside a colored Band — the
 // "verse band" treatment for a scripture line or epigraph.
 type Props = { quote: string; attribution?: string; tone?: 'none' | 'sand' | 'forest' | 'paper' } & BlockProps
@@ -13,16 +13,25 @@ const { quote, attribution, tone = 'none' } = Astro.props
 
 {tone === 'none' ? (
   <section data-reveal data-tina-field={blockField(Astro.props)}>
-    <blockquote class="story-quote pull-quote">
-      <p>{quote}</p>
-      {attribution && <footer>— {attribution}</footer>}
-    </blockquote>
+    <figure class="story-quote pull-quote">
+      <blockquote>
+        <p>{quote}</p>
+      </blockquote>
+      {attribution && (
+        <figcaption>
+          <span aria-hidden="true">— </span>
+          {attribution}
+        </figcaption>
+      )}
+    </figure>
   </section>
 ) : (
   <Band tone={tone} centered reveal tinaField={blockField(Astro.props)}>
-    <blockquote class="verse">
-      <p>{quote}</p>
-      {attribution && <footer>{attribution}</footer>}
-    </blockquote>
+    <figure class="verse">
+      <blockquote>
+        <p>{quote}</p>
+      </blockquote>
+      {attribution && <figcaption>{attribution}</figcaption>}
+    </figure>
   </Band>
 )}
