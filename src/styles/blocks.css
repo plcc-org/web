@@ -144,6 +144,13 @@
   width: clamp(13.75rem, 48vw, 20rem);
 }
 
+/* The <h1> around a wordmark hero's logo. The logo carries the spacing, so the
+   heading adds none, and no line box of its own beneath the image. */
+.page-hero__wordmark {
+  margin: 0;
+  line-height: 0;
+}
+
 .logo-card__logo {
   width: clamp(11.25rem, 37.5vw, 15rem);
 }

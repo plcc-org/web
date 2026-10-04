@@ -224,7 +224,7 @@ const pages = defineCollection({
     // `alt` is optional on photo slots: a blank one falls back to the photo
     // catalog at render (altFor in src/lib/photos.ts), and check-site.mjs fails
     // the build on any content image that still renders with an empty alt. The
-    // wordmark's `logoAlt` stays required — logos aren't catalogued.
+    // wordmark needs no alt field: it is the page's <h1>, so its alt is the title.
     hero: matchingCmsVariants(
       z.discriminatedUnion('variant', [
         z.object({ variant: z.literal('photo'), image: z.string().min(1), alt: z.string().optional(), ...heroText }),
@@ -232,7 +232,6 @@ const pages = defineCollection({
         z.object({
           variant: z.literal('wordmark'),
           logo: z.string().min(1),
-          logoAlt: z.string().min(1),
           image: z.string().optional(),
           alt: z.string().optional(),
           ...heroText,

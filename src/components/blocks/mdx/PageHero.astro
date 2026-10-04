@@ -20,7 +20,7 @@ import { resolveHref } from '../../../lib/url'
 //
 //   photo      a portrait Split, page title alongside          (the default)
 //   plain      a text-only header, no photo
-//   wordmark   a programme logo standing in for the title, hidden <h1> behind it
+//   wordmark   a programme logo as the <h1>, the page title as its alt
 //   cinematic  the full-bleed drifting photo stack (the home page)
 //
 // Images (hero photos and the wordmark) resolve through imageFromRef — the same
@@ -37,7 +37,6 @@ type Props = {
   subhead?: string
   lede?: string
   logo?: string
-  logoAlt?: string
   buttonLabel?: string
   buttonHref?: string
   /** Visual-editor marker; see src/lib/tina/block-field.ts. */
@@ -53,7 +52,6 @@ const {
   subhead,
   lede,
   logo,
-  logoAlt,
   buttonLabel,
   buttonHref,
   tinaField,
@@ -100,17 +98,19 @@ const wordmarkLogo = variant === 'wordmark' ? logoImg : undefined
   <Split class="to-full" image={heroImg} alt={heroAlt} reverse tone="sand" eyebrow={eyebrow} tinaField={tinaField}>
     {wordmarkLogo ? (
       <Fragment>
-        <Photo
-          image={wordmarkLogo}
-          alt={logoAlt || ''}
-          class="page-hero__logo"
-          loading="eager"
-          fetchpriority="high"
-          widths={[340, 680]}
-          sizes="(max-width: 600px) 70vw, 340px"
-        />
-        {/* A real <h1> for the document outline, visually replaced by the logo above. */}
-        <h1 class="visually-hidden">{title}</h1>
+        {/* The wordmark is the heading: its alt is the page title, so the title
+              is announced once, as the <h1>, rather than as the logo and again. */}
+        <h1 class="page-hero__wordmark">
+          <Photo
+            image={wordmarkLogo}
+            alt={title}
+            class="page-hero__logo"
+            loading="eager"
+            fetchpriority="high"
+            widths={[340, 680]}
+            sizes="(max-width: 600px) 70vw, 340px"
+          />
+        </h1>
       </Fragment>
     ) : (
       <h1 class="display">{title}</h1>
@@ -128,17 +128,18 @@ const wordmarkLogo = variant === 'wordmark' ? logoImg : undefined
 ) : wordmarkLogo ? (
   <header class="page-intro" data-tina-field={tinaField}>
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <Photo
-      image={wordmarkLogo}
-      alt={logoAlt || ''}
-      class="page-hero__logo"
-      loading="eager"
-      fetchpriority="high"
-      widths={[340, 680]}
-      sizes="(max-width: 600px) 70vw, 340px"
-    />
-    {/* A real <h1> for the document outline, visually replaced by the logo above. */}
-    <h1 class="visually-hidden">{title}</h1>
+    {/* The wordmark is the heading; see the Split branch above. */}
+    <h1 class="page-hero__wordmark">
+      <Photo
+        image={wordmarkLogo}
+        alt={title}
+        class="page-hero__logo"
+        loading="eager"
+        fetchpriority="high"
+        widths={[340, 680]}
+        sizes="(max-width: 600px) 70vw, 340px"
+      />
+    </h1>
     {subhead && <p class="subhead">{subhead}</p>}
     {lede && <p class="lede" set:html={renderInline(lede)} />}
     {buttonHref && (

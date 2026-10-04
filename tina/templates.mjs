@@ -375,15 +375,6 @@ export const heroFields = [
         heroVariant(allValues) === 'wordmark' && !value ? 'A “Logo & photo” hero needs its wordmark logo.' : undefined,
     },
   }),
-  text('logoAlt', 'Logo description', {
-    description: forVariants('Logo & photo', 'What the wordmark says, like “Pine Lake Kids”.'),
-    ui: {
-      validate: (/** @type {unknown} */ value, /** @type {unknown} */ allValues) =>
-        heroVariant(allValues) === 'wordmark' && !value
-          ? 'A “Logo & photo” hero needs the logo description — it stands in for the page heading.'
-          : undefined,
-    },
-  }),
   eyebrow(),
   text('subhead', 'Subhead (optional)', { description: 'A line between the heading and the intro.' }),
   textarea('lede', 'Intro line', {
