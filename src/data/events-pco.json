@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-10T16:59:36.672Z",
+  "capturedAt": "2026-10-11T17:20:48.873Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-10T07%3A00%3A00Z&where[starts_at][lte]=2026-12-05T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-11T07%3A00%3A00Z&where[starts_at][lte]=2026-12-06T07%3A00%3A00Z"
   },
   "data": [
     {
@@ -2767,6 +2767,52 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/234583003"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "227527883",
+      "attributes": {
+        "all_day_event": true,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227527883",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-12-06T07:59:59Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Meal Packaging ",
+        "published_ends_at": "2026-12-06T07:59:59Z",
+        "published_starts_at": "2026-12-05T08:00:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-12-05T08:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/19492745"
+          },
+          "data": {
+            "type": "Event",
+            "id": "19492745"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227527883/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241939"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227527883"
+      }
     }
   ],
   "included": [
@@ -3187,11 +3233,42 @@
         "self": "https://api.planningcenteronline.com/calendar/v2/events/22324246",
         "html": "https://calendar.planningcenteronline.com/events/22324246"
       }
+    },
+    {
+      "type": "Event",
+      "id": "19492745",
+      "attributes": {
+        "description": "<div>\n  <div>You are invited to participate in our annual Community Meal Packaging Event to package meals for under-resourced children in Sierra Leone. Expect to have fun while working together to fill plastic bags with meal ingredients, then seal and box them up to be shipped to the children!</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2F72gn5i4arbao2p2bk9vnaz5ngrhf&thumb=960x540%23&signature=4684f80975c0a3b031ca08e73e9f25ae9a6d43847dbcc08592f6511851f4d3ec",
+        "name": "Community Meal Packaging ",
+        "registration_url": null,
+        "summary": "You are invited to participate in our annual Community Meal Packaging Event to package meals for under-resourced children in Sierra Leone. Expect to have fun while working together to fill plastic bags with meal ingredients, then seal and box them up to be shipped to the children!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/19492745",
+        "html": "https://calendar.planningcenteronline.com/events/19492745"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241939",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F9D266",
+        "created_at": "2023-05-21T17:38:09Z",
+        "name": "Missions / Service",
+        "position": 81920,
+        "updated_at": "2023-05-21T17:38:09Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241939"
+      }
     }
   ],
   "meta": {
-    "total_count": 59,
-    "count": 59,
+    "total_count": 60,
+    "count": 60,
     "can_order_by": [
       "created_at",
       "updated_at",
