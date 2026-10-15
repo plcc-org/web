@@ -1,51 +1,9 @@
 {
-  "capturedAt": "2026-10-14T16:34:36.987Z",
+  "capturedAt": "2026-10-15T16:21:19.344Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-14T07%3A00%3A00Z&where[starts_at][lte]=2026-12-09T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-15T07%3A00%3A00Z&where[starts_at][lte]=2026-12-10T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "169612018",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/169612018",
-        "compact_recurrence_description": "The second Wednesday of every month",
-        "ends_at": "2026-10-15T00:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Dementia/Alzheimer's Family Support Group",
-        "published_ends_at": "2026-10-14T23:00:00Z",
-        "published_starts_at": "2026-10-14T21:30:00Z",
-        "recurrence": "Monthly",
-        "starts_at": "2026-10-14T20:30:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/14317271"
-          },
-          "data": {
-            "type": "Event",
-            "id": "14317271"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/169612018/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "151451"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/169612018"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "234582996",
@@ -569,7 +527,7 @@
         "ends_at": "2026-10-26T19:00:00Z",
         "kind": "standard",
         "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "MomCo Meetup ",
+        "name": "MomCo Meetup",
         "published_ends_at": "2026-10-26T18:30:00Z",
         "published_starts_at": "2026-10-26T16:45:00Z",
         "recurrence": "Weekly",
@@ -757,7 +715,7 @@
         "ends_at": "2026-10-28T22:00:00Z",
         "kind": "standard",
         "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Blood Drive   ",
+        "name": "Blood Drive",
         "published_ends_at": "2026-10-28T22:00:00Z",
         "published_starts_at": "2026-10-28T15:00:00Z",
         "recurrence": "None",
@@ -1266,7 +1224,7 @@
         "ends_at": "2026-11-09T20:00:00Z",
         "kind": "standard",
         "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "MomCo Meetup ",
+        "name": "MomCo Meetup",
         "published_ends_at": "2026-11-09T19:30:00Z",
         "published_starts_at": "2026-11-09T17:45:00Z",
         "recurrence": "Weekly",
@@ -2009,7 +1967,7 @@
         "ends_at": "2026-11-23T20:00:00Z",
         "kind": "standard",
         "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "MomCo Meetup ",
+        "name": "MomCo Meetup",
         "published_ends_at": "2026-11-23T19:30:00Z",
         "published_starts_at": "2026-11-23T17:45:00Z",
         "recurrence": "Weekly",
@@ -2723,7 +2681,7 @@
         "ends_at": "2026-12-07T20:00:00Z",
         "kind": "standard",
         "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "MomCo Meetup ",
+        "name": "MomCo Meetup",
         "published_ends_at": "2026-12-07T19:30:00Z",
         "published_starts_at": "2026-12-07T17:45:00Z",
         "recurrence": "Weekly",
@@ -2900,40 +2858,51 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611768"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "173825789",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/173825789",
+        "compact_recurrence_description": "The second Wednesday of every month",
+        "ends_at": "2026-12-10T01:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Dementia/Alzheimer's Family Support Group",
+        "published_ends_at": "2026-12-10T00:00:00Z",
+        "published_starts_at": "2026-12-09T22:30:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-12-09T21:30:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/14317271"
+          },
+          "data": {
+            "type": "Event",
+            "id": "14317271"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/173825789/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151451"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/173825789"
+      }
     }
   ],
   "included": [
-    {
-      "type": "Event",
-      "id": "14317271",
-      "attributes": {
-        "description": "<div>\n  <div>This is a support group for people who have loved ones with Dementia or Alzheimer's. Led by Linda Crossgrove, the group will gather in the HUB at church monthly to share resources, pray for and support one another.</div>\n</div>\n",
-        "image_url": null,
-        "name": "Dementia/Alzheimer's Family Support Group",
-        "registration_url": null,
-        "summary": "This is a support group for people who have loved ones with Dementia or Alzheimer's. Led by Linda Crossgrove, the group will gather in the HUB at church monthly to share resources, pray for and support one another. ",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/14317271",
-        "html": "https://calendar.planningcenteronline.com/events/14317271"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "151451",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#F297CD",
-        "created_at": "2021-08-31T18:02:35Z",
-        "name": "Congregational Care",
-        "position": 16384,
-        "updated_at": "2023-05-21T17:24:44Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/151451"
-      }
-    },
     {
       "type": "Event",
       "id": "22432056",
@@ -3264,7 +3233,7 @@
       "attributes": {
         "description": "<div>\n  <div><strong>TWO WAYS TO PARTICIPATE!</strong></div><ol><li><strong>MomCo Monday Meetups (full membership)</strong></li><li><strong>MomCo Social Meetups only</strong></li></ol><div>Here at MomCo at Pine Lake, we gather and support moms. The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together. We believe in the simple but revolutionary idea that remarkable things happen when moms come together. If you are a mom with a child at home, of any age, we have a place for you!<br><br><a href=\"https://plcc.churchcenter.com/calendar?category=MomCo%2520%28The%2520Mom%2520Community%29&amp;view=list\"><strong>See upcoming dates</strong></a></div>\n</div>\n",
         "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fxlomipoz5lcjqul0tsfvh72nm4rb&thumb=960x540%23&signature=cf6b86cdb26d1d5f37f4ec070d8021509c657341db1615629dffec6a9fc41990",
-        "name": "MomCo Meetup ",
+        "name": "MomCo Meetup",
         "registration_url": "https://plcc.churchcenter.com/registrations/events/3743770",
         "summary": "The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together.",
         "visible_in_church_center": true
@@ -3295,7 +3264,7 @@
       "attributes": {
         "description": "<div>\n  <div>Make an appointment to donate at plcc.org/blood</div>\n</div>\n",
         "image_url": null,
-        "name": "Blood Drive   ",
+        "name": "Blood Drive",
         "registration_url": null,
         "summary": null,
         "visible_in_church_center": true
@@ -3319,6 +3288,37 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/events/21648258",
         "html": "https://calendar.planningcenteronline.com/events/21648258"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "14317271",
+      "attributes": {
+        "description": "<div>\n  <div>This is a support group for people who have loved ones with Dementia or Alzheimer's. Led by Linda Crossgrove, the group will gather in the HUB at church monthly to share resources, pray for and support one another.</div>\n</div>\n",
+        "image_url": null,
+        "name": "Dementia/Alzheimer's Family Support Group",
+        "registration_url": null,
+        "summary": "This is a support group for people who have loved ones with Dementia or Alzheimer's. Led by Linda Crossgrove, the group will gather in the HUB at church monthly to share resources, pray for and support one another. ",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/14317271",
+        "html": "https://calendar.planningcenteronline.com/events/14317271"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "151451",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F297CD",
+        "created_at": "2021-08-31T18:02:35Z",
+        "name": "Congregational Care",
+        "position": 16384,
+        "updated_at": "2023-05-21T17:24:44Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/151451"
       }
     },
     {
