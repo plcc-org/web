@@ -1,55 +1,9 @@
 {
-  "capturedAt": "2026-10-16T16:07:50.914Z",
+  "capturedAt": "2026-10-17T14:59:57.408Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-16T07%3A00%3A00Z&where[starts_at][lte]=2026-12-11T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-17T07%3A00%3A00Z&where[starts_at][lte]=2026-12-12T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "234185004",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/234185004",
-        "compact_recurrence_description": "The third Friday of every month",
-        "ends_at": "2026-10-17T02:30:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Adventure Group \"Appy Hour\"",
-        "published_ends_at": "2026-10-17T01:30:00Z",
-        "published_starts_at": "2026-10-17T00:00:00Z",
-        "recurrence": "Monthly",
-        "starts_at": "2026-10-16T23:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22229301"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22229301"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/234185004/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241922"
-            },
-            {
-              "type": "Tag",
-              "id": "241924"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/234185004"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "170031600",
@@ -2868,52 +2822,6 @@
   "included": [
     {
       "type": "Event",
-      "id": "22229301",
-      "attributes": {
-        "description": "<div>\n  <div>Appy Hours are our monthly Adventure Group gatherings to share appetizers, ideas &amp; information about upcoming adventure opportunities! Bring an appetizer to share if you can…but not required!<br><a href=\"https://plcc.churchcenter.com/groups/social-group/adventure-group\">LEARN MORE &amp; SIGN UP</a></div>\n</div>\n",
-        "image_url": null,
-        "name": "Adventure Group \"Appy Hour\"",
-        "registration_url": null,
-        "summary": "Appy Hours are our monthly Adventure Group gatherings to share appetizers, ideas & information about upcoming adventure opportunities! Bring an appetizer to share if you can…but not required!",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/22229301",
-        "html": "https://calendar.planningcenteronline.com/events/22229301"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241922",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#E4EDFF",
-        "created_at": "2023-05-21T17:25:49Z",
-        "name": "Meeting",
-        "position": -16384,
-        "updated_at": "2023-05-21T17:27:24Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241922"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241924",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#CBEAFA",
-        "created_at": "2023-05-21T17:26:00Z",
-        "name": "Meal or Dessert",
-        "position": -4096,
-        "updated_at": "2023-05-21T17:30:57Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241924"
-      }
-    },
-    {
-      "type": "Event",
       "id": "4368161",
       "attributes": {
         "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
@@ -3037,6 +2945,21 @@
     },
     {
       "type": "Tag",
+      "id": "241922",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#E4EDFF",
+        "created_at": "2023-05-21T17:25:49Z",
+        "name": "Meeting",
+        "position": -16384,
+        "updated_at": "2023-05-21T17:27:24Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241922"
+      }
+    },
+    {
+      "type": "Tag",
       "id": "241935",
       "attributes": {
         "church_center_category": true,
@@ -3110,6 +3033,21 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/events/22324060",
         "html": "https://calendar.planningcenteronline.com/events/22324060"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241924",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#CBEAFA",
+        "created_at": "2023-05-21T17:26:00Z",
+        "name": "Meal or Dessert",
+        "position": -4096,
+        "updated_at": "2023-05-21T17:30:57Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241924"
       }
     },
     {
@@ -3270,6 +3208,22 @@
     },
     {
       "type": "Event",
+      "id": "22229301",
+      "attributes": {
+        "description": "<div>\n  <div>Appy Hours are our monthly Adventure Group gatherings to share appetizers, ideas &amp; information about upcoming adventure opportunities! Bring an appetizer to share if you can…but not required!<br><a href=\"https://plcc.churchcenter.com/groups/social-group/adventure-group\">LEARN MORE &amp; SIGN UP</a></div>\n</div>\n",
+        "image_url": null,
+        "name": "Adventure Group \"Appy Hour\"",
+        "registration_url": null,
+        "summary": "Appy Hours are our monthly Adventure Group gatherings to share appetizers, ideas & information about upcoming adventure opportunities! Bring an appetizer to share if you can…but not required!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22229301",
+        "html": "https://calendar.planningcenteronline.com/events/22229301"
+      }
+    },
+    {
+      "type": "Event",
       "id": "22324246",
       "attributes": {
         "description": "<div>\n  Are your kids looking for gift ideas for Christmas?! Come to our Christmas Craft event on November 21. We will have multiple stations where kids can make Christmas gifts for their loved ones. We will have several gift ideas to choose from and each gift is $5 or less!\n</div>\n",
@@ -3333,8 +3287,8 @@
     }
   ],
   "meta": {
-    "total_count": 61,
-    "count": 61,
+    "total_count": 60,
+    "count": 60,
     "can_order_by": [
       "created_at",
       "updated_at",
