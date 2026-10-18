@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-17T14:59:57.408Z",
+  "capturedAt": "2026-10-18T15:25:05.748Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-17T07%3A00%3A00Z&where[starts_at][lte]=2026-12-12T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-18T07%3A00%3A00Z&where[starts_at][lte]=2026-12-13T07%3A00%3A00Z"
   },
   "data": [
     {
@@ -1826,6 +1826,43 @@
     },
     {
       "type": "EventInstance",
+      "id": "227532378",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227532378",
+        "compact_recurrence_description": "Does not repeat",
+        "ends_at": "2026-11-23T03:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "The Night of a Thousand Candles",
+        "published_ends_at": "2026-11-23T03:00:00Z",
+        "published_starts_at": "2026-11-23T02:00:00Z",
+        "recurrence": "None",
+        "starts_at": "2026-11-23T02:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21649381"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21649381"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227532378/tags"
+          },
+          "data": []
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227532378"
+      }
+    },
+    {
+      "type": "EventInstance",
       "id": "226271454",
       "attributes": {
         "all_day_event": false,
@@ -3240,6 +3277,22 @@
     },
     {
       "type": "Event",
+      "id": "21649381",
+      "attributes": {
+        "description": null,
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Ff7ptr17es9t1l3cgeiczlu96nu7r&thumb=960x540%23&signature=e5cafe9eff7c749beac742308c22bc07223dfe902256aad343162416c225ffb0",
+        "name": "The Night of a Thousand Candles",
+        "registration_url": null,
+        "summary": null,
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21649381",
+        "html": "https://calendar.planningcenteronline.com/events/21649381"
+      }
+    },
+    {
+      "type": "Event",
       "id": "19492745",
       "attributes": {
         "description": "<div>\n  <div>You are invited to participate in our annual Community Meal Packaging Event to package meals for under-resourced children in Sierra Leone. Expect to have fun while working together to fill plastic bags with meal ingredients, then seal and box them up to be shipped to the children!</div>\n</div>\n",
@@ -3287,8 +3340,8 @@
     }
   ],
   "meta": {
-    "total_count": 60,
-    "count": 60,
+    "total_count": 61,
+    "count": 61,
     "can_order_by": [
       "created_at",
       "updated_at",
