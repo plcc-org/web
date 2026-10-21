@@ -1,101 +1,9 @@
 {
-  "capturedAt": "2026-10-20T16:23:37.237Z",
+  "capturedAt": "2026-10-21T16:38:24.671Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-20T07%3A00%3A00Z&where[starts_at][lte]=2026-12-15T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-21T07%3A00%3A00Z&where[starts_at][lte]=2026-12-16T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "233611761",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233611761",
-        "compact_recurrence_description": "Every Tuesday",
-        "ends_at": "2026-10-21T03:30:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Pine Lake Youth  ",
-        "published_ends_at": "2026-10-21T03:00:00Z",
-        "published_starts_at": "2026-10-21T01:00:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-10-20T23:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22324060"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22324060"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611761/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241924"
-            },
-            {
-              "type": "Tag",
-              "id": "241937"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611761"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "227553477",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227553477",
-        "compact_recurrence_description": "The first and third Tuesday of every month",
-        "ends_at": "2026-10-21T02:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Tuesdays Together",
-        "published_ends_at": "2026-10-21T02:00:00Z",
-        "published_starts_at": "2026-10-21T01:00:00Z",
-        "recurrence": "Monthly",
-        "starts_at": "2026-10-21T01:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647793"
-          },
-          "data": {
-            "type": "Event",
-            "id": "21647793"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227553477/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241924"
-            },
-            {
-              "type": "Tag",
-              "id": "426752"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227553477"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "234582997",
@@ -2854,86 +2762,101 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992322"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "233611769",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/233611769",
+        "compact_recurrence_description": "Every Tuesday",
+        "ends_at": "2026-12-16T04:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Pine Lake Youth  ",
+        "published_ends_at": "2026-12-16T04:00:00Z",
+        "published_starts_at": "2026-12-16T02:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-12-16T00:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/22324060"
+          },
+          "data": {
+            "type": "Event",
+            "id": "22324060"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611769/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241924"
+            },
+            {
+              "type": "Tag",
+              "id": "241937"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/233611769"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "227553479",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/227553479",
+        "compact_recurrence_description": "The first and third Tuesday of every month",
+        "ends_at": "2026-12-16T03:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Tuesdays Together",
+        "published_ends_at": "2026-12-16T03:00:00Z",
+        "published_starts_at": "2026-12-16T02:00:00Z",
+        "recurrence": "Monthly",
+        "starts_at": "2026-12-16T02:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/21647793"
+          },
+          "data": {
+            "type": "Event",
+            "id": "21647793"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/227553479/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241924"
+            },
+            {
+              "type": "Tag",
+              "id": "426752"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/227553479"
+      }
     }
   ],
   "included": [
-    {
-      "type": "Event",
-      "id": "22324060",
-      "attributes": {
-        "description": "<div>\n  <div>Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.&nbsp; At Pine Lake Youth every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.&nbsp; This includes opportunities for gathering on Tuesday nights as a youth group, on Sunday mornings serving and assisting in the service, participating on leadership teams, life groups, events, and other community activities.&nbsp; We seek to welcome well, have fun well, worship well, and care well!&nbsp;</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fnjvvjva9gb6wiighp4dvibbj42d4&thumb=960x540%23&signature=de2c13d224ef8385be7412a0ace1a0583473f87b91e0a4a47f9bcfbe8e0ec007",
-        "name": "Pine Lake Youth  ",
-        "registration_url": null,
-        "summary": "Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.  Every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.  This includes opportunities for gathering on Tuesday nights, serving on Sunday mornings as well as other community activities. We seek to welcome well, have fun well, worship well, and care well! ",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/22324060",
-        "html": "https://calendar.planningcenteronline.com/events/22324060"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241924",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#CBEAFA",
-        "created_at": "2023-05-21T17:26:00Z",
-        "name": "Meal or Dessert",
-        "position": -4096,
-        "updated_at": "2023-05-21T17:30:57Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241924"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241937",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#FCDCCA",
-        "created_at": "2023-05-21T17:37:47Z",
-        "name": "Youth",
-        "position": 49152,
-        "updated_at": "2023-10-19T22:02:28Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241937"
-      }
-    },
-    {
-      "type": "Event",
-      "id": "21647793",
-      "attributes": {
-        "description": "<div>\n  <div>Join us for a meal together every 1st and 3rd Tuesdays of each month!&nbsp;</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2F5lgi43ia2benrrpbctkyxuigtyae&thumb=960x540%23&signature=c4c4bc03d8bdf940639b920bba4ff5b42f93f29d3f5a43afb93bfb33369e8c26",
-        "name": "Tuesdays Together",
-        "registration_url": null,
-        "summary": "Join us for a meal together every 1st and 3rd Tuesdays of each month!",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/21647793",
-        "html": "https://calendar.planningcenteronline.com/events/21647793"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "426752",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#81D973",
-        "created_at": "2026-08-29T22:31:00Z",
-        "name": "Tuesdays Together",
-        "position": 65536,
-        "updated_at": "2026-08-29T22:31:00Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/426752"
-      }
-    },
     {
       "type": "Event",
       "id": "22432056",
@@ -3151,6 +3074,52 @@
     },
     {
       "type": "Event",
+      "id": "22324060",
+      "attributes": {
+        "description": "<div>\n  <div>Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.&nbsp; At Pine Lake Youth every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.&nbsp; This includes opportunities for gathering on Tuesday nights as a youth group, on Sunday mornings serving and assisting in the service, participating on leadership teams, life groups, events, and other community activities.&nbsp; We seek to welcome well, have fun well, worship well, and care well!&nbsp;</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fnjvvjva9gb6wiighp4dvibbj42d4&thumb=960x540%23&signature=de2c13d224ef8385be7412a0ace1a0583473f87b91e0a4a47f9bcfbe8e0ec007",
+        "name": "Pine Lake Youth  ",
+        "registration_url": null,
+        "summary": "Pine Lake Youth exists to find and follow Jesus together! Our vision is that all students are welcomed into community, find engagement in worship, and experience apprenticeship to Jesus.  Every student is invited to Be Yourself, Belong to Something Bigger, and Become Part of Bringing heaven to earth.  This includes opportunities for gathering on Tuesday nights, serving on Sunday mornings as well as other community activities. We seek to welcome well, have fun well, worship well, and care well! ",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/22324060",
+        "html": "https://calendar.planningcenteronline.com/events/22324060"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241924",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#CBEAFA",
+        "created_at": "2023-05-21T17:26:00Z",
+        "name": "Meal or Dessert",
+        "position": -4096,
+        "updated_at": "2023-05-21T17:30:57Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241924"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241937",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#FCDCCA",
+        "created_at": "2023-05-21T17:37:47Z",
+        "name": "Youth",
+        "position": 49152,
+        "updated_at": "2023-10-19T22:02:28Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241937"
+      }
+    },
+    {
+      "type": "Event",
       "id": "19716517",
       "attributes": {
         "description": "<div>\n  <div>Make an appointment to donate at plcc.org/blood</div>\n</div>\n",
@@ -3210,6 +3179,37 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241922"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21647793",
+      "attributes": {
+        "description": "<div>\n  <div>Join us for a meal together every 1st and 3rd Tuesdays of each month!&nbsp;</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2F5lgi43ia2benrrpbctkyxuigtyae&thumb=960x540%23&signature=c4c4bc03d8bdf940639b920bba4ff5b42f93f29d3f5a43afb93bfb33369e8c26",
+        "name": "Tuesdays Together",
+        "registration_url": null,
+        "summary": "Join us for a meal together every 1st and 3rd Tuesdays of each month!",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21647793",
+        "html": "https://calendar.planningcenteronline.com/events/21647793"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "426752",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#81D973",
+        "created_at": "2026-08-29T22:31:00Z",
+        "name": "Tuesdays Together",
+        "position": 65536,
+        "updated_at": "2026-08-29T22:31:00Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/426752"
       }
     },
     {
