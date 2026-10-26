@@ -1,0 +1,6 @@
+from: /stream
+destination: https://www.youtube.com/@PineLkCovChurch/live
+kind: shortcut
+permanent: true
+note: The Sunday livestream. YouTube's /live address always resolves to whatever the
+  channel is streaming, so there is nothing to review.
