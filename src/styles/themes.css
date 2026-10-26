@@ -121,14 +121,15 @@
 
 /* Slate close — the closing "Come this Sunday" band in Slate's blue while the
    footer stays green. The band is the only `.band--flush` on the site, so the
-   token overrides are scoped to it. Its gradient is opaque and ends on a dark
-   slate (#181D29); the lighter glow in the corner is sized to die out well
-   above the bottom edge, since one still lit there reads as a block against
-   the footer, and `--footer-fade` (read by footer.css) lays that same
-   colour over the top of the footer and dissolves it into the green, so the
-   panels meet in a soft dark seam where the default has a hard edge. The fade
-   is set only on a page that has a flush band; elsewhere the footer follows
-   the stone page and has no blue to blend from. */
+   token overrides are scoped to it.
+
+   Its gradient is opaque and ends on a dark slate (#181D29). The lighter glow in
+   the corner is sized to die out well above the bottom edge, since one still lit
+   there reads as a block against the footer. `--footer-fade` (read by footer.css)
+   lays that same slate over the top of the footer and dissolves it into the green
+   over a short run, so the panels meet in a soft seam where the default has a hard
+   edge. The fade is set only on a page that has a flush band; elsewhere the footer
+   follows the stone page and has no blue to blend from. */
 :root[data-theme~='slateclose'] .band--flush {
   --color-forest: rgb(30, 37, 51);
   --color-moss-light: #c9d3e6;
@@ -138,13 +139,13 @@
 }
 
 :root[data-theme~='slateclose'] body:has(.band--flush) .site-footer {
-  --footer-fade: linear-gradient(180deg, #181d29 0%, rgba(24, 29, 41, 0) 5rem);
+  --footer-fade: linear-gradient(180deg, #181d29 0%, rgba(24, 29, 41, 0) 1.25rem);
 }
 
-/* The footer's graph-paper grid is near-invisible on green but shows as squares
-   across the dark blend, so it fades in below the seam instead of starting at it. */
+/* The footer's graph-paper grid shows as squares across the dark blend and
+   against the green below it, so this theme drops it. */
 :root[data-theme~='slateclose'] body:has(.band--flush) .site-footer::before {
-  mask-image: linear-gradient(180deg, transparent 0%, var(--color-white) 7rem);
+  display: none;
 }
 
 /* Montserrat — a geometric sans for headings in place of Fraunces. The serif
