@@ -36,20 +36,20 @@
     "dev:tina": "ASTRO_DEV=1 tinacms dev -c \"astro dev\""
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "^0.4.4",
-    "@astrojs/mdx": "^8.1.0",
+    "@astrojs/markdown-satteri": "^0.4.5",
+    "@astrojs/mdx": "^8.1.1",
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/instrument-sans": "^5.3.0",
     "@fontsource-variable/montserrat": "^5.3.0",
-    "astro": "^7.4.0",
+    "astro": "^7.4.2",
     "marked": "^18.1.1",
     "marked-smartypants": "^1.1.12",
     "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@astrojs/cloudflare": "^14.4.0",
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/cloudflare": "^14.4.2",
     "@tinacms/astro": "^0.7.1",
     "@tinacms/cli": "4.0.0",
     "@types/node": "^26.6.5",
