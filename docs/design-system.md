@@ -672,8 +672,10 @@ it. There's no badge or toggle, and the page markup doesn't change.
 | URL                        | What it shows                                                      |
 | -------------------------- | ------------------------------------------------------------------ |
 | `/?theme=slate`            | `#48536A` as the brand colour, with a slate-navy and brass palette |
+| `/?theme=dusk`             | Slate's palette with the blue leaned toward indigo (`#4E5A80`)     |
+| `/?theme=bluefooter`       | The page stays green; only the footer panel turns Dusk blue        |
 | `/?theme=montserrat`       | Montserrat for headings in place of Fraunces                       |
-| `/?theme=slate+montserrat` | Both                                                               |
+| `/?theme=slate+montserrat` | Any two combine                                                    |
 | `/?theme=off`              | Back to the default                                                |
 
 The choice lasts for the browser tab (`sessionStorage`), so it survives clicking
@@ -687,7 +689,9 @@ How it works:
   Each block only redefines tokens, so no component knows the experiment exists.
 - Montserrat comes from the Astro Fonts API like the other faces, but it isn't
   preloaded. The browser only fetches it when a heading actually uses it.
-- `test/contrast.test.ts` runs the AA checks against the Slate block as well.
+- `test/contrast.test.ts` runs the AA checks against the Slate and Dusk blocks as well.
+- `bluefooter` scopes its token overrides to `.site-footer`, so it only recolours the
+  footer and stacks with the page-wide themes.
 
 **Removing it:** delete `themes.css` and its `@import` in `global.css`, the script in
 `BaseLayout.astro`, the Montserrat entry in `astro.config.mjs` along with its `<Font>`

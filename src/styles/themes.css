@@ -63,6 +63,62 @@
     linear-gradient(155deg, rgba(30, 37, 51, 0.97) 0%, rgba(51, 60, 79, 0.92) 60%, rgba(72, 83, 106, 0.82) 100%);
 }
 
+/* Dusk — Slate's idea with the blue leaned a few degrees toward indigo, so it
+   reads as warmer beside the cream and brass. #4E5A80 sits at hue 226 where Slate
+   is 221, with a little more saturation; it still clears AA as its own ink on sand
+   (5.05:1). The neutrals, clay and ember are Slate's, so the two compare on the
+   blue alone. */
+:root[data-theme~='dusk'] {
+  --color-forest: rgb(30, 34, 56);
+  --color-forest-2: rgb(52, 58, 92);
+  --color-forest-deep: #141728;
+  --color-forest-deep-2: #1b1f35;
+  --color-moss: rgb(78, 90, 128);
+  --color-moss-2: rgb(103, 117, 163);
+  --color-moss-light: #d0d6f0;
+  --color-clay: rgb(181, 137, 90);
+  --color-ember: rgb(184, 95, 69);
+
+  --color-moss-ink: rgb(78, 90, 128);
+  --color-clay-ink: rgb(122, 90, 52);
+
+  --color-stone: rgb(241, 239, 234);
+  --color-sand: rgb(226, 222, 213);
+  --color-paper: rgb(250, 249, 246);
+
+  --color-stone-rgb: 241, 239, 234;
+  --color-forest-rgb: 30, 34, 56;
+  --color-forest-2-rgb: 52, 58, 92;
+  --color-moss-rgb: 78, 90, 128;
+  --color-moss-2-rgb: 103, 117, 163;
+  --color-ember-rgb: 184, 95, 69;
+
+  --color-ink-soft: rgba(30, 34, 56, 0.72);
+  --color-mist: rgba(30, 34, 56, 0.08);
+  --color-line: rgba(30, 34, 56, 0.14);
+  --color-moss-line: rgba(78, 90, 128, 0.4);
+
+  --shadow-sm: 0 1px 2px rgba(30, 34, 56, 0.06), 0 2px 6px -2px rgba(30, 34, 56, 0.08);
+  --shadow-md: 0 4px 10px -4px rgba(30, 34, 56, 0.12), 0 12px 28px -16px rgba(30, 34, 56, 0.2);
+  --shadow-lg: 0 8px 20px -8px rgba(30, 34, 56, 0.16), 0 28px 60px -28px rgba(30, 34, 56, 0.32);
+  --surface-gradient-soft: linear-gradient(170deg, rgba(255, 255, 255, 0.94) 0%, rgba(241, 239, 234, 0.72) 100%);
+  --gradient-forest:
+    radial-gradient(circle at 92% 8%, rgba(103, 117, 163, 0.28) 0%, rgba(103, 117, 163, 0) 42%),
+    linear-gradient(155deg, rgba(30, 34, 56, 0.97) 0%, rgba(52, 58, 92, 0.92) 60%, rgba(78, 90, 128, 0.82) 100%);
+}
+
+/* Blue footer — the page keeps its green; only the closing panel turns blue, in
+   Dusk's indigo. The footer paints itself from the deep-forest, moss-glow and
+   moss-light tokens, so redefining those on `.site-footer` is the whole change —
+   the sitemap, address and links all inherit it. It stacks with the others:
+   `?theme=slate+bluefooter` is a Slate page with the Dusk footer. */
+:root[data-theme~='bluefooter'] .site-footer {
+  --color-forest-deep: #141728;
+  --color-forest-deep-2: #1b1f35;
+  --color-moss-rgb: 103, 117, 163;
+  --color-moss-light: #d0d6f0;
+}
+
 /* Montserrat — a geometric sans for headings in place of Fraunces. The serif
    token is the heading face wherever it's used, so the swap happens there; the
    Fraunces axes in --serif-* are simply ignored by a font that lacks them. */

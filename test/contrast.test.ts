@@ -98,7 +98,7 @@ function accentTextMeetsAA(token: (name: string) => RGB) {
 
 describe('accent text meets WCAG AA', () => accentTextMeetsAA(token))
 
-for (const theme of ['slate']) {
+for (const theme of ['slate', 'dusk']) {
   describe(`accent text meets WCAG AA under the hidden ${theme} theme`, () => accentTextMeetsAA(themed(theme)))
 }
 
