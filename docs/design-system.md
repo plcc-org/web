@@ -669,14 +669,15 @@ Alternative looks can be shown on the live site without building another one. A
 visitor who arrives with `?theme=…` gets the experiment; nobody else sees a trace of
 it. There's no badge or toggle, and the page markup doesn't change.
 
-| URL                        | What it shows                                                      |
-| -------------------------- | ------------------------------------------------------------------ |
-| `/?theme=slate`            | `#48536A` as the brand colour, with a slate-navy and brass palette |
-| `/?theme=dusk`             | Slate's palette with the blue leaned toward indigo (`#4E5A80`)     |
-| `/?theme=bluefooter`       | The page stays green; only the footer panel turns Dusk blue        |
-| `/?theme=montserrat`       | Montserrat for headings in place of Fraunces                       |
-| `/?theme=slate+montserrat` | Any two combine                                                    |
-| `/?theme=off`              | Back to the default                                                |
+| URL                        | What it shows                                                                   |
+| -------------------------- | ------------------------------------------------------------------------------- |
+| `/?theme=slate`            | `#48536A` as the brand colour, with a slate-navy and brass palette              |
+| `/?theme=dusk`             | Slate's palette with the blue leaned toward indigo (`#4E5A80`)                  |
+| `/?theme=bluefooter`       | The page stays green; only the footer panel turns Dusk blue                     |
+| `/?theme=slateclose`       | The closing "Come this Sunday" band in Slate blue, fading into the green footer |
+| `/?theme=montserrat`       | Montserrat for headings in place of Fraunces                                    |
+| `/?theme=slate+montserrat` | Any two combine                                                                 |
+| `/?theme=off`              | Back to the default                                                             |
 
 The choice lasts for the browser tab (`sessionStorage`), so it survives clicking
 around the site and ends when the tab closes.
@@ -690,6 +691,8 @@ How it works:
 - Montserrat comes from the Astro Fonts API like the other faces, but it isn't
   preloaded. The browser only fetches it when a heading actually uses it.
 - `test/contrast.test.ts` runs the AA checks against the Slate and Dusk blocks as well.
+- `slateclose` scopes its overrides to `.band--flush` and feeds a `--footer-fade` token
+  to the footer's background layers (`footer.css`), which is `none` unless it's set.
 - `bluefooter` scopes its token overrides to `.site-footer`, so it only recolours the
   footer and stacks with the page-wide themes.
 
