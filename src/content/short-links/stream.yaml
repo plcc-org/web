@@ -1,6 +1,6 @@
 from: /stream
-destination: https://www.youtube.com/@PineLkCovChurch/live
+destination: /messages/
 kind: shortcut
 permanent: true
-note: The Sunday livestream. YouTube's /live address always resolves to whatever the
-  channel is streaming, so there is nothing to review.
+note: The Messages page, with the latest service and links to the channel's streams.
+  An internal path, so it follows the page if the domain changes.
