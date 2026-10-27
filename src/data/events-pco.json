@@ -1,151 +1,9 @@
 {
-  "capturedAt": "2026-10-26T18:15:46.893Z",
+  "capturedAt": "2026-10-27T17:29:56.679Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-26T07%3A00%3A00Z&where[starts_at][lte]=2026-12-21T07%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-10-27T07%3A00%3A00Z&where[starts_at][lte]=2026-12-22T07%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "226271452",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/226271452",
-        "compact_recurrence_description": "Every other Monday",
-        "ends_at": "2026-10-26T19:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "MomCo Meetup",
-        "published_ends_at": "2026-10-26T18:30:00Z",
-        "published_starts_at": "2026-10-26T16:45:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-10-26T15:45:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/21468765"
-          },
-          "data": {
-            "type": "Event",
-            "id": "21468765"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271452/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241931"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/226271452"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "170581555",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/170581555",
-        "compact_recurrence_description": "Every Monday",
-        "ends_at": "2026-10-26T18:30:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Community Playgroup",
-        "published_ends_at": "2026-10-26T18:30:00Z",
-        "published_starts_at": "2026-10-26T17:00:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-10-26T17:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
-          },
-          "data": {
-            "type": "Event",
-            "id": "6719956"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/170581555/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "241923"
-            },
-            {
-              "type": "Tag",
-              "id": "241936"
-            },
-            {
-              "type": "Tag",
-              "id": "419299"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/170581555"
-      }
-    },
-    {
-      "type": "EventInstance",
-      "id": "220992315",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/220992315",
-        "compact_recurrence_description": "Every Monday",
-        "ends_at": "2026-10-27T04:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Bible Study Fellowship (BSF) - Evening ",
-        "published_ends_at": "2026-10-27T04:00:00Z",
-        "published_starts_at": "2026-10-27T01:00:00Z",
-        "recurrence": "Weekly",
-        "starts_at": "2026-10-27T01:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/20815103"
-          },
-          "data": {
-            "type": "Event",
-            "id": "20815103"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992315/tags"
-          },
-          "data": [
-            {
-              "type": "Tag",
-              "id": "151429"
-            },
-            {
-              "type": "Tag",
-              "id": "241925"
-            },
-            {
-              "type": "Tag",
-              "id": "241935"
-            }
-          ]
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992315"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "233611762",
@@ -2984,162 +2842,109 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/174826708"
       }
+    },
+    {
+      "type": "EventInstance",
+      "id": "174918990",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/174918990",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-12-21T19:30:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Community Playgroup",
+        "published_ends_at": "2026-12-21T19:30:00Z",
+        "published_starts_at": "2026-12-21T18:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-12-21T18:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/6719956"
+          },
+          "data": {
+            "type": "Event",
+            "id": "6719956"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/174918990/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "241923"
+            },
+            {
+              "type": "Tag",
+              "id": "241936"
+            },
+            {
+              "type": "Tag",
+              "id": "419299"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/174918990"
+      }
+    },
+    {
+      "type": "EventInstance",
+      "id": "220992323",
+      "attributes": {
+        "all_day_event": false,
+        "church_center_url": "https://plcc.churchcenter.com/calendar/event/220992323",
+        "compact_recurrence_description": "Every Monday",
+        "ends_at": "2026-12-22T05:00:00Z",
+        "kind": "standard",
+        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "published_ends_at": "2026-12-22T05:00:00Z",
+        "published_starts_at": "2026-12-22T02:00:00Z",
+        "recurrence": "Weekly",
+        "starts_at": "2026-12-22T02:00:00Z"
+      },
+      "relationships": {
+        "event": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/events/20815103"
+          },
+          "data": {
+            "type": "Event",
+            "id": "20815103"
+          }
+        },
+        "tags": {
+          "links": {
+            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992323/tags"
+          },
+          "data": [
+            {
+              "type": "Tag",
+              "id": "151429"
+            },
+            {
+              "type": "Tag",
+              "id": "241925"
+            },
+            {
+              "type": "Tag",
+              "id": "241935"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/220992323"
+      }
     }
   ],
   "included": [
-    {
-      "type": "Event",
-      "id": "21468765",
-      "attributes": {
-        "description": "<div>\n  <div><strong>TWO WAYS TO PARTICIPATE!</strong></div><ol><li><strong>MomCo Monday Meetups (full membership)</strong></li><li><strong>MomCo Social Meetups only</strong></li></ol><div>Here at MomCo at Pine Lake, we gather and support moms. The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together. We believe in the simple but revolutionary idea that remarkable things happen when moms come together. If you are a mom with a child at home, of any age, we have a place for you!<br><br><a href=\"https://plcc.churchcenter.com/calendar?category=MomCo%2520%28The%2520Mom%2520Community%29&amp;view=list\"><strong>See upcoming dates</strong></a></div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fxlomipoz5lcjqul0tsfvh72nm4rb&thumb=960x540%23&signature=cf6b86cdb26d1d5f37f4ec070d8021509c657341db1615629dffec6a9fc41990",
-        "name": "MomCo Meetup",
-        "registration_url": "https://plcc.churchcenter.com/registrations/events/3743770",
-        "summary": "The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together.",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/21468765",
-        "html": "https://calendar.planningcenteronline.com/events/21468765"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241931",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#C69CE8",
-        "created_at": "2023-05-21T17:36:30Z",
-        "name": "MomCo (The Mom Community)",
-        "position": 49152,
-        "updated_at": "2026-07-11T06:56:28Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241931"
-      }
-    },
-    {
-      "type": "Event",
-      "id": "6719956",
-      "attributes": {
-        "description": "<div>\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fi6hbteud83pbhijqhcicfhs522b7&thumb=960x540%23&signature=4ef10cd46096350eced34e1f5052d6c2cf0e196552e8fb10a1ac87c67575ba72",
-        "name": "Community Playgroup",
-        "registration_url": null,
-        "summary": "A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup.",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/6719956",
-        "html": "https://calendar.planningcenteronline.com/events/6719956"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241923",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#E7DEFA",
-        "created_at": "2023-05-21T17:25:54Z",
-        "name": "Community Event",
-        "position": -8192,
-        "updated_at": "2026-07-11T02:45:17Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241923"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241936",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#BEEBDE",
-        "created_at": "2023-05-21T17:37:41Z",
-        "name": "Children & Families",
-        "position": 32768,
-        "updated_at": "2026-07-11T04:28:15Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241936"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "419299",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#F5A57A",
-        "created_at": "2026-07-11T06:51:28Z",
-        "name": "Community Playgroup",
-        "position": 32768,
-        "updated_at": "2026-07-11T06:57:51Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419299"
-      }
-    },
-    {
-      "type": "Event",
-      "id": "20815103",
-      "attributes": {
-        "description": "<div>\n  <div>BSF offers free, in-depth Bible studies in community for people of all ages around the world. <a href=\"https://www.bsfinternational.org/\">Learn more about BSF</a></div>\n</div>\n",
-        "image_url": null,
-        "name": "Bible Study Fellowship (BSF) - Evening ",
-        "registration_url": null,
-        "summary": "BSF offers free, in-depth Bible studies in community for people of all ages around the world. For more information, go to https://www.bsfinternational.org/",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/20815103",
-        "html": "https://calendar.planningcenteronline.com/events/20815103"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "151429",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#F297CD",
-        "created_at": "2021-08-31T17:37:26Z",
-        "name": "BSF",
-        "position": 32768,
-        "updated_at": "2023-11-14T04:50:20Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/151429"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241925",
-      "attributes": {
-        "church_center_category": false,
-        "color": "#F9D266",
-        "created_at": "2023-05-21T17:26:05Z",
-        "name": "Class, Seminar or Course",
-        "position": 6144,
-        "updated_at": "2023-05-21T17:31:12Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241925"
-      }
-    },
-    {
-      "type": "Tag",
-      "id": "241935",
-      "attributes": {
-        "church_center_category": true,
-        "color": "#81D973",
-        "created_at": "2023-05-21T17:37:35Z",
-        "name": "Adults",
-        "position": 16384,
-        "updated_at": "2026-07-11T04:28:26Z"
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241935"
-      }
-    },
     {
       "type": "Event",
       "id": "22324060",
@@ -3203,6 +3008,21 @@
       }
     },
     {
+      "type": "Tag",
+      "id": "241923",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#E7DEFA",
+        "created_at": "2023-05-21T17:25:54Z",
+        "name": "Community Event",
+        "position": -8192,
+        "updated_at": "2026-07-11T02:45:17Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241923"
+      }
+    },
+    {
       "type": "Event",
       "id": "22432056",
       "attributes": {
@@ -3216,6 +3036,51 @@
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/events/22432056",
         "html": "https://calendar.planningcenteronline.com/events/22432056"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "151429",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F297CD",
+        "created_at": "2021-08-31T17:37:26Z",
+        "name": "BSF",
+        "position": 32768,
+        "updated_at": "2023-11-14T04:50:20Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/151429"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241925",
+      "attributes": {
+        "church_center_category": false,
+        "color": "#F9D266",
+        "created_at": "2023-05-21T17:26:05Z",
+        "name": "Class, Seminar or Course",
+        "position": 6144,
+        "updated_at": "2023-05-21T17:31:12Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241925"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241935",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#81D973",
+        "created_at": "2023-05-21T17:37:35Z",
+        "name": "Adults",
+        "position": 16384,
+        "updated_at": "2026-07-11T04:28:26Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241935"
       }
     },
     {
@@ -3282,6 +3147,52 @@
     },
     {
       "type": "Event",
+      "id": "6719956",
+      "attributes": {
+        "description": "<div>\n  <div>A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup. No registration required. For faster check in, <a href=\"https://plcc.churchcenter.com/people/forms/634569\"><strong>fill out this form ahead of time</strong></a>.</div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fi6hbteud83pbhijqhcicfhs522b7&thumb=960x540%23&signature=4ef10cd46096350eced34e1f5052d6c2cf0e196552e8fb10a1ac87c67575ba72",
+        "name": "Community Playgroup",
+        "registration_url": null,
+        "summary": "A fun opportunity for parents in our community to connect with one another and engage their children in a playgroup.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/6719956",
+        "html": "https://calendar.planningcenteronline.com/events/6719956"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241936",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#BEEBDE",
+        "created_at": "2023-05-21T17:37:41Z",
+        "name": "Children & Families",
+        "position": 32768,
+        "updated_at": "2026-07-11T04:28:15Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241936"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "419299",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#F5A57A",
+        "created_at": "2026-07-11T06:51:28Z",
+        "name": "Community Playgroup",
+        "position": 32768,
+        "updated_at": "2026-07-11T06:57:51Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/419299"
+      }
+    },
+    {
+      "type": "Event",
       "id": "21468816",
       "attributes": {
         "description": "<div>\n  A time for ladies to take a break from the busy week and connect with one another!\n</div>\n",
@@ -3313,6 +3224,22 @@
     },
     {
       "type": "Event",
+      "id": "20815103",
+      "attributes": {
+        "description": "<div>\n  <div>BSF offers free, in-depth Bible studies in community for people of all ages around the world. <a href=\"https://www.bsfinternational.org/\">Learn more about BSF</a></div>\n</div>\n",
+        "image_url": null,
+        "name": "Bible Study Fellowship (BSF) - Evening ",
+        "registration_url": null,
+        "summary": "BSF offers free, in-depth Bible studies in community for people of all ages around the world. For more information, go to https://www.bsfinternational.org/",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/20815103",
+        "html": "https://calendar.planningcenteronline.com/events/20815103"
+      }
+    },
+    {
+      "type": "Event",
       "id": "21647793",
       "attributes": {
         "description": "<div>\n  <div>Join us for a meal together every 1st and 3rd Tuesdays of each month!&nbsp;</div>\n</div>\n",
@@ -3340,6 +3267,37 @@
       },
       "links": {
         "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/426752"
+      }
+    },
+    {
+      "type": "Event",
+      "id": "21468765",
+      "attributes": {
+        "description": "<div>\n  <div><strong>TWO WAYS TO PARTICIPATE!</strong></div><ol><li><strong>MomCo Monday Meetups (full membership)</strong></li><li><strong>MomCo Social Meetups only</strong></li></ol><div>Here at MomCo at Pine Lake, we gather and support moms. The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together. We believe in the simple but revolutionary idea that remarkable things happen when moms come together. If you are a mom with a child at home, of any age, we have a place for you!<br><br><a href=\"https://plcc.churchcenter.com/calendar?category=MomCo%2520%28The%2520Mom%2520Community%29&amp;view=list\"><strong>See upcoming dates</strong></a></div>\n</div>\n",
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1793519999&key=uploads%2F65711%2Fxlomipoz5lcjqul0tsfvh72nm4rb&thumb=960x540%23&signature=cf6b86cdb26d1d5f37f4ec070d8021509c657341db1615629dffec6a9fc41990",
+        "name": "MomCo Meetup",
+        "registration_url": "https://plcc.churchcenter.com/registrations/events/3743770",
+        "summary": "The MomCo (short for Mom Community) is a group of women, with children of all ages, going through life together.",
+        "visible_in_church_center": true
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/events/21468765",
+        "html": "https://calendar.planningcenteronline.com/events/21468765"
+      }
+    },
+    {
+      "type": "Tag",
+      "id": "241931",
+      "attributes": {
+        "church_center_category": true,
+        "color": "#C69CE8",
+        "created_at": "2023-05-21T17:36:30Z",
+        "name": "MomCo (The Mom Community)",
+        "position": 49152,
+        "updated_at": "2026-07-11T06:56:28Z"
+      },
+      "links": {
+        "self": "https://api.planningcenteronline.com/calendar/v2/campus_tags/241931"
       }
     },
     {
@@ -3486,8 +3444,8 @@
     }
   ],
   "meta": {
-    "total_count": 64,
-    "count": 64,
+    "total_count": 63,
+    "count": 63,
     "can_order_by": [
       "created_at",
       "updated_at",
