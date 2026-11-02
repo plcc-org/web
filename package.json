@@ -51,7 +51,7 @@
     "@astrojs/check": "^0.9.12",
     "@astrojs/cloudflare": "^14.4.2",
     "@tinacms/astro": "^0.8.0",
-    "@tinacms/cli": "4.0.3",
+    "@tinacms/cli": "4.0.4",
     "@types/node": "^26.6.5",
     "patch-package": "^8.0.1",
     "postcss-html": "^2.0.0",
