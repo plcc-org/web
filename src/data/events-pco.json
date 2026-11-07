@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-11-06T18:55:33.592Z",
+  "capturedAt": "2026-11-07T17:27:20.511Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-11-06T08%3A00%3A00Z&where[starts_at][lte]=2027-01-01T08%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-11-07T08%3A00%3A00Z&where[starts_at][lte]=2027-01-02T08%3A00%3A00Z"
   },
   "data": [
     {
@@ -1876,7 +1876,7 @@
         "ends_at": "2026-12-13T19:00:00Z",
         "kind": "standard",
         "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Sunday Service",
+        "name": "Worship Through Music - Special Sunday Service",
         "published_ends_at": "2026-12-13T19:00:00Z",
         "published_starts_at": "2026-12-13T18:00:00Z",
         "recurrence": "Weekly",
