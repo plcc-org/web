@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-11-07T17:27:20.511Z",
+  "capturedAt": "2026-11-08T17:38:16.275Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-11-07T08%3A00%3A00Z&where[starts_at][lte]=2027-01-02T08%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-11-08T08%3A00%3A00Z&where[starts_at][lte]=2027-01-03T08%3A00%3A00Z"
   },
   "data": [
     {
@@ -670,14 +670,14 @@
       "attributes": {
         "all_day_event": false,
         "church_center_url": "https://plcc.churchcenter.com/calendar/event/234197587",
-        "compact_recurrence_description": "The third Thursday of every month",
+        "compact_recurrence_description": "Does not repeat",
         "ends_at": "2026-11-20T05:00:00Z",
         "kind": "standard",
         "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
         "name": "Stephen Ministry Presentation on Hospice Care",
-        "published_ends_at": "2026-11-20T04:00:00Z",
-        "published_starts_at": "2026-11-20T02:00:00Z",
-        "recurrence": "Monthly",
+        "published_ends_at": "2026-11-20T04:15:00Z",
+        "published_starts_at": "2026-11-20T03:00:00Z",
+        "recurrence": "None",
         "starts_at": "2026-11-20T01:00:00Z"
       },
       "relationships": {
@@ -3167,7 +3167,7 @@
       "id": "22396994",
       "attributes": {
         "description": "<div>\n  <div><strong>What is hospice?<br>What are the benefits?<br>Is there a difference between hospice and palliative care?</strong><br>June Repp, a trained visitation hospice volunteer, will share insights from her personal experience. This evening is open to anyone and is sponsored by Stephen Ministry.</div>\n</div>\n",
-        "image_url": null,
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1796115599&key=uploads%2F65711%2Fl7rc5icsv6wcn65zhzej5ddp5a25&thumb=960x540%23&signature=ef4a68b6df5fb5dbfcabfb3030b3fa108fab2157759473a151fc07cce1fcf22a",
         "name": "Stephen Ministry Meeting  ",
         "registration_url": null,
         "summary": "What is hospice care? What are the benefits? Is there a difference between hospice and palliative care? June Repp, a trained visitation hospice volunteer, will share insights from her personal experience. This evening is open to anyone and is sponsored by Stephen Ministry.",
@@ -3199,7 +3199,7 @@
       "id": "22324246",
       "attributes": {
         "description": "<div>\n  Are your kids looking for gift ideas for Christmas?! Come to our Christmas Craft event on November 21. We will have multiple stations where kids can make Christmas gifts for their loved ones. We will have several gift ideas to choose from and each gift is $5 or less!\n</div>\n",
-        "image_url": null,
+        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1796115599&key=uploads%2F65711%2Fnexmhign2feq136k5fwmrx9zqv9y&thumb=960x540%23&signature=a1ced9b25a8dc1ad622faaf03d1a58c4c83963778222b5873812368bfb915345",
         "name": "Kris Kringle's Workshop: A Christmas Craft Event!",
         "registration_url": null,
         "summary": "Are your kids looking for gift ideas for Christmas?! Come to our Christmas Craft event on November 21. We will have multiple stations where kids can make Christmas gifts for their loved ones. We will have several gift ideas to choose from and each gift is $5 or less!",
