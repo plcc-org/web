@@ -1737,3 +1737,20 @@ body:has(.site-banner:not([hidden])) .hero {
   background: var(--color-ember);
   transform: scale(1.3);
 }
+
+/* Forced colours erase a background-only dot. Draw each as a ring in the
+   system button colour, with the current one filled, so the state reads by
+   shape as well as colour. */
+@media (forced-colors: active) {
+  .quote-dot::before,
+  .quote-dot:hover::before {
+    forced-color-adjust: none;
+    background-color: transparent;
+    outline: 1px solid ButtonText;
+    outline-offset: -1px;
+  }
+
+  .quote-dot.is-active::before {
+    background-color: ButtonText;
+  }
+}

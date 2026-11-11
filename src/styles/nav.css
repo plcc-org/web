@@ -322,7 +322,7 @@ a.site-banner:hover > span:last-child,
 
 /* The wordmark link. `line-height: 0` stops the inline-block logo from
    inheriting a text baseline gap and pushing the bar taller than it needs. */
-.site-nav__home {
+.site-nav a.site-nav__home {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -493,5 +493,25 @@ a.site-banner:hover > span:last-child,
 
   .site-nav__list li:last-child {
     border-top: none;
+  }
+}
+
+/* Forced colours (Windows High Contrast and the like) repaint every
+   background-color with the system Canvas, which erases the two marks painted
+   that way: the wordmark, a mask over a background colour, and the hamburger's
+   bars. They carry meaning, so they opt out and take the system text colour.
+   The bar itself turns solid Canvas, because over a hero it is otherwise
+   transparent and the marks would sit on a photo with no backplate.
+   `!important` because the hero and scroll states above repaint all three at
+   far higher specificity, and none of those colours apply here. */
+@media (forced-colors: active) {
+  .site-header {
+    background-color: Canvas !important;
+  }
+
+  .site-nav__home-logo,
+  .site-nav__toggle span {
+    forced-color-adjust: none;
+    background-color: CanvasText !important;
   }
 }
