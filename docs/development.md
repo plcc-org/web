@@ -70,7 +70,8 @@ feature reaches Widely:
   queries (Limited) or a scroll-driven animation (Newly). The listener in
   `SiteHeader.astro` stays until then.
 - **Temporal in the browser.** It's Limited (no Safari), so `src/lib/livestream.ts`
-  keeps `Intl`. Build-time code is exempt.
+  keeps `Intl`. Build-time code is exempt: the curated calendar's recurrence
+  (`src/lib/events/adapters/curated.ts`) runs on `temporal-polyfill`.
 
 ---
 

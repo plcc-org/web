@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { curatedEvents } from '../src/lib/events/adapters/curated'
+import { curatedEvents, upcomingWeekly } from '../src/lib/events/adapters/curated'
 
 // The curated calendar is the permanent fallback: it's what the site shows when
 // Planning Center is unreachable. It's generated from weekly rules, so the thing
@@ -63,5 +63,27 @@ describe('curatedEvents', () => {
     expect(youth[2].start).toBe('2026-11-03T18:00:00-08:00')
     expect(new Set(events.map((e) => e.cadence))).toEqual(new Set(['Every Sunday', 'Every Tuesday']))
     expect(events.every((e) => e.source === 'curated' && e.location === undefined)).toBe(true)
+  })
+})
+
+// The rhythms above are mid-morning and evening, which the offset arithmetic
+// happens to get right on a changeover day. An early-morning time is the case
+// that isn't: the clocks change at 02:00 local, so anything that looks up the
+// offset at the wrong moment of the day lands on the wrong side of it.
+describe('upcomingWeekly', () => {
+  it('uses the post-change offset for an early-morning time on fall-back day', () => {
+    vi.useFakeTimers({ now: new Date('2026-10-28T19:00:00Z') })
+    expect(upcomingWeekly(0, 7, 0, 2)).toEqual(['2026-11-01T07:00:00-08:00', '2026-11-08T07:00:00-08:00'])
+  })
+
+  it('uses the post-change offset for an early-morning time on spring-forward day', () => {
+    vi.useFakeTimers({ now: new Date('2026-03-04T19:00:00Z') })
+    expect(upcomingWeekly(0, 7, 0, 2)).toEqual(['2026-03-08T07:00:00-07:00', '2026-03-15T07:00:00-07:00'])
+  })
+
+  it('resolves a time the spring-forward skips to the instant after the gap', () => {
+    vi.useFakeTimers({ now: new Date('2026-03-04T19:00:00Z') })
+    // 02:30 doesn't exist on 8 March; the compatible reading is 03:30 PDT.
+    expect(upcomingWeekly(0, 2, 30, 1)).toEqual(['2026-03-08T03:30:00-07:00'])
   })
 })

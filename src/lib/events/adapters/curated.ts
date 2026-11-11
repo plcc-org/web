@@ -6,50 +6,37 @@
 // stale. Add confirmed one-off events to `fixedEvents` as their real dates and
 // Church Center links become available.
 
+import { Temporal } from 'temporal-polyfill'
 import type { CalendarEvent, EventCategory } from '../types'
 import { church } from '../../../config/church'
-import { pacificDay, WEEKDAY_NAMES } from '../logic'
+import { WEEKDAY_NAMES } from '../logic'
 
-// --- Pacific-time helpers --------------------------------------------------
-// CI runs in UTC, so we compute Pacific wall-clock dates explicitly (DST-aware
-// via Intl) rather than relying on the host timezone.
+// --- Church-time recurrence -------------------------------------------------
+// CI runs in UTC, so every occurrence is built as a wall-clock time in the
+// church's zone and only then resolved to an offset, for that date and time.
+// That is what keeps 10am at 10am across both DST changes, and what puts an
+// early-morning time on the right side of a change made at 02:00 that day.
+//
+// The polyfill, not a native Temporal: this runs only at build time, and one
+// implementation everywhere keeps the output identical across hosts. "Today"
+// comes from Date.now(), which is also what lets the tests fake the clock.
 
-function pacificToday(): { y: number; m: number; d: number } {
-  const [y, m, d] = pacificDay(new Date()).split('-').map(Number)
-  return { y, m: m - 1, d }
-}
+/**
+ * The next `count` occurrences of `weekday` (0 = Sunday), at the given church-local
+ * time, as ISO strings with their offset: `2026-11-01T10:00:00-08:00`. Today counts
+ * if it is that weekday. A time the spring-forward skips resolves to the instant
+ * after the gap (02:30 becomes 03:30), Temporal's `compatible` reading.
+ */
+export function upcomingWeekly(weekday: number, hour: number, minute: number, count: number): string[] {
+  const timeZone = church.timezone
+  const today = Temporal.Instant.fromEpochMilliseconds(Date.now()).toZonedDateTimeISO(timeZone).toPlainDate()
+  // Temporal numbers the week 1 (Monday) to 7 (Sunday).
+  const first = today.add({ days: ((weekday || 7) - today.dayOfWeek + 7) % 7 })
+  const time = new Temporal.PlainTime(hour, minute)
 
-/** Offset string ("-07:00" / "-08:00") for the church timezone on a given date. */
-function pacificOffset(y: number, m: number, d: number, hour: number): string {
-  const probe = new Date(Date.UTC(y, m, d, hour))
-  const name = new Intl.DateTimeFormat('en-US', {
-    timeZone: church.timezone,
-    timeZoneName: 'longOffset',
-  })
-    .formatToParts(probe)
-    .find((p) => p.type === 'timeZoneName')?.value
-  const match = name?.match(/GMT([+-]\d{2}:\d{2})/)
-  return match ? match[1] : '-08:00'
-}
-
-function pacificIso(y: number, m: number, d: number, hour: number, minute: number): string {
-  const pad = (n: number) => String(n).padStart(2, '0')
-  const offset = pacificOffset(y, m, d, hour)
-  return `${y}-${pad(m + 1)}-${pad(d)}T${pad(hour)}:${pad(minute)}:00${offset}`
-}
-
-/** The next `count` occurrences of `weekday` (0 = Sunday), at the given Pacific time. */
-function upcomingWeekly(weekday: number, hour: number, minute: number, count: number): string[] {
-  const { y, m, d } = pacificToday()
-  const cursor = new Date(Date.UTC(y, m, d)) // UTC midnight as a pure calendar carrier
-  while (cursor.getUTCDay() !== weekday) cursor.setUTCDate(cursor.getUTCDate() + 1)
-
-  const out: string[] = []
-  for (let i = 0; i < count; i++) {
-    out.push(pacificIso(cursor.getUTCFullYear(), cursor.getUTCMonth(), cursor.getUTCDate(), hour, minute))
-    cursor.setUTCDate(cursor.getUTCDate() + 7)
-  }
-  return out
+  return Array.from({ length: count }, (_, i) =>
+    first.add({ weeks: i }).toZonedDateTime({ timeZone, plainTime: time }).toString({ timeZoneName: 'never' })
+  )
 }
 
 // --- Recurring rhythms (confirmed) ----------------------------------------
