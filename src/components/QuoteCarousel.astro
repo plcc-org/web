@@ -17,21 +17,37 @@
 //     are visibility:hidden, so they're out of the accessibility tree either way.
 //   - The controls ship `hidden` and the script reveals them, so without JS the
 //     first quote shows with no dead buttons beneath it.
+//   - With more than one quote, the root is a named region announced as a
+//     "carousel" and each quote as a "slide" with its place in the set, as the
+//     ARIA Authoring Practices carousel pattern asks. A single quote is just a
+//     quote, and gets neither.
 
 type Quote = { text: string; by?: string }
 
 type Props = {
   quotes: Quote[]
+  /** The region's accessible name — the heading of the section it sits in. */
+  label?: string
 }
 
-const { quotes } = Astro.props
+const { quotes, label = 'Quotes' } = Astro.props
+const isCarousel = quotes.length > 1
 ---
 
-<div class="quote-carousel" data-quote-carousel>
+<div
+  class="quote-carousel"
+  data-quote-carousel
+  role={isCarousel ? 'region' : undefined}
+  aria-roledescription={isCarousel ? 'carousel' : undefined}
+  aria-label={isCarousel ? label : undefined}
+>
   <div class="quote-carousel__viewport">
     {quotes.map((quote, i) => (
       <figure
         class:list={['story-quote', 'pull-quote', 'quote-slide', i === 0 && 'is-active']}
+        role={isCarousel ? 'group' : undefined}
+        aria-roledescription={isCarousel ? 'slide' : undefined}
+        aria-label={isCarousel ? `${i + 1} of ${quotes.length}` : undefined}
         aria-hidden={i !== 0 ? 'true' : undefined}
       >
         <blockquote>
@@ -47,7 +63,7 @@ const { quotes } = Astro.props
     ))}
   </div>
 
-  {quotes.length > 1 && (
+  {isCarousel && (
     <div class="quote-carousel__controls" hidden>
       <button type="button" class="quote-nav quote-nav--pause" data-pause aria-label="Pause quotes">
         <svg class="quote-nav__icon quote-nav__icon--pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false">

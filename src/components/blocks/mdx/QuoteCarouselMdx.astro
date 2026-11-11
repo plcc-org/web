@@ -26,6 +26,6 @@ const quotes = (await getCollection('quotes'))
     reveal
   >
     {intro && <p class="measure">{intro}</p>}
-    <QuoteCarousel quotes={quotes} />
+    <QuoteCarousel quotes={quotes} label={heading || undefined} />
   </Band>
 )}

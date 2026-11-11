@@ -1672,6 +1672,8 @@ body:has(.site-banner:not([hidden])) .hero {
   color: var(--color-forest);
   font-size: var(--text-md);
   cursor: pointer;
+  /* Quick repeated taps step through quotes rather than zooming the page. */
+  touch-action: manipulation;
   transition:
     background var(--duration-fast) var(--ease-out),
     border-color var(--duration-fast) var(--ease-out),
@@ -1716,6 +1718,7 @@ body:has(.site-banner:not([hidden])) .hero {
   border: 0;
   background: none;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .quote-dot::before {
