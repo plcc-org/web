@@ -59,8 +59,8 @@
   background:
     radial-gradient(
       140% 120% at 50% 115%,
-      rgba(var(--color-moss-2-rgb), 0.5) 0%,
-      rgba(var(--color-forest-2-rgb), 0) 55%
+      color-mix(in srgb, var(--color-moss-2) 50%, transparent) 0%,
+      transparent 55%
     ),
     linear-gradient(180deg, var(--color-forest-2) 0%, var(--color-forest) 100%);
 }
@@ -169,8 +169,8 @@
   inset: 0;
   background: radial-gradient(
     65% 55% at 50% 100%,
-    rgba(var(--color-moss-rgb), 0.7) 0%,
-    rgba(var(--color-moss-rgb), 0) 70%
+    color-mix(in srgb, var(--color-moss) 70%, transparent) 0%,
+    transparent 70%
   );
   transform-origin: 50% 100%;
   animation: hero-glow 6s ease-in-out infinite;
@@ -242,10 +242,10 @@
   z-index: -1;
   background: linear-gradient(
     180deg,
-    rgba(var(--color-forest-rgb), 0.45) 0%,
-    rgba(var(--color-forest-rgb), 0) 30%,
-    rgba(var(--color-forest-rgb), 0.1) 52%,
-    rgba(var(--color-forest-rgb), 0.85) 100%
+    color-mix(in srgb, var(--color-forest) 45%, transparent) 0%,
+    transparent 30%,
+    color-mix(in srgb, var(--color-forest) 10%, transparent) 52%,
+    color-mix(in srgb, var(--color-forest) 85%, transparent) 100%
   );
 }
 
@@ -1075,9 +1075,9 @@ body:has(.site-banner:not([hidden])) .hero {
   height: 2px;
   background: linear-gradient(
     90deg,
-    rgba(var(--color-moss-rgb), 0.3) 0%,
-    rgba(var(--color-moss-rgb), 0.75) 50%,
-    rgba(var(--color-forest-rgb), 0.45) 100%
+    color-mix(in srgb, var(--color-moss) 30%, transparent) 0%,
+    color-mix(in srgb, var(--color-moss) 75%, transparent) 50%,
+    color-mix(in srgb, var(--color-forest) 45%, transparent) 100%
   );
 }
 

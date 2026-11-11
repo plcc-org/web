@@ -42,13 +42,6 @@
   --color-sand: rgb(226, 222, 213);
   --color-paper: rgb(250, 249, 246);
 
-  --color-stone-rgb: 241, 239, 234;
-  --color-forest-rgb: 30, 37, 51;
-  --color-forest-2-rgb: 51, 60, 79;
-  --color-moss-rgb: 72, 83, 106;
-  --color-moss-2-rgb: 95, 109, 138;
-  --color-ember-rgb: 184, 95, 69;
-
   --color-ink-soft: rgba(30, 37, 51, 0.72);
   --color-mist: rgba(30, 37, 51, 0.08);
   --color-line: rgba(30, 37, 51, 0.14);
@@ -86,13 +79,6 @@
   --color-sand: rgb(226, 222, 213);
   --color-paper: rgb(250, 249, 246);
 
-  --color-stone-rgb: 241, 239, 234;
-  --color-forest-rgb: 30, 34, 56;
-  --color-forest-2-rgb: 52, 58, 92;
-  --color-moss-rgb: 78, 90, 128;
-  --color-moss-2-rgb: 103, 117, 163;
-  --color-ember-rgb: 184, 95, 69;
-
   --color-ink-soft: rgba(30, 34, 56, 0.72);
   --color-mist: rgba(30, 34, 56, 0.08);
   --color-line: rgba(30, 34, 56, 0.14);
@@ -108,14 +94,14 @@
 }
 
 /* Blue footer — the page keeps its green; only the closing panel turns blue, in
-   Dusk's indigo. The footer paints itself from the deep-forest, moss-glow and
+   Dusk's indigo. The footer paints itself from the deep-forest, moss and
    moss-light tokens, so redefining those on `.site-footer` is the whole change —
    the sitemap, address and links all inherit it. It stacks with the others:
    `?theme=slate+bluefooter` is a Slate page with the Dusk footer. */
 :root[data-theme~='bluefooter'] .site-footer {
   --color-forest-deep: #141728;
   --color-forest-deep-2: #1b1f35;
-  --color-moss-rgb: 103, 117, 163;
+  --color-moss: rgb(103, 117, 163);
   --color-moss-light: #d0d6f0;
 }
 

@@ -84,7 +84,7 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(:has(:popover-open)
    so the sticky bar never reflows the content below it (which would jitter
    the page as you scroll across the threshold). */
 .site-header.is-scrolled {
-  background: rgba(var(--color-stone-rgb), 0.82);
+  background: color-mix(in srgb, var(--color-stone) 82%, transparent);
   -webkit-backdrop-filter: blur(12px) saturate(1.08);
   backdrop-filter: blur(12px) saturate(1.08);
   box-shadow: 0 1px 0 var(--color-mist);
@@ -116,13 +116,13 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(:has(:popover-open)
   inset: 100% 0 auto;
   height: 3rem;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgba(var(--color-stone-rgb), 0.8), rgba(var(--color-stone-rgb), 0));
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--color-stone) 80%, transparent), transparent);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   /* A mask reads only the alpha ramp; the opaque stop's hue is irrelevant and
      comes from a token purely so the lint can vouch for the value. */
-  -webkit-mask-image: linear-gradient(to bottom, rgb(var(--color-forest-rgb)), transparent);
-  mask-image: linear-gradient(to bottom, rgb(var(--color-forest-rgb)), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, var(--color-forest), transparent);
+  mask-image: linear-gradient(to bottom, var(--color-forest), transparent);
   opacity: 0;
   transition: opacity var(--duration-mid) var(--ease-out);
 }
@@ -133,7 +133,7 @@ body:has(.hero) .site-header:not(.is-scrolled) .site-nav:not(:has(:popover-open)
 
 /* Keep the bar fully legible while the mobile menu is open */
 .site-header:has(:popover-open) {
-  background: rgba(var(--color-stone-rgb), 0.95);
+  background: color-mix(in srgb, var(--color-stone) 95%, transparent);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   box-shadow: 0 1px 0 var(--color-mist);
@@ -219,11 +219,11 @@ a.site-banner:hover > span:last-child,
 @keyframes site-banner-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(var(--color-white-rgb), 0.6);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-white) 60%, transparent);
   }
 
   70% {
-    box-shadow: 0 0 0 0.6rem rgba(var(--color-white-rgb), 0);
+    box-shadow: 0 0 0 0.6rem transparent;
   }
 }
 
@@ -433,7 +433,7 @@ a.site-banner:hover > span:last-child,
     padding: 0.5rem max(var(--space-lg), env(safe-area-inset-right, 0px)) 1rem
       max(var(--space-lg), env(safe-area-inset-left, 0px));
     border-top: 1px solid var(--color-mist);
-    background: rgba(var(--color-stone-rgb), 0.95);
+    background: color-mix(in srgb, var(--color-stone) 95%, transparent);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
   }

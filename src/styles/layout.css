@@ -104,8 +104,8 @@
 .band--wash {
   background-image: radial-gradient(
     80% 60% at 15% 0%,
-    rgba(var(--color-ember-rgb), 0.06) 0%,
-    rgba(var(--color-ember-rgb), 0) 60%
+    color-mix(in srgb, var(--color-ember) 6%, transparent) 0%,
+    transparent 60%
   );
 }
 
