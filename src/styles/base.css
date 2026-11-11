@@ -17,6 +17,10 @@
 }
 
 html {
+  /* The palette is light-only. Saying so keeps scrollbars, form controls and
+     the canvas light when the OS is in dark mode, instead of leaving them to
+     follow it under light-only colours. */
+  color-scheme: light;
   background-color: var(--color-stone);
   color: var(--color-ink);
   scroll-behavior: smooth;

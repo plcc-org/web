@@ -113,6 +113,8 @@ const jsonLd = origin
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <meta name="theme-color" content={brand.theme} />
+    {/* Before any CSS loads: the first paint is light too (see base.css). */}
+    <meta name="color-scheme" content="light" />
 
     <!-- Icons + PWA manifest -->
     <link rel="icon" href={favicon32.src} type="image/png" sizes="32x32" />
