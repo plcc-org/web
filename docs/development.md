@@ -27,6 +27,53 @@ worth preserving, not an accident.
 
 ---
 
+## Browser support
+
+**Baseline Widely available only.** New work uses only web platform features that
+are [Baseline](https://web.dev/baseline) _Widely available_, meaning they have shipped
+in every major engine for at least 30 months. A feature that's only _Newly
+available_ or has _Limited availability_ is out, even behind `@supports`. Polyfills
+are out too.
+
+The rule covers what ships to the browser: HTML, CSS and client scripts. Build-time
+Node code (`src/lib/events/`, `scripts/`, anything `getStaticPaths` runs) runs on the
+pinned `.node-version`, not in a visitor's browser, so it's exempt.
+
+Check a feature's status before reaching for it. The `modern-web-guidance` skill
+reports it for each guide, and so do [webstatus.dev](https://webstatus.dev) and MDN's
+Baseline badge.
+
+### Known exceptions
+
+These were built before the policy and stay. Each is a progressive enhancement:
+without it, the page still works and nothing is hidden. Re-check each one when it
+reaches Widely, and remove its row then.
+
+| Feature                         | Status (2026-11)        | Where                                         | Without it                                                                                  |
+| ------------------------------- | ----------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `popover` / `popovertarget`     | Newly, since 2025-01-27 | `SiteHeader.astro`, `nav.css`                 | The rule that hides the closed drawer is dropped, so the link list stays open under the bar |
+| Anchor positioning              | Limited                 | `nav.css`, inside `@supports (anchor-name:…)` | The drawer uses a fixed `inset` instead                                                     |
+| Scroll-driven animations        | Newly, since 2026-10-27 | `animations.css`, inside `@supports`          | Sections render in place, with no reveal                                                    |
+| `sibling-index()`               | Newly, since 2026-08-18 | `animations.css`, inside `@supports`          | Staggered items rise together                                                               |
+| Cross-document view transitions | Limited (no Firefox)    | `pages.css` (`@view-transition`)              | An ordinary page load                                                                       |
+| `text-wrap: balance`            | Newly, since 2024-05-13 | `base.css`, `blocks.css`                      | Headings wrap greedily                                                                      |
+| `text-wrap: pretty`             | Limited (no Firefox)    | `base.css`, `components.css`                  | Body copy wraps greedily                                                                    |
+
+### Deferred until Widely
+
+These were considered and set aside under the rule. Pick each one up when its
+feature reaches Widely:
+
+- **Animated drawer open and close.** Needs `@starting-style` (Newly, since
+  2024-08-06), plus `overlay` and discrete `display` transitions (Limited).
+- **The header frost without a scroll listener.** Needs scroll-state container
+  queries (Limited) or a scroll-driven animation (Newly). The listener in
+  `SiteHeader.astro` stays until then.
+- **Temporal in the browser.** It's Limited (no Safari), so `src/lib/livestream.ts`
+  keeps `Intl`. Build-time code is exempt.
+
+---
+
 ## Project structure
 
 ```

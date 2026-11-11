@@ -64,6 +64,11 @@ Even if you don't open the docs, never violate these:
   rejected as text colours — use `--color-moss-ink` / `--color-clay-ink` for anything
   involving type, including a fill under white text.
   → [design-system.md](./docs/design-system.md)
+- **Baseline Widely available only.** Anything that ships to the browser may use only
+  features that are Baseline Widely available: no Newly-available or Limited features,
+  even behind `@supports`, and no polyfills. Build-time Node code is exempt. A handful
+  of older enhancements are grandfathered, and are listed with the features waiting on
+  Widely status. → [development.md](./docs/development.md#browser-support)
 - **Run `npm run format` before committing.** CI runs `format:check`, `lint:css`, `check`,
   `test`, then builds and crawls both deploy targets. Cloudflare runs none of it.
   → [development.md](./docs/development.md)
