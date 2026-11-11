@@ -10,7 +10,7 @@ version: 2
 # in one PR — see the `security` group.
 #
 # There's no `docker` entry, and that's intentional: the Dockerfile's only base
-# is `node:22`, a floating tag that follows .node-version, which is changed by
+# is `node:24`, a floating tag that follows .node-version, which is changed by
 # hand (see docs/development.md) rather than by Dependabot.
 
 updates:

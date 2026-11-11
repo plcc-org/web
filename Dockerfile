@@ -6,8 +6,8 @@
 # security headers (_headers), the 410 routes and the 404 page behave exactly as
 # deployed, with nothing translated into a second server's config to drift.
 #
-# Node 22 to match .node-version, which CI and Cloudflare both read.
-FROM node:22
+# Node 24 to match .node-version, which CI and Cloudflare both read.
+FROM node:24
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY patches ./patches

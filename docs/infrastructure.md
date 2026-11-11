@@ -149,7 +149,7 @@ host's defaults, because neither looks like a CMS problem:
 - **Node 25.** A race in the CMS's datalayer client makes it connect before its own server
   is listening, and every query then queues forever
   ([tinacms/tinacms#7295](https://github.com/tinacms/tinacms/pull/7295)). `.node-version`
-  pins 22. **Don't "modernise" it** without reading that PR.
+  pins 24 LTS, which Tina supports. **Don't move it to 25** without reading that PR.
 
 If a build hangs there with **both already correct**, it is a Cloudflare-side stall, not this repo —
 one sat for 24 minutes and then failed on its own.

@@ -117,7 +117,7 @@ Dockerfile          Container image: builds the site and serves it via astro pre
 
 ## Building and running
 
-Requires Node.js and npm. The version is pinned in `.node-version` (22 LTS), which CI and
+Requires Node.js and npm. The version is pinned in `.node-version` (24 LTS), which CI and
 Cloudflare both read — deliberately not the newest release
 ([why](./infrastructure.md#a-build-stuck-at-indexing-local-files)).
 
@@ -519,8 +519,9 @@ Three things a bump can break that aren't obvious from the diff:
   reverts. The procedure is written down as the `/upgrade-patched-dep` command — fetch
   upstream, rebase our changes onto it, verify each patch's "How to check it", then replace
   the version.
-- **Node** is pinned in `.node-version`, not by Dependabot. It stays on 22 until Tina's
-  datalayer race on 25 is fixed — see the note in `ci.yml`.
+- **Node** is pinned in `.node-version`, not by Dependabot. It's on 24 LTS, which Tina
+  supports, and skips 25, where Tina's datalayer race hangs builds — see the note in
+  `ci.yml`.
 - **TypeScript** stays on 6. TypeScript 7 is the native Go compiler, and its npm package
   drops the programmatic API — `require('typescript')` returns `version` and nothing else.
   `astro check` runs on Volar, which embeds that API, so it cannot run under 7: the
@@ -538,7 +539,7 @@ Three things a bump can break that aren't obvious from the diff:
   and stays red until one of the two routes opens. To check: run
   `npm view @astrojs/check peerDependencies` and `npm view typescript dist-tags.latest`.
 
-The Dockerfile has no entry: its `node:22` base follows `.node-version`, and moves when
+The Dockerfile has no entry: its `node:24` base follows `.node-version`, and moves when
 that does.
 
 Keep pure logic in dependency-free modules so it stays testable. When you add a guard,
