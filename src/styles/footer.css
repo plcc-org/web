@@ -150,24 +150,25 @@
   font-weight: 500;
 }
 
-/* Every footer link, underlined by default. The rule is a `border-bottom`
-   rather than `text-decoration` so its distance from the baseline and its
-   colour are set independently — and so the sitemap rules below can turn it
-   off by making it transparent, which keeps the link's height unchanged
-   between rest and hover. */
+/* Every footer link, underlined by default, in a colour of its own and set a
+   little below the baseline. Rules that hide the underline make it
+   transparent rather than removing it, so nothing reflows between rest and
+   hover. */
 .site-footer a {
   color: var(--color-white);
-  text-decoration: none;
-  border-bottom: 1px solid var(--color-on-dark-line);
+  text-decoration: underline;
+  text-decoration-color: var(--color-on-dark-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
   line-height: 1.15;
   transition:
     color var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out);
+    text-decoration-color var(--duration-fast) var(--ease-out);
 }
 
 .site-footer a:hover {
   color: var(--color-moss-light);
-  border-bottom-color: var(--color-moss-light);
+  text-decoration-color: var(--color-moss-light);
 }
 
 /* The sitemap link rules sit after the two above because they override them at
@@ -181,30 +182,43 @@
      holding. */
   padding: 0.15rem 0;
   font-size: var(--text-sm);
-  border-bottom-color: transparent;
+  text-decoration-color: transparent;
+  /* Clears the padding above, so the hover line sits at the foot of the tap
+     target rather than hugging the text. */
+  text-underline-offset: calc(0.22em + 0.15rem);
 }
 
 .site-footer__sitemap li a:hover {
-  border-bottom-color: var(--color-moss-light);
+  text-decoration-color: var(--color-moss-light);
 }
 
 /* A heading is also the link to its hub, so it keeps the label's size and
    colour rather than taking the white every other footer link uses. */
 .site-footer__heading a {
   color: inherit;
-  border-bottom-color: transparent;
+  text-decoration-color: transparent;
 }
 
 .site-footer__heading a:hover {
   color: var(--color-moss-light);
-  border-bottom-color: var(--color-moss-light);
+  text-decoration-color: var(--color-moss-light);
 }
 
-/* Icon + label, kept on one line. */
+/* Icon + label, kept on one line. The rule runs under the icon as well as the
+   label, which a text underline can't do, so these links draw it as a border. */
 .site-footer__social-link {
   display: inline-flex;
   align-items: center;
   gap: 0.32rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-on-dark-line);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.site-footer__social-link:hover {
+  border-bottom-color: var(--color-moss-light);
 }
 
 .site-footer__social-icon {
