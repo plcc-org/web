@@ -1,46 +1,9 @@
 {
-  "capturedAt": "2026-11-21T18:42:38.998Z",
+  "capturedAt": "2026-11-22T19:03:07.263Z",
   "links": {
-    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-11-21T08%3A00%3A00Z&where[starts_at][lte]=2027-01-16T08%3A00%3A00Z"
+    "self": "https://api.planningcenteronline.com/calendar/v2/event_instances?fields[Event]=name%2Csummary%2Cdescription%2Cregistration_url%2Cvisible_in_church_center%2Cimage_url%2Ctags&fields[EventInstance]=name%2Cstarts_at%2Cends_at%2Cpublished_starts_at%2Cpublished_ends_at%2Call_day_event%2Clocation%2Cchurch_center_url%2Ckind%2Crecurrence%2Ccompact_recurrence_description%2Cevent%2Ctags&include=event%2Ctags&order=starts_at&per_page=100&where[event][visible_in_church_center]=true&where[starts_at][gte]=2026-11-22T08%3A00%3A00Z&where[starts_at][lte]=2027-01-17T08%3A00%3A00Z"
   },
   "data": [
-    {
-      "type": "EventInstance",
-      "id": "239787209",
-      "attributes": {
-        "all_day_event": false,
-        "church_center_url": "https://plcc.churchcenter.com/calendar/event/239787209",
-        "compact_recurrence_description": "Does not repeat",
-        "ends_at": "2026-11-22T00:00:00Z",
-        "kind": "standard",
-        "location": "PLCC Campus - 1715 228th Ave SE, Sammamish, Washington 98075",
-        "name": "Kris Kringle's Workshop: A Christmas Craft Event!",
-        "published_ends_at": "2026-11-21T23:00:00Z",
-        "published_starts_at": "2026-11-21T21:00:00Z",
-        "recurrence": "None",
-        "starts_at": "2026-11-21T17:00:00Z"
-      },
-      "relationships": {
-        "event": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/events/22324246"
-          },
-          "data": {
-            "type": "Event",
-            "id": "22324246"
-          }
-        },
-        "tags": {
-          "links": {
-            "related": "https://api.planningcenteronline.com/calendar/v2/event_instances/239787209/tags"
-          },
-          "data": []
-        }
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/event_instances/239787209"
-      }
-    },
     {
       "type": "EventInstance",
       "id": "172752095",
@@ -2722,22 +2685,6 @@
   "included": [
     {
       "type": "Event",
-      "id": "22324246",
-      "attributes": {
-        "description": "<div>\n  <div>Are your kids looking for gift ideas for Christmas?! Come to our Christmas Craft event on November 21. We will have multiple stations where kids can make Christmas gifts for their loved ones. We will have several gift ideas to choose from and each gift is $5 or less!<br><br><a href=\"https://plcc.org/kris-kringle-gift-options/\"><strong>CHECK OUT THE GIFT OPTIONS</strong></a></div>\n</div>\n",
-        "image_url": "https://images.planningcenterusercontent.com/v1/transform?bucket=resources-production&disposition=inline&expires_at=1796115599&key=uploads%2F65711%2Fnexmhign2feq136k5fwmrx9zqv9y&thumb=960x540%23&signature=a1ced9b25a8dc1ad622faaf03d1a58c4c83963778222b5873812368bfb915345",
-        "name": "Kris Kringle's Workshop: A Christmas Craft Event!",
-        "registration_url": null,
-        "summary": "Are your kids looking for gift ideas for Christmas?! Come to our Christmas Craft event on November 21. We will have multiple stations where kids can make Christmas gifts for their loved ones. We will have several gift ideas to choose from and each gift is $5 or less!",
-        "visible_in_church_center": true
-      },
-      "links": {
-        "self": "https://api.planningcenteronline.com/calendar/v2/events/22324246",
-        "html": "https://calendar.planningcenteronline.com/events/22324246"
-      }
-    },
-    {
-      "type": "Event",
       "id": "4368161",
       "attributes": {
         "description": "<div>\n  <div>We are so excited to gather with you for our weekly worship service at 10AM! Whether you’re connecting with us in person or online at plcc.org, we can’t wait to worship together!</div>\n</div>\n",
@@ -3251,8 +3198,8 @@
     }
   ],
   "meta": {
-    "total_count": 58,
-    "count": 58,
+    "total_count": 57,
+    "count": 57,
     "can_order_by": [
       "created_at",
       "updated_at",
